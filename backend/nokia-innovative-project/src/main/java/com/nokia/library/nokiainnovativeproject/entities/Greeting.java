@@ -1,4 +1,4 @@
-package com.nokia.library.nokiainnovativeproject.entity;
+package com.nokia.library.nokiainnovativeproject.entities;
 
 public class Greeting {
 	
