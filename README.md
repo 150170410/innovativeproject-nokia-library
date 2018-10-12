@@ -38,11 +38,11 @@ Backend
 1. ...
 
 Frontend
-1. Install Node.js and npm (node package manager): `https://nodejs.org/en/download/`
+1. Install Node.js and npm (node package manager): https://nodejs.org/en/download/
 2. Install Angular CLI (command line interface) globally: `npm install -g @angular/cli`
 3. Go to frontend folder and type: `npm i`
 4. To run the app, in the same folder type: `ng serve`
-5. The app should be available at: [localhost:4200](localhost:4200)
+5. The app should be available at: `http://localhost:4200/`
 
 # 5. Contributing
 * Alex Kostiukov
