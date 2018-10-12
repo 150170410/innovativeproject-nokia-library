@@ -28,7 +28,7 @@ public class BookController {
 	@Autowired
 	private BookRepository bookRepository;
 	
-	// Get All Books
+	// Get All Notes
 	@GetMapping("/books")
 	public List<Book> getAllBooks() {
 	    return bookRepository.findAll();

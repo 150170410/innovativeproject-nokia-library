@@ -7,10 +7,5 @@ import lombok.Getter;
 public class Greeting {
 	
 	private @Getter final long id;
-    private @Getter final String content;
-
-    public Greeting(long id, String content) {
-        this.id = id;
-        this.content = content;
-    }
+    private @Getter final String contentString;
 }
