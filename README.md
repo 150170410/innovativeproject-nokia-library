@@ -34,7 +34,15 @@ The goal of the project is to create a library web application.
   * axios https://github.com/axios/axios
 
 # 4. Installation guide
-...
+Backend
+1. ...
+
+Frontend
+1. Install Node.js and npm (node package manager): `https://nodejs.org/en/download/`
+2. Install Angular CLI (command line interface) globally: `npm install -g @angular/cli`
+3. Go to frontend folder and type: `npm i`
+4. To run the app, in the same folder type: `ng serve`
+5. The app should be available at: [localhost:4200](localhost:4200)
 
 # 5. Contributing
 * Alex Kostiukov
