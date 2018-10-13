@@ -14,13 +14,17 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
+@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name="book")
@@ -29,7 +33,7 @@ public class Book implements Serializable {
 	
 	@Id
 	@Column(name="book_id")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name="book_name")
@@ -40,4 +44,5 @@ public class Book implements Serializable {
 	
 	@Column(name="author_surname")
 	private String authorSurname;
+	
 }
