@@ -1,25 +1,16 @@
 <app-navbar></app-navbar>
-<div class="main-content">
-	<router-outlet></router-outlet>
-</div>
+
 
 <mat-sidenav-container class="sidenav-container">
 	<mat-sidenav #sidenav mode="side" opened class="sidenav-form">
-		<!--<router-outlet></router-outlet>--><div>side content</div>
+		<div>side content</div>
 	</mat-sidenav>
 
 	<mat-sidenav-content style="height: 100%;">
-		<mat-card>
-			<h3>header</h3>
-			<div class="rotate">
-				<button mat-mini-fab color="accent" (click)="sidenav.toggle()">^</button>
-			</div>
+		<div class="main-content">
+			<router-outlet></router-outlet>
+		</div>
 
-			<div>
-				main content
-			</div>
-		</mat-card>
-
-
+		<!--<div class="fixed-bottom text-center">Nokia library 2018</div>-->
 	</mat-sidenav-content>
 </mat-sidenav-container>

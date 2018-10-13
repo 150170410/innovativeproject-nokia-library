@@ -1,7 +1,21 @@
-<div class="text-center" style=" margin: 0 auto;width: 50%; height: 800px;">
-	<mat-card>
-		<h1 style="font-size: 50px;">Nokia library</h1>
-		<mat-divider></mat-divider>
-		<img style="width: 450px;" mat-card-image src="../../../assets/images/innovative_logo.png">
-	</mat-card>
-</div>
+<!--<div class="text-center" style=" margin: 0 auto;width: 50%; height: 800px;">-->
+	<!--<mat-card>-->
+		<!--<h1 style="font-size: 50px;">Nokia library</h1>-->
+		<!--<mat-divider></mat-divider>-->
+		<!--<img style="width: 450px;" mat-card-image src="../../../assets/images/innovative_logo.png">-->
+	<!--</mat-card>-->
+<!--</div>-->
+<table border="1" style="border-collapse: collapse;">
+	<tr>
+		<th>id</th>
+		<th>Title</th>
+		<th>Author name</th>
+		<th>author surname</th>
+	</tr>
+	<tr *ngFor="let book of fakeBooks">
+		<td>{{book.id}}</td>
+		<td>{{book.title}}</td>
+		<td>{{book.authorName}}</td>
+		<td>{{book.authorSurname}}</td>
+	</tr>
+</table>

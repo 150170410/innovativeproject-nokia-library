@@ -41,6 +41,7 @@ import {
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { RestService } from './shared/services/rest/rest.service';
 
 @NgModule({
 	declarations: [
@@ -125,7 +126,7 @@ import { RouterModule } from '@angular/router';
 		MatPaginatorModule,
 		MatNativeDateModule
 	],
-	providers: [],
+	providers: [RestService],
 	bootstrap: [AppComponent]
 })
 export class AppModule {
