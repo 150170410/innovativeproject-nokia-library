@@ -21,11 +21,11 @@ export class HomepageComponent implements OnInit {
 
 	ngOnInit() {
 
-		const url = '/books';
+		const url = 'books';
 		this.restService.getAll(url).then(response => {
 			if (response.status === 200) {
-				this.books = response.data;
-
+				this.books = response.data._embedded.books;
+				console.log(this.books);
 			} else {
 
 			}
