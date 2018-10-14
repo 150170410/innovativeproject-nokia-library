@@ -21,11 +21,11 @@ export class HomepageComponent implements OnInit {
 
 	ngOnInit() {
 
-		const url = 'books';
+		const url = 'library/books';
 		// get all books
-		this.restService.getAll(url).then(response => {
+		this.restService.getAll('library/books').then(response => {
 			if (response.status === 200) {
-				this.books = response.data._embedded.books;
+				this.books = response.data;
 				console.log(response.data);
 			} else {
 
@@ -54,9 +54,9 @@ export class HomepageComponent implements OnInit {
 		console.log('book updated');
 
 		// delete
-		this.restService.remove('books', 71).then(response => {
-			console.log('book removed');
-		})
+		// this.restService.remove('books', 71).then(response => {
+		// 	console.log('book removed');
+		// })
 
 	}
 
