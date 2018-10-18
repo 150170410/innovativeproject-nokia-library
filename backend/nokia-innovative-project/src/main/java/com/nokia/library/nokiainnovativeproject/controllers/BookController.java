@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,11 +23,11 @@ import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundExcep
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/library")
 public class BookController {
 
-	@Autowired
-	private BookRepository bookRepository;
+	private final BookRepository bookRepository;
 
 	// Get All Notes
 	@GetMapping("/books")

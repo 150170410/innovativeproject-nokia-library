@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@156.17.43.90:1521:xe
+    username: pwr_17_18_L_016234942
+    password: supersilnehaslo
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.Oracle12cDialect
+        ddl-auto: update
+    open-in-view: false

@@ -27,10 +27,8 @@ public class Book implements Serializable {
 	@Column(name = "book_name")
 	private String title;
 
-	@Column(name = "author_name")
 	private String authorName;
 
-	@Column(name = "author_surname")
 	private String authorSurname;
 
 }
