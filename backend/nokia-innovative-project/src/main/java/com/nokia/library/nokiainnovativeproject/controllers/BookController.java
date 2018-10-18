@@ -27,51 +27,51 @@ public class BookController {
 
 	@Autowired
 	private BookRepository bookRepository;
-	
+
 	// Get All Notes
 	@GetMapping("/books")
 	public List<Book> getAllBooks() {
-	    return bookRepository.findAll();
+		return bookRepository.findAll();
 	}
-	
+
 	// Get a Single Book
 	@GetMapping("/books/{id}")
-	public Book getBookById(@PathVariable(value = "id") Long bookId) {
-	    return bookRepository.findById(bookId)
-	            .orElseThrow( ()-> new ResourceNotFoundException("Book", "id", bookId));
+	public Book getBookById(@PathVariable Long id) {
+		return bookRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
 	}
-	
+
 	// Save a Single Book
 	@PostMapping("/books")
 	public Book createBook(@Valid @RequestBody Book book) {
 		return bookRepository.save(book);
 	}
-	
+
 	// Update a Single Book
 	@PutMapping("/books/{id}")
 	public ResponseEntity<Book> updateBook(
 			@PathVariable(value = "id") Long bookId,
 			@Valid @RequestBody Book bookDetails) throws ResourceNotFoundException {
 		Book book = bookRepository.findById(bookId)
-		        .orElseThrow(() -> new ResourceNotFoundException("Book", "id", bookId));
-		
+				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", bookId));
+
 		book.setTitle(bookDetails.getTitle());
 		book.setAuthorName(bookDetails.getAuthorName());
 		book.setAuthorSurname(bookDetails.getAuthorSurname());
 		final Book updatedBook = bookRepository.save(book);
 		return ResponseEntity.ok(updatedBook);
 	}
-	
+
 	// Delete a Single Book
 	@DeleteMapping("/books/{id}")
 	public Map<String, Boolean> deleteBook(
 			@PathVariable(value = "id") Long bookId) throws ResourceNotFoundException {
 		Book book = bookRepository.findById(bookId)
-		        .orElseThrow(() -> new ResourceNotFoundException("Book", "id", bookId));
+				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", bookId));
 
 		bookRepository.delete(book);
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", Boolean.TRUE);
-		return response;
+		return new HashMap<String, Boolean>() {{
+			put("deleted", true);
+		}};
 	}
 }
