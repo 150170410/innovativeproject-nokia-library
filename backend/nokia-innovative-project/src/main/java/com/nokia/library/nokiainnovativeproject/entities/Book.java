@@ -15,16 +15,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "book")
 @EntityListeners(AuditingEntityListener.class)
 public class Book implements Serializable {
 
 	@Id
-	@Column(name = "book_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "book_name")
 	private String title;
 
 	private String authorName;
