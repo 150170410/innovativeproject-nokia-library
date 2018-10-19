@@ -41,8 +41,8 @@ public class BookController {
 	}
 
 	@DeleteMapping(Mappings.BOOKS_ID)
-	public Map<String, Boolean> deleteBook(@PathVariable Long id)
+	public void deleteBook(@PathVariable Long id)
 			throws ResourceNotFoundException {
-		return bookService.deleteBook(id);
+		bookService.deleteBook(id);
 	}
 }

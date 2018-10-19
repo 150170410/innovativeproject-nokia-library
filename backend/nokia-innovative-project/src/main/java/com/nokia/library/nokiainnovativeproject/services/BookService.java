@@ -24,21 +24,17 @@ public class BookService {
 		return bookRepository.findAll();
 	}
 
-
-	public Book getBookById(@PathVariable Long id) {
+	public Book getBookById(Long id) {
 		return bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
 	}
 
-
-	public Book createBook(@Valid @RequestBody Book book) {
+	public Book createBook(Book book) {
 		return bookRepository.save(book);
 	}
 
-
-	public ResponseEntity<Book> updateBook(
-			@PathVariable Long id,
-			@Valid @RequestBody Book bookDetails) throws ResourceNotFoundException {
+	public ResponseEntity<Book> updateBook(Long id, Book bookDetails)
+			throws ResourceNotFoundException {
 		Book book = bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
 
@@ -49,14 +45,13 @@ public class BookService {
 		return ResponseEntity.ok(updatedBook);
 	}
 
-	public Map<String, Boolean> deleteBook(
-			@PathVariable Long id) throws ResourceNotFoundException {
+	public void deleteBook(Long id)
+			throws ResourceNotFoundException {
 		Book book = bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
-
 		bookRepository.delete(book);
-		return new HashMap<String, Boolean>() {{
-			put("deleted", true);
-		}};
+//		return new HashMap<String, Boolean>() {{
+//			put("deleted", true);
+//		}};
 	}
 }
