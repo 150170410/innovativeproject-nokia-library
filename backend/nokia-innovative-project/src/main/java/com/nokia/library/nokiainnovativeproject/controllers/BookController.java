@@ -1,60 +1,47 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
+import com.nokia.library.nokiainnovativeproject.entities.Book;
+import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
+import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
+import com.nokia.library.nokiainnovativeproject.utils.Mappings;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.nokia.library.nokiainnovativeproject.entities.Book;
-import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
-import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
-
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/library")
+@RequestMapping(Mappings.API_VERSION + "/library")
 public class BookController {
 
 	private final BookRepository bookRepository;
 
-	// Get All Notes
-	@GetMapping("/books")
+	@GetMapping(Mappings.BOOKS)
 	public List<Book> getAllBooks() {
 		return bookRepository.findAll();
 	}
 
-	// Get a Single Book
-	@GetMapping("/books/{id}")
+	@GetMapping(Mappings.BOOKS_ID)
 	public Book getBookById(@PathVariable Long id) {
 		return bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
 	}
 
-	// Save a Single Book
-	@PostMapping("/books")
+	@PostMapping(Mappings.BOOKS)
 	public Book createBook(@Valid @RequestBody Book book) {
 		return bookRepository.save(book);
 	}
 
-	// Update a Single Book
-	@PutMapping("/books/{id}")
+	@PutMapping(Mappings.BOOKS_ID)
 	public ResponseEntity<Book> updateBook(
-			@PathVariable(value = "id") Long bookId,
+			@PathVariable Long id,
 			@Valid @RequestBody Book bookDetails) throws ResourceNotFoundException {
-		Book book = bookRepository.findById(bookId)
-				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", bookId));
+		Book book = bookRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
 
 		book.setTitle(bookDetails.getTitle());
 		book.setAuthorName(bookDetails.getAuthorName());
@@ -63,12 +50,11 @@ public class BookController {
 		return ResponseEntity.ok(updatedBook);
 	}
 
-	// Delete a Single Book
-	@DeleteMapping("/books/{id}")
+	@DeleteMapping(Mappings.BOOKS_ID)
 	public Map<String, Boolean> deleteBook(
-			@PathVariable(value = "id") Long bookId) throws ResourceNotFoundException {
-		Book book = bookRepository.findById(bookId)
-				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", bookId));
+			@PathVariable Long id) throws ResourceNotFoundException {
+		Book book = bookRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
 
 		bookRepository.delete(book);
 		return new HashMap<String, Boolean>() {{
