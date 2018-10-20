@@ -6,13 +6,8 @@ import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -50,8 +45,5 @@ public class BookService {
 		Book book = bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
 		bookRepository.delete(book);
-//		return new HashMap<String, Boolean>() {{
-//			put("deleted", true);
-//		}};
 	}
 }

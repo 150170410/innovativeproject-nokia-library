@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(Mappings.API_VERSION + "/library")
+@RequestMapping(Mappings.API_VERSION + Mappings.LIBRARY)
 public class BookController {
 
 	private final BookService bookService;
