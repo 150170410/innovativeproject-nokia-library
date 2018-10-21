@@ -28,8 +28,9 @@ public class BookControllerTest {
 	@Test
 	public void testCreateBook() throws Exception {
 		Map<String, Object> requestBody = new HashMap<>();
+		requestBody.put("id", "2");
 		requestBody.put("title", "sum titel");
-		requestBody.put("authorName", "sum nam");
+		requestBody.put("authorName", "test test");
 		requestBody.put("authorSurname", "sum nome");
 
 		HttpHeaders requestHeaders = new HttpHeaders();

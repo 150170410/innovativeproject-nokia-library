@@ -5,7 +5,6 @@ import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundExcep
 import com.nokia.library.nokiainnovativeproject.services.BookService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,12 +30,6 @@ public class BookController {
 	@PostMapping(Mappings.BOOKS)
 	public Book createBook(@Valid @RequestBody Book book) {
 		return bookService.createBook(book);
-	}
-
-	@PutMapping(Mappings.BOOKS_ID)
-	public ResponseEntity<Book> updateBook(@PathVariable Long id, @Valid @RequestBody Book bookDetails)
-			throws ResourceNotFoundException {
-		return bookService.updateBook(id, bookDetails);
 	}
 
 	@DeleteMapping(Mappings.BOOKS_ID)
