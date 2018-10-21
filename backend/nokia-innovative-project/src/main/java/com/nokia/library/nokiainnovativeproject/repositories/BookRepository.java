@@ -7,8 +7,6 @@ import com.nokia.library.nokiainnovativeproject.entities.Book;
 
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long>{
+public interface BookRepository extends JpaRepository<Book, Long> {
 
 }
-
-	

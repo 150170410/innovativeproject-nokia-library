@@ -9,3 +9,5 @@ spring:
         dialect: org.hibernate.dialect.Oracle12cDialect
         ddl-auto: update
     open-in-view: false
+server:
+  port: 8080
