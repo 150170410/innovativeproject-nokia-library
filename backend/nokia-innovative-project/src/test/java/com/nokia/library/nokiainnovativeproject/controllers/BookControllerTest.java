@@ -55,7 +55,7 @@ public class BookControllerTest {
 
 		HttpEntity<String> httpEntity = new HttpEntity<>(OBJECT_MAPPER.writeValueAsString(requestBody), requestHeaders);
 
-		String urlCreate = "http://localhost:8080" + Mappings.API_VERSION + Mappings.LIBRARY + Mappings.BOOKS;
+		String urlCreate = "http://127.0.0.1:8080" + Mappings.API_VERSION + Mappings.LIBRARY + Mappings.BOOKS;
 		Map<String, Object> apiResponseCreate = restTemplate.postForObject(urlCreate, httpEntity, Map.class, Collections.emptyMap());
 
 		String urlGetById = "http://localhost:8080" + Mappings.API_VERSION + Mappings.LIBRARY + Mappings.BOOKS_ID;
