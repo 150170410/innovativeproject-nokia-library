@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@ActiveProfiles("development")
+@ActiveProfiles("autotests")
 public class NokiaInnovativeProjectApplicationTests {
 
 	@Test
