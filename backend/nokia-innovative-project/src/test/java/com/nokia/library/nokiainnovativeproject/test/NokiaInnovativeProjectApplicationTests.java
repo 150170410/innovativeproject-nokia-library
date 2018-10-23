@@ -12,10 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@ActiveProfiles("development")
 public class NokiaInnovativeProjectApplicationTests {
-
-	@Autowired
-	private BookRepository bookRepository;
 
 	@Test
 	public void contextLoads() {
