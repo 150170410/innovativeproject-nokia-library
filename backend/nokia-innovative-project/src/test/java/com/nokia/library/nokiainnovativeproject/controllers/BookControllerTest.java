@@ -24,6 +24,7 @@ public class BookControllerTest {
 
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 	private static final RestTemplate restTemplate = new RestTemplate();
+	private static final String BASE_URL = "http://localhost:8080" + Mappings.API_VERSION + Mappings.LIBRARY;
 
 	@Test
 	public void testCreateBook() throws Exception {
@@ -37,7 +38,7 @@ public class BookControllerTest {
 
 		HttpEntity<String> httpEntity = new HttpEntity<>(OBJECT_MAPPER.writeValueAsString(requestBody), requestHeaders);
 
-		String url = "http://localhost:8080" + Mappings.API_VERSION + Mappings.LIBRARY + Mappings.BOOKS;
+		String url = BASE_URL +  Mappings.BOOKS;
 		Map<String, Object> apiResponse = restTemplate.postForObject(url, httpEntity, Map.class, Collections.emptyMap());
 
 		Assert.assertNotNull(apiResponse);
@@ -55,10 +56,10 @@ public class BookControllerTest {
 
 		HttpEntity<String> httpEntity = new HttpEntity<>(OBJECT_MAPPER.writeValueAsString(requestBody), requestHeaders);
 
-		String urlCreate = "http://127.0.0.1:8080" + Mappings.API_VERSION + Mappings.LIBRARY + Mappings.BOOKS;
+		String urlCreate = BASE_URL +  Mappings.BOOKS;
 		Map<String, Object> apiResponseCreate = restTemplate.postForObject(urlCreate, httpEntity, Map.class, Collections.emptyMap());
 
-		String urlGetById = "http://localhost:8080" + Mappings.API_VERSION + Mappings.LIBRARY + Mappings.BOOKS_ID;
+		String urlGetById = BASE_URL +  Mappings.BOOKS_ID;
 		Map<String, Object> apiResponseGetById = restTemplate.getForObject(urlGetById, Map.class, apiResponseCreate.get("id"), Collections.emptyMap());
 		apiResponseGetById.put("id", apiResponseCreate.get("id"));
 		Assert.assertTrue(apiResponseGetById.equals(apiResponseCreate));
@@ -76,16 +77,16 @@ public class BookControllerTest {
 
 		HttpEntity<String> httpEntity = new HttpEntity<>(OBJECT_MAPPER.writeValueAsString(requestBody), requestHeaders);
 
-		String urlCreate = "http://localhost:8080" + Mappings.API_VERSION + Mappings.LIBRARY + Mappings.BOOKS;
+		String urlCreate = BASE_URL + Mappings.BOOKS;
 		Map<String, Object> apiResponseCreate = restTemplate.postForObject(urlCreate, httpEntity, Map.class, Collections.emptyMap());
 
-		String urlGetById = "http://localhost:8080" + Mappings.API_VERSION + Mappings.LIBRARY + Mappings.BOOKS_ID;
+		String urlGetById = BASE_URL +  Mappings.BOOKS_ID;
 		Map<String, Object> apiResponseGetById = restTemplate.getForObject(urlGetById, Map.class, apiResponseCreate.get("id"), Collections.emptyMap());
 		apiResponseGetById.put("id", apiResponseCreate.get("id"));
 
 		Assert.assertTrue(apiResponseGetById.equals(apiResponseCreate));
 
-		String urlDelete = "http://localhost:8080" + Mappings.API_VERSION + Mappings.LIBRARY + Mappings.BOOKS_ID;
+		String urlDelete = BASE_URL +  Mappings.BOOKS_ID;
 		restTemplate.delete(urlDelete, apiResponseCreate.get("id"));
 	}
 
