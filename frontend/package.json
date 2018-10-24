@@ -22,7 +22,6 @@
     "@angular/platform-browser": "^6.0.3",
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
-    "axios": "^0.18.0",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",
     "update": "^0.7.4",

@@ -20,39 +20,7 @@ export class HomepageComponent implements OnInit {
 	}
 
 	ngOnInit() {
-
 		const url = 'library/books';
-		// get all books
-		this.restService.getAll('library/books').then(response => {
-			if (response.status === 200) {
-				this.books = response.data;
-				console.log(response.data);
-			} else {
-
-			}
-
-		}).catch((error) => {
-			console.log('error');
-			console.log(error);
-
-		});
-
-		// post
-		this.restService.post("books", this.newBook)
-		.then(function (response) {
-			if (response.status == 201) {
-				console.log('book added')
-			} else {
-				console.log('error');
-			}
-		}).catch((error) => {
-			console.log('error');
-		});
-
-		// delete
-		// this.restService.remove('books', 71).then(response => {
-		// 	console.log('book removed');
-		// })
 
 	}
 
