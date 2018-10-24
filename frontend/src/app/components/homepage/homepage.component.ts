@@ -49,10 +49,6 @@ export class HomepageComponent implements OnInit {
 			console.log('error');
 		});
 
-		// update
-		this.restService.update('books', 70, this.newBook).then(response => {})
-		console.log('book updated');
-
 		// delete
 		// this.restService.remove('books', 71).then(response => {
 		// 	console.log('book removed');

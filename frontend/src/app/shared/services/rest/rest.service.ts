@@ -23,24 +23,6 @@ export class RestService {
 		.catch(error => error);
 	}
 
-	update<T>(resourceName: string, id: any, params?) {
-		const url = `${API_URL}/${resourceName}/${id}`;
-		return axios.put(url, params)
-		.then(response => response)
-		.catch(error => error);
-	}
-
-	getOne<T>(id: any, resourceName: string) {
-		const url = `${API_URL}/${resourceName}/${id}`;
-		return axios.get(url)
-		.then(function (response) {
-			return response;
-		})
-		.catch(function (error) {
-			return error;
-		});
-	}
-
 	getAll<T>(resourceName: String) {
 
 		const url = `${API_URL}/${resourceName}`;
