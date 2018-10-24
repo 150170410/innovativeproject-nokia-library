@@ -1,0 +1,29 @@
+language: java
+jdk:
+  - oraclejdk8
+
+env:
+  - PROFILE
+services:
+  - docker
+  - postgresql
+
+before_install:
+  - cd java
+
+install: true
+
+before_script:
+  - ./mvn clean install -B
+
+stages:
+  - compile
+  - test
+
+jobs:
+  include:
+    - stage: "Tests"
+      script: # run tests
+
+
+deploy:
