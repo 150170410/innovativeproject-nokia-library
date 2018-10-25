@@ -8,23 +8,13 @@ services:
   - docker
 
 install: true
-stages:
-  - develop
-    if: (branch = develop) AND (type IN (push))
-  - master_change
-    if: (branch = master) AND (type IN (push))
-  - master_with_tag
-    if: (branch = master) AND (type IN (push))
-    # we need to add tag recognition yet
-  - other
-    if:  ((branch != master) OR (branch != develop)) AND (type IN (push)) 
 jobs:
   include:
-    - stage: other
+    - if: ((branch != master) OR (branch != develop)) AND (type IN (push)) 
       script:
         - cd backend/nokia-innovative-project
         - mvn clean install -B
-    - stage: master_change
+    - if: (branch = master) AND (type IN (push))
       script:
         - cd backend/nokia-innovative-project
         - mvn clean install -B 
@@ -35,8 +25,7 @@ jobs:
         - docker build -t frontend ../../frontend
         - docker tag frontend innovativeprojectnokialibrary:frontend $DOCKER_USERNAME/innovativeprojectnokialibrary
         - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary
-    - stage: master_with_tag
-    - stage: develop
+    - if: (branch = develop) AND (type IN (push))
       script:
         - cd backend/nokia-innovative-project
         - mvn clean install -B 
