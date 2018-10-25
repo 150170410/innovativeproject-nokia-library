@@ -1,0 +1,54 @@
+language: java
+jdk:
+  - oraclejdk8
+
+env:
+  - PROFILE
+services:
+  - docker
+
+install: true
+stages:
+  - develop
+    if: (branch = develop) AND (type IN (push))
+  - master_change
+    if: (branch = master) AND (type IN (push))
+  - master_with_tag
+    if: (branch = master) AND (type IN (push))
+    # we need to add tag recognition yet
+  - other
+    if:  ((branch != master) OR (branch != develop)) AND (type IN (push)) 
+jobs:
+  include:
+    - stage: other
+      script:
+        - cd backend/nokia-innovative-project
+        - mvn clean install -B
+    - stage: master_change
+      script:
+        - cd backend/nokia-innovative-project
+        - mvn clean install -B 
+        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        - docker build -t backend .
+        - docker tag backend innovativeprojectnokialibrary:backend $DOCKER_USERNAME/innovativeprojectnokialibrary
+        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary
+        - docker build -t frontend ../../frontend
+        - docker tag frontend innovativeprojectnokialibrary:frontend $DOCKER_USERNAME/innovativeprojectnokialibrary
+        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary
+    - stage: master_with_tag
+      script:
+        - echo "run tests, build application, build docker image with commit tag and publish image"
+    - stage: develop
+      script:
+        - cd backend/nokia-innovative-project
+        - mvn clean install -B 
+        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        - docker build -t backend .
+        - docker tag backend innovativeprojectnokialibrary:backend $DOCKER_USERNAME/innovativeprojectnokialibrary
+        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:backendtest
+        - docker build -t frontend ../../frontend
+        - docker tag frontend innovativeprojectnokialibrary:frontend $DOCKER_USERNAME/innovativeprojectnokialibrary
+        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:frontendtest
+cache:
+   directories:
+    - $HOME/.m2
