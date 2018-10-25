@@ -7,17 +7,24 @@ env:
 services:
   - docker
 
-install: true
+install:
+  script:
+    - cd frontend
+    - npm i
+  - script:
+    - cd backend/nokia-innovative-project
+    - mvn clean install -B
+
+before_script:
+  - cd backend/nokia-innovative-project
+  - mvn test
+
 jobs:
   include:
     - if: ((branch != master) OR (branch != develop)) AND (type IN (push)) 
       script:
-        - cd backend/nokia-innovative-project
-        - mvn clean install -B
     - if: (branch = master) AND (type IN (push))
       script:
-        - cd backend/nokia-innovative-project
-        - mvn clean install -B 
         - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
         - docker build -t backend .
         - docker tag backend innovativeprojectnokialibrary:backend $DOCKER_USERNAME/innovativeprojectnokialibrary
@@ -25,10 +32,11 @@ jobs:
         - docker build -t frontend ../../frontend
         - docker tag frontend innovativeprojectnokialibrary:frontend $DOCKER_USERNAME/innovativeprojectnokialibrary
         - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary
+    - if: (branch = master) AND (type IN (push)) AND (tag IS present)
+      script:
+        # build with commit tag
     - if: (branch = develop) AND (type IN (push))
       script:
-        - cd backend/nokia-innovative-project
-        - mvn clean install -B 
         - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
         - docker build -t backend .
         - docker tag backend innovativeprojectnokialibrary:backend $DOCKER_USERNAME/innovativeprojectnokialibrary
