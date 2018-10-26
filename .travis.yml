@@ -2,6 +2,9 @@ language: java
 jdk:
   - oraclejdk8
 install: true
+env:
+ -TO_BUILD=FRONTEND
+ -TO_BUILD=BACKEND
 services:
   - docker
 jobs:
@@ -13,9 +16,8 @@ jobs:
           - mvn test
       - stage: build
         script:
-          - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-          - cd ../../frontend
-          - npm i
+        - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm i; fi
+        - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V; fi
       - stage: docker_build
         if: branch = master OR branch = develop AND type in (push)
         script:
