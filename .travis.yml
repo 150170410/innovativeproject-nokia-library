@@ -8,14 +8,12 @@ services:
   - docker
 
 install:
-  script:
     - cd frontend
     - npm i
     - cd ../../backend/nokia-innovative-project
     - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 before_script:
-  - cd backend/nokia-innovative-project
   - mvn test
 
 jobs:
