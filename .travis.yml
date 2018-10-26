@@ -3,12 +3,11 @@ jdk:
   - oraclejdk8
 install: true
 env:
-  - TAG=test
+  - TAG
 services:
   - docker
 before_script:
-  - $TAG=$TRAVIS_COMMIT_MESSAGE
-    if:(branch = develop)
+  - if [ ${TRAVIS_BRANCH} == develop ]; then TAG=${TRAVIS_BRANCH} else TAG=test fi export TAG
 jobs:
   include:
       stage: test
