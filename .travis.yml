@@ -21,7 +21,7 @@ jobs:
       - stage: docker_build
         if: branch = master OR branch = develop AND type in (push)
         script:
-          - docker build -t backend .
+          - docker build -t backend backend/nokia-innovative-project
           - docker tag backend innovativeprojectnokialibrary:backend $DOCKER_USERNAME/innovativeprojectnokialibrary
           - docker build -t frontend ../../frontend
           - docker tag frontend innovativeprojectnokialibrary:frontend $DOCKER_USERNAME/innovativeprojectnokialibrary
