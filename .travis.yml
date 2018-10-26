@@ -20,7 +20,7 @@ jobs:
         - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm i; fi
         - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V; fi
       - stage: docker_build
-        if: branch = master OR branch = develop AND type in (push)
+        if: (branch = master OR branch = develop) AND type in (push)
         env: TAG=$TRAVIS_COMMIT_MESSAGE
         if: branch = develop
         script:
@@ -29,7 +29,7 @@ jobs:
           - docker build -t nokia.inno.lib.fe:$TAG ./frontend
           - docker tag nokia.inno.lib.fe $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG
       - stage: docker_push
-        if: branch = master OR branch = develop AND type in (push)
+        if: (branch = master OR branch = develop) AND type in (push)
         script:
           - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           - docker push $DOCKER_USERNAME/nokia.inno.lib.be:$TAG
