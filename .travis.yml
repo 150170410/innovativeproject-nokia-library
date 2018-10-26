@@ -5,6 +5,7 @@ install: true
 env:
  -TO_BUILD=FRONTEND
  -TO_BUILD=BACKEND
+ -TAG=test
 services:
   - docker
 jobs:
@@ -20,17 +21,19 @@ jobs:
         - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V; fi
       - stage: docker_build
         if: branch = master OR branch = develop AND type in (push)
+        env: TAG=$TRAVIS_COMMIT_MESSAGE
+        if: branch = develop
         script:
-          - docker build -t backend backend/nokia-innovative-project
-          - docker tag backend innovativeprojectnokialibrary:backend $DOCKER_USERNAME/innovativeprojectnokialibrary
-          - docker build -t frontend ../../frontend
-          - docker tag frontend innovativeprojectnokialibrary:frontend $DOCKER_USERNAME/innovativeprojectnokialibrary
+          - docker build -t nokia.inno.lib.be backend/nokia-innovative-project
+          - docker tag nokia.inno.lib.be $DOCKER_USERNAME/nokia.inno.lib.be:$TAG
+          - docker build -t nokia.inno.lib.fe:$TAG ./frontend
+          - docker tag nokia.inno.lib.fe $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG
       - stage: docker_push
         if: branch = master OR branch = develop AND type in (push)
         script:
           - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-          - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:frontend
-          - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:backend
+          - docker push $DOCKER_USERNAME/nokia.inno.lib.be:$TAG
+          - docker push $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG
 cache:
    directories:
     - $HOME/.m2
