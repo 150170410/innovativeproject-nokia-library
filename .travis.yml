@@ -2,8 +2,6 @@ language: java
 jdk:
   - oraclejdk8
 install: true
-env:
-  - TAG
 services:
   - docker
 jobs:
@@ -27,16 +25,13 @@ jobs:
       stage: docker_push
       script:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:frontend:$TAG
-        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:backend:$TAG
+        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:frontend:test
+        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:backend:test
 stages:
   - test
   - build
   - docker_build
-    if:(branch = develop) AND (type IN (push))
-    script: env TAG=$TRAVIS_COMMIT_MESSAGE
-    if:(branch = master) AND (type IN (push))
-    script: env TAG=TEST
+    if:(branch = master OR branch = develop) AND (type IN (push))
   - docker_push
     if:(branch = master OR branch = develop) AND (type IN (push))
 cache:
