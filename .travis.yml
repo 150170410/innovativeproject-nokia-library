@@ -3,14 +3,12 @@ jdk:
   - oraclejdk8
 install: true
 env:
-  - TAG
+  - TAG=test
 services:
   - docker
 before_script:
-  $TAG=test
-   if:(branch = master)
-  $TAG=$TRAVIS_COMMIT_MESSAGE
-   if:(branch = develop)
+  - $TAG=$TRAVIS_COMMIT_MESSAGE
+    if:(branch = develop)
 jobs:
   include:
       stage: test
