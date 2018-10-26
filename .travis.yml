@@ -6,8 +6,6 @@ env:
   - TAG
 services:
   - docker
-before_script:
-  - if [ ${TRAVIS_BRANCH} == develop ]; then TAG=${TRAVIS_BRANCH} else TAG=test fi export TAG
 jobs:
   include:
       stage: test
@@ -35,7 +33,10 @@ stages:
   - test
   - build
   - docker_build
-    if:(branch = master OR branch = develop) AND (type IN (push))
+    if:(branch = develop) AND (type IN (push))
+    script: env TAG=$TRAVIS_COMMIT_MESSAGE
+    if:(branch = master) AND (type IN (push))
+    script: env TAG=TEST
   - docker_push
     if:(branch = master OR branch = develop) AND (type IN (push))
 cache:
