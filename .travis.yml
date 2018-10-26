@@ -6,29 +6,29 @@ services:
   - docker
 jobs:
   include:
-      stage: test
-      script:
-        - cd backend/nokia-innovative-project
-        - chmod +x mvnw
-        - mvn test
-      stage: build
-      script:
-        - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-        - cd ../../frontend
-        - npm i
-      stage: docker_build
-       if:(branch = master OR branch = develop) AND (type IN (push))
-      script:
-        - docker build -t backend .
-        - docker tag backend innovativeprojectnokialibrary:backend $DOCKER_USERNAME/innovativeprojectnokialibrary
-        - docker build -t frontend ../../frontend
-        - docker tag frontend innovativeprojectnokialibrary:frontend $DOCKER_USERNAME/innovativeprojectnokialibrary
-      stage: docker_push
-       if:(branch = master OR branch = develop) AND (type IN (push))
-      script:
-        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:frontend:test
-        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:backend:test
+      - stage: test
+        script:
+          - cd backend/nokia-innovative-project
+          - chmod +x mvnw
+          - mvn test
+      - stage: build
+        script:
+          - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+          - cd ../../frontend
+          - npm i
+      - stage: docker_build
+        if: branch = master OR branch = develop AND type in (push)
+        script:
+          - docker build -t backend .
+          - docker tag backend innovativeprojectnokialibrary:backend $DOCKER_USERNAME/innovativeprojectnokialibrary
+          - docker build -t frontend ../../frontend
+          - docker tag frontend innovativeprojectnokialibrary:frontend $DOCKER_USERNAME/innovativeprojectnokialibrary
+      - stage: docker_push
+        if: branch = master OR branch = develop AND type in (push)
+        script:
+          - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+          - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:frontend
+          - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:backend
 cache:
    directories:
     - $HOME/.m2
