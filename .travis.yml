@@ -17,23 +17,18 @@ jobs:
         - cd ../../frontend
         - npm i
       stage: docker_build
+       if:(branch = master OR branch = develop) AND (type IN (push))
       script:
         - docker build -t backend .
         - docker tag backend innovativeprojectnokialibrary:backend $DOCKER_USERNAME/innovativeprojectnokialibrary
         - docker build -t frontend ../../frontend
         - docker tag frontend innovativeprojectnokialibrary:frontend $DOCKER_USERNAME/innovativeprojectnokialibrary
       stage: docker_push
+       if:(branch = master OR branch = develop) AND (type IN (push))
       script:
-        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
         - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:frontend:test
         - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:backend:test
-stages:
-  - test
-  - build
-  - docker_build
-    if:(branch = master OR branch = develop) AND (type IN (push))
-  - docker_push
-    if:(branch = master OR branch = develop) AND (type IN (push))
 cache:
    directories:
     - $HOME/.m2
