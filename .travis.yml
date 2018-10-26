@@ -1,47 +1,45 @@
 language: java
 jdk:
   - oraclejdk8
-
 env:
   - PROFILE
+  - TAG
 services:
   - docker
-
-install:
-    - cd frontend
-    - npm i
-    - cd ../backend/nokia-innovative-project
-    - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-
-before_script:
-  - chmod +x mvnw
-  - mvn test
-
 jobs:
   include:
-    - if: ((branch != master) OR (branch != develop)) AND (type IN (push)) 
+      stage: test
       script:
-    - if: (branch = master) AND (type IN (push))
+        - cd backend/nokia-innovative-project
+        - chmod +x mvnw
+        - mvn test
+      stage: build
       script:
-        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+        - cd ../../frontend
+        - npm i
+      stage: docker_build
+      script:
         - docker build -t backend .
         - docker tag backend innovativeprojectnokialibrary:backend $DOCKER_USERNAME/innovativeprojectnokialibrary
-        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary
         - docker build -t frontend ../../frontend
         - docker tag frontend innovativeprojectnokialibrary:frontend $DOCKER_USERNAME/innovativeprojectnokialibrary
-        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary
-    - if: (branch = master) AND (type IN (push)) AND (tag IS present)
-      script:
-        # build with commit tag
-    - if: (branch = develop) AND (type IN (push))
+      stage: docker_push
       script:
         - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-        - docker build -t backend .
-        - docker tag backend innovativeprojectnokialibrary:backend $DOCKER_USERNAME/innovativeprojectnokialibrary
-        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:backendtest
-        - docker build -t frontend ../../frontend
-        - docker tag frontend innovativeprojectnokialibrary:frontend $DOCKER_USERNAME/innovativeprojectnokialibrary
-        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:frontendtest
+        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:frontend:$TAG
+        - docker push $DOCKER_USERNAME/innovativeprojectnokialibrary:backend:$TAG
+stages:
+  - test
+  - build
+  - docker_build
+    if:(branch = master OR branch = develop) AND (type IN (push))
+     $TAG=test
+      if:(branch = master) 
+     $TAG = $TRAVIS_COMMIT_MESSAGE
+      if:(branch = develop)
+  - docker_push
+    if:(branch = master OR branch = develop) AND (type IN (push))
 cache:
    directories:
     - $HOME/.m2
