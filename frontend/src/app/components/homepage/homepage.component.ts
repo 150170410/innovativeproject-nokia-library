@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { RestService } from '../../shared/services/rest/rest.service';
 import { HttpClient } from '@angular/common/http';
 import { BookService } from '../../services/book/book.service';
 
@@ -24,9 +23,9 @@ export class HomepageComponent implements OnInit {
 
 	ngOnInit() {
 
-		this.bookService.updateBook(this.newBook, 1).subscribe();
-		this.bookService.saveBook(this.newBook).subscribe();
 
+		this.bookService.saveBook(this.newBook).subscribe();
+		// this.bookService.updateBook(this.newBook, 1).subscribe();
 		// this.bookService.removeBook(3).subscribe();
 
 		this.bookService.getBooks().subscribe((response) => {
