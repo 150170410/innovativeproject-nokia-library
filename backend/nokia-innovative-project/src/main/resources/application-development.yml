@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql:192.168.99.100:5432/postgres
+    url: jdbc:postgresql://192.168.99.100:5432/postgres
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -9,6 +9,9 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL94Dialect
         ddl-auto: update
+        jdbc:
+          lob:
+            non_contextual_creation: true
     open-in-view: false
 server:
   port: 8081
