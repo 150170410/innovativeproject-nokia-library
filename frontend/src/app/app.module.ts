@@ -42,6 +42,7 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { RestService } from './shared/services/rest/rest.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
 	declarations: [
@@ -55,6 +56,7 @@ import { RestService } from './shared/services/rest/rest.service';
 		ReactiveFormsModule,
 		FormsModule,
 		RouterModule.forRoot(routes),
+		HttpClientModule,
 
 		MatCheckboxModule,
 		MatCheckboxModule,
