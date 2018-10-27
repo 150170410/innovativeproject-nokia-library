@@ -12,6 +12,10 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+      properties:
+        higernate:
+          temp:
+            use_jdbc_metadata_defaults: false
     open-in-view: false
 server:
   port: 8081
