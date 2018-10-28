@@ -7,8 +7,10 @@ spring:
   jpa:
     properties:
       hibernate:
+        hbm2ddl:
+          auto: create-drop
         dialect: org.hibernate.dialect.PostgreSQL94Dialect
-        ddl-auto: update
+        ddl-auto: create-drop
         jdbc:
           lob:
             non_contextual_creation: true
