@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.99.100:5432/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+        ddl-auto: create-drop
+        jdbc:
+          lob:
+            non_contextual_creation: true
+      properties:
+        higernate:
+          temp:
+            use_jdbc_metadata_defaults: false
+    open-in-view: false
+server:
+  port: 8081
