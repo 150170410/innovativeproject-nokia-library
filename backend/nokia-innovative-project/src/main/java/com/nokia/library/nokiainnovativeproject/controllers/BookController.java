@@ -1,10 +1,12 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
+import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.services.BookService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,7 +30,9 @@ public class BookController {
 	}
 
 	@PostMapping(Mappings.BOOKS)
-	public Book createBook(@Valid @RequestBody Book book) {
+	public Book createBook(@RequestBody BookDTO bookDTO) {
+		ModelMapper mapper = new ModelMapper();
+		Book book = mapper.map(bookDTO, Book.class);
 		return bookService.createBook(book);
 	}
 

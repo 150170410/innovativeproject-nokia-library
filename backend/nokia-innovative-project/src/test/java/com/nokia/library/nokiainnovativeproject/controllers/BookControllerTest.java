@@ -1,6 +1,7 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.services.BookService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BookControllerTest {
 
 	private static Book book;
+	private static BookDTO bookDTO;
 	private static ObjectMapper mapper;
 	private MockMvc mockMvc;
 	private static final String BASE_URL = "http://localhost:8080" + Mappings.API_VERSION + Mappings.LIBRARY;
