@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,19 +23,17 @@ public class BookDetails implements Serializable {
 
     private String title;
 
-    private String authors;
-
     private String description;
 
-    private String coverPicture;
+    private String coverPictureUrl;
 
     private Date dateOfPublication;
 
-    ////////////////////////////////////
-    //private BookCategory bookCategory;
-    ////////////////////////////////////
-
     private String tableOfContents;
 
-    private String authorsDescription;
+    @ManyToMany
+	private List<Author> authors;
+
+	@ManyToMany
+	private List<BookCategory> categories;
 }
