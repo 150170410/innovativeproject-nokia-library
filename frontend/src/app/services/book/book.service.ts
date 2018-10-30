@@ -37,6 +37,6 @@ export class BookService {
 	}
 
 	removeBook(id: number) {
-		return this.http.delete<Book>(this.url + '/' + id, this.httpOptions);
+		return this.http.delete<Book>(this.url + '/' + id);
 	}
 }

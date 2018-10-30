@@ -43,12 +43,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { RestService } from './shared/services/rest/rest.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ListviewComponent } from './components/listview/listview.component';
+import { BookService } from './services/book/book.service';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		HomepageComponent,
-		NavbarComponent
+		NavbarComponent,
+		ListviewComponent
 	],
 	imports: [
 		BrowserModule,
@@ -128,7 +131,7 @@ import { HttpClientModule } from '@angular/common/http';
 		MatPaginatorModule,
 		MatNativeDateModule
 	],
-	providers: [RestService],
+	providers: [BookService],
 	bootstrap: [AppComponent]
 })
 export class AppModule {

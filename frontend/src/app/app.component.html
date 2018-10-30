@@ -1,16 +1,12 @@
-<app-navbar></app-navbar>
-
-
-<mat-sidenav-container class="sidenav-container">
+<app-navbar class="navbar"></app-navbar>
+<mat-sidenav-container class="center-content">
 	<mat-sidenav #sidenav mode="side" opened class="sidenav-form">
 		<div>side content</div>
 	</mat-sidenav>
 
-	<mat-sidenav-content style="height: 100%;">
+	<mat-sidenav-content>
 		<div class="main-content">
 			<router-outlet></router-outlet>
 		</div>
-
-		<!--<div class="fixed-bottom text-center">Nokia library 2018</div>-->
 	</mat-sidenav-content>
 </mat-sidenav-container>

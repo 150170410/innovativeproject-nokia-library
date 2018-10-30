@@ -1,6 +1,11 @@
 <mat-toolbar color="primary">
 	<mat-toolbar-row>
-		<img src="../../../assets/images/nokia-logo.png">
-		Nokia library
+		<img class="nav-link white" src="../../../assets/images/nokia-logo.png">
+		<a class="nav-link white">Nokia library</a>
+		<a class="nav-link white" style="cursor: pointer;" [matMenuTriggerFor]="menu">components</a>
+		<mat-menu #menu="matMenu" [overlapTrigger]="false">
+			<a mat-menu-item routerLink="/homepage" routerLinkActive="active">homepage</a>
+			<a mat-menu-item routerLink="/listview" routerLinkActive="active">list view</a>
+		</mat-menu>
 	</mat-toolbar-row>
 </mat-toolbar>

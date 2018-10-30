@@ -1,0 +1,13 @@
+.white {
+	color: white;
+}
+
+.nav-link {
+	line-height: 48px;
+	display: block;
+	padding: .5rem 1rem;
+}
+
+.spacer {
+	flex: 1 1 auto;
+}

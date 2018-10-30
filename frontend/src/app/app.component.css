@@ -1,5 +1,16 @@
-.rotate {
-	position: fixed;
-	transform: rotate(90deg);
-	transform-origin: left top;
+.center-content {
+	max-width: 70%;
+	margin: auto;
+}
+
+.main-content {
+	height: calc(100vh - 64px);
+}
+
+.navbar {
+	height: 64px;
+}
+
+::ng-deep .mat-sidenav-container{
+	height:calc(100vh - 64px) !important; /* or 100% */
 }
