@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BookService } from '../../services/book/book.service';
+import { Book, BookService } from '../../services/book/book.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -34,6 +34,10 @@ export class ListviewComponent implements OnInit {
 		this.bookService.getBooks().subscribe((response) => {
 			this.books = response;
 			console.log(this.books);
+		});
+		this.bookService.getBooks(99999).subscribe((response) => {
+			// this.books = response;
+			console.log(response);
 		});
 	}
 

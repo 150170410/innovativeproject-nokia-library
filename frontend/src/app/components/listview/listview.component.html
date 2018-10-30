@@ -1,16 +1,18 @@
 <h3>list view</h3>
 <ul>
 	<li *ngFor="let book of books">
-		<mat-card>
-			<mat-card-header>
-				<mat-card-title>Id: {{book.id}}, {{book.title}}</mat-card-title>
-				<mat-card-subtitle>{{book.authorName}} {{book.authorSurname}}</mat-card-subtitle>
-			</mat-card-header>
-			<mat-card-content>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum nibh et pulvinar consectetur. Aliquam eget est accumsan, dapibus erat vel, aliquam neque. Pellentesque viverra, felis eget posuere pharetra, purus dolor molestie metus, eget porta magna mi vestibulum eros.
-					Phasellus eros purus, tincidunt nec metus eu, bibendum viverra lorem. Nam non eros nec quam vulputate eleifend. Nunc id suscipit mi. Phasellus ac sodales magna. Nulla sed ipsum ac leo euismod faucibus. </p>
-			</mat-card-content>
-		</mat-card>
+		<div class="wrapper clearfix">
+			<div id="first" class="book-cover">
+				<img style="max-height: 200px;" src="https://books.goalkicker.com/JavaBook/JavaGrow.png"/>
+			</div>
+			<div id="second" class="text-area">
+				Id: {{book.id}}, {{book.title}}
+				{{book.authorName}} {{book.authorSurname}}
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum nibh et pulvinar consectetur. Aliquam eget est accumsan, dapibus erat vel, aliquam neque. Pellentesque viverra, felis eget posuere pharetra, purus dolor molestie metus, eget porta magna mi vestibulum
+					eros.
+					Phasellus eros purus, tincidunt nec metus eu, bibendum viverra lorem. Nam non eros nec quam vulputate eleifend. Nunc id suscipit mi. Phasellus ac sodales magna. Nulla sed ipsum ac leo euismod faucibus. </div>
+			</div>
+		</div>
 		<mat-divider></mat-divider>
 	</li>
 </ul>

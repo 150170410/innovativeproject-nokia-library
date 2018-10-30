@@ -1,0 +1,26 @@
+.wrapper {
+	border: 1px solid black;
+}
+.book-cover {
+	float:left;
+	width:20%;
+}
+.text-area {
+	float:left;
+	width:80%;
+}
+
+
+#first, #second{
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+.clearfix:after {
+	content: " ";
+	visibility: hidden;
+	display: block;
+	height: 0;
+	clear: both;
+}
