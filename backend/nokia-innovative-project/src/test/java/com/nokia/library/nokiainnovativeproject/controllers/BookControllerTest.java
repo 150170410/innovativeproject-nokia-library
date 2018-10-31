@@ -1,6 +1,7 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.services.BookService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
@@ -31,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BookControllerTest {
 
 	private static Book book;
+	private static BookDTO bookDTO;
 	private static ObjectMapper mapper;
 	private MockMvc mockMvc;
 	private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.LIBRARY;
@@ -71,8 +73,8 @@ public class BookControllerTest {
 
 	@Test
 	public void createBookTest() throws Exception {
-		String jsonRequest = mapper.writeValueAsString(book);
-		when(service.createBook(book)).thenReturn(book);
+		String jsonRequest = mapper.writeValueAsString(bookDTO);
+		when(service.createBook(bookDTO)).thenReturn(book);
 		mockMvc.perform(post(BASE_URL + Mappings.BOOKS)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))

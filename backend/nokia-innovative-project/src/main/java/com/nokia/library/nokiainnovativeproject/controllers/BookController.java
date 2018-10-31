@@ -31,9 +31,12 @@ public class BookController {
 
 	@PostMapping(Mappings.BOOKS)
 	public Book createBook(@RequestBody BookDTO bookDTO) {
-		ModelMapper mapper = new ModelMapper();
-		Book book = mapper.map(bookDTO, Book.class);
-		return bookService.createBook(book);
+		return bookService.createBook(bookDTO);
+	}
+
+	@PostMapping(Mappings.BOOKS_ID)
+	public Book updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO){
+		return bookService.updateBook(id, bookDTO);
 	}
 
 	@DeleteMapping(Mappings.BOOKS_ID)
