@@ -28,11 +28,10 @@ export class BookService {
 	async getBooks(id?: number) {
 		let url;
 		if (!!id) {
-			url = this.url + '/' + id;
+			url = this.url + `/${id}`;
 		} else {
 			url = this.url;
 		}
-
 		return await this.http.get<Book[]>(url).toPromise();
 	}
 
@@ -44,15 +43,14 @@ export class BookService {
 	}
 
 	updateBook(book: Book, id: number) {
-		book.id = id;
-		return this.http.post<Book>(this.url, book, this.httpOptions)
+		return this.http.post<Book>(this.url + `/${id}`, book, this.httpOptions)
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
 	removeBook(id: number) {
-		return this.http.delete<Book>(this.url + '/' + id)
+		return this.http.delete<Book>(this.url + `/${id}`)
 		.pipe(
 			catchError(this.handleError)
 		);
