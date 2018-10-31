@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
-public class User implements Serializable {
+public class Nuser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

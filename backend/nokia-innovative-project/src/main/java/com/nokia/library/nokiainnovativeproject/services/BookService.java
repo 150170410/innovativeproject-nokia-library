@@ -25,18 +25,15 @@ public class BookService {
 				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
 	}
 
-	public Book createBook(BookDTO bookDTO) {
-		ModelMapper mapper = new ModelMapper();
-		Book book = mapper.map(bookDTO, Book.class);
+	public Book createBook(Book book) {
 		return bookRepository.save(book);
 	}
 
 	public Book updateBook(Long id, BookDTO bookDTO) {
-		Book book = bookRepository.findById(id).get();
+		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
 		book.setAuthorName(bookDTO.getAuthorName());
 		book.setAuthorSurname(bookDTO.getAuthorSurname());
 		book.setTitle(bookDTO.getTitle());
-		book.toString();
 		return bookRepository.save(book);
 	}
 

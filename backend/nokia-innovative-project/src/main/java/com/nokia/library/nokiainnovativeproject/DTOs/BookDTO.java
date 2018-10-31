@@ -1,16 +1,17 @@
 package com.nokia.library.nokiainnovativeproject.DTOs;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@NoArgsConstructor
+
 @Setter
 @Getter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookDTO {
 
-    private String title;
-    private String authorName;
-    private String authorSurname;
+	private String title;
+	private String authorName;
+	private String authorSurname;
 
 }
