@@ -1,30 +1,42 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
-
-import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 public class Book implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long catalogNumber;
 
-	@Setter
-	private String title;
+    @Setter
+    @ManyToOne( cascade = { CascadeType.DETACH,
+                            CascadeType.MERGE,
+                            CascadeType.PERSIST,
+                            CascadeType.REFRESH},
+                fetch = FetchType.LAZY  )
+    @JoinColumn(name = "book_id")
+    private BookDetails bookDetails;
 
-	@Setter
-	private String authorName;
+    @Setter
+    private String comments;
 
-	@Setter
-	private String authorSurname;
-
+    @Setter
+    @OneToMany( cascade = { CascadeType.DETACH,
+                            CascadeType.MERGE,
+                            CascadeType.PERSIST,
+                            CascadeType.REFRESH},
+                fetch = FetchType.LAZY  )
+    @JoinColumn(name = "library_id")
+    private List<Library> library;
 }

@@ -1,7 +1,7 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
-import com.nokia.library.nokiainnovativeproject.entities.Book;
+import com.nokia.library.nokiainnovativeproject.entities.OldBook;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.services.BookService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,24 +19,24 @@ public class BookController {
 	private final BookService bookService;
 
 	@GetMapping(Mappings.BOOKS)
-	public List<Book> getAllBooks() {
+	public List<OldBook> getAllBooks() {
 		return bookService.getAllBooks();
 	}
 
 	@GetMapping(Mappings.BOOKS_ID)
-	public Book getBookById(@PathVariable Long id) {
+	public OldBook getBookById(@PathVariable Long id) {
 		return bookService.getBookById(id);
 	}
 
 	@PostMapping(Mappings.BOOKS)
-	public Book createBook(@RequestBody BookDTO bookDTO) {
+	public OldBook createBook(@RequestBody BookDTO bookDTO) {
 		ModelMapper mapper = new ModelMapper();
-		Book book = mapper.map(bookDTO, Book.class);
-		return bookService.createBook(book);
+		OldBook oldBook = mapper.map(bookDTO, OldBook.class);
+		return bookService.createBook(oldBook);
 	}
 
 	@PostMapping(Mappings.BOOKS_ID)
-	public Book updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO){
+	public OldBook updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO){
 		return bookService.updateBook(id, bookDTO);
 	}
 

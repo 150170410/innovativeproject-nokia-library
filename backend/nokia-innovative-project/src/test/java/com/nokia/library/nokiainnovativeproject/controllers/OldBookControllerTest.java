@@ -2,7 +2,7 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
-import com.nokia.library.nokiainnovativeproject.entities.Book;
+import com.nokia.library.nokiainnovativeproject.entities.OldBook;
 import com.nokia.library.nokiainnovativeproject.services.BookService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import org.hamcrest.Matchers;
@@ -31,9 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("autotests")
-public class BookControllerTest {
+public class OldBookControllerTest {
 
-	private static Book book;
+	private static OldBook oldBook;
 	private static BookDTO bookDTO;
 	private static ObjectMapper mapper;
 	private MockMvc mockMvc;
@@ -48,10 +48,10 @@ public class BookControllerTest {
 	@BeforeAll
 	public static void init(){
 		mapper = new ObjectMapper();
-		book = new Book();
-		book.setTitle("test title");
-		book.setAuthorName("test name");
-		book.setAuthorSurname("test surname");
+		oldBook = new OldBook();
+		oldBook.setTitle("test title");
+		oldBook.setAuthorName("test name");
+		oldBook.setAuthorSurname("test surname");
 
 		bookDTO = new BookDTO("dto title", "dto name", "dto surname");
 	}
@@ -63,9 +63,9 @@ public class BookControllerTest {
 
 	@Test
 	public void getBooksTest() throws Exception {
-		List<Book> books = new ArrayList<>();
-		books.add(book);
-		when(service.getAllBooks()).thenReturn(books);
+		List<OldBook> oldBooks = new ArrayList<>();
+		oldBooks.add(oldBook);
+		when(service.getAllBooks()).thenReturn(oldBooks);
 		mockMvc.perform(get(BASE_URL + Mappings.BOOKS)
 				.contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andExpect(status().isOk())
@@ -77,8 +77,8 @@ public class BookControllerTest {
 
 	@Test
 	public void createBookTest() throws Exception {
-		String jsonRequest = mapper.writeValueAsString(book);
-		when(service.createBook(book)).thenReturn(book);
+		String jsonRequest = mapper.writeValueAsString(oldBook);
+		when(service.createBook(oldBook)).thenReturn(oldBook);
 		mockMvc.perform(post(BASE_URL + Mappings.BOOKS)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest)).andDo(print())
@@ -90,8 +90,8 @@ public class BookControllerTest {
 
 	@Test
 	public void updateBookTest() throws Exception {
-		String jsonRequest = mapper.writeValueAsString(book);
-		when(service.updateBook(1L, bookDTO)).thenReturn(book);
+		String jsonRequest = mapper.writeValueAsString(oldBook);
+		when(service.updateBook(1L, bookDTO)).thenReturn(oldBook);
 		mockMvc.perform(post(BASE_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest)).andDo(print());
@@ -111,7 +111,7 @@ public class BookControllerTest {
 
 	@Test
 	public void getBookByIdTest() throws Exception {
-		when(service.getBookById(1L)).thenReturn(book);
+		when(service.getBookById(1L)).thenReturn(oldBook);
 		mockMvc.perform(get(BASE_URL + Mappings.BOOKS_ID, 1L)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())

@@ -3,12 +3,11 @@ package com.nokia.library.nokiainnovativeproject.entities;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,7 +19,12 @@ public class Library implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /////////////////////////////////////////////////////////////
-    ///private User user Id
-    /////////////////////////////////////////////////////////////
+    @Setter
+    @OneToMany( cascade = { CascadeType.DETACH,
+                            CascadeType.MERGE,
+                            CascadeType.PERSIST,
+                            CascadeType.REFRESH },
+                fetch = FetchType.LAZY  )
+    @JoinColumn(name = "user_id")
+    private List<Users> users;
 }
