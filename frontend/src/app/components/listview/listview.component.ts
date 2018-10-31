@@ -11,6 +11,7 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 
 
 	books: any;
+	errorMessage: any;
 	fakeBooks = [
 		{ 'id': 1, 'title': 'title 1', 'authorName': 'name1', 'authorSurname': 'surname1' },
 		{ 'id': 2, 'title': 'title 2', 'authorName': 'name2', 'authorSurname': 'surname2' },
@@ -18,8 +19,7 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 	];
 	newBook = { 'id': null, 'title': 'book ' + Math.floor(Math.random() * 100), 'authorName': 'name ' + Math.floor(Math.random() * 100), 'authorSurname': 'surname' + Math.floor(Math.random() * 100) };
 
-	constructor(private http: HttpClient,
-				private bookService: BookService) {
+	constructor(private bookService: BookService) {
 	}
 
 	ngOnInit() {
@@ -29,16 +29,16 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 		});
 		this.bookService.updateBook(this.newBook, 1).subscribe((response) => {
 			console.log('book updated');
-			console.log('updating doesnt work though');
+			console.log('updating is broken on backend side though');
 		});
+
 		// this.bookService.removeBook(3).subscribe();
 
-
-		// this.books = this.bookService.getABooks();
 		// this.bookService.getBooks().subscribe((response) => {
 		// 	this.books = response;
 		// 	console.log(this.books);
 		// });
+
 		// this.bookService.getBooks(99999).subscribe((response) => {
 		// 	// this.books = response;
 		// 	console.log(response);
@@ -50,7 +50,11 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 	}
 
 	async getBooks(id?: number) {
-		this.books = await this.bookService.getBooks(id);
+		this.books = await this.bookService.getBooks(id)
+		.catch((err) => {
+			console.log(err.message);
+			this.errorMessage = err;
+		});
 	}
 
 

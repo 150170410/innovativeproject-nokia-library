@@ -1,17 +1,22 @@
 .wrapper {
 	border: 1px solid black;
 }
+
+.image-look {
+	max-height: 200px;
+}
+
 .book-cover {
-	float:left;
-	width:20%;
+	float: left;
+	width: 20%;
 }
+
 .text-area {
-	float:left;
-	width:80%;
+	float: left;
+	width: 80%;
 }
 
-
-#first, #second{
+.box-borders {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
