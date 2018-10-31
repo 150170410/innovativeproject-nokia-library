@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { API_URL } from '../../config';
-import { catchError, map, retry } from 'rxjs/internal/operators';
+import { catchError } from 'rxjs/internal/operators';
 import { Observable, throwError } from 'rxjs/index';
-import { resolve } from 'q';
 
 export class Book {
 	id: number;
