@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Book, BookService } from '../../services/book/book.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -7,7 +7,8 @@ import { HttpClient } from '@angular/common/http';
 	templateUrl: './listview.component.html',
 	styleUrls: ['./listview.component.css']
 })
-export class ListviewComponent implements OnInit {
+export class ListviewComponent implements OnInit, AfterViewInit {
+
 
 	books: any;
 	fakeBooks = [
@@ -28,12 +29,12 @@ export class ListviewComponent implements OnInit {
 		});
 		this.bookService.updateBook(this.newBook, 1).subscribe((response) => {
 			console.log('book updated');
+			console.log('updating doesnt work though');
 		});
 		// this.bookService.removeBook(3).subscribe();
 
 
-		this.books = this.bookService.getABooks();
-		console.log(this.books);
+		// this.books = this.bookService.getABooks();
 		// this.bookService.getBooks().subscribe((response) => {
 		// 	this.books = response;
 		// 	console.log(this.books);
@@ -44,6 +45,13 @@ export class ListviewComponent implements OnInit {
 		// });
 	}
 
+	ngAfterViewInit(): void {
+		this.getBooks();
+	}
+
+	async getBooks(id?: number) {
+		this.books = await this.bookService.getBooks(id);
+	}
 
 
 }

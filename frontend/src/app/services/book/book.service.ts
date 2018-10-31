@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { API_URL } from '../../config';
-import { catchError, retry } from 'rxjs/internal/operators';
+import { catchError, map, retry } from 'rxjs/internal/operators';
 import { Observable, throwError } from 'rxjs/index';
 import { resolve } from 'q';
 
@@ -25,7 +25,7 @@ export class BookService {
 	constructor(private http: HttpClient) {
 	}
 
-	getBooks(id?: number) {
+	async getBooks(id?: number) {
 		let url;
 		if (!!id) {
 			url = this.url + '/' + id;
@@ -33,26 +33,7 @@ export class BookService {
 			url = this.url;
 		}
 
-		this.http.get(url)
-		.pipe(
-			retry(3),
-			catchError(this.handleError)
-		);
-
-	}
-
-	async getABooks(id?: number) {
-		let url;
-		if (!!id) {
-			url = this.url + '/' + id;
-		} else {
-			url = this.url;
-		}
-		let data;
-		await this.http.get(url).subscribe((res) =>{
-			data = res;
-		});
-		return data;
+		return await this.http.get<Book[]>(url).toPromise();
 	}
 
 	saveBook(book: Book): Observable<Book> {
