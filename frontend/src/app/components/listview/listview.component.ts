@@ -31,14 +31,19 @@ export class ListviewComponent implements OnInit {
 		});
 		// this.bookService.removeBook(3).subscribe();
 
-		this.bookService.getBooks().subscribe((response) => {
-			this.books = response;
-			console.log(this.books);
-		});
-		this.bookService.getBooks(99999).subscribe((response) => {
-			// this.books = response;
-			console.log(response);
-		});
+
+		this.books = this.bookService.getABooks();
+		console.log(this.books);
+		// this.bookService.getBooks().subscribe((response) => {
+		// 	this.books = response;
+		// 	console.log(this.books);
+		// });
+		// this.bookService.getBooks(99999).subscribe((response) => {
+		// 	// this.books = response;
+		// 	console.log(response);
+		// });
 	}
+
+
 
 }

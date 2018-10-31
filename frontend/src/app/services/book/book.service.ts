@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { API_URL } from '../../config';
 import { catchError, retry } from 'rxjs/internal/operators';
 import { Observable, throwError } from 'rxjs/index';
+import { resolve } from 'q';
 
 export class Book {
 	id: number;
@@ -32,11 +33,26 @@ export class BookService {
 			url = this.url;
 		}
 
-		return this.http.get(url)
+		this.http.get(url)
 		.pipe(
 			retry(3),
 			catchError(this.handleError)
 		);
+
+	}
+
+	async getABooks(id?: number) {
+		let url;
+		if (!!id) {
+			url = this.url + '/' + id;
+		} else {
+			url = this.url;
+		}
+		let data;
+		await this.http.get(url).subscribe((res) =>{
+			data = res;
+		});
+		return data;
 	}
 
 	saveBook(book: Book): Observable<Book> {
