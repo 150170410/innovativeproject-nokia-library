@@ -4,16 +4,19 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class BookDetails implements Serializable {
 
     @Id
@@ -21,21 +24,29 @@ public class BookDetails implements Serializable {
     private Long id;
 
     @Setter
+    @Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers length")
+    @NotNull(message = "The ISBN can't be null")
     private Integer isbn;
 
     @Setter
+    @Size(max = 30, message = "The title must have at least 30 characters")
+    @NotNull(message = "The title is required")
     private String title;
 
     @Setter
+    @Size(max = 250, message = "The title must have at least 250 characters")
     private String description;
 
     @Setter
+    @Size(max = 100, message = "The cover picture URL must have at least 100 characters")
     private String coverPictureUrl;
 
     @Setter
+    @Past(message = "The rental date should be past")
     private Date dateOfPublication;
 
     @Setter
+    @Size(max = 100, message = "The table of contents URL must have at least 100 characters")
     private String tableOfContents;
 
     @Setter

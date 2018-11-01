@@ -4,6 +4,9 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,12 +22,19 @@ public class Users implements Serializable {
     private Long id;
 
     @Setter
+    @Size(min = 3, max = 30, message = "User name must be 3-30 characters length")
+    @NotBlank(message = "The user's name can't be null and can't contain whitespace")
     private String firstName;
 
     @Setter
+    @Size(min = 3, max = 30, message = "User surname must be 3-30 characters length")
+    @NotBlank(message = "The user's surname can't be null and can't contain whitespace")
     private String lastName;
 
     @Setter
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "The user's email can't be null and can't contain whitespace")
+    @Size(min = 10, max = 40, message = "User email must be 10-40 characters length")
     private String email;
 
     @Setter

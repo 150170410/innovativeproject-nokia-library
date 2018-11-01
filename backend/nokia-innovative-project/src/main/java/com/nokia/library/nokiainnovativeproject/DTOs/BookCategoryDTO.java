@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookCategoryDTO {
+
 	private String bookCategoryName;
 }

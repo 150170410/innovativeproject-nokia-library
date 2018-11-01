@@ -4,17 +4,17 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class BookCategory implements Serializable {
 
     @Id
@@ -22,5 +22,6 @@ public class BookCategory implements Serializable {
     private Long id;
 
     @Setter
+    @Size(max = 20, message = "The book category name must have at least 20 characters")
     private String bookCategoryName;
 }

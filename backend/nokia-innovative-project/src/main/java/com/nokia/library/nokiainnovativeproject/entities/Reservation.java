@@ -4,15 +4,20 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Reservation implements Serializable {
 
     @Id
@@ -29,7 +34,7 @@ public class Reservation implements Serializable {
     private Users user;
 
     @Setter
-    @OneToOne(  cascade = { CascadeType.DETACH,
+    @ManyToOne(  cascade = { CascadeType.DETACH,
                             CascadeType.MERGE,
                             CascadeType.PERSIST,
                             CascadeType.REFRESH },
@@ -38,8 +43,12 @@ public class Reservation implements Serializable {
     private Book book;
 
     @Setter
+    @NotNull(message = "The rental date should be defined")
+    @PastOrPresent(message = "The rental date should be present or past")
     private Date rentalDate;
 
     @Setter
+    @NotNull(message = "The return date should be defined")
+    @Future(message = "The return date should be future")
     private Date returnDate;
 }

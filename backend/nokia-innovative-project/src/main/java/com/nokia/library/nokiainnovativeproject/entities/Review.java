@@ -1,19 +1,23 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
-import com.sun.xml.internal.ws.developer.Serialization;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Review implements Serializable {
 
     @Id
@@ -21,9 +25,12 @@ public class Review implements Serializable {
     private Long id;
 
     @Setter
+    @Size(max = 300, message = "A comment can have a maximum of 300 characters")
     private String comment;
 
     @Setter
+    @NotNull(message = "The date of the comment is required")
+    @Past(message = "The date of the comment must be present")
     private Date addDate;
 
     @Setter

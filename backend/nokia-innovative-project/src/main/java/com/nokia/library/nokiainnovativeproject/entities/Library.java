@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Library implements Serializable {
 
     @Id
