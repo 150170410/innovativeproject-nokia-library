@@ -19,6 +19,9 @@ public class Book implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long catalogNumber;
 
+	@Setter
+	private String comments;
+
     @Setter
     @ManyToOne( cascade = { CascadeType.DETACH,
                             CascadeType.MERGE,
@@ -27,9 +30,6 @@ public class Book implements Serializable {
                 fetch = FetchType.LAZY  )
     @JoinColumn(name = "book_id")
     private BookDetails bookDetails;
-
-    @Setter
-    private String comments;
 
     @Setter
     @OneToMany( cascade = { CascadeType.DETACH,
