@@ -45,6 +45,5 @@ public class BookCategoryServiceImpl implements BookCategoryService {
 	public void deleteBookCategory(Long id) {
 		BookCategory bookCategory = bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BookCategory", "id", id));
 		bookCategoryRepository.delete(bookCategory);
-
 	}
 }

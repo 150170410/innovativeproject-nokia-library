@@ -25,6 +25,7 @@ public class Review implements Serializable {
     private Long id;
 
     @Setter
+    @NotNull(message = "The comment is required")
     @Size(max = 300, message = "A comment can have a maximum of 300 characters")
     private String comment;
 
