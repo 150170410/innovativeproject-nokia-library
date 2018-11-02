@@ -41,5 +41,4 @@ public class BookCategoryController {
 	public void deleteBookCategory(@PathVariable Long id) {
 		bookCategoryService.deleteBookCategory(id);
 	}
-
 }

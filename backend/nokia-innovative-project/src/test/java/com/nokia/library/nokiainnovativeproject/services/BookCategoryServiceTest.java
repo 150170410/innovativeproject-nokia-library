@@ -40,7 +40,7 @@ public class BookCategoryServiceTest {
 	private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.LIBRARY;
 
 	@Mock
-	private BookCategoryService service;
+	private BookCategoryServiceImpl service;
 
 	@InjectMocks
 	private BookCategoryController controller;
