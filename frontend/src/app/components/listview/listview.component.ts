@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Book, BookService } from '../../services/book/book.service';
-import { HttpClient } from '@angular/common/http';
+import { BookService } from '../../services/book/book.service';
+import { PageEvent } from '@angular/material';
 
 @Component({
 	selector: 'app-listview',
@@ -9,6 +9,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ListviewComponent implements OnInit, AfterViewInit {
 
+	// MatPaginator Inputs
+	length: 100;
+	pageSize = 10;
+	pageSizeOptions: number[] = [5, 10, 25, 100];
+
+	// MatPaginator Output
+	pageEvent: PageEvent = new PageEvent;
 
 	books: any;
 	errorMessage: any;
@@ -29,8 +36,9 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 		});
 		this.bookService.updateBook(this.newBook, 1).subscribe((response) => {
 			console.log('book updated');
-			console.log('updating is broken on backend side though');
 		});
+		this.pageEvent.pageIndex = 0;
+		this.pageEvent.pageSize = 10;
 
 		// this.bookService.removeBook(3).subscribe();
 
@@ -49,6 +57,7 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 		this.getBooks();
 	}
 
+
 	async getBooks(id?: number) {
 		this.books = await this.bookService.getBooks(id)
 		.catch((err) => {
@@ -57,5 +66,17 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 		});
 	}
 
+	paginationFrom(pageEvent) {
+		this.pageSize = pageEvent.pageSize;
+		return ((pageEvent.pageIndex === 0) ? pageEvent.pageIndex : (pageEvent.pageIndex) * pageEvent.pageSize);
+	}
 
+	paginationTo(pageEvent) {
+		return this.paginationFrom(pageEvent) + this.pageSize;
+	}
+
+
+	onPaginateEvent() {
+		console.log(this.pageEvent);
+	}
 }

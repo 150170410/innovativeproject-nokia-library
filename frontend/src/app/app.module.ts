@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { routes } from './routes';
-
+import 'hammerjs';
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -41,17 +41,23 @@ import {
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { RestService } from './shared/services/rest/rest.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ListviewComponent } from './components/listview/listview.component';
 import { BookService } from './services/book/book.service';
+import { BookDetailsComponent } from './components/book-details/book-details.component';
+import { ManageBookComponent } from './components/manage-book/manage-book.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { RestService } from './services/rest/rest.service';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		HomepageComponent,
 		NavbarComponent,
-		ListviewComponent
+		ListviewComponent,
+		BookDetailsComponent,
+		ManageBookComponent,
+		PageNotFoundComponent
 	],
 	imports: [
 		BrowserModule,
@@ -131,7 +137,7 @@ import { BookService } from './services/book/book.service';
 		MatPaginatorModule,
 		MatNativeDateModule
 	],
-	providers: [BookService],
+	providers: [BookService, RestService],
 	bootstrap: [AppComponent]
 })
 export class AppModule {

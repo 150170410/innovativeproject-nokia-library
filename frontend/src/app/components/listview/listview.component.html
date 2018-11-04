@@ -20,14 +20,24 @@
 	</li>
 </ul>
 <h2>REST books</h2>
-<div *ngIf="errorMessage">{{errorMessage.message}}</div>
-<ul>
-	<li *ngFor="let book of books">
-		<div class="wrapper clearfix ">
+
+<mat-paginator [length]="length"
+			   [pageSize]="pageSize"
+			   [pageSizeOptions]="pageSizeOptions"
+			   (page)="pageEvent = $event; onPaginateEvent($event)">
+</mat-paginator>
+
+<div *ngIf="pageEvent">
+	<h5>Page Change Event Properties</h5>
+	<div>List length: {{pageEvent.length}}</div>
+</div>
+<ol>
+	<li class="cursor-pointer" *ngFor="let book of books | slice: paginationFrom(pageEvent) : paginationTo(pageEvent)">
+		<div routerLink="/book-details/{{book.id}}" routerLinkActive="active" class="wrapper clearfix">
 			<div class="book-cover box-borders">
 				<img class="image-look" src="https://books.goalkicker.com/JavaBook/JavaGrow.png"/>
 			</div>
-			<div class="text-area box-borders">
+			<div class="text-area box-borders cursor-pointer">
 				Id: {{book.id}}, {{book.title}}
 				{{book.authorName}} {{book.authorSurname}}
 				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum nibh et pulvinar consectetur. Aliquam eget est accumsan, dapibus erat vel, aliquam neque. Pellentesque viverra, felis eget posuere pharetra, purus dolor molestie metus, eget porta magna mi vestibulum
@@ -38,4 +48,7 @@
 		</div>
 		<mat-divider></mat-divider>
 	</li>
-</ul>
+</ol>
+
+
+<div *ngIf="errorMessage">{{errorMessage.message}}</div>
