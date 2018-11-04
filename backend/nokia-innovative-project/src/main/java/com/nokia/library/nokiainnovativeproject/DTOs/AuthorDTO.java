@@ -2,11 +2,7 @@ package com.nokia.library.nokiainnovativeproject.DTOs;
 
 import lombok.*;
 
-@Setter
-@Getter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class AuthorDTO {
 
     private String authorName;

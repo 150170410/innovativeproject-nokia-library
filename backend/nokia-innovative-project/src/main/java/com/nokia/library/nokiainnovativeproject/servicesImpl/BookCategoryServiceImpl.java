@@ -1,10 +1,11 @@
-package com.nokia.library.nokiainnovativeproject.services;
+package com.nokia.library.nokiainnovativeproject.servicesImpl;
 
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookCategoryDTO;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookCategoryRepository;
+import com.nokia.library.nokiainnovativeproject.services.BookCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

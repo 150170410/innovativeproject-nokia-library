@@ -1,9 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -20,35 +17,36 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class Reservation implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Setter
-    @ManyToOne( cascade = { CascadeType.DETACH,
-                            CascadeType.MERGE,
-                            CascadeType.PERSIST,
-                            CascadeType.REFRESH },
-                fetch = FetchType.LAZY  )
-    @JoinColumn(name = "user_id")
-    private Users user;
+	@Setter
+	@NotNull(message = "The rental date should be defined")
+	@PastOrPresent(message = "The rental date should be present or past")
+	private Date rentalDate;
 
-    @Setter
-    @ManyToOne(  cascade = { CascadeType.DETACH,
-                            CascadeType.MERGE,
-                            CascadeType.PERSIST,
-                            CascadeType.REFRESH },
-                fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_catalog_number")
-    private Book book;
+	@Setter
+	@NotNull(message = "The return date should be defined")
+	@Future(message = "The return date should be future")
+	private Date returnDate;
 
-    @Setter
-    @NotNull(message = "The rental date should be defined")
-    @PastOrPresent(message = "The rental date should be present or past")
-    private Date rentalDate;
+	@Setter
+	@ManyToOne(cascade = {CascadeType.DETACH,
+			CascadeType.MERGE,
+			CascadeType.PERSIST,
+			CascadeType.REFRESH},
+			fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private Users user;
 
-    @Setter
-    @NotNull(message = "The return date should be defined")
-    @Future(message = "The return date should be future")
-    private Date returnDate;
+	@Setter
+	@ManyToOne(cascade = {CascadeType.DETACH,
+			CascadeType.MERGE,
+			CascadeType.PERSIST,
+			CascadeType.REFRESH},
+			fetch = FetchType.LAZY)
+	@JoinColumn(name = "book_catalog_number")
+	private Book book;
+
 }

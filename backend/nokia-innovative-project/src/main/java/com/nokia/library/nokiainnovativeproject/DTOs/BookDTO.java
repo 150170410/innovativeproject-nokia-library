@@ -2,12 +2,7 @@ package com.nokia.library.nokiainnovativeproject.DTOs;
 
 import lombok.*;
 
-
-@Setter
-@Getter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class BookDTO {
 
 	private String title;

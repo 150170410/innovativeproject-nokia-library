@@ -1,8 +1,7 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;

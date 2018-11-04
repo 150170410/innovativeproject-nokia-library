@@ -1,20 +1,16 @@
 package com.nokia.library.nokiainnovativeproject.DTOs;
 
-import lombok.*;
+import lombok.Data;
 
 import java.util.Date;
 
-@Setter
-@Getter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class BookDetailsDTO {
 
-    private Integer isbn;
-    private String title;
-    private String description;
-    private String coverPictureUrl;
-    private Date dateOfPublication;
-    private String tableOfContents;
+	private Integer isbn;
+	private String title;
+	private String description;
+	private String coverPictureUrl;
+	private Date dateOfPublication;
+	private String tableOfContents;
 }

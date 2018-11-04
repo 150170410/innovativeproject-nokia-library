@@ -3,7 +3,7 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.OldBook;
-import com.nokia.library.nokiainnovativeproject.services.BookService;
+import com.nokia.library.nokiainnovativeproject.servicesImpl.BookService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
