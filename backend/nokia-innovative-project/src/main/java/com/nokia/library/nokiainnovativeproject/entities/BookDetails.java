@@ -1,6 +1,8 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -23,19 +25,19 @@ public class BookDetails implements Serializable {
 	@Setter
 	@Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers length")
 	@NotNull(message = "The ISBN can't be null")
-	private Integer isbn;
+	private String isbn;
 
 	@Setter
-	@Size(max = 30, message = "The title must have at least 30 characters")
+	@Length(max = 30, message = "The title must have at least 30 characters")
 	@NotNull(message = "The title is required")
 	private String title;
 
 	@Setter
-	@Size(max = 250, message = "The title must have at least 250 characters")
+	@Size(max = 250, message = "The description must have at most 250 characters")
 	private String description;
 
 	@Setter
-	@Size(max = 100, message = "The cover picture URL must have at least 100 characters")
+	@Size(max = 100, message = "The cover picture URL must have at most 100 characters")
 	private String coverPictureUrl;
 
 	@Setter
@@ -43,7 +45,7 @@ public class BookDetails implements Serializable {
 	private Date dateOfPublication;
 
 	@Setter
-	@Size(max = 100, message = "The table of contents URL must have at least 100 characters")
+	@Size(max = 100, message = "The table of contents URL must have at most 100 characters")
 	private String tableOfContents;
 
 	@Setter

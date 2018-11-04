@@ -14,4 +14,7 @@ public class Mappings {
 
 	public static final String BK_CAT = "/bookCategory";
 	public static final String BK_CAT_ID = "/bookCategory/{id}";
+
+	public static final String BK_DET = "/bookDetails";
+	public static final String BK_DET_ID = "/bookDetails/{id}";
 }
