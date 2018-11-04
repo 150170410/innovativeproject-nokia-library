@@ -12,9 +12,8 @@ jobs:
   include:
       - stage: test
         script:
-          - cd backend/nokia-innovative-project
-          - chmod +x mvnw
-          - mvn test
+        - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; ng test; fi
+        - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; chmod +x mvnw; mvn test; fi
       - stage: build
         script:
         - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm i; fi
