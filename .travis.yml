@@ -29,7 +29,7 @@ jobs:
           - mvn package -DskipTests=true
           - docker build -t $DOCKER_USERNAME/nokia.inno.lib.be:$TAG .
           - cd ../../frontend
-          - npm i
+          - npm install
           - npm run build
           - docker build -t $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG .
           - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
