@@ -8,28 +8,30 @@ env:
  -TAG=test
 services:
   - docker
+before_install:
+  - npm install -g @angular/cli
 jobs:
   include:
       - stage: test
         script:
-        - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; ng test; fi
-        - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; chmod +x mvnw; mvn test; fi
+         - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm test; fi
+         - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; chmod +x mvnw; mvn test; fi
       - stage: build
         script:
-        - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm i; fi
-        - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V; fi
+         - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm i; fi
+         - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V; fi
       - stage: docker_build
         if: (branch = master OR branch = develop) AND type in (push)
         env: TAG=$TRAVIS_COMMIT_MESSAGE
         if: branch = develop
         script:
-          - docker build -t nokia.inno.lib.be backend/nokia-innovative-project
-          - docker tag nokia.inno.lib.be $DOCKER_USERNAME/nokia.inno.lib.be:$TAG
-          - docker build -t nokia.inno.lib.fe:$TAG ./frontend
-          - docker tag nokia.inno.lib.fe $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG
-      - stage: docker_push
-        if: (branch = master OR branch = develop) AND type in (push)
-        script:
+          - cd backend/nokia-innovative-project
+          - mvn package -DskipTests=true
+          - docker build -t $DOCKER_USERNAME/nokia.inno.lib.be:$TAG .
+          - cd ../../frontend
+          - npm i
+          - npm run build
+          - docker build -t $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG .
           - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           - docker push $DOCKER_USERNAME/nokia.inno.lib.be:$TAG
           - docker push $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG
