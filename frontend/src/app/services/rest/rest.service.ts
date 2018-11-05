@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Book } from '../book/book.service';
 import { catchError } from 'rxjs/internal/operators';
 import { API_URL } from '../../config';
 import { Observable, throwError } from 'rxjs/index';
@@ -17,32 +16,29 @@ export class RestService {
 	constructor(private http: HttpClient) {
 	}
 
-	async getAll(url: string, id?: number) {
-		let u;
-		if (!!id) {
-			u = this.URL + url + `/${id}`;
-		} else {
-			u = this.URL + url;
-		}
-		return await this.http.get<any[]>(u).toPromise();
+	async getAll(url: string) {
+		return await this.http.get<any[]>(this.URL + url)
+		.pipe(
+			catchError(this.handleError)
+		).toPromise();
 	}
 
-	save(url: string, book: any): Observable<Book> {
+	save(url: string, book: any): Observable<any> {
 		return this.http.post<any>(this.URL + url, book, this.httpOptions)
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
-	update(url: string, book: any, id: number) {
-		return this.http.post<any>(this.URL + url + `/${id}`, book, this.httpOptions)
+	update(url: string, book: any) {
+		return this.http.post<any>(this.URL + url, book, this.httpOptions)
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
-	remove(url: string, id: number) {
-		return this.http.delete<any>(this.URL + url + `/${id}`)
+	remove(url: string) {
+		return this.http.delete<any>(this.URL + url)
 		.pipe(
 			catchError(this.handleError)
 		);
