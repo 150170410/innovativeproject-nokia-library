@@ -2,21 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { API_URL } from '../../config';
 import { catchError } from 'rxjs/internal/operators';
-import { Observable, throwError } from 'rxjs/index';
-
-export class Book {
-	id: number;
-	title: string;
-	authorName: string;
-	authorSurname: string;
-}
+import { BehaviorSubject, Observable, throwError } from 'rxjs/index';
+import { Book } from '../../entities/Book';
 
 
 @Injectable({
 	providedIn: 'root'
 })
 export class BookService {
+
 	url = API_URL + '/api/v1/library/books';
+	private behaviorSubject: BehaviorSubject<Book[]> = new BehaviorSubject([]);
+	public readonly books: Observable<Book[]> = this.behaviorSubject.asObservable();
+
+
 	httpOptions = {
 		headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 	};
@@ -25,12 +24,7 @@ export class BookService {
 	}
 
 	async getBooks(id?: number) {
-		let url;
-		if (!!id) {
-			url = this.url + `/${id}`;
-		} else {
-			url = this.url;
-		}
+		const url = id ? this.url + `/${id}` : this.url;
 		return await this.http.get<Book[]>(url).toPromise();
 	}
 
