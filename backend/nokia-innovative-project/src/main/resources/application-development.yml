@@ -8,9 +8,9 @@ spring:
     properties:
       hibernate:
         hbm2ddl:
-          auto: create-drop
+          auto: none
         dialect: org.hibernate.dialect.PostgreSQL94Dialect
-        ddl-auto: create-drop
+        ddl-auto: none
         jdbc:
           lob:
             non_contextual_creation: true
