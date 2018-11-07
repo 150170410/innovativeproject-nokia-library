@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookCategoryDTO;
 import com.nokia.library.nokiainnovativeproject.controllers.BookCategoryController;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
-import com.nokia.library.nokiainnovativeproject.servicesImpl.BookCategoryServiceImpl;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
@@ -41,7 +40,7 @@ public class BookCategoryServiceTest {
 	private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.LIBRARY;
 
 	@Mock
-	private BookCategoryServiceImpl service;
+	private BookCategoryService service;
 
 	@InjectMocks
 	private BookCategoryController controller;

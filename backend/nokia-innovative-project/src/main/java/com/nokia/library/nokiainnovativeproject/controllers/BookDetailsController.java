@@ -3,7 +3,7 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
-import com.nokia.library.nokiainnovativeproject.servicesImpl.BookDetailsServiceImpl;
+import com.nokia.library.nokiainnovativeproject.services.BookDetailsService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(Mappings.API_VERSION + Mappings.LIBRARY)
 public class BookDetailsController {
-	private final BookDetailsServiceImpl bookDetailsService;
+
+	private final BookDetailsService bookDetailsService;
 
 	@GetMapping(Mappings.BK_DET)
 	public List<BookDetails> getAllBooks() {

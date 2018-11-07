@@ -1,19 +1,44 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
+
 import com.nokia.library.nokiainnovativeproject.DTOs.BookCategoryDTO;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
+import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
+import com.nokia.library.nokiainnovativeproject.repositories.BookCategoryRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface BookCategoryService {
+@Service
+@RequiredArgsConstructor
+public class BookCategoryService  {
 
-    List<BookCategory> getAllBookCategories();
+	private final BookCategoryRepository bookCategoryRepository;
 
-    BookCategory getBookCategoryById(Long id);
+	public List<BookCategory> getAllBookCategories() {
+		return bookCategoryRepository.findAll();
+	}
 
-    BookCategory createBookCategory(BookCategoryDTO bookCategoryDTO);
+	public BookCategory getBookCategoryById(Long id) {
+		return bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BookCategory", "id", id));
+	}
 
-    BookCategory updateBookCategory(Long id, BookCategoryDTO bookCategoryDTO);
+	public BookCategory createBookCategory(BookCategoryDTO bookCategoryDTO) {
+		ModelMapper mapper = new ModelMapper();
+		BookCategory bookCategory = mapper.map(bookCategoryDTO, BookCategory.class);
+		return bookCategoryRepository.save(bookCategory);
+	}
 
-    void deleteBookCategory(Long id);
+	public BookCategory updateBookCategory(Long id, BookCategoryDTO bookCategoryDTO) {
+		BookCategory bookCategory = bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BookCategory", "id", id));
+		bookCategory.setBookCategoryName(bookCategoryDTO.getBookCategoryName());
+		return bookCategoryRepository.save(bookCategory);
+	}
+
+	public void deleteBookCategory(Long id) {
+		BookCategory bookCategory = bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BookCategory", "id", id));
+		bookCategoryRepository.delete(bookCategory);
+	}
 }

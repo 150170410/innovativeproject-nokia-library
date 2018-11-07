@@ -2,18 +2,44 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.AuthorDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Author;
+import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
+import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface AuthorService {
+@Service
+@RequiredArgsConstructor
+public class AuthorService {
 
-    List<Author> getAllAuthors();
+    private final AuthorRepository authorRepository;
 
-    Author getAuthorById(Long id);
+    public List<Author> getAllAuthors() {
+        return authorRepository.findAll();
+    }
 
-    Author createAuthor(AuthorDTO authorDTO);
+    public Author getAuthorById(Long id) {
+        return authorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("AuthorRepository", "id", id));
+    }
 
-    Author updateAuthor(Long id, AuthorDTO authorDTO);
+    public Author createAuthor(AuthorDTO authorDTO) {
+        ModelMapper mapper = new ModelMapper();
+        Author author = mapper.map(authorDTO, Author.class);
+        return authorRepository.save(author);
+    }
 
-    void deleteAuthor(Long id);
+    public Author updateAuthor(Long id, AuthorDTO authorDTO) {
+        Author author = authorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("AuthorRepository", "id", id));
+        author.setAuthorName(authorDTO.getAuthorName());
+        author.setAuthorSurname(authorDTO.getAuthorSurname());
+        author.setAuthorDescription(authorDTO.getAuthorDescription());
+        return authorRepository.save(author);
+    }
+
+    public void deleteAuthor(Long id) {
+        Author author = authorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("AuthorRepository", "id", id));
+        authorRepository.delete(author);
+    }
 }

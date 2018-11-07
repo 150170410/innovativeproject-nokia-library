@@ -3,7 +3,7 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.OldBook;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
-import com.nokia.library.nokiainnovativeproject.servicesImpl.BookService;
+import com.nokia.library.nokiainnovativeproject.services.BookService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

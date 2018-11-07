@@ -1,4 +1,4 @@
-package com.nokia.library.nokiainnovativeproject.servicesImpl;
+package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.OldBook;
