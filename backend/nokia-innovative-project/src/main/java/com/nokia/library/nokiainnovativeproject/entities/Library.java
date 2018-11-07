@@ -25,5 +25,5 @@ public class Library implements Serializable {
                             CascadeType.REFRESH },
                 fetch = FetchType.LAZY  )
     @JoinColumn(name = "user_id")
-    private List<Users> users;
+    private List<User> users;
 }

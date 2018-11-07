@@ -38,7 +38,7 @@ public class Reservation implements Serializable {
 			CascadeType.REFRESH},
 			fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	private Users user;
+	private User user;
 
 	@Setter
 	@ManyToOne(cascade = {CascadeType.DETACH,

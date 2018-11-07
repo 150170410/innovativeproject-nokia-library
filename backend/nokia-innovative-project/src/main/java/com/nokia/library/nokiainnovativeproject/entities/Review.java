@@ -38,5 +38,5 @@ public class Review implements Serializable {
                             CascadeType.REFRESH },
                 fetch = FetchType.LAZY  )
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 }

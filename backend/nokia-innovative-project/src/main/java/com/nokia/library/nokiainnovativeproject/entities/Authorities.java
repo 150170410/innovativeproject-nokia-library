@@ -25,5 +25,5 @@ public class Authorities implements Serializable {
     @JoinColumn(name = "user_id",
                 insertable = false,
                 updatable = false)
-    private Users user;
+    private User user;
 }

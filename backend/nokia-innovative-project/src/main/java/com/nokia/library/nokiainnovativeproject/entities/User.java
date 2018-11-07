@@ -11,11 +11,12 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Table(name="\"User\"")
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Users implements Serializable {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
