@@ -1,14 +1,14 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
 
-import com.nokia.library.nokiainnovativeproject.DTOs.BookCategoryDTO;
-import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
-import com.nokia.library.nokiainnovativeproject.services.BookCategoryService;
-import com.nokia.library.nokiainnovativeproject.utils.Mappings;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+		import com.nokia.library.nokiainnovativeproject.DTOs.BookCategoryDTO;
+		import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
+		import com.nokia.library.nokiainnovativeproject.services.BookCategoryService;
+		import com.nokia.library.nokiainnovativeproject.utils.Mappings;
+		import lombok.RequiredArgsConstructor;
+		import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+		import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

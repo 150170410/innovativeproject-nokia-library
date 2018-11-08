@@ -8,5 +8,5 @@ import lombok.*;
 public class AddressDTO {
 
 	private String city;
-	private String build;
+	private String building;
 }

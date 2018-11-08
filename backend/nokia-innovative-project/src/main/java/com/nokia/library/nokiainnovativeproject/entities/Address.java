@@ -27,5 +27,5 @@ public class Address implements Serializable {
     @Setter
     @NotNull(message = "The build name is required")
     @Size(min = 3, max = 30, message = "Build name must be 3-30 characters length")
-    private String build;
+    private String building;
 }

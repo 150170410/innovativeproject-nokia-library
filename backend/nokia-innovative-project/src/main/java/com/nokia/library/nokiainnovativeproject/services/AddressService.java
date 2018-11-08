@@ -33,7 +33,7 @@ public class AddressService {
     public Address updateAddress(Long id, AddressDTO addressDTO) {
         Address address = addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("AddressRepository", "id", id));
         address.setCity(addressDTO.getCity());
-        address.setBuild(addressDTO.getBuild());
+        address.setBuilding(addressDTO.getBuilding());
         return addressRepository.save(address);
     }
 

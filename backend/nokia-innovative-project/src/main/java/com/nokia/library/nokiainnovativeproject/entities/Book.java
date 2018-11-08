@@ -31,13 +31,4 @@ public class Book implements Serializable {
 			fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_id")
 	private BookDetails bookDetails;
-
-	@Setter
-	@OneToMany(cascade = {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH},
-			fetch = FetchType.LAZY)
-	@JoinColumn(name = "library_id")
-	private List<Library> library;
 }

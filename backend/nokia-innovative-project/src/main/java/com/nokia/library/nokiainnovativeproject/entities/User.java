@@ -8,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 @Entity
@@ -61,4 +62,19 @@ public class User implements Serializable {
                             CascadeType.REFRESH },
                 fetch = FetchType.LAZY)
     private List<Review> reviews;
+
+    @Setter
+    @ManyToMany(cascade ={  CascadeType.DETACH,
+                            CascadeType.MERGE,
+                            CascadeType.PERSIST,
+                            CascadeType.REFRESH},
+                fetch = FetchType.LAZY)
+    private List<Book> books;
+
+    @ManyToMany(cascade = { CascadeType.DETACH,
+                            CascadeType.MERGE,
+                            CascadeType.PERSIST,
+                            CascadeType.REFRESH},
+                fetch = FetchType.LAZY)
+    private List<Role> roles;
 }
