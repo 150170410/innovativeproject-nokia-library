@@ -1,14 +1,8 @@
 <mat-toolbar color="primary">
 	<mat-toolbar-row>
 		<img class="nav-link white" src="../../../assets/images/nokia-logo.png">
+
 		<a class="nav-link white">Nokia library</a>
-		<a class="nav-link white cursor-pointer" [matMenuTriggerFor]="menu">components</a>
-		<mat-menu #menu="matMenu" [overlapTrigger]="false">
-			<a mat-menu-item routerLink="/homepage" routerLinkActive="active">homepage</a>
-			<a mat-menu-item routerLink="/listview" routerLinkActive="active">list view</a>
-			<a mat-menu-item routerLink="/manage-book/1" routerLinkActive="active">Manage book</a>
-		</mat-menu>
-		<span class="toolbar-spacer"></span>
 
 		<div class="search-bar-wrapper" >
 			<form class="search-bar" >
@@ -18,6 +12,8 @@
 				</mat-form-field>
 			</form>
 		</div>
+
+		<span class="toolbar-spacer"></span>
 
 		<div>Logged as User</div>
 		<button mat-icon-button [matMenuTriggerFor]="menuOptions">
@@ -42,7 +38,6 @@
 			<button mat-menu-item>Option 2</button>
 			<button mat-menu-item>Option 3</button>
 		</mat-menu>
-
 
 	</mat-toolbar-row>
 </mat-toolbar>

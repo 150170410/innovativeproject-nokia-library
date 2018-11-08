@@ -1,25 +1,6 @@
 <h3>list view</h3>
 <button mat-raised-button color="primary" (click)="getBooks()">Get books</button>
-<h2> fake books</h2>
-<ul>
-	<li *ngFor="let book of fakeBooks">
-		<div class="wrapper clearfix">
-			<div class="book-cover box-borders">
-				<img class="image-look" src="https://books.goalkicker.com/JavaBook/JavaGrow.png"/>
-			</div>
-			<div class="text-area box-borders">
-				Id: {{book.id}}, {{book.title}}
-				{{book.authorName}} {{book.authorSurname}}
-				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum nibh et pulvinar consectetur. Aliquam eget est accumsan, dapibus erat vel, aliquam neque. Pellentesque viverra, felis eget posuere pharetra, purus dolor molestie metus, eget porta magna mi vestibulum
-					eros.
-					Phasellus eros purus, tincidunt nec metus eu, bibendum viverra lorem. Nam non eros nec quam vulputate eleifend. Nunc id suscipit mi. Phasellus ac sodales magna. Nulla sed ipsum ac leo euismod faucibus.
-				</div>
-			</div>
-		</div>
-		<mat-divider></mat-divider>
-	</li>
-</ul>
-<h2>REST books</h2>
+<h2>List of books</h2>
 
 <mat-paginator [length]="length"
 			   [pageSize]="pageSize"
@@ -32,18 +13,29 @@
 	<div>List length: {{pageEvent.length}}</div>
 </div>
 <ol>
-	<li class="cursor-pointer" *ngFor="let book of books | slice: paginationFrom(pageEvent) : paginationTo(pageEvent)">
-		<div routerLink="/book-details/{{book.id}}" routerLinkActive="active" class="wrapper clearfix">
+	<li class="cursor-pointer" *ngFor="let bookDetails of books | slice: paginationFrom(pageEvent) : paginationTo(pageEvent)">
+		<div routerLink="/book-details/{{bookDetails.id}}" routerLinkActive="active" class="wrapper clearfix">
 			<div class="book-cover box-borders">
 				<img class="image-look" src="https://books.goalkicker.com/JavaBook/JavaGrow.png"/>
 			</div>
 			<div class="text-area box-borders cursor-pointer">
-				Id: {{book.id}}, {{book.title}}
-				{{book.authorName}} {{book.authorSurname}}
-				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam bibendum nibh et pulvinar consectetur. Aliquam eget est accumsan, dapibus erat vel, aliquam neque. Pellentesque viverra, felis eget posuere pharetra, purus dolor molestie metus, eget porta magna mi vestibulum
-					eros.
-					Phasellus eros purus, tincidunt nec metus eu, bibendum viverra lorem. Nam non eros nec quam vulputate eleifend. Nunc id suscipit mi. Phasellus ac sodales magna. Nulla sed ipsum ac leo euismod faucibus.
-				</div>
+				<table>
+					<tr>
+						<th>Id</th>
+						<th>Title</th>
+						<th>ISBN</th>
+						<th>Description</th>
+						<th>Date of publication</th>
+					</tr>
+					<tr>
+						<td>{{bookDetails.id}}</td>
+						<td>{{bookDetails.title}}</td>
+						<td>{{bookDetails.isbn}}</td>
+						<td>{{bookDetails.description}}</td>
+						<td>{{bookDetails.dateOfPublication}}</td>
+					</tr>
+
+				</table>
 			</div>
 		</div>
 		<mat-divider></mat-divider>

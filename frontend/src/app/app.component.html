@@ -1,7 +1,17 @@
 <app-navbar class="navbar"></app-navbar>
 <mat-sidenav-container class="center-content">
 	<mat-sidenav #sidenav mode="side" opened class="sidenav-form">
-		<div>side content</div>
+		<ol>
+			<li>
+				<button mat-raised-button routerLink="/homepage" routerLinkActive="active">homepage</button>
+			</li>
+			<li>
+				<button mat-raised-button routerLink="/listview" routerLinkActive="active">list view</button>
+			</li>
+			<li>
+				<button mat-raised-button routerLink="/manage-book/1" routerLinkActive="active">Manage book</button>
+			</li>
+		</ol>
 	</mat-sidenav>
 
 	<mat-sidenav-content>

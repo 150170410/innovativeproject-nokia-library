@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { API_URL } from '../../config';
+import { Observable, throwError } from 'rxjs/index';
 import { catchError } from 'rxjs/internal/operators';
-import { BehaviorSubject, Observable, throwError } from 'rxjs/index';
-import { Book } from '../../models/entites/Book';
-
+import { API_URL } from '../../config';
+import { BookDetails } from '../../models/entites/BookDetails';
+import { BookDetailsDTO } from '../../models/DTOs/BookDetailsDTO';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class BookService {
+export class BookDetailsService {
 
-	url = API_URL + '/api/v1/library/books';
-	private behaviorSubject: BehaviorSubject<Book[]> = new BehaviorSubject([]);
-	public readonly books: Observable<Book[]> = this.behaviorSubject.asObservable();
-
+	url = API_URL + '/api/v1/library/bookDetails';
 
 	httpOptions = {
 		headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -25,25 +22,25 @@ export class BookService {
 
 	async getBooks(id?: number) {
 		const url = id ? this.url + `/${id}` : this.url;
-		return await this.http.get<Book[]>(url).toPromise();
+		return await this.http.get<BookDetails[]>(url).toPromise();
 	}
 
-	saveBook(book: Book): Observable<Book> {
-		return this.http.post<Book>(this.url, book, this.httpOptions)
+	saveBook(book: BookDetailsDTO): Observable<BookDetails> {
+		return this.http.post<BookDetails>(this.url, book, this.httpOptions)
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
-	updateBook(book: Book, id: number) {
-		return this.http.post<Book>(this.url + `/${id}`, book, this.httpOptions)
+	updateBook(book: BookDetailsDTO, id: number) {
+		return this.http.post<BookDetails>(this.url + `/${id}`, book, this.httpOptions)
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
 	removeBook(id: number) {
-		return this.http.delete<Book>(this.url + `/${id}`)
+		return this.http.delete<BookDetails>(this.url + `/${id}`)
 		.pipe(
 			catchError(this.handleError)
 		);
@@ -60,5 +57,4 @@ export class BookService {
 		return throwError(
 			'Something bad happened; please try again later.');
 	}
-
 }
