@@ -38,8 +38,7 @@ public class BookDetailsController {
 	}
 
 	@DeleteMapping(Mappings.BK_DET_ID)
-	public void deleteBook(@PathVariable Long id)
-			throws ResourceNotFoundException {
+	public void deleteBook(@PathVariable Long id) throws ResourceNotFoundException {
 		bookDetailsService.deleteBookDetails(id);
 	}
 }

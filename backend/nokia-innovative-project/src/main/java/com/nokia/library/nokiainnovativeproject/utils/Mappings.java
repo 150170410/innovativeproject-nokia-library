@@ -17,4 +17,10 @@ public class Mappings {
 
 	public static final String BK_DET = "/bookDetails";
 	public static final String BK_DET_ID = "/bookDetails/{id}";
+
+	public static final String AUTHOR = "/authors";
+	public static final String AUTHOR_ID = "/authors/{id}";
+
+	public static final String REVIEW = "/review";
+	public static final String REVIEW_ID = "/review/{id}";
 }

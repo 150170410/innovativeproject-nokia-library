@@ -1,8 +1,10 @@
 package com.nokia.library.nokiainnovativeproject.DTOs;
 
+import com.nokia.library.nokiainnovativeproject.entities.Author;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
