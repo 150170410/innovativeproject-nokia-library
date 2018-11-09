@@ -7,20 +7,22 @@ public class Mappings {
 	public static final String PORT_DEVELOPMENT = "http://localhost:8081";
 	public static final String PORT_PRODUCTION = "http://localhost:8082";
 
-	public static final String LIBRARY = "/library";
+	// method mappings
+	public static final String GET_ALL = "/getAll";
+	public static final String GET_ONE = "/getOne/{id}";
+	public static final String SAVE = "/save";
+	public static final String UPDATE = "/update/{id}";
+	public static final String REMOVE = "/remove/{id}";
 
+	// controller mappings
+	public static final String BOOK_DETAILS = "/bookDetails";
+	public static final String BOOK_CATEGORY = "/bookCategory";
+	public static final String BOOK_AUTHOR = "/author";
+	public static final String BOOK_REVIEW = "/review";
+	public static final String BOOK_COPY = "/bookCopy";
+
+	// TODO: remove this when OldBook entity is gone
+	public static final String LIBRARY = "/library";
 	public static final String BOOKS = "/books";
 	public static final String BOOKS_ID = "/books/{id}";
-
-	public static final String BK_CAT = "/bookCategory";
-	public static final String BK_CAT_ID = "/bookCategory/{id}";
-
-	public static final String BK_DET = "/bookDetails";
-	public static final String BK_DET_ID = "/bookDetails/{id}";
-
-	public static final String AUTHOR = "/authors";
-	public static final String AUTHOR_ID = "/authors/{id}";
-
-	public static final String REVIEW = "/review";
-	public static final String REVIEW_ID = "/review/{id}";
 }

@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("autotests")
-public class OldBookControllerTest {
+public class OldOldBookControllerTest {
 
 	private static OldBook oldBook;
 	private static BookDTO bookDTO;
@@ -43,7 +43,7 @@ public class OldBookControllerTest {
 	private BookService service;
 
 	@InjectMocks
-	private BookController controller;
+	private OldBookController controller;
 
 	@BeforeAll
 	public static void init(){
@@ -66,7 +66,7 @@ public class OldBookControllerTest {
 		List<OldBook> oldBooks = new ArrayList<>();
 		oldBooks.add(oldBook);
 		when(service.getAllBooks()).thenReturn(oldBooks);
-		mockMvc.perform(get(BASE_URL + Mappings.BOOKS)
+		mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
 				.contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$[0].title", Matchers.is("test title")))
@@ -79,7 +79,7 @@ public class OldBookControllerTest {
 	public void createBookTest() throws Exception {
 		String jsonRequest = mapper.writeValueAsString(oldBook);
 		when(service.createBook(oldBook)).thenReturn(oldBook);
-		mockMvc.perform(post(BASE_URL + Mappings.BOOKS)
+		mockMvc.perform(post(BASE_URL + Mappings.SAVE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest)).andDo(print())
 				.andExpect(status().isOk())
@@ -97,7 +97,7 @@ public class OldBookControllerTest {
 				.content(jsonRequest)).andDo(print());
 
 		String newBook = mapper.writeValueAsString(bookDTO);
-		mockMvc.perform(post(BASE_URL + Mappings.BOOKS)
+		mockMvc.perform(post(BASE_URL + Mappings.UPDATE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(newBook)).andDo(print())
 				.andExpect(status().isOk());
@@ -112,7 +112,7 @@ public class OldBookControllerTest {
 	@Test
 	public void getBookByIdTest() throws Exception {
 		when(service.getBookById(1L)).thenReturn(oldBook);
-		mockMvc.perform(get(BASE_URL + Mappings.BOOKS_ID, 1L)
+		mockMvc.perform(get(BASE_URL + Mappings.GET_ONE, 1L)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("test title")))
@@ -122,7 +122,7 @@ public class OldBookControllerTest {
 
 	@Test
 	public void deleteBookTest() throws Exception {
-		mockMvc.perform(delete(BASE_URL + Mappings.BOOKS_ID, 1L)
+		mockMvc.perform(delete(BASE_URL + Mappings.REMOVE, 1L)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 		verify(service).deleteBook(1L);

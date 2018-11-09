@@ -37,7 +37,7 @@ public class BookCategoryServiceTest {
 	private static BookCategoryDTO bookCategoryDTO;
 	private static ObjectMapper mapper;
 	private MockMvc mockMvc;
-	private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.LIBRARY;
+	private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.BOOK_CATEGORY;
 
 	@Mock
 	private BookCategoryService service;
@@ -63,7 +63,7 @@ public class BookCategoryServiceTest {
 		List<BookCategory> bookCategories = new ArrayList<>();
 		bookCategories.add(bookCategory);
 		when(service.getAllBookCategories()).thenReturn(bookCategories);
-		mockMvc.perform(get(BASE_URL + Mappings.BK_CAT)
+		mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -72,10 +72,19 @@ public class BookCategoryServiceTest {
 	}
 
 	@Test
+	public void getBookCategoryByIdTest() throws Exception {
+		when(service.getBookCategoryById(1L)).thenReturn(bookCategory);
+		mockMvc.perform(get(BASE_URL + Mappings.GET_ONE, 1L)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.bookCategoryName", Matchers.is("test name")));
+	}
+
+	@Test
 	public void createBookCategoryTest() throws Exception {
 		String jsonRequest = mapper.writeValueAsString(bookCategoryDTO);
 		when(service.createBookCategory(bookCategoryDTO)).thenReturn(bookCategory);
-		mockMvc.perform(post(BASE_URL + Mappings.BK_CAT)
+		mockMvc.perform(post(BASE_URL + Mappings.SAVE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andDo(print())
@@ -92,7 +101,7 @@ public class BookCategoryServiceTest {
 		String jsonRequest = mapper.writeValueAsString(updatedDTO);
 
 		when(service.updateBookCategory(1L, updatedDTO)).thenReturn(updatedBookCategory);
-		mockMvc.perform(post(BASE_URL + Mappings.BK_CAT_ID, 1L)
+		mockMvc.perform(post(BASE_URL + Mappings.UPDATE, 1L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andDo(print())
@@ -103,19 +112,13 @@ public class BookCategoryServiceTest {
 	}
 
 
-	@Test
-	public void getBookCategoryByIdTest() throws Exception {
-		when(service.getBookCategoryById(1L)).thenReturn(bookCategory);
-		mockMvc.perform(get(BASE_URL + Mappings.BK_CAT_ID, 1L)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.bookCategoryName", Matchers.is("test name")));
-	}
+
 
 	@Test
 	public void deleteBookCategoryTest() throws Exception {
-		mockMvc.perform(delete(BASE_URL + Mappings.BK_CAT_ID, 1L)
+		mockMvc.perform(delete(BASE_URL + Mappings.REMOVE, 1L)
 				.contentType(MediaType.APPLICATION_JSON))
+				.andDo(print())
 				.andExpect(status().isOk());
 		verify(service).deleteBookCategory(1L);
 	}

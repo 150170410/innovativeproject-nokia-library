@@ -2,17 +2,19 @@ package com.nokia.library.nokiainnovativeproject.entities;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Getter
+@ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)

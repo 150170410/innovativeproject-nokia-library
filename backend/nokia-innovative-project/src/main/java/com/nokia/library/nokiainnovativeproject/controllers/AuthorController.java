@@ -11,32 +11,32 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(Mappings.API_VERSION + Mappings.LIBRARY)
+@RequestMapping(Mappings.API_VERSION + Mappings.BOOK_AUTHOR)
 public class AuthorController {
 
     private final AuthorService authorService;
 
-    @GetMapping(Mappings.AUTHOR)
+    @GetMapping(Mappings.GET_ALL)
     public List<Author> getAllAuthors(){
         return authorService.getAllAuthors();
     }
 
-    @GetMapping(Mappings.AUTHOR_ID)
+    @GetMapping(Mappings.GET_ONE)
     public Author getAuthorById(@PathVariable Long id){
         return authorService.getAuthorById(id);
     }
 
-    @PostMapping(Mappings.AUTHOR)
+    @PostMapping(Mappings.SAVE)
     public Author createAuthor(@RequestBody AuthorDTO authorDTO){
         return authorService.createAuthor(authorDTO);
     }
 
-    @PostMapping(Mappings.AUTHOR_ID)
+    @PostMapping(Mappings.UPDATE)
     public Author updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO){
         return authorService.updateAuthor(id, authorDTO);
     }
 
-    @DeleteMapping(Mappings.AUTHOR_ID)
+    @DeleteMapping(Mappings.REMOVE)
     public void deleteAuthor(@PathVariable Long id){
         authorService.deleteAuthor(id);
     }

@@ -12,32 +12,32 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(Mappings.API_VERSION + Mappings.LIBRARY)
+@RequestMapping(Mappings.API_VERSION + Mappings.BOOK_CATEGORY)
 public class BookCategoryController {
 
 	private final BookCategoryService bookCategoryService;
 
-	@GetMapping(Mappings.BK_CAT)
+	@GetMapping(Mappings.GET_ALL)
 	public List<BookCategory> getAllBookCategories() {
 		return bookCategoryService.getAllBookCategories();
 	}
 
-	@GetMapping(Mappings.BK_CAT_ID)
+	@GetMapping(Mappings.GET_ONE)
 	public BookCategory getBookCategoryById(@PathVariable Long id) {
 		return bookCategoryService.getBookCategoryById(id);
 	}
 
-	@PostMapping(Mappings.BK_CAT)
+	@PostMapping(Mappings.SAVE)
 	public BookCategory createBook(@RequestBody BookCategoryDTO bookCategoryDTO) {
 		return bookCategoryService.createBookCategory(bookCategoryDTO);
 	}
 
-	@PostMapping(Mappings.BK_CAT_ID)
+	@PostMapping(Mappings.UPDATE)
 	public BookCategory updateBook(@PathVariable Long id, @RequestBody BookCategoryDTO bookCategoryDTO) {
 		return bookCategoryService.updateBookCategory(id, bookCategoryDTO);
 	}
 
-	@DeleteMapping(Mappings.BK_CAT_ID)
+	@DeleteMapping(Mappings.REMOVE)
 	public void deleteBookCategory(@PathVariable Long id) {
 		bookCategoryService.deleteBookCategory(id);
 	}

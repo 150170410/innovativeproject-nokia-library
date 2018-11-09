@@ -14,33 +14,33 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(Mappings.API_VERSION + Mappings.LIBRARY)
-public class BookController {
+public class OldBookController {
 
 	private final BookService bookService;
 
-	@GetMapping(Mappings.BOOKS)
+	@GetMapping(Mappings.GET_ALL)
 	public List<OldBook> getAllBooks() {
 		return bookService.getAllBooks();
 	}
 
-	@GetMapping(Mappings.BOOKS_ID)
+	@GetMapping(Mappings.GET_ONE)
 	public OldBook getBookById(@PathVariable Long id) {
 		return bookService.getBookById(id);
 	}
 
-	@PostMapping(Mappings.BOOKS)
+	@PostMapping(Mappings.SAVE)
 	public OldBook createBook(@RequestBody BookDTO bookDTO) {
 		ModelMapper mapper = new ModelMapper();
 		OldBook oldBook = mapper.map(bookDTO, OldBook.class);
 		return bookService.createBook(oldBook);
 	}
 
-	@PostMapping(Mappings.BOOKS_ID)
+	@PostMapping(Mappings.UPDATE)
 	public OldBook updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO){
 		return bookService.updateBook(id, bookDTO);
 	}
 
-	@DeleteMapping(Mappings.BOOKS_ID)
+	@DeleteMapping(Mappings.REMOVE)
 	public void deleteBook(@PathVariable Long id)
 			throws ResourceNotFoundException {
 		bookService.deleteBook(id);

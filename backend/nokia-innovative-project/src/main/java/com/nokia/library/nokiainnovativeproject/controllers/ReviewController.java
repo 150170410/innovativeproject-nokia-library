@@ -11,32 +11,32 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(Mappings.API_VERSION + Mappings.LIBRARY)
+@RequestMapping(Mappings.API_VERSION + Mappings.BOOK_REVIEW)
 public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @GetMapping(Mappings.REVIEW)
+    @GetMapping(Mappings.GET_ALL)
     public List<Review> getAllReviews(){
         return reviewService.getAllReviews();
     }
 
-    @GetMapping(Mappings.REVIEW_ID)
+    @GetMapping(Mappings.GET_ONE)
     public Review getReviewById(@PathVariable Long id){
         return reviewService.getReviewById(id);
     }
 
-    @PostMapping(Mappings.REVIEW)
+    @PostMapping(Mappings.SAVE)
     public Review createReview(@RequestBody ReviewDTO reviewDTO){
         return reviewService.createReview(reviewDTO);
     }
 
-    @PostMapping(Mappings.REVIEW_ID)
+    @PostMapping(Mappings.UPDATE)
     public Review updateReview(@PathVariable Long id, @RequestBody ReviewDTO reviewDTO){
         return reviewService.updateReview(id, reviewDTO);
     }
 
-    @DeleteMapping(Mappings.REVIEW_ID)
+    @DeleteMapping(Mappings.REMOVE)
     public void deleteReview(@PathVariable Long id){
         reviewService.deleteReview(id);
     }
