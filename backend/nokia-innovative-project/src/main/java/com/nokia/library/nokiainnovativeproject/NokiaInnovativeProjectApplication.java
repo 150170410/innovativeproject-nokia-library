@@ -1,5 +1,6 @@
 package com.nokia.library.nokiainnovativeproject;
 
+import com.nokia.library.nokiainnovativeproject.services.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ public class NokiaInnovativeProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NokiaInnovativeProjectApplication.class, args);
+
 	}
 
 	@Bean

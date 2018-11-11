@@ -40,6 +40,10 @@ public class User implements Serializable {
     private String email;
 
     @Setter
+    @Size(min = 3, max = 30, message = "User password must be 3-30 characters length")
+    private String password;
+
+    @Setter
     @OneToOne(  cascade = CascadeType.ALL,
                 fetch = FetchType.LAZY  )
     @JoinColumn(name = "address_id")
@@ -71,6 +75,7 @@ public class User implements Serializable {
                 fetch = FetchType.LAZY)
     private List<Book> books;
 
+    @Setter
     @ManyToMany(cascade = { CascadeType.DETACH,
                             CascadeType.MERGE,
                             CascadeType.PERSIST,
