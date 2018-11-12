@@ -8,7 +8,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 
 @Entity
@@ -40,7 +39,7 @@ public class User implements Serializable {
     private String email;
 
     @Setter
-    @Size(min = 3, max = 30, message = "User password must be 3-30 characters length")
+    @Size(min = 3, max = 60, message = "User password must be 3-60 characters length")
     private String password;
 
     @Setter
@@ -76,10 +75,14 @@ public class User implements Serializable {
     private List<Book> books;
 
     @Setter
-    @ManyToMany(cascade = { CascadeType.DETACH,
+    @ManyToMany(fetch = FetchType.LAZY,
+                cascade = { CascadeType.DETACH,
                             CascadeType.MERGE,
-                            CascadeType.PERSIST,
-                            CascadeType.REFRESH},
-                fetch = FetchType.LAZY)
+                            //CascadeType.PERSIST,
+                            //CascadeType.REFRESH
+                            })
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private List<Role> roles;
 }

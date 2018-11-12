@@ -5,6 +5,7 @@ import com.nokia.library.nokiainnovativeproject.DTOs.UserDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Role;
 import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
+import com.nokia.library.nokiainnovativeproject.repositories.RoleRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -50,11 +51,23 @@ public class UserService implements UserDetailsService {
         ModelMapper mapper = new ModelMapper();
         User user = mapper.map(userDTO, User.class);
 
-        Role role = new Role();
-        role.setRole("ROLE_EMPLOYEE");
-        List<Role> roles = new ArrayList<>();
+        // everyone user should have employee role
+        List<Role> roles = roleRepository.findRoleByName("ROLE_EMPLOYEE");
+        Role role;
+        if(roles == null || roles.size() == 0){
+            role = new Role();
+            role.setRole("ROLE_EMPLOYEE");
+            roleRepository.save(role);
+        }else {
+            role = roles.get(0);
+        }
+        roles = new ArrayList<>();
         roles.add(role);
         user.setRoles(roles);
+
+
+        Logger logger = Logger.getLogger(getClass().getName());
+        logger.info("info");
 
         return userRepository.save(user);
     }

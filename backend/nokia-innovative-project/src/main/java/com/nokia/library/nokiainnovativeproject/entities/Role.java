@@ -7,15 +7,19 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @EqualsAndHashCode
-@Setter
 @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Role {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Setter
     private String role;
 }
