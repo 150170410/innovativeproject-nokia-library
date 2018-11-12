@@ -1,5 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.DTOs;
 
+import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import lombok.*;
 
 @Data
@@ -7,8 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 public class BookDTO {
 
-	private String title;
-	private String authorName;
-	private String authorSurname;
+	private String comments;
+	private BookDetails bookDetails;
 
 }

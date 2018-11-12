@@ -20,7 +20,6 @@ public class BookDetailsController {
 
 	@GetMapping(Mappings.GET_ALL)
 	public MessageInfo getAllBooks() {
-		System.out.println(bookDetailsService.getAllBookDetails().toString());
 		return new MessageInfo(true, bookDetailsService.getAllBookDetails(), "list of bookDetails");
 	}
 
@@ -42,6 +41,6 @@ public class BookDetailsController {
 	@DeleteMapping(Mappings.REMOVE)
 	public MessageInfo deleteBook(@PathVariable Long id) throws ResourceNotFoundException {
 		bookDetailsService.deleteBookDetails(id);
-		return new MessageInfo(true, null, "bookDetails with ID = " + id.toString() + " removed succesfully");
+		return new MessageInfo(true, null, "bookDetails with ID = " + id.toString() + " removed successfully");
 	}
 }

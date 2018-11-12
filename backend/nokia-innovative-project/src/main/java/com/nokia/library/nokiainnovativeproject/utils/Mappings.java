@@ -21,8 +21,6 @@ public class Mappings {
 	public static final String BOOK_REVIEW = "/review";
 	public static final String BOOK_COPY = "/bookCopy";
 
-	// TODO: remove this when OldBook entity is gone
 	public static final String LIBRARY = "/library";
 	public static final String BOOKS = "/books";
-	public static final String BOOKS_ID = "/books/{id}";
 }

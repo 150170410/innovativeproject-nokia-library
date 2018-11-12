@@ -1,10 +1,11 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
-import com.nokia.library.nokiainnovativeproject.entities.OldBook;
+import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,31 +16,32 @@ public class BookService {
 
 	private final BookRepository bookRepository;
 
-	public List<OldBook> getAllBooks() {
+	public List<Book> getAllBooks() {
 		return bookRepository.findAll();
 	}
 
-	public OldBook getBookById(Long id) {
+	public Book getBookById(Long id) {
 		return bookRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("OldBook", "id", id));
+				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
 	}
 
-	public OldBook createBook(OldBook oldBook) {
-		return bookRepository.save(oldBook);
+	public Book createBook(BookDTO bookDTO) {
+		ModelMapper mapper = new ModelMapper();
+		Book book = mapper.map(bookDTO, Book.class);
+		return bookRepository.save(book);
 	}
 
-	public OldBook updateBook(Long id, BookDTO bookDTO) {
-		OldBook oldBook = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("OldBook", "id", id));
-		oldBook.setAuthorName(bookDTO.getAuthorName());
-		oldBook.setAuthorSurname(bookDTO.getAuthorSurname());
-		oldBook.setTitle(bookDTO.getTitle());
-		return bookRepository.save(oldBook);
+	public Book updateBook(Long id, BookDTO bookDTO) {
+		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
+		book.setComments(bookDTO.getComments());
+		book.setBookDetails(bookDTO.getBookDetails());
+		return bookRepository.save(book);
 	}
 
 	public void deleteBook(Long id)
 			throws ResourceNotFoundException {
-		OldBook oldBook = bookRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("OldBook", "id", id));
-		bookRepository.delete(oldBook);
+		Book book = bookRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
+		bookRepository.delete(book);
 	}
 }

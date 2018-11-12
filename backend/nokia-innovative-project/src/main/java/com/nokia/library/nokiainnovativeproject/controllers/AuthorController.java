@@ -4,6 +4,7 @@ import com.nokia.library.nokiainnovativeproject.DTOs.AuthorDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Author;
 import com.nokia.library.nokiainnovativeproject.services.AuthorService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
+import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,27 +18,28 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping(Mappings.GET_ALL)
-    public List<Author> getAllAuthors(){
-        return authorService.getAllAuthors();
+    public MessageInfo getAllAuthors(){
+        return new MessageInfo(true, authorService.getAllAuthors(), "list of authors");
     }
 
     @GetMapping(Mappings.GET_ONE)
-    public Author getAuthorById(@PathVariable Long id){
-        return authorService.getAuthorById(id);
+    public MessageInfo getAuthorById(@PathVariable Long id){
+        return new MessageInfo(true, authorService.getAuthorById(id), "Author of ID = " + id.toString());
     }
 
     @PostMapping(Mappings.SAVE)
-    public Author createAuthor(@RequestBody AuthorDTO authorDTO){
-        return authorService.createAuthor(authorDTO);
+    public MessageInfo createAuthor(@RequestBody AuthorDTO authorDTO){
+        return new MessageInfo(true, authorService.createAuthor(authorDTO), "Author created successfully");
     }
 
     @PostMapping(Mappings.UPDATE)
-    public Author updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO){
-        return authorService.updateAuthor(id, authorDTO);
+    public MessageInfo updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO){
+        return new MessageInfo(true, authorService.updateAuthor(id, authorDTO), "Author updated successfully");
     }
 
     @DeleteMapping(Mappings.REMOVE)
-    public void deleteAuthor(@PathVariable Long id){
+    public MessageInfo deleteAuthor(@PathVariable Long id){
         authorService.deleteAuthor(id);
+        return new MessageInfo(true, null, "Author with ID = " + id.toString() + " removed successfully");
     }
 }

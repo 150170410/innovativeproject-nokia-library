@@ -5,6 +5,7 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 		import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 		import com.nokia.library.nokiainnovativeproject.services.BookCategoryService;
 		import com.nokia.library.nokiainnovativeproject.utils.Mappings;
+		import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 		import lombok.RequiredArgsConstructor;
 		import org.springframework.web.bind.annotation.*;
 
@@ -18,27 +19,28 @@ public class BookCategoryController {
 	private final BookCategoryService bookCategoryService;
 
 	@GetMapping(Mappings.GET_ALL)
-	public List<BookCategory> getAllBookCategories() {
-		return bookCategoryService.getAllBookCategories();
+	public MessageInfo getAllBookCategories() {
+		return new MessageInfo(true, bookCategoryService.getAllBookCategories(), "list of bookCategories");
 	}
 
 	@GetMapping(Mappings.GET_ONE)
-	public BookCategory getBookCategoryById(@PathVariable Long id) {
-		return bookCategoryService.getBookCategoryById(id);
+	public MessageInfo getBookCategoryById(@PathVariable Long id) {
+		return new MessageInfo(true, bookCategoryService.getBookCategoryById(id), "BookCategory of ID = " + id.toString());
 	}
 
 	@PostMapping(Mappings.SAVE)
-	public BookCategory createBook(@RequestBody BookCategoryDTO bookCategoryDTO) {
-		return bookCategoryService.createBookCategory(bookCategoryDTO);
+	public MessageInfo createBook(@RequestBody BookCategoryDTO bookCategoryDTO) {
+		return new MessageInfo(true, bookCategoryService.createBookCategory(bookCategoryDTO), "BookCategory created successfully");
 	}
 
 	@PostMapping(Mappings.UPDATE)
-	public BookCategory updateBook(@PathVariable Long id, @RequestBody BookCategoryDTO bookCategoryDTO) {
-		return bookCategoryService.updateBookCategory(id, bookCategoryDTO);
+	public MessageInfo updateBook(@PathVariable Long id, @RequestBody BookCategoryDTO bookCategoryDTO) {
+		return new MessageInfo(true, bookCategoryService.updateBookCategory(id, bookCategoryDTO), "BookCategory updated successfully");
 	}
 
 	@DeleteMapping(Mappings.REMOVE)
-	public void deleteBookCategory(@PathVariable Long id) {
+	public MessageInfo deleteBookCategory(@PathVariable Long id) {
 		bookCategoryService.deleteBookCategory(id);
+		return new MessageInfo(true, null, "BookCategory with ID = " + id.toString() + " removed successfully");
 	}
 }
