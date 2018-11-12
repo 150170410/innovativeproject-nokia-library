@@ -20,12 +20,12 @@ public class Address implements Serializable {
     private Long id;
 
     @Setter
-    @NotNull(message = "The city name is required")
-    @Size(min = 3, max = 25, message = "Build name must be 3-25 characters length")
+    @NotNull(message = "City name is required")
+    @Size(min = 3, max = 25, message = "City name must be 3-25 characters long")
     private String city;
 
     @Setter
-    @NotNull(message = "The build name is required")
-    @Size(min = 3, max = 30, message = "Build name must be 3-30 characters length")
+    @NotNull(message = "Building name is required")
+    @Size(min = 3, max = 30, message = "Building name must be 3-30 characters long")
     private String building;
 }

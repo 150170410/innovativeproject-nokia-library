@@ -62,7 +62,7 @@ public class BookDetailsControllerTest {
 		bookDetails.setAuthors(new ArrayList<>());
 		bookDetails.setCategories(new ArrayList<>());
 
-		bookDetailsDTO = new BookDetailsDTO("test isbn123", "test title", "test description", "test cover picture url", date, "test table of contents", new ArrayList<>(), new ArrayList<>());
+		bookDetailsDTO = new BookDetailsDTO("test isbn123", "test title", "test description", "test cover picture url", date, "test table of contents", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 	}
 
 	@BeforeEach

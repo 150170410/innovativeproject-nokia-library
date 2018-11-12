@@ -20,7 +20,7 @@ public class Book implements Serializable {
 	private Long catalogNumber;
 
 	@Setter
-	@Size(max = 300, message = "The comments must have at least 300 characters")
+	@Size(max = 300, message = "Comments can't exceed 300 characters")
 	private String comments;
 
 	@Setter

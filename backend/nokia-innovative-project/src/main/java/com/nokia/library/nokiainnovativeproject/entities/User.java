@@ -24,19 +24,19 @@ public class User implements Serializable {
     private Long id;
 
     @Setter
-    @Size(min = 3, max = 30, message = "User name must be 3-30 characters length")
-    @NotBlank(message = "The user's name can't be null and can't contain whitespace")
+    @Size(min = 3, max = 30, message = "User's name must be 3-30 characters long")
+    @NotBlank(message = "User's name can't be null and can't contain whitespace")
     private String firstName;
 
     @Setter
-    @Size(min = 3, max = 30, message = "User surname must be 3-30 characters length")
-    @NotBlank(message = "The user's surname can't be null and can't contain whitespace")
+    @Size(min = 3, max = 30, message = "User's surname must be 3-30 characters long")
+    @NotBlank(message = "User's surname can't be null and can't contain whitespace")
     private String lastName;
 
     @Setter
     @Email(message = "Email should be valid")
-    @NotBlank(message = "The user's email can't be null and can't contain whitespace")
-    @Size(min = 10, max = 40, message = "User email must be 10-40 characters length")
+    @NotBlank(message = "Email can't be null and can't contain whitespace")
+    @Size(min = 10, max = 40, message = "User email must be 10-40 characters long")
     private String email;
 
     @Setter

@@ -9,6 +9,7 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 		import lombok.RequiredArgsConstructor;
 		import org.springframework.web.bind.annotation.*;
 
+		import javax.validation.Valid;
 		import java.util.List;
 
 @RestController
@@ -29,12 +30,12 @@ public class BookCategoryController {
 	}
 
 	@PostMapping(Mappings.SAVE)
-	public MessageInfo createBook(@RequestBody BookCategoryDTO bookCategoryDTO) {
+	public MessageInfo createBookCategory(@RequestBody @Valid BookCategoryDTO bookCategoryDTO) {
 		return new MessageInfo(true, bookCategoryService.createBookCategory(bookCategoryDTO), "BookCategory created successfully");
 	}
 
 	@PostMapping(Mappings.UPDATE)
-	public MessageInfo updateBook(@PathVariable Long id, @RequestBody BookCategoryDTO bookCategoryDTO) {
+	public MessageInfo updateBookCategory(@PathVariable Long id, @RequestBody @Valid BookCategoryDTO bookCategoryDTO) {
 		return new MessageInfo(true, bookCategoryService.updateBookCategory(id, bookCategoryDTO), "BookCategory updated successfully");
 	}
 

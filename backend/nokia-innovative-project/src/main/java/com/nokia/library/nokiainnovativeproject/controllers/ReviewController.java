@@ -8,6 +8,7 @@ import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,12 +29,12 @@ public class ReviewController {
     }
 
     @PostMapping(Mappings.SAVE)
-    public MessageInfo createReview(@RequestBody ReviewDTO reviewDTO){
+    public MessageInfo createReview(@RequestBody @Valid ReviewDTO reviewDTO){
         return new MessageInfo(true, reviewService.createReview(reviewDTO), "Review created successfully");
     }
 
     @PostMapping(Mappings.UPDATE)
-    public MessageInfo updateReview(@PathVariable Long id, @RequestBody ReviewDTO reviewDTO){
+    public MessageInfo updateReview(@PathVariable Long id, @RequestBody @Valid ReviewDTO reviewDTO){
         return new MessageInfo(true, reviewService.updateReview(id, reviewDTO), "Review updated successfully");
     }
 

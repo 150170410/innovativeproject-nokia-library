@@ -8,6 +8,7 @@ import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,12 +29,12 @@ public class AuthorController {
     }
 
     @PostMapping(Mappings.SAVE)
-    public MessageInfo createAuthor(@RequestBody AuthorDTO authorDTO){
+    public MessageInfo createAuthor(@RequestBody @Valid AuthorDTO authorDTO){
         return new MessageInfo(true, authorService.createAuthor(authorDTO), "Author created successfully");
     }
 
     @PostMapping(Mappings.UPDATE)
-    public MessageInfo updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO){
+    public MessageInfo updateAuthor(@PathVariable Long id, @RequestBody  @Valid AuthorDTO authorDTO){
         return new MessageInfo(true, authorService.updateAuthor(id, authorDTO), "Author updated successfully");
     }
 

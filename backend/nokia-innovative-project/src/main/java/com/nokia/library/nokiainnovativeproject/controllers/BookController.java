@@ -8,6 +8,7 @@ import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,12 +29,12 @@ public class BookController {
 	}
 
 	@PostMapping(Mappings.SAVE)
-	public MessageInfo createBook(@RequestBody BookDTO bookDTO) {
+	public MessageInfo createBook(@RequestBody @Valid  BookDTO bookDTO) {
 		return new MessageInfo(true, bookService.createBook(bookDTO), "Book created successfully");
 	}
 
 	@PostMapping(Mappings.UPDATE)
-	public MessageInfo updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO){
+	public MessageInfo updateBook(@PathVariable Long id, @RequestBody @Valid BookDTO bookDTO){
 		return new MessageInfo(true, bookService.updateBook(id, bookDTO), "Book updated successfully");
 	}
 

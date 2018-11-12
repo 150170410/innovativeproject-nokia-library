@@ -22,13 +22,13 @@ public class Review implements Serializable {
     private Long id;
 
     @Setter
-    @NotNull(message = "The comment is required")
-    @Size(max = 300, message = "A comment can have a maximum of 300 characters")
+    @NotNull(message = "Comment is required")
+    @Size(max = 300, message = "Comment can exceed 300 characters")
     private String comment;
 
     @Setter
-    @NotNull(message = "The date of the comment is required")
-    @Past(message = "The date of the comment must be present")
+    @NotNull(message = "Comment date is required")
+    @Past(message = "Comment date must be present")
     private Date addDate;
 
     @Setter

@@ -19,6 +19,6 @@ public class BookCategory implements Serializable {
 	private Long id;
 
 	@Setter
-	@Size(max = 20, message = "The book category name must have at least 20 characters")
+	@Size(max = 20, message = "Book category name can't exceed 20 characters")
 	private String bookCategoryName;
 }

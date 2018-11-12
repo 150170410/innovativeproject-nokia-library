@@ -25,29 +25,29 @@ public class BookDetails implements Serializable {
 	private Long id;
 
 	@Setter
-	@Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers length")
-	@NotNull(message = "The ISBN can't be null")
+	@Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers long")
+	@NotNull(message = "ISBN is required")
 	private String isbn;
 
 	@Setter
-	@Length(max = 30, message = "The title must have at least 30 characters")
-	@NotNull(message = "The title is required")
+	@Length(max = 30, message = "Title can't exceed 30 characters")
+	@NotNull(message = "Title is required")
 	private String title;
 
 	@Setter
-	@Size(max = 250, message = "The description must have at most 250 characters")
+	@Size(max = 250, message = "Description can't exceed 250 characters")
 	private String description;
 
 	@Setter
-	@Size(max = 100, message = "The cover picture URL must have at most 100 characters")
+	@Size(max = 100, message = "Cover picture URL can't exceed 100 characters")
 	private String coverPictureUrl;
 
 	@Setter
-	@Past(message = "The rental date should be past")
+	@Past(message = "Rental date should be a past date")
 	private Date dateOfPublication;
 
 	@Setter
-	@Size(max = 100, message = "The table of contents URL must have at most 100 characters")
+	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
 	private String tableOfContents;
 
 	@Setter
