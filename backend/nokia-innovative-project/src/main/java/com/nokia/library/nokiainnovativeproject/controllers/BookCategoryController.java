@@ -29,7 +29,7 @@ public class BookCategoryController {
 		return new MessageInfo(true, bookCategoryService.getBookCategoryById(id), "BookCategory of ID = " + id.toString());
 	}
 
-	@PostMapping(Mappings.SAVE)
+	@PostMapping(Mappings.CREATE)
 	public MessageInfo createBookCategory(@RequestBody @Valid BookCategoryDTO bookCategoryDTO) {
 		return new MessageInfo(true, bookCategoryService.createBookCategory(bookCategoryDTO), "BookCategory created successfully");
 	}

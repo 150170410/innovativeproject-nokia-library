@@ -12,8 +12,8 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 
     @Size(min = 3, max = 30, message = "User's name must be 3-30 characters long")

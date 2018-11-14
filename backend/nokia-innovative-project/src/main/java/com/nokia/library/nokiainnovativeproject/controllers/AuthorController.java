@@ -28,7 +28,7 @@ public class AuthorController {
         return new MessageInfo(true, authorService.getAuthorById(id), "Author of ID = " + id.toString());
     }
 
-    @PostMapping(Mappings.SAVE)
+    @PostMapping(Mappings.CREATE)
     public MessageInfo createAuthor(@RequestBody @Valid AuthorDTO authorDTO){
         return new MessageInfo(true, authorService.createAuthor(authorDTO), "Author created successfully");
     }

@@ -29,7 +29,7 @@ public class BookDetailsController {
 		return new MessageInfo(true, bookDetailsService.getBookDetailsById(id), "bookDetails of ID = " + id.toString());
 	}
 
-	@PostMapping(Mappings.SAVE)
+	@PostMapping(Mappings.CREATE)
 	public MessageInfo createBookDetails(@RequestBody @Valid BookDetailsDTO bookDetailsDTO) {
 		return new MessageInfo(true, bookDetailsService.createBookDetails(bookDetailsDTO), "bookDetails created successfully");
 	}

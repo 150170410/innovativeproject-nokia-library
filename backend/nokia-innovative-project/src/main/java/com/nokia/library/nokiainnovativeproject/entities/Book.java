@@ -9,21 +9,19 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Getter
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Book implements Serializable {
 
 	@Id
+	@Setter(AccessLevel.NONE)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long catalogNumber;
 
-	@Setter
-	@Size(max = 300, message = "Comments can't exceed 300 characters")
+	@Size(max = 5000, message = "Comments can't exceed 5000 characters")
 	private String comments;
 
-	@Setter
 	@ManyToOne(cascade = {CascadeType.DETACH,
 			CascadeType.MERGE,
 			CascadeType.PERSIST,

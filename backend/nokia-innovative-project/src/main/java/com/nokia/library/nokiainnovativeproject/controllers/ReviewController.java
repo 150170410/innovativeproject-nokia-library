@@ -28,7 +28,7 @@ public class ReviewController {
         return new MessageInfo(true, reviewService.getReviewById(id), "Review of ID = " + id.toString());
     }
 
-    @PostMapping(Mappings.SAVE)
+    @PostMapping(Mappings.CREATE)
     public MessageInfo createReview(@RequestBody @Valid ReviewDTO reviewDTO){
         return new MessageInfo(true, reviewService.createReview(reviewDTO), "Review created successfully");
     }

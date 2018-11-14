@@ -85,7 +85,7 @@ public class BookCategoryControllerTest {
 	public void createBookCategoryTest() throws Exception {
 		String jsonRequest = mapper.writeValueAsString(bookCategoryDTO);
 		when(service.createBookCategory(bookCategoryDTO)).thenReturn(bookCategory);
-		mockMvc.perform(post(BASE_URL + Mappings.SAVE)
+		mockMvc.perform(post(BASE_URL + Mappings.CREATE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andDo(print())

@@ -2,19 +2,16 @@ package com.nokia.library.nokiainnovativeproject.DTOs;
 
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotEmpty;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class AddressDTO {
 
-	@NotNull(message = "City name is required")
-	@Size(min = 3, max = 25, message = "Build name must be 3-25 characters long")
+	@NotEmpty(message = "City name can't be empty")
 	private String city;
 
-	@NotNull(message = "Building name is required")
-	@Size(min = 3, max = 30, message = "Building name must be 3-30 characters long")
+	@NotEmpty(message = "Building name can't be empty")
 	private String building;
 }

@@ -17,8 +17,8 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class BookDetailsDTO {
 
 	@Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers long")
@@ -41,11 +41,11 @@ public class BookDetailsDTO {
 	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
 	private String tableOfContents;
 
-	@Length(min=1, message = "At least one author is required.")
-	private List<Author> authors = new ArrayList<>();
+	@NotNull(message = "At least one book author is required.")
+	private List<Author> authors;
 
-	@Length(min=1, message = "At least one book category is required.")
-	private List<BookCategory> categories = new ArrayList<>();
+	@NotNull(message = "At least one book category is required.")
+	private List<BookCategory> categories;
 
-	private List<Review> reviews = new ArrayList<>();
+	private List<Review> reviews;
 }

@@ -8,17 +8,16 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@Getter
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class BookCategory implements Serializable {
 
 	@Id
+	@Setter(AccessLevel.NONE)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Setter
 	@Size(max = 20, message = "Book category name can't exceed 20 characters")
 	private String bookCategoryName;
 }

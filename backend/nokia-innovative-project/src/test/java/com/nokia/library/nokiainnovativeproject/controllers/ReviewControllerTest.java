@@ -51,11 +51,9 @@ class ReviewControllerTest {
     @BeforeAll
     public static void init() {
         mapper = new ObjectMapper();
-        date = new Date();
         review = new Review();
         review.setComment("test comment");
-        review.setAddDate(date);
-        reviewDTO = new ReviewDTO("test comment", date);
+        reviewDTO = new ReviewDTO("test comment");
     }
 
     @BeforeEach
@@ -89,7 +87,7 @@ class ReviewControllerTest {
     public void createBookTest() throws Exception {
         String jsonRequest = mapper.writeValueAsString(reviewDTO);
         when(service.createReview(reviewDTO)).thenReturn(review);
-        mockMvc.perform(post(BASE_URL + Mappings.SAVE)
+        mockMvc.perform(post(BASE_URL + Mappings.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
                 .andDo(print())

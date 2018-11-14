@@ -4,28 +4,23 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Entity
-@Getter
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Address implements Serializable {
 
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Setter
-    @NotNull(message = "City name is required")
-    @Size(min = 3, max = 25, message = "City name must be 3-25 characters long")
+    @NotEmpty(message = "City name can't be empty")
     private String city;
 
-    @Setter
-    @NotNull(message = "Building name is required")
-    @Size(min = 3, max = 30, message = "Building name must be 3-30 characters long")
+    @NotEmpty(message = "Building name can't be empty")
     private String building;
 }

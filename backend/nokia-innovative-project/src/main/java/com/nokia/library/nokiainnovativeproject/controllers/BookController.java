@@ -28,7 +28,7 @@ public class BookController {
 		return new MessageInfo(true,bookService.getBookById(id), "Book of ID = " + id.toString());
 	}
 
-	@PostMapping(Mappings.SAVE)
+	@PostMapping(Mappings.CREATE)
 	public MessageInfo createBook(@RequestBody @Valid  BookDTO bookDTO) {
 		return new MessageInfo(true, bookService.createBook(bookDTO), "Book created successfully");
 	}

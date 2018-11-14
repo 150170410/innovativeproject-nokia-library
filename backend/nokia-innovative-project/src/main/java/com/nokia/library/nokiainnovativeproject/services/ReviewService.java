@@ -33,7 +33,6 @@ public class ReviewService {
     public Review updateReview(Long id, ReviewDTO reviewDTO){
         Review review = reviewRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("ReviewService", "id", id));
         review.setComment(reviewDTO.getComment());
-        review.setAddDate(reviewDTO.getAddDate());
         return reviewRepository.save(review);
     }
 

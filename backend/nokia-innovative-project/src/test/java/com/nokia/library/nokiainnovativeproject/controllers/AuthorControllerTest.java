@@ -92,7 +92,7 @@ class AuthorControllerTest {
     public void createAuthorTest() throws Exception {
         String jsonRequest = mapper.writeValueAsString(authorDTO);
         when(service.createAuthor(authorDTO)).thenReturn(author);
-        mockMvc.perform(post(BASE_URL + Mappings.SAVE)
+        mockMvc.perform(post(BASE_URL + Mappings.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
                 .andDo(print())

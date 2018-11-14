@@ -10,7 +10,7 @@ public class Mappings {
 	// method mappings
 	public static final String GET_ALL = "/getAll";
 	public static final String GET_ONE = "/getOne/{id}";
-	public static final String SAVE = "/save";
+	public static final String CREATE = "/create";
 	public static final String UPDATE = "/update/{id}";
 	public static final String REMOVE = "/remove/{id}";
 
