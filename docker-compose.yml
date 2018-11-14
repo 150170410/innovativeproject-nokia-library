@@ -1,0 +1,19 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    ports: 
+     - "5432:5432"
+  be:
+    image: kostiukov/nokia.inno.lib.be:tag  #change tag
+    depends_on:
+     - db
+    command: ["./wait-for-it.sh", "db:5432", "--timeout=60", "--", "java", "-jar", "be.jar"]
+    ports:
+     - "8081:8081"
+    environment:
+     - TZ=NL
+  fe:
+    image: kostiukov/nokia.inno.lib.fe:tag  #change tag
+    ports:
+     - "4200:4200"
