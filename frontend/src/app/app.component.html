@@ -2,7 +2,7 @@
 <mat-sidenav-container class="center-content">
 	<mat-sidenav #sidenav mode="side" opened class="sidenav-menu">
 		<mat-list>
-			<h4>List of components</h4>
+			<h3>List of components</h3>
 			<mat-list-item>
 				1.
 				<button color="primary" mat-raised-button routerLink="/homepage" routerLinkActive="active">Homepage</button>
@@ -27,7 +27,16 @@
 				6.
 				<button color="primary" mat-raised-button routerLink="/not_such_page" routerLinkActive="active">Error page</button>
 			</mat-list-item>
-
+			<mat-divider></mat-divider>
+			<h3>Not working (yet)</h3>
+			<mat-list-item>
+				7.
+				<button color="warn" mat-raised-button routerLink="/not_such_page" routerLinkActive="active">Your reservations</button>
+			</mat-list-item>
+			<mat-list-item>
+				8.
+				<button color="warn" mat-raised-button routerLink="/not_such_page" routerLinkActive="active">Request a book</button>
+			</mat-list-item>
 		</mat-list>
 	</mat-sidenav>
 
