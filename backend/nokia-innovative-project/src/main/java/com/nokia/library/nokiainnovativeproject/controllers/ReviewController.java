@@ -6,10 +6,14 @@ import com.nokia.library.nokiainnovativeproject.services.ReviewService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,27 +24,37 @@ public class ReviewController {
 
     @GetMapping(Mappings.GET_ALL)
     public MessageInfo getAllReviews(){
-        return new MessageInfo(true, reviewService.getAllReviews(), "list of reviews");
+        return MessageInfo.success(reviewService.getAllReviews(), Arrays.asList("list of reviews"));
     }
 
     @GetMapping(Mappings.GET_ONE)
     public MessageInfo getReviewById(@PathVariable Long id){
-        return new MessageInfo(true, reviewService.getReviewById(id), "Review of ID = " + id.toString());
+        return MessageInfo.success(reviewService.getReviewById(id), Arrays.asList("Review of ID = " + id.toString()));
     }
 
     @PostMapping(Mappings.CREATE)
-    public MessageInfo createReview(@RequestBody @Valid ReviewDTO reviewDTO){
-        return new MessageInfo(true, reviewService.createReview(reviewDTO), "Review created successfully");
+    public MessageInfo createReview(@RequestBody @Valid ReviewDTO reviewDTO, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            List<String> errorsList = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+            return MessageInfo.failure(errorsList);
+        }
+        return MessageInfo.success(reviewService.createReview(reviewDTO), Arrays.asList("Review created successfully"));
     }
 
     @PostMapping(Mappings.UPDATE)
-    public MessageInfo updateReview(@PathVariable Long id, @RequestBody @Valid ReviewDTO reviewDTO){
-        return new MessageInfo(true, reviewService.updateReview(id, reviewDTO), "Review updated successfully");
+    public MessageInfo updateReview(@PathVariable Long id, @RequestBody @Valid ReviewDTO reviewDTO, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            List<String> errorsList = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+            return MessageInfo.failure(errorsList);
+        }
+        return MessageInfo.success(reviewService.updateReview(id, reviewDTO), Arrays.asList("Review updated successfully"));
     }
 
     @DeleteMapping(Mappings.REMOVE)
     public MessageInfo deleteReview(@PathVariable Long id){
         reviewService.deleteReview(id);
-        return new MessageInfo(true, null, "Review with ID = " + id.toString() + " removed successfully");
+        return MessageInfo.success(null, Arrays.asList("Review with ID = " + id.toString() + " removed successfully"));
     }
 }
