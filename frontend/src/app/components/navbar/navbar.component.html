@@ -1,0 +1,43 @@
+<mat-toolbar color="primary">
+	<mat-toolbar-row>
+		<img class="nav-link white" src="../../../assets/images/nokia-logo.png">
+
+		<a class="nav-link white">Nokia library</a>
+
+		<div class="search-bar-wrapper" >
+			<form class="search-bar" >
+				<mat-form-field class="search-bar-field">
+					<input type="search" matInput placeholder="Search">
+					<mat-icon>search</mat-icon>
+				</mat-form-field>
+			</form>
+		</div>
+
+		<span class="toolbar-spacer"></span>
+
+		<div>Logged as User</div>
+		<button mat-icon-button [matMenuTriggerFor]="menuOptions">
+			<mat-icon>more_vert</mat-icon>
+		</button>
+		<mat-menu #menuOptions="matMenu">
+			<button mat-menu-item>
+				<mat-icon>account_circle</mat-icon>
+				<span>Your account</span>
+			</button>
+			<button mat-menu-item [matMenuTriggerFor]="menuSomeOptions">
+				<mat-icon>settings</mat-icon>
+				<span>Settings</span>
+			</button>
+			<button mat-menu-item>
+				<mat-icon>exit_to_app</mat-icon>
+				<span>Logout</span>
+			</button>
+		</mat-menu>
+		<mat-menu #menuSomeOptions="matMenu">
+			<button mat-menu-item>Option 1</button>
+			<button mat-menu-item>Option 2</button>
+			<button mat-menu-item>Option 3</button>
+		</mat-menu>
+
+	</mat-toolbar-row>
+</mat-toolbar>
