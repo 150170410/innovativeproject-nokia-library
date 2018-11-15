@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	selector: 'app-book-details',
-	templateUrl: './book-details.component.html',
-	styleUrls: ['./book-details.component.css']
+	templateUrl: './single-book-view.html',
+	styleUrls: ['./single-book-view.css']
 })
-export class BookDetailsComponent implements OnInit {
+export class SingleBookViewComponent implements OnInit {
 
 	id: any;
 

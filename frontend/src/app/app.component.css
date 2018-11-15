@@ -14,3 +14,8 @@
 ::ng-deep .mat-sidenav-container{
 	height:calc(100vh - 64px) !important; /* or 100% */
 }
+
+.sidenav-menu{
+	background-color: #e6f2ff;
+	max-width: 20%;
+}

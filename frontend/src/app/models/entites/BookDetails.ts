@@ -3,16 +3,16 @@ export class BookDetails {
 		authorDescription: string;
 		authorName: string;
 		authorSurname: string;
-		id: 0
+		id: number
 	}];
 	categories: [{
 		bookCategoryName: string;
-		id: 0
+		id: number
 	}];
 	coverPictureUrl: string;
 	dateOfPublication: Date;
 	description: string;
-	id: 0;
+	id: number;
 	isbn: string;
 	reviews: [{
 		addDate: Date;
@@ -22,11 +22,11 @@ export class BookDetails {
 			address: {
 				build: string;
 				city: string;
-				id: 0
+				id: number
 			};
 			email: string;
 			firstName: string;
-			id: 0;
+			id: number;
 			lastName: string;
 			reservations: [
 				null

@@ -7,47 +7,19 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-	MatAutocompleteModule,
-	MatButtonModule,
-	MatButtonToggleModule,
-	MatCardModule,
-	MatCheckboxModule,
-	MatChipsModule,
-	MatDatepickerModule,
-	MatDialogModule,
-	MatExpansionModule,
-	MatFormFieldModule,
-	MatGridListModule,
-	MatIconModule,
-	MatInputModule,
-	MatListModule,
-	MatMenuModule,
-	MatNativeDateModule,
-	MatPaginatorModule,
-	MatProgressBarModule,
-	MatProgressSpinnerModule,
-	MatRadioModule,
-	MatSelectModule,
-	MatSidenavModule,
-	MatSliderModule,
-	MatSlideToggleModule,
-	MatSnackBarModule,
-	MatSortModule,
-	MatStepperModule,
-	MatTableModule,
-	MatTabsModule,
-	MatToolbarModule,
-	MatTooltipModule
+	MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatNativeDateModule,
+	MatPaginatorModule, MatProgressBarModule, MatProgressSpinnerModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule, MatStepperModule, MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { ListviewComponent } from './components/listview/listview.component';
 import { BookService } from './services/book/book.service';
-import { BookDetailsComponent } from './components/book-details/book-details.component';
-import { ManageBookComponent } from './components/manage-book/manage-book.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { RestService } from './services/rest/rest.service';
+import { GridViewComponent } from './components/grid-view/grid-view.component';
+import { ManageBookDetailsComponent } from './components/manage-book-details/manage-book-details.component';
+import { SingleBookViewComponent } from './components/single-book-view/single-book-view';
 
 @NgModule({
 	declarations: [
@@ -55,9 +27,10 @@ import { RestService } from './services/rest/rest.service';
 		HomepageComponent,
 		NavbarComponent,
 		ListviewComponent,
-		BookDetailsComponent,
-		ManageBookComponent,
-		PageNotFoundComponent
+		SingleBookViewComponent,
+		PageNotFoundComponent,
+		GridViewComponent,
+		ManageBookDetailsComponent
 	],
 	imports: [
 		BrowserModule,

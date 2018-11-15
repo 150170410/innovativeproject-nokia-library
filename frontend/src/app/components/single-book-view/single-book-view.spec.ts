@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManageBookComponent } from './manage-book.component';
+import { SingleBookViewComponent } from './single-book-view';
 
-describe('ManageBookComponent', () => {
-	let component: ManageBookComponent;
-	let fixture: ComponentFixture<ManageBookComponent>;
+describe('SingleBookViewComponent', () => {
+	let component: SingleBookViewComponent;
+	let fixture: ComponentFixture<SingleBookViewComponent>;
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [ManageBookComponent]
+			declarations: [SingleBookViewComponent]
 		})
 		.compileComponents();
 	}));
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(ManageBookComponent);
+		fixture = TestBed.createComponent(SingleBookViewComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});
