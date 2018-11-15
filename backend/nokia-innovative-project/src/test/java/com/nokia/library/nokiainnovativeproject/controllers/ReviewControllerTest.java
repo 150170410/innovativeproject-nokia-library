@@ -1,10 +1,10 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
-import com.nokia.library.nokiainnovativeproject.entities.Book;
-import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
-import com.nokia.library.nokiainnovativeproject.services.BookService;
+import com.nokia.library.nokiainnovativeproject.DTOs.ReviewDTO;
+import com.nokia.library.nokiainnovativeproject.entities.Review;
+import com.nokia.library.nokiainnovativeproject.services.ReviewService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +21,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -32,29 +34,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("autotests")
-class BookControllerTest {
-
-    private static Book book;
-    private static BookDTO bookDTO;
+class ReviewControllerTest {
+    private static Review review;
+    private static ReviewDTO reviewDTO;
     private static ObjectMapper mapper;
+    private static Date date;
     private MockMvc mockMvc;
-    private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.BOOKS;
+    private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.BOOK_REVIEW;
 
     @Mock
-    private BookService service;
+    private ReviewService service;
 
     @InjectMocks
-    private BookController controller;
+    private ReviewController controller;
 
     @BeforeAll
     public static void init() {
         mapper = new ObjectMapper();
-        BookDetails bookDetails = new BookDetails();
-        bookDetails.setTitle("test title");
-        book = new Book();
-        book.setComments("test comments");
-        book.setBookDetails(bookDetails);
-        bookDTO = new BookDTO("test comments", bookDetails);
+        review = new Review();
+        review.setComment("test comment");
+        reviewDTO = new ReviewDTO("test comment");
     }
 
     @BeforeEach
@@ -64,56 +63,56 @@ class BookControllerTest {
 
     @Test
     public void getBooksTest() throws Exception {
-        List<Book> books = new ArrayList<>();
-        books.add(book);
-        when(service.getAllBooks()).thenReturn(books);
+        List<Review> reviews = new ArrayList<>();
+        reviews.add(review);
+        when(service.getAllReviews()).thenReturn(reviews);
         mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].comments", Matchers.is("test comments")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].bookDetails.title", Matchers.is("test title")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].comment", Matchers.is("test comment")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].addDate", Matchers.is(date.getTime())));
     }
     @Test
     public void getBookByIdTest() throws Exception {
-        when(service.getBookById(1L)).thenReturn(book);
+        when(service.getReviewById(1L)).thenReturn(review);
         mockMvc.perform(get(BASE_URL + Mappings.GET_ONE, 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("test comments")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.title", Matchers.is("test title")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comment", Matchers.is("test comment")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.addDate", Matchers.is(date.getTime())));
     }
 
     @Test
     public void createBookTest() throws Exception {
-        String jsonRequest = mapper.writeValueAsString(bookDTO);
-        when(service.createBook(bookDTO)).thenReturn(book);
+        String jsonRequest = mapper.writeValueAsString(reviewDTO);
+        when(service.createReview(reviewDTO)).thenReturn(review);
         mockMvc.perform(post(BASE_URL + Mappings.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("test comments")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.title", Matchers.is("test title")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comment", Matchers.is("test comment")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.addDate", Matchers.is(date.getTime())));
     }
 
     @Test
     public void updateBookTest() throws Exception {
-        BookDTO updatedDTO = new BookDTO();
-        updatedDTO.setComments("updated comments");
+        ReviewDTO updatedDTO = new ReviewDTO();
+        updatedDTO.setComment("updated comment");
 
-        Book updatedBook = new Book();
-        updatedBook.setComments("updated comments");
+        Review updatedReview = new Review();
+        updatedReview.setComment("updated comment");
 
         String jsonRequest = mapper.writeValueAsString(updatedDTO);
 
-        when(service.updateBook(1L, updatedDTO)).thenReturn(updatedBook);
+        when(service.updateReview(1L, updatedDTO)).thenReturn(updatedReview);
         mockMvc.perform(post(BASE_URL + Mappings.UPDATE, 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("updated comments")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comment", Matchers.is("updated comment")));
     }
 
     @Test
@@ -122,7 +121,7 @@ class BookControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
-        verify(service).deleteBook(1L);
+        verify(service).deleteReview(1L);
     }
 
 }
