@@ -35,12 +35,12 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 
 	ngOnInit() {
 
-		this.bookDetailsService.saveBook(this.newBookDTO).subscribe((response) => {
-			console.log('book added to database');
-		});
-		this.bookDetailsService.updateBook(this.newBookDTO, 1).subscribe((response) => {
-			console.log('book updated');
-		});
+		// this.bookDetailsService.saveBook(this.newBookDTO).subscribe((response) => {
+		// 	console.log('book added to database');
+		// });
+		// this.bookDetailsService.updateBook(this.newBookDTO, 1).subscribe((response) => {
+		// 	console.log('book updated');
+		// });
 		this.pageEvent.pageIndex = 0;
 		this.pageEvent.pageSize = 10;
 

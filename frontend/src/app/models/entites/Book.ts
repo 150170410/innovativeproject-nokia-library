@@ -1,5 +1,5 @@
 export class Book {
-	calalog_number: number;
-	book_id: number;
+	catalogNumber: number;
+	bookId: number;
 	comments: string;
 }
