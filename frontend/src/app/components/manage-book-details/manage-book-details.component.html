@@ -1,6 +1,36 @@
 <mat-tab-group>
 	<mat-tab label="Add author">
 		<div><h1>Add AUTHOR form goes here</h1>
+      <div>
+        <form name="authorsParams" (ngSubmit)="createAuthor(authorParams)" [formGroup]="authorParams">
+          <div>
+            <mat-form-field>
+              <input formControlName="authorName"
+                  placeholder="Author Name"
+                  matInput>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field>
+              <input formControlName="authorSurname"
+                     placeholder="Author Surname"
+                     matInput>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field>
+              <input formControlName="authorDescription"
+                     placeholder="Author Description"
+                     matInput>
+            </mat-form-field>
+          </div>
+          <div>
+            <button mat-raised-button color="primary" [type]="submit">
+              Create new Author
+            </button>
+          </div>
+        </form>
+      </div>
 		</div>
 	</mat-tab>
 	<mat-tab label="Add category">
@@ -17,12 +47,62 @@
 							Create new category
 						</button>
 					</div>
-
 				</form>
 			</div>
 		</div>
 	</mat-tab>
 	<mat-tab label="Add book details">
 		<div><h1>Add FULL BOOK DETAILS form goes here</h1></div>
+    <div>
+      <form name="bookDetailsParams" (ngSubmit)="createBookDetails(bookDetailsParams)" [formGroup]="bookDetailsParams">
+        <div>
+          <mat-form-field>
+            <input formControlName="title"
+                   placeholder="Book title"
+                   matInput>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input formControlName="isbn"
+                   placeholder="ISBN number"
+                   matInput>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input formControlName="tableOfContents"
+                   placeholder="Table of contents"
+                   matInput>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input formControlName="dateOfPublication"
+                   placeholder="Publication date"
+                   matInput>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input formControlName="coverPictureUrl"
+                   placeholder="Cover picture URL"
+                   matInput>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input formControlName="description"
+                   placeholder="Book description"
+                   matInput>
+          </mat-form-field>
+        </div>
+        <div>
+          <button mat-raised-button color="primary" [type]="submit">
+            Create new book details
+          </button>
+        </div>
+      </form>
+    </div>
 	</mat-tab>
 </mat-tab-group>
