@@ -4,7 +4,23 @@
 		</div>
 	</mat-tab>
 	<mat-tab label="Add category">
-		<div><h1>Add CATEGORY form goes here</h1></div>
+		<div><h1>Add CATEGORY form goes here</h1>
+			<div>
+				<form name="categoriesParams" (ngSubmit)="createCategory(categoryParams)" [formGroup]="categoryParams">
+					<mat-form-field>
+						<input formControlName="categoryName"
+							   placeholder="Category name"
+							   matInput>
+					</mat-form-field>
+					<div>
+						<button mat-raised-button color="primary" [type]="submit">
+							Create new category
+						</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
 	</mat-tab>
 	<mat-tab label="Add book details">
 		<div><h1>Add FULL BOOK DETAILS form goes here</h1></div>

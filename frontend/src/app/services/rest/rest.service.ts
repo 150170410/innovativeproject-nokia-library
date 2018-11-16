@@ -8,7 +8,7 @@ import { Observable, throwError } from 'rxjs/index';
 	providedIn: 'root'
 })
 export class RestService {
-	URL = API_URL + '/api/v1/library';
+	URL = API_URL + '/api/v1/';
 	httpOptions = {
 		headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 	};
