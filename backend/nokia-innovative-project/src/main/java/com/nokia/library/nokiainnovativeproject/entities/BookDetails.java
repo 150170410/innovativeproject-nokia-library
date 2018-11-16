@@ -1,11 +1,14 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -24,17 +27,17 @@ public class BookDetails implements Serializable {
 	private Long id;
 
 	@Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers long")
-	@NotNull(message = "ISBN is required")
+	@NotBlank(message = "ISBN is required")
 	private String isbn;
 
-	@Length(max = 30, message = "Title can't exceed 30 characters")
-	@NotNull(message = "Title is required")
+	@Length(max = 100, message = "Title can't exceed 100 characters")
+	@NotBlank(message = "Title is required")
 	private String title;
 
-	@Size(max = 250, message = "Description can't exceed 250 characters")
+	@Size(max = 1000, message = "Description can't exceed 1000 characters")
 	private String description;
 
-	@Size(max = 100, message = "Cover picture URL can't exceed 100 characters")
+	@Size(max = 1000, message = "Cover picture URL can't exceed 1000 characters")
 	private String coverPictureUrl;
 
 	@Past(message = "Rental date should be a past date")

@@ -1,9 +1,10 @@
 package com.nokia.library.nokiainnovativeproject.DTOs;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
@@ -11,7 +12,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class AuthorDTO {
 
-    @NotNull(message = "Author's name is required")
+    @NotBlank(message = "Author's name is required")
     @Size(max = 300, message = "Author's name must be 0-300 characters long")
     private String authorName;
 

@@ -6,13 +6,12 @@ import com.nokia.library.nokiainnovativeproject.entities.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,17 +21,17 @@ import java.util.List;
 public class BookDetailsDTO {
 
 	@Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers long")
-	@NotNull(message = "ISBN is required")
+	@NotBlank(message = "ISBN is required")
 	private String isbn;
 
-	@Length(max = 30, message = "Title can't exceed 30 characters")
-	@NotNull(message = "Title is required")
+	@Length(max = 100, message = "Title can't exceed 100 characters")
+	@NotBlank(message = "Title is required")
 	private String title;
 
-	@Size(max = 250, message = "Description can't exceed 250 characters")
+	@Size(max = 1000, message = "Description can't exceed 1000 characters")
 	private String description;
 
-	@Size(max = 100, message = "Cover picture URL can't exceed 100 characters")
+	@Size(max = 1000, message = "Cover picture URL can't exceed 1000 characters")
 	private String coverPictureUrl;
 
 	@Past(message = "Rental date should be a past date")

@@ -1,11 +1,13 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -20,7 +22,7 @@ public class Author implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull(message = "Author's name is required")
+	@NotBlank(message = "Author's name is required")
 	@Size(max = 300, message = "The author's name must be 0-300 characters long")
 	private String authorName;
 
