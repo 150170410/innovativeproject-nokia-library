@@ -4,6 +4,8 @@ import { RestService } from '../../services/rest/rest.service';
 import { BookCategoryDTO } from '../../models/DTOs/BookCategoryDTO';
 import { AuthorDTO } from '../../models/DTOs/Author';
 import { BookDetailsDTO } from '../../models/DTOs/BookDetailsDTO';
+import { BookCategory } from '../../models/entites/BookCategory';
+import { MessageInfo } from '../../models/entites/MessageInfo';
 
 
 @Component({
@@ -16,6 +18,9 @@ export class ManageBookDetailsComponent implements OnInit {
 	categoryParams: FormGroup;
 	authorParams: FormGroup;
 	bookDetailsParams: FormGroup;
+
+	categories: BookCategory[] = [];
+	displayedColumns: string[] = ['id', 'bookCategoryName'];
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService) {
@@ -56,7 +61,14 @@ export class ManageBookDetailsComponent implements OnInit {
 		const body = new BookCategoryDTO(params.value.categoryName);
 		this.http.save('bookCategory/create', body).subscribe(() => {
 			console.log('category created');
+			this.getCategories();
 		});
+
+	}
+
+	async getCategories() {
+		const response: MessageInfo = await this.http.getAll('bookCategory/getAll');
+		this.categories = response.object;
 	}
 
 	createAuthor(params: any) {

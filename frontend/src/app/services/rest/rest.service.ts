@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { catchError } from 'rxjs/internal/operators';
 import { API_URL } from '../../config';
 import { Observable, throwError } from 'rxjs/index';
+import { MessageInfo } from '../../models/entites/MessageInfo';
 
 @Injectable({
 	providedIn: 'root'
@@ -17,7 +18,7 @@ export class RestService {
 	}
 
 	async getAll(url: string) {
-		return await this.http.get<any[]>(this.URL + url)
+		return await this.http.get<MessageInfo>(this.URL + url)
 		.pipe(
 			catchError(this.handleError)
 		).toPromise();
