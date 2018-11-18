@@ -62,7 +62,7 @@ class ReviewControllerTest {
     }
 
     @Test
-    public void getBooksTest() throws Exception {
+    public void getReviewTest() throws Exception {
         List<Review> reviews = new ArrayList<>();
         reviews.add(review);
         when(service.getAllReviews()).thenReturn(reviews);
@@ -70,21 +70,19 @@ class ReviewControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].comment", Matchers.is("test comment")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].addDate", Matchers.is(date.getTime())));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].comment", Matchers.is("test comment")));
     }
     @Test
-    public void getBookByIdTest() throws Exception {
+    public void getReviewByIdTest() throws Exception {
         when(service.getReviewById(1L)).thenReturn(review);
         mockMvc.perform(get(BASE_URL + Mappings.GET_ONE, 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comment", Matchers.is("test comment")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.addDate", Matchers.is(date.getTime())));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comment", Matchers.is("test comment")));
     }
 
     @Test
-    public void createBookTest() throws Exception {
+    public void createReviewTest() throws Exception {
         String jsonRequest = mapper.writeValueAsString(reviewDTO);
         when(service.createReview(reviewDTO)).thenReturn(review);
         mockMvc.perform(post(BASE_URL + Mappings.CREATE)
@@ -92,12 +90,11 @@ class ReviewControllerTest {
                 .content(jsonRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comment", Matchers.is("test comment")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.addDate", Matchers.is(date.getTime())));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comment", Matchers.is("test comment")));
     }
 
     @Test
-    public void updateBookTest() throws Exception {
+    public void updateReviewTest() throws Exception {
         ReviewDTO updatedDTO = new ReviewDTO();
         updatedDTO.setComment("updated comment");
 
@@ -116,7 +113,7 @@ class ReviewControllerTest {
     }
 
     @Test
-    public void deleteBookTest() throws Exception {
+    public void deleteReviewTest() throws Exception {
         mockMvc.perform(delete(BASE_URL + Mappings.REMOVE, 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

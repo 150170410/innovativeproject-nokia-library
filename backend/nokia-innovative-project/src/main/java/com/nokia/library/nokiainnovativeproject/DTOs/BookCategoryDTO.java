@@ -11,6 +11,6 @@ import javax.validation.constraints.Size;
 public class BookCategoryDTO {
 
 	@NotNull(message = "Book category name is required")
-	@Size(max = 20, message = "Book category name can't be longer than 20 characters")
+	@Size(min = 1, max = 50, message = "Book category name must be 1-50 characters long")
 	private String bookCategoryName;
 }

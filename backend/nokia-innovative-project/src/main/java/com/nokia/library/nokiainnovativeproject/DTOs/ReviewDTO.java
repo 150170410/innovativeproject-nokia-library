@@ -13,6 +13,6 @@ import java.util.Date;
 public class ReviewDTO {
 
     @NotNull(message = "Comment is required")
-    @Size(max = 300, message = "Comment can exceed 300 characters")
+    @Size(min = 1, max = 300, message = "Comment must be 1-300 characters long")
     private String comment;
 }
