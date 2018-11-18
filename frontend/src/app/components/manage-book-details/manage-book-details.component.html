@@ -108,8 +108,8 @@
           </div>
           <div>
             <mat-form-field>
-              <mat-select [compareWith]="compareWithFn" multiple [formControlName]="categories" [(ngModel)]="myCategories">
-                <mat-option *ngFor="let topping of bookCategories">{{topping.bookCategoryName}}</mat-option>
+              <mat-select placeholder="Categories" [(ngModel)]="selectedCategories" [formControl]="categoryForm" multiple>
+                <mat-option *ngFor="let category of bookCategories" [value]="category">{{category.bookCategoryName}}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>

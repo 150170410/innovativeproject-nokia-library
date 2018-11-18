@@ -12,7 +12,6 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Observable} from 'rxjs';
 import {MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent} from '@angular/material';
 import {map, startWith} from 'rxjs/operators';
-import {logger} from 'codelyzer/util/logger';
 
 @Component({
 	selector: 'app-manage-book-details',
@@ -32,11 +31,11 @@ export class ManageBookDetailsComponent implements OnInit {
 	booksDetails: BookDetails[] = [];
   displayedBookDetailColumns: string[] = ['id', 'title', 'isbn'];
 
-  myCategories: BookCategory[] = [];
+  // variables for categories form
+  selectedCategories: BookCategory[] = [];
+  categoryForm = new FormControl();
 
-  /*
-  Chip list for authors.
-  */
+  // variables foe chip list of authors
   selectable = true;
   removable = true;
   addOnBlur = true;
@@ -46,22 +45,14 @@ export class ManageBookDetailsComponent implements OnInit {
   myAuthors: any[] = [];
   @ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
-  /*
-  Chip list for authors.
-  */
 
-
-	constructor(private formBuilder: FormBuilder,
-				private http: RestService) {
-
+	constructor(private formBuilder: FormBuilder, private http: RestService) {
 	  this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
-      startWith(null),
-      map((author: string | null) => author ? this._filter(author) : this.authors.slice()));
+            startWith(null),
+            map((author: string | null) => author ? this._filter(author) : this.authors.slice()));
 	}
 
-	/*
-	Chip list for authors
-  */
+  // methods helpful to chip list of authors
   add(event: MatChipInputEvent): void {
     if (!this.matAutocomplete.isOpen) {
       const input = event.input;
@@ -81,27 +72,28 @@ export class ManageBookDetailsComponent implements OnInit {
       this.authorCtrl.setValue(null);
     }
   }
+
   remove(author, index): void {
-    if (index >= 0) {
+
+	  if (index >= 0) {
       this.myAuthors.splice(index, 1);
     }
   }
+
   selected(event: MatAutocompleteSelectedEvent): void {
     this.myAuthors.push(event.option.value);
     this.authorInput.nativeElement.value = '';
     this.authorCtrl.setValue(null);
+
+    this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
+      startWith(null),
+      map((author: string | null) => author ? this._filter(author) : this.authors.slice()));
   }
+
   private _filter(value: any): any[] {
     return this.authors.filter(author => author.authorName.toLowerCase().includes(value.toLowerCase()));
   }
-  /*
-	Chip list for authors
-	 */
-
-  compareWithFn(item1, item2) {
-    return item1 && item2 ? item1.id === item2.id : item1 === item2;
-  }
-
+  // end of methods helpful to chip list of authors
 
 	ngOnInit() {
 		this.initCategoriesForm();
@@ -155,10 +147,10 @@ export class ManageBookDetailsComponent implements OnInit {
 	createBookDetails(params: any) {
 		const body = new BookDetailsDTO(params.value.coverPictureUrl, params.value.dateOfPublication,
 			params.value.description, params.value.isbn,
-			params.value.tableOfContents, params.value.title, this.myAuthors, this.myCategories)
+			params.value.tableOfContents, params.value.title, this.myAuthors, this.selectedCategories)
 		this.http.save('bookDetails/create', body).subscribe(() => {
 			console.log('book details created');
-			console.log(this.myCategories);
+			console.log(this.selectedCategories);
 		});
 	}
 
