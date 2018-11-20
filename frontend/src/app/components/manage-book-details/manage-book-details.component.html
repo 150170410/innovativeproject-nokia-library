@@ -4,32 +4,58 @@
       <div><h1>Add Author</h1>
         <div>
           <form name="authorsParams" (ngSubmit)="createAuthor(authorParams)" [formGroup]="authorParams">
+
             <div>
-              <mat-form-field>
+              <mat-form-field class="element-in-table">
                 <input formControlName="authorName"
-                     placeholder="Author Name"
-                     matInput>
+                       placeholder="Author Name"
+                       matInput required>
+                <mat-error *ngIf="authorParams.controls.authorName.hasError">
+                  <div *ngIf="authorParams.controls.authorName.errors?.required">
+                    Author Name is required
+                  </div>
+                  <div *ngIf="authorParams.controls.authorName.errors?.maxlength">
+                    The maximum length is 300 characters
+                  </div>
+                </mat-error>
               </mat-form-field>
             </div>
+
             <div>
-              <mat-form-field>
+              <mat-form-field  class="element-in-table">
                 <input formControlName="authorSurname"
-                     placeholder="Author Surname"
-                     matInput>
+                       placeholder="Author Surname"
+                       matInput required>
+                <mat-error *ngIf="authorParams.controls.authorSurname.hasError">
+                  <div *ngIf="authorParams.controls.authorSurname.errors?.required">
+                    Author Surname is required
+                  </div>
+                  <div *ngIf="authorParams.controls.authorSurname.errors?.maxlength">
+                    The maximum length is 300 characters
+                  </div>
+                </mat-error>
               </mat-form-field>
             </div>
+
             <div>
-              <mat-form-field>
+              <mat-form-field class="element-in-table">
                 <input formControlName="authorDescription"
-                     placeholder="Author Description"
-                     matInput>
+                       placeholder="Author Description"
+                       matInput>
+                <mat-error *ngIf="authorParams.controls.authorDescription.hasError">
+                  <div *ngIf="authorParams.controls.authorDescription.errors?.maxlength">
+                    The maximum length is 10000 characters
+                  </div>
+                </mat-error>
               </mat-form-field>
             </div>
+
             <div>
               <button mat-raised-button color="primary" [type]="submit">
                 Create new Author
               </button>
             </div>
+
           </form>
         </div>
       </div>
@@ -63,16 +89,27 @@
 				<h1>Add category</h1>
 
 				<form name="categoriesParams" (ngSubmit)="createCategory(categoryParams)" [formGroup]="categoryParams">
-					<mat-form-field>
-						<input formControlName="categoryName"
+					<mat-form-field class="element-in-table">
+
+            <input formControlName="categoryName"
 							   placeholder="Category name"
-							   matInput>
+                   matInput required>
+            <mat-error *ngIf="categoryParams.controls.categoryName.hasError">
+              <div *ngIf="categoryParams.controls.categoryName.errors?.required">
+                Category name is required
+              </div>
+              <div *ngIf="categoryParams.controls.categoryName.errors?.maxlength">
+                The maximum length is 50 characters
+              </div>
+            </mat-error>
 					</mat-form-field>
+
 					<div>
-						<button mat-raised-button color="primary" [type]="submit">
+						<button mat-raised-button color="primary" [type]="submit" >
 							Create new category
 						</button>
 					</div>
+
 				</form>
 			</div>
 		</mat-card>
@@ -99,23 +136,37 @@
       <div><h1>Add book detail</h1></div>
       <div>
         <form name="bookDetailsParams" (ngSubmit)="createBookDetails(bookDetailsParams)" [formGroup]="bookDetailsParams">
+
           <div>
-            <mat-form-field>
+            <mat-form-field  class="element-in-table">
               <input formControlName="title"
                    placeholder="Book title"
                    matInput>
+              <mat-error *ngIf="bookDetailsParams.controls.title.hasError">
+                <div *ngIf="bookDetailsParams.controls.title.errors?.required">
+                  Title is required
+                </div>
+                <div *ngIf="bookDetailsParams.controls.title.errors?.maxlength">
+                  The maximum length is 100 characters
+                </div>
+              </mat-error>
             </mat-form-field>
           </div>
+
           <div>
-            <mat-form-field>
-              <mat-select placeholder="Categories" [(ngModel)]="selectedCategories" [formControl]="categoryForm" multiple>
+            <mat-form-field class="element-in-table">
+              <mat-select placeholder="Categories" [(ngModel)]="selectedCategories" [formControl]="categoryForm" multiple required>
                 <mat-option *ngFor="let category of bookCategories" [value]="category">{{category.bookCategoryName}}</mat-option>
               </mat-select>
+              <mat-error>
+                At least one category ir required
+              </mat-error>
             </mat-form-field>
           </div>
+
           <div>
-            <mat-form-field class="example-chip-list">
-              <mat-chip-list #chipList>
+            <mat-form-field class="author-chip-list">
+              <mat-chip-list #chipList minlength="1">
                 <mat-chip
                   *ngFor="let author of myAuthors; let indx=index"
                   [selectable]="selectable"
@@ -139,43 +190,101 @@
                   {{(author.authorName + " " + author.authorSurname)}}
                 </mat-option>
               </mat-autocomplete>
+
+
+
+              <mat-error>
+                !!!!!!   THIS IS NOT WORKING YET
+                At least one category ir required
+              </mat-error>
+
+
+
             </mat-form-field>
           </div>
+
           <div>
-            <mat-form-field>
+            <mat-form-field class="element-in-table">
               <input formControlName="isbn"
                    placeholder="ISBN number"
                    matInput>
+              <mat-error *ngIf="bookDetailsParams.controls.isbn.hasError">
+                <div *ngIf="bookDetailsParams.controls.isbn.errors?.required">
+                  Isbn number is required
+                </div>
+                <div *ngIf="bookDetailsParams.controls.isbn.errors?.maxlength">
+                  The maximum length is 13 characters
+                </div>
+                <div *ngIf="bookDetailsParams.controls.isbn.errors?.minlength">
+                  The minimum length is 10 characters
+                </div>
+              </mat-error>
             </mat-form-field>
           </div>
+
           <div>
-            <mat-form-field>
+            <mat-form-field class="element-in-table">
               <input formControlName="tableOfContents"
                    placeholder="Table of contents"
                    matInput>
+              <mat-error *ngIf="bookDetailsParams.controls.tableOfContents.hasError">
+                <div *ngIf="bookDetailsParams.controls.tableOfContents.errors?.maxlength">
+                  The maximum length is 100 characters
+                </div>
+              </mat-error>
             </mat-form-field>
           </div>
+
           <div>
-            <mat-form-field>
-              <input matInput [matDatepicker]="myDatepicker" formControlName="dateOfPublication" placeholder="Publication date" matInput>
+            <mat-form-field id="wojtek" class="publication-date-in-table">
+              <input matInput [matDatepicker]="myDatepicker" formControlName="dateOfPublication" placeholder="Publication date"
+                     matInput required >
                 <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
                 <mat-datepicker #myDatepicker></mat-datepicker>
+
+              <mat-error *ngIf="bookDetailsParams.controls.dateOfPublication.hasError">
+                <div *ngIf="bookDetailsParams.controls.dateOfPublication.errors?.required">
+                  Publication date is required
+                </div>
+
+
+
+
+
+
+
+
+              </mat-error>
+
             </mat-form-field>
           </div>
+
           <div>
-            <mat-form-field>
+            <mat-form-field class="element-in-table">
               <input formControlName="coverPictureUrl"
                    placeholder="Cover picture URL"
                    matInput>
+              <mat-error *ngIf="bookDetailsParams.controls.coverPictureUrl.hasError">
+                <div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">
+                  The maximum length is 1000 characters
+                </div>
+              </mat-error>
             </mat-form-field>
           </div>
+
           <div>
-            <mat-form-field>
+            <mat-form-field class="element-in-table">
               <input formControlName="description"
                    placeholder="Book description"
                    matInput>
+              <mat-error *ngIf="bookDetailsParams.controls.coverPictureUrl.hasError">
+                <div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">
+                  The maximum length is 1000 characters
+                </div>
+              </mat-error>
             </mat-form-field>
           </div>
+
           <div>
             <button mat-raised-button color="primary" [type]="submit">
               Create new book details
