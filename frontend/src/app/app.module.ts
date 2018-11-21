@@ -20,6 +20,7 @@ import { RestService } from './services/rest/rest.service';
 import { GridViewComponent } from './components/grid-view/grid-view.component';
 import { ManageBookDetailsComponent } from './components/manage-book-details/manage-book-details.component';
 import { SingleBookViewComponent } from './components/single-book-view/single-book-view';
+import { ContactUsComponent } from './components/contact-us/contact-us.component';
 
 @NgModule({
 	declarations: [
@@ -30,7 +31,8 @@ import { SingleBookViewComponent } from './components/single-book-view/single-bo
 		SingleBookViewComponent,
 		PageNotFoundComponent,
 		GridViewComponent,
-		ManageBookDetailsComponent
+		ManageBookDetailsComponent,
+		ContactUsComponent
 	],
 	imports: [
 		BrowserModule,

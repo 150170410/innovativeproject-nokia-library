@@ -1,10 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { BookService } from '../../services/book/book.service';
 import { PageEvent } from '@angular/material';
 import { BookDetailsService } from '../../services/book-details/book-details.service';
-import {BookDetails} from '../../models/entites/BookDetails';
-import {RestService} from '../../services/rest/rest.service';
-import {MessageInfo} from '../../models/entites/MessageInfo';
+import { BookDetails } from '../../models/database/entites/BookDetails';
+import { RestService } from '../../services/rest/rest.service';
+import { MessageInfo } from '../../models/MessageInfo';
 
 @Component({
 	selector: 'app-listview',
@@ -39,27 +38,9 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 	}
 
 	ngOnInit() {
-
-		// this.bookDetailsService.saveBook(this.newBookDTO).subscribe((response) => {
-		// 	console.log('book added to database');
-		// });
-		// this.bookDetailsService.updateBook(this.newBookDTO, 1).subscribe((response) => {
-		// 	console.log('book updated');
-		// });
 		this.pageEvent.pageIndex = 0;
 		this.pageEvent.pageSize = 10;
 
-		// this.bookService.removeBook(3).subscribe();
-
-		// this.bookService.getBooks().subscribe((response) => {
-		// 	this.books = response;
-		// 	console.log(this.books);
-		// });
-
-		// this.bookService.getBooks(99999).subscribe((response) => {
-		// 	// this.books = response;
-		// 	console.log(response);
-		// });
 	}
 
 	ngAfterViewInit(): void {
@@ -68,17 +49,17 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 
 
 	async getBooks(id?: number) {
-	  this.books = await this.bookDetailsService.getBooks(id)
+		this.books = await this.bookDetailsService.getBooks(id)
 		.catch((err) => {
 			console.log(err.message);
 			this.errorMessage = err;
 		});
 
-    const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
-    this.allBooks = response.object;
+		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
+		this.allBooks = response.object;
 
-	  console.log(this.books);
-	  console.log(this.allBooks);
+		console.log(this.books);
+		console.log(this.allBooks);
 	}
 
 	paginationFrom(pageEvent) {

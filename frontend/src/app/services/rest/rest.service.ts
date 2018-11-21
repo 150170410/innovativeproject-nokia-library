@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { catchError } from 'rxjs/internal/operators';
 import { API_URL } from '../../config';
 import { Observable, throwError } from 'rxjs/index';
-import { MessageInfo } from '../../models/entites/MessageInfo';
+import { MessageInfo } from '../../models/MessageInfo';
 
 @Injectable({
 	providedIn: 'root'

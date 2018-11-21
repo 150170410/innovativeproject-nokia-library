@@ -5,6 +5,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { GridViewComponent } from './components/grid-view/grid-view.component';
 import { ManageBookDetailsComponent } from './components/manage-book-details/manage-book-details.component';
 import { SingleBookViewComponent } from './components/single-book-view/single-book-view';
+import { ContactUsComponent } from './components/contact-us/contact-us.component';
 
 export const routes: Routes = [
 	{ path: '', redirectTo: 'homepage', pathMatch: 'full' },
@@ -13,6 +14,8 @@ export const routes: Routes = [
 	{ path: 'gridView', component: GridViewComponent },
 	{ path: 'manage-book-details', component: ManageBookDetailsComponent },
 	{ path: 'single-book-view/:id', component: SingleBookViewComponent, data: { id: 'id' } },
+	{ path: 'contact', component: ContactUsComponent },
+
 	{ path: '**', component: PageNotFoundComponent }
 
 ];

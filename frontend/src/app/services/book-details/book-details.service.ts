@@ -3,8 +3,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable, throwError } from 'rxjs/index';
 import { catchError } from 'rxjs/internal/operators';
 import { API_URL } from '../../config';
-import { BookDetails } from '../../models/entites/BookDetails';
-import { BookDetailsDTO } from '../../models/DTOs/BookDetailsDTO';
+import { BookDetails } from '../../models/database/entites/BookDetails';
+import { BookDetailsDTO } from '../../models/database/DTOs/BookDetailsDTO';
 
 @Injectable({
 	providedIn: 'root'
