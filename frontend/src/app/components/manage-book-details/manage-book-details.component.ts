@@ -30,7 +30,16 @@ export class ManageBookDetailsComponent implements OnInit {
 	authors: Author[] = [];
   displayedAuthorsColumn: string[] = ['id', 'authorName', 'authorSurname'];
 	booksDetails: BookDetails[] = [];
-  displayedBookDetailColumns: string[] = ['id', 'title', 'isbn'];
+  displayedBookDetailColumns: string[] = ['id', 'title', 'dateOfPublication', 'isbn'];
+
+  // variable for date validation
+  actualDate = new Date();
+  actualYear = this.actualDate.getFullYear();
+  actuatMonth = this.actualDate.getMonth();
+  actualDay = this.actualDate.getDay();
+
+  maxDate = new Date(this.actualYear, this.actuatMonth, this.actualDay);
+
 
   // variables helpful for mistakes catching
   categorySubmitted = false;
@@ -151,6 +160,11 @@ export class ManageBookDetailsComponent implements OnInit {
 			console.log('category created');
 		});
 
+    // MUST BE DELETED AFTER BACKEND VALIDATION
+    this.getCategories();
+    console.log(this.bookCategories);
+    // MUST BE DELETED AFTER BACKEND VALIDATION
+
 		this.categorySubmitted = false;
 	}
 
@@ -168,6 +182,10 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.http.save('author/create', body).subscribe(() => {
 			console.log('author created');
 		});
+
+    // MUST BE DELETED AFTER BACKEND VALIDATION
+    this.getAuthors();
+    // MUST BE DELETED AFTER BACKEND VALIDATION
 
 		this.authorSubmitted = false;
 	}
@@ -187,6 +205,10 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.http.save('bookDetails/create', body).subscribe(() => {
 			console.log('book details created');
 		});
+
+	  // MUST BE DELETED AFTER BACKEND VALIDATION
+    this.getBookDetails();
+    // MUST BE DELETED AFTER BACKEND VALIDATION
 
 		this.bookDetailsSubmitted = false;
 	}

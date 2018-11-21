@@ -39,9 +39,9 @@
 
             <div>
               <mat-form-field class="element-in-table">
-                <input formControlName="authorDescription"
-                       placeholder="Author Description"
-                       matInput>
+                <textarea  formControlName="authorDescription"
+                            placeholder="Author Description" matInput>
+                </textarea>
                 <mat-error *ngIf="authorParams.controls.authorDescription.hasError">
                   <div *ngIf="authorParams.controls.authorDescription.errors?.maxlength">
                     The maximum length is 10000 characters
@@ -190,16 +190,6 @@
                   {{(author.authorName + " " + author.authorSurname)}}
                 </mat-option>
               </mat-autocomplete>
-
-
-
-              <mat-error>
-                !!!!!!   THIS IS NOT WORKING YET
-                At least one category ir required
-              </mat-error>
-
-
-
             </mat-form-field>
           </div>
 
@@ -207,7 +197,7 @@
             <mat-form-field class="element-in-table">
               <input formControlName="isbn"
                    placeholder="ISBN number"
-                   matInput>
+                   matInput required>
               <mat-error *ngIf="bookDetailsParams.controls.isbn.hasError">
                 <div *ngIf="bookDetailsParams.controls.isbn.errors?.required">
                   Isbn number is required
@@ -236,28 +226,22 @@
           </div>
 
           <div>
-            <mat-form-field id="wojtek" class="publication-date-in-table">
-              <input matInput [matDatepicker]="myDatepicker" formControlName="dateOfPublication" placeholder="Publication date"
-                     matInput required >
+            <mat-form-field class="publication-date-in-table">
+              <input  matInput [max]="maxDate" [matDatepicker]="myDatepicker"
+                      placeholder="Publication date" disabled required
+                      formControlName="dateOfPublication">
                 <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
-                <mat-datepicker #myDatepicker></mat-datepicker>
+                <mat-datepicker startView="multi-year" #myDatepicker disabled="false"></mat-datepicker>
 
               <mat-error *ngIf="bookDetailsParams.controls.dateOfPublication.hasError">
                 <div *ngIf="bookDetailsParams.controls.dateOfPublication.errors?.required">
                   Publication date is required
                 </div>
-
-
-
-
-
-
-
-
               </mat-error>
 
             </mat-form-field>
           </div>
+
 
           <div>
             <mat-form-field class="element-in-table">
@@ -274,9 +258,9 @@
 
           <div>
             <mat-form-field class="element-in-table">
-              <input formControlName="description"
-                   placeholder="Book description"
-                   matInput>
+              <textarea formControlName="description"
+                   placeholder="Book description" matInput>
+              </textarea>
               <mat-error *ngIf="bookDetailsParams.controls.coverPictureUrl.hasError">
                 <div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">
                   The maximum length is 1000 characters
@@ -306,12 +290,10 @@
         <td mat-cell *matCellDef="let bookDetails"> {{bookDetails.title}} </td>
       </ng-container>
 
-      <!--
-      <ng-container matColumnDef="authors">
-        <th mat-header-cell *matHeaderCellDef> Authors </th>
-        <td mat-cell *matCellDef="let bookDetails"> {{bookDetails.authors}} </td>
+      <ng-container matColumnDef="dateOfPublication">
+        <th mat-header-cell *matHeaderCellDef> Publication Date </th>
+        <td mat-cell *matCellDef="let bookDetails" > {{bookDetails.dateOfPublication | date: 'yyyy'}} </td>
       </ng-container>
-      -->
 
       <ng-container matColumnDef="isbn">
         <th mat-header-cell *matHeaderCellDef> ISBN </th>
