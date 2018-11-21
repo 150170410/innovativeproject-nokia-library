@@ -1,2 +1,21 @@
 <a routerLink="/listView" routerLinkActive="active">< Go back to listview</a>
 <h1>Book id: {{id}}</h1>
+
+<div> Title: {{bookDetails.title}}</div>
+<div><br></div>
+<div>Authors:</div>
+<div *ngFor="let author of authors"> {{author.authorName}}  {{author.authorSurname}}  {{author.authorDescription}}</div>
+<div><br></div>
+<div>Comments:</div>
+<div *ngFor="let review of reviews">{{review.comment}}</div>
+<div><br></div>
+<div> Cover picture URL: {{bookDetails.coverPictureUrl}}</div>
+<div><br></div>
+<div>Date of publication: {{bookDetails.dateOfPublication}}</div>
+<div><br></div>
+<div>Description: {{bookDetails.description}}</div>
+<div><br></div>
+<div>ISBN: {{bookDetails.isbn}}</div>
+<div><br></div>
+<div>Table of Contents: {{bookDetails.tableOfContents}}</div>
+

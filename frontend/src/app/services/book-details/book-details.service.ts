@@ -11,7 +11,7 @@ import { BookDetailsDTO } from '../../models/DTOs/BookDetailsDTO';
 })
 export class BookDetailsService {
 
-	url = API_URL + '/api/v1/library/bookDetails';
+	url = API_URL + '/api/v1/bookDetails';
 
 	httpOptions = {
 		headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -21,7 +21,7 @@ export class BookDetailsService {
 	}
 
 	async getBooks(id?: number) {
-		const url = id ? this.url + `/${id}` : this.url;
+		const url = id ? this.url + '/getOne' + `/${id}` : this.url + '/getAll';
 		return await this.http.get<BookDetails[]>(url).toPromise();
 	}
 

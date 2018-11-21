@@ -2,6 +2,9 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { BookService } from '../../services/book/book.service';
 import { PageEvent } from '@angular/material';
 import { BookDetailsService } from '../../services/book-details/book-details.service';
+import {BookDetails} from '../../models/entites/BookDetails';
+import {RestService} from '../../services/rest/rest.service';
+import {MessageInfo} from '../../models/entites/MessageInfo';
 
 @Component({
 	selector: 'app-listview',
@@ -18,7 +21,9 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 	// MatPaginator Output
 	pageEvent: PageEvent = new PageEvent;
 
+
 	books: any;
+	allBooks: BookDetails[] = [];
 	errorMessage: any;
 
 	newBookDTO = {
@@ -30,7 +35,7 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 		'title': 'Book ' + Math.floor(Math.random() * 100)
 	};
 
-	constructor(private bookDetailsService: BookDetailsService) {
+	constructor(private bookDetailsService: BookDetailsService, private http: RestService) {
 	}
 
 	ngOnInit() {
@@ -63,11 +68,17 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 
 
 	async getBooks(id?: number) {
-		this.books = await this.bookDetailsService.getBooks(id)
+	  this.books = await this.bookDetailsService.getBooks(id)
 		.catch((err) => {
 			console.log(err.message);
 			this.errorMessage = err;
 		});
+
+    const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
+    this.allBooks = response.object;
+
+	  console.log(this.books);
+	  console.log(this.allBooks);
 	}
 
 	paginationFrom(pageEvent) {
