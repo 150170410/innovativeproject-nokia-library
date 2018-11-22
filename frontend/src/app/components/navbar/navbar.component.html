@@ -2,14 +2,18 @@
 	<mat-toolbar-row>
 		<img class="nav-link white" src="../../../assets/images/nokia-logo.png">
 
-		<a class="nav-link white">Nokia library</a>
+		<a class="nav-link white" routerLink="/homepage" routerLinkActive="active">Nokia library</a>
 		<a class="nav-link white" target="_blank" href="https://github.com/nokia-wroclaw/innovativeproject-nokia-library">Github page</a>
 
 		<div class="search-bar-wrapper">
 			<form class="search-bar">
-				<mat-form-field class="search-bar-field">
-					<input type="search" matInput placeholder="Search">
+				<mat-form-field class="search-bar-field" floatLabel=never>
+					<input  matInput placeholder="{{placeHolder}}" (click)="checkPlaceHolder()" (blur)="checkPlaceHolder()" >
+					<button mat-button *ngIf="value" matSuffix mat-icon-button>
+						<mat-icon>close</mat-icon>
+					</button>
 					<mat-icon>search</mat-icon>
+
 				</mat-form-field>
 			</form>
 		</div>
