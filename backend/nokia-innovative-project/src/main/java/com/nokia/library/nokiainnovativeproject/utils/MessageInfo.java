@@ -1,8 +1,11 @@
 package com.nokia.library.nokiainnovativeproject.utils;
 
 import lombok.*;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -20,4 +23,12 @@ public class MessageInfo {
 		return new MessageInfo(false, null, message);
 	}
 
+	public static MessageInfo getErrors(BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+			List<String> errorsList = bindingResult.getAllErrors().stream()
+					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+			return MessageInfo.failure(errorsList);
+		}
+		return null;
+	}
 }

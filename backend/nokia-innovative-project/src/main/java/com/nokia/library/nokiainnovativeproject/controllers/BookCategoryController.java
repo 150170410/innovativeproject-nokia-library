@@ -1,20 +1,17 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
+import com.nokia.library.nokiainnovativeproject.DTOs.BookCategoryDTO;
 
+import com.nokia.library.nokiainnovativeproject.services.BookCategoryService;
+import com.nokia.library.nokiainnovativeproject.utils.Mappings;
+import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
+import lombok.RequiredArgsConstructor;
 
-		import com.nokia.library.nokiainnovativeproject.DTOs.BookCategoryDTO;
-		import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
-		import com.nokia.library.nokiainnovativeproject.services.BookCategoryService;
-		import com.nokia.library.nokiainnovativeproject.utils.Mappings;
-		import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
-		import lombok.RequiredArgsConstructor;
-		import org.springframework.context.support.DefaultMessageSourceResolvable;
-		import org.springframework.validation.BindingResult;
-		import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-		import javax.validation.Valid;
-		import java.util.Arrays;
-		import java.util.List;
-		import java.util.stream.Collectors;
+import javax.validation.Valid;
+import java.util.Arrays;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -35,12 +32,14 @@ public class BookCategoryController {
 
 	@PostMapping(Mappings.CREATE)
 	public MessageInfo createBookCategory(@RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult) {
-		return getMessageInfo(bindingResult , bookCategoryDTO, "BookCategory created successfully");
+		MessageInfo errors = MessageInfo.getErrors(bindingResult);
+		return errors != null ? errors : MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO), Arrays.asList("BookCategory created successfully"));
 	}
 
 	@PostMapping(Mappings.UPDATE)
 	public MessageInfo updateBookCategory(@PathVariable Long id, @RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult){
-		return getMessageInfo(bindingResult, bookCategoryDTO , "BookCategory updated successfully");
+		MessageInfo errors = MessageInfo.getErrors(bindingResult);
+		return errors != null ? errors : MessageInfo.success(bookCategoryService.updateBookCategory(id, bookCategoryDTO), Arrays.asList("BookCategory updated successfully"));
 	}
 
 	@DeleteMapping(Mappings.REMOVE)
@@ -48,13 +47,4 @@ public class BookCategoryController {
 		bookCategoryService.deleteBookCategory(id);
 		return MessageInfo.success(null, Arrays.asList("BookCategory with ID = " + id.toString() + " removed successfully"));
 	}
-
-	private MessageInfo getMessageInfo(BindingResult bindingResult, BookCategoryDTO bookCategoryDTO, String defaultMessageForSuccess) {
-        if(bindingResult.hasErrors()){
-            List<String> errorsList = bindingResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-            return MessageInfo.failure(errorsList);
-        }
-        return MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO), Arrays.asList(defaultMessageForSuccess));
-    }
 }

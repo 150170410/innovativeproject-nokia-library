@@ -1,20 +1,19 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
-import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
+
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.services.BookDetailsService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -35,13 +34,14 @@ public class BookDetailsController {
 
 	@PostMapping(Mappings.CREATE)
 	public MessageInfo createBookDetails(@RequestBody @Valid BookDetailsDTO bookDetailsDTO, BindingResult bindingResult) {
-		return getMessageInfo(bindingResult, bookDetailsDTO, "bookDetails created successfully");
+		MessageInfo errors = MessageInfo.getErrors(bindingResult);
+		return errors != null ? errors : MessageInfo.success(bookDetailsService.createBookDetails(bookDetailsDTO), Arrays.asList("bookDetails created successfully"));
 	}
 
 	@PostMapping(Mappings.UPDATE)
 	public MessageInfo updateBookDetails(@PathVariable Long id, @RequestBody @Valid BookDetailsDTO bookDetailsDTO, BindingResult bindingResult){
-		return getMessageInfo(bindingResult, bookDetailsDTO, "bookDetails updated successfully");
-
+		MessageInfo errors = MessageInfo.getErrors(bindingResult);
+		return errors != null ? errors : MessageInfo.success(bookDetailsService.updateBookDetails(id, bookDetailsDTO), Arrays.asList("bookDetails updated successfully"));
 	}
 
 	@DeleteMapping(Mappings.REMOVE)
@@ -49,13 +49,4 @@ public class BookDetailsController {
 		bookDetailsService.deleteBookDetails(id);
 		return MessageInfo.success(null, Arrays.asList("bookDetails with ID = " + id.toString() + " removed successfully"));
 	}
-
-	private MessageInfo getMessageInfo(BindingResult bindingResult, BookDetailsDTO bookDetailsDTO, String defaultMessageForSuccess) {
-        if(bindingResult.hasErrors()){
-            List<String> errorsList = bindingResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-            return MessageInfo.failure(errorsList);
-        }
-        return MessageInfo.success(bookDetailsService.createBookDetails(bookDetailsDTO), Arrays.asList(defaultMessageForSuccess));
-    }
 }

@@ -6,14 +6,14 @@ import com.nokia.library.nokiainnovativeproject.services.BookService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+
+
 
 @RestController
 @RequiredArgsConstructor
@@ -34,12 +34,14 @@ public class BookController {
 
 	@PostMapping(Mappings.CREATE)
 	public MessageInfo createBook(@RequestBody @Valid  BookDTO bookDTO, BindingResult bindingResult){
-		return getMessageInfo(bindingResult, bookDTO, "Book created successfully");
+		MessageInfo errors = MessageInfo.getErrors(bindingResult);
+		return errors != null ? errors : MessageInfo.success(bookService.createBook(bookDTO), Arrays.asList("Book created successfully"));
 	}
 
 	@PostMapping(Mappings.UPDATE)
 	public MessageInfo updateBook(@PathVariable Long id, @RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult){
-		return getMessageInfo(bindingResult, bookDTO, "Book updated successfully");
+		MessageInfo errors = MessageInfo.getErrors(bindingResult);
+		return errors != null ? errors : MessageInfo.success(bookService.updateBook(id, bookDTO), Arrays.asList("Book updated successfully"));
 	}
 
 	@DeleteMapping(Mappings.REMOVE)
@@ -47,13 +49,4 @@ public class BookController {
 		bookService.deleteBook(id);
 		return MessageInfo.success(null, Arrays.asList("Book with ID = " + id.toString() + " removed successfully"));
 	}
-
-	private MessageInfo getMessageInfo(BindingResult bindingResult, BookDTO bookDTO, String defaultMessageForSuccess) {
-        if(bindingResult.hasErrors()){
-            List<String> errorsList = bindingResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-            return MessageInfo.failure(errorsList);
-        }
-        return MessageInfo.success(bookService.createBook(bookDTO), Arrays.asList(defaultMessageForSuccess));
-    }
 }
