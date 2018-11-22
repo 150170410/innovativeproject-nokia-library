@@ -1,13 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { RestService } from '../../services/rest/rest.service';
-import { BookCategoryDTO } from '../../models/database/DTOs/BookCategoryDTO';
-import { AuthorDTO } from '../../models/database/DTOs/AuthorDTO';
-import { BookDetailsDTO } from '../../models/database/DTOs/BookDetailsDTO';
-import { BookCategory } from '../../models/database/entites/BookCategory';
-import { MessageInfo } from '../../models/MessageInfo';
-import { Author } from '../../models/database/entites/Author';
-import { BookDetails } from '../../models/database/entites/BookDetails';
+import { RestService } from '../../../../services/rest/rest.service';
+import { BookDetailsDTO } from '../../../../models/database/DTOs/BookDetailsDTO';
+import { BookCategory } from '../../../../models/database/entites/BookCategory';
+import { MessageInfo } from '../../../../models/MessageInfo';
+import { Author } from '../../../../models/database/entites/Author';
+import { BookDetails } from '../../../../models/database/entites/BookDetails';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
@@ -20,17 +18,14 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class ManageBookDetailsComponent implements OnInit {
 
-	categoryParams: FormGroup;
-	authorParams: FormGroup;
+
 	bookDetailsParams: FormGroup;
 
 
 	bookCategories: BookCategory[] = [];
-	displayedCategoryColumns: string[] = ['id', 'bookCategoryName'];
 	authors: Author[] = [];
-	displayedAuthorsColumn: string[] = ['id', 'authorName', 'authorSurname'];
 	booksDetails: BookDetails[] = [];
-	displayedBookDetailColumns: string[] = ['id', 'title', 'dateOfPublication', 'isbn'];
+	displayedBookDetailColumns: string[] = ['title', 'dateOfPublication', 'isbn'];
 
 	// variable for date validation
 	currentDate = new Date();
@@ -42,8 +37,6 @@ export class ManageBookDetailsComponent implements OnInit {
 
 
 	// variables helpful for mistakes catching
-	categorySubmitted = false;
-	authorSubmitted = false;
 	bookDetailsSubmitted = false;
 
 
@@ -114,27 +107,12 @@ export class ManageBookDetailsComponent implements OnInit {
 	// end of methods helpful to chip list of authors
 
 	ngOnInit() {
-		this.initCategoriesForm();
-		this.initAuthorForm();
 		this.initBookDetailsForm();
+		this.getCategories();
+		this.getAuthors();
 		console.log(this.currentDate);
 	}
 
-	initCategoriesForm() {
-		this.categoryParams = this.formBuilder.group({
-			categoryName: ['', [Validators.required, Validators.maxLength(50)]]
-		});
-		this.getCategories();
-	}
-
-	initAuthorForm() {
-		this.authorParams = this.formBuilder.group({
-			authorName: ['', [Validators.required, Validators.maxLength(300)]],
-			authorSurname: ['', [Validators.required, Validators.maxLength(300)]],
-			authorDescription: ['', Validators.maxLength(10000)]
-		});
-		this.getAuthors();
-	}
 
 	initBookDetailsForm() {
 		this.bookDetailsParams = this.formBuilder.group({
@@ -148,50 +126,7 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.getBookDetails();
 	}
 
-	createCategory(params: any) {
 
-		this.categorySubmitted = true;
-
-		if (this.categoryParams.invalid) {
-			console.log('mistakes in parameters');
-			return;
-		}
-
-		const body = new BookCategoryDTO(params.value.categoryName);
-		this.http.save('bookCategory/create', body).subscribe(() => {
-			console.log('category created');
-			this.getCategories();
-		});
-
-		// MUST BE DELETED AFTER BACKEND VALIDATION
-		this.getCategories();
-		console.log(this.bookCategories);
-		// MUST BE DELETED AFTER BACKEND VALIDATION
-
-		this.categorySubmitted = false;
-	}
-
-	createAuthor(params: any) {
-
-		this.authorSubmitted = true;
-
-		if (this.authorParams.invalid) {
-			console.log('mistakes in parameters');
-			return;
-		}
-
-		const body = new AuthorDTO(params.value.authorName, params.value.authorSurname, params.value.authorDescription);
-		console.log(body);
-		this.http.save('author/create', body).subscribe(() => {
-			console.log('author created');
-		});
-
-		// MUST BE DELETED AFTER BACKEND VALIDATION
-		this.getAuthors();
-		// MUST BE DELETED AFTER BACKEND VALIDATION
-
-		this.authorSubmitted = false;
-	}
 
 	createBookDetails(params: any) {
 
@@ -231,9 +166,7 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.booksDetails = response.object;
 	}
 
-	autoFillAuthorForm() {
-		this.authorParams.patchValue(new AuthorDTO('JRR', 'Tolkien', 'frodo and shit'));
-	}
+
 
 	autoFillBookDetialsForm() {
 		const sampleBookDTO = {

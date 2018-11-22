@@ -18,9 +18,12 @@ import { BookService } from './services/book/book.service';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { RestService } from './services/rest/rest.service';
 import { GridViewComponent } from './components/grid-view/grid-view.component';
-import { ManageBookDetailsComponent } from './components/manage-book-details/manage-book-details.component';
+import { ManageBookDetailsComponent } from './components/manage-entities/forms/manage-book-details/manage-book-details.component';
 import { SingleBookViewComponent } from './components/single-book-view/single-book-view';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
+import { ManageEntitiesComponent } from './components/manage-entities/manage-entities.component';
+import { ManageAuthorsComponent } from './components/manage-entities/forms/manage-authors/manage-authors.component';
+import { ManageCategoriesComponent } from './components/manage-entities/forms/manage-categories/manage-categories.component';
 
 @NgModule({
 	declarations: [
@@ -32,7 +35,10 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
 		PageNotFoundComponent,
 		GridViewComponent,
 		ManageBookDetailsComponent,
-		ContactUsComponent
+		ContactUsComponent,
+		ManageEntitiesComponent,
+		ManageAuthorsComponent,
+		ManageCategoriesComponent
 	],
 	imports: [
 		BrowserModule,
