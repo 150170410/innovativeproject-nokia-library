@@ -9,7 +9,6 @@ import java.io.Serializable;
 
 @Entity
 @Data
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class BookCategory implements Serializable {
 

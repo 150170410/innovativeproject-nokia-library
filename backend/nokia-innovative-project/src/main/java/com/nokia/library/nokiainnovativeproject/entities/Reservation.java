@@ -12,7 +12,6 @@ import java.util.Date;
 
 @Entity
 @Data
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Reservation implements Serializable {
 

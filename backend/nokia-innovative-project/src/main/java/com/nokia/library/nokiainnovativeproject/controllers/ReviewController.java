@@ -34,27 +34,26 @@ public class ReviewController {
 
     @PostMapping(Mappings.CREATE)
     public MessageInfo createReview(@RequestBody @Valid ReviewDTO reviewDTO, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            List<String> errorsList = bindingResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-            return MessageInfo.failure(errorsList);
-        }
-        return MessageInfo.success(reviewService.createReview(reviewDTO), Arrays.asList("Review created successfully"));
+        return getMessageInfo(bindingResult, reviewDTO, "Review created successfully");
     }
 
     @PostMapping(Mappings.UPDATE)
     public MessageInfo updateReview(@PathVariable Long id, @RequestBody @Valid ReviewDTO reviewDTO, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            List<String> errorsList = bindingResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-            return MessageInfo.failure(errorsList);
-        }
-        return MessageInfo.success(reviewService.updateReview(id, reviewDTO), Arrays.asList("Review updated successfully"));
+        return getMessageInfo(bindingResult, reviewDTO, "Review updated successfully");
     }
 
     @DeleteMapping(Mappings.REMOVE)
     public MessageInfo deleteReview(@PathVariable Long id){
         reviewService.deleteReview(id);
         return MessageInfo.success(null, Arrays.asList("Review with ID = " + id.toString() + " removed successfully"));
+    }
+
+    private MessageInfo getMessageInfo(BindingResult bindingResult, ReviewDTO reviewDTO, String defaultMessageForSuccess) {
+        if(bindingResult.hasErrors()){
+            List<String> errorsList = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+            return MessageInfo.failure(errorsList);
+        }
+        return MessageInfo.success(reviewService.createReview(reviewDTO), Arrays.asList(defaultMessageForSuccess));
     }
 }

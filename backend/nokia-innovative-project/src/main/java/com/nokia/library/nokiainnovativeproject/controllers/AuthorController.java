@@ -33,27 +33,26 @@ public class AuthorController {
 
     @PostMapping(Mappings.CREATE)
     public MessageInfo createAuthor(@RequestBody @Valid AuthorDTO authorDTO, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            List<String> errorsList = bindingResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-            return MessageInfo.failure(errorsList);
-        }
-        return MessageInfo.success(authorService.createAuthor(authorDTO), Arrays.asList("Author created successfully"));
+        return getMessageInfo(bindingResult, authorDTO, "Author created successfully");
     }
 
     @PostMapping(Mappings.UPDATE)
     public MessageInfo updateAuthor(@PathVariable Long id, @RequestBody  @Valid AuthorDTO authorDTO, BindingResult bindingResult){
-        if(bindingResult.hasErrors()) {
-            List<String> errorsList = bindingResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-            return MessageInfo.failure(errorsList);
-        }
-        return MessageInfo.success(authorService.updateAuthor(id, authorDTO), Arrays.asList("Author updated successfully"));
+        return getMessageInfo(bindingResult, authorDTO, "Author updated successfully");
     }
 
     @DeleteMapping(Mappings.REMOVE)
     public MessageInfo deleteAuthor(@PathVariable Long id){
         authorService.deleteAuthor(id);
         return MessageInfo.success(null, Arrays.asList("Author with ID = " + id.toString() + " removed successfully"));
+    }
+
+    private MessageInfo getMessageInfo(BindingResult bindingResult, AuthorDTO authorDTO, String defaultMessageForSuccess) {
+        if(bindingResult.hasErrors()){
+            List<String> errorsList = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+            return MessageInfo.failure(errorsList);
+        }
+        return MessageInfo.success(authorService.createAuthor(authorDTO), Arrays.asList(defaultMessageForSuccess));
     }
 }

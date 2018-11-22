@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,6 @@ class ReviewControllerTest {
     private static Review review;
     private static ReviewDTO reviewDTO;
     private static ObjectMapper mapper;
-    private static Date date;
     private MockMvc mockMvc;
     private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.BOOK_REVIEW;
 
@@ -63,9 +63,7 @@ class ReviewControllerTest {
 
     @Test
     public void getReviewTest() throws Exception {
-        List<Review> reviews = new ArrayList<>();
-        reviews.add(review);
-        when(service.getAllReviews()).thenReturn(reviews);
+        when(service.getAllReviews()).thenReturn(Arrays.asList(review));
         mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

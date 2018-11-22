@@ -35,22 +35,12 @@ public class BookCategoryController {
 
 	@PostMapping(Mappings.CREATE)
 	public MessageInfo createBookCategory(@RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()){
-			List<String> errorsList = bindingResult.getAllErrors().stream()
-					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-			return MessageInfo.failure(errorsList);
-		}
-		return MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO), Arrays.asList("BookCategory created successfully"));
+		return getMessageInfo(bindingResult , bookCategoryDTO, "BookCategory created successfully");
 	}
 
 	@PostMapping(Mappings.UPDATE)
 	public MessageInfo updateBookCategory(@PathVariable Long id, @RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult){
-		if(bindingResult.hasErrors()){
-			List<String> errorsList = bindingResult.getAllErrors().stream()
-					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-			return MessageInfo.failure(errorsList);
-		}
-		return MessageInfo.success(bookCategoryService.updateBookCategory(id, bookCategoryDTO), Arrays.asList("BookCategory updated successfully"));
+		return getMessageInfo(bindingResult, bookCategoryDTO , "BookCategory updated successfully");
 	}
 
 	@DeleteMapping(Mappings.REMOVE)
@@ -58,4 +48,13 @@ public class BookCategoryController {
 		bookCategoryService.deleteBookCategory(id);
 		return MessageInfo.success(null, Arrays.asList("BookCategory with ID = " + id.toString() + " removed successfully"));
 	}
+
+	private MessageInfo getMessageInfo(BindingResult bindingResult, BookCategoryDTO bookCategoryDTO, String defaultMessageForSuccess) {
+        if(bindingResult.hasErrors()){
+            List<String> errorsList = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+            return MessageInfo.failure(errorsList);
+        }
+        return MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO), Arrays.asList(defaultMessageForSuccess));
+    }
 }

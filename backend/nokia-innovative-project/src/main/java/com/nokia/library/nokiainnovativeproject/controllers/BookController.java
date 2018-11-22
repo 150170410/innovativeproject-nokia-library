@@ -34,22 +34,12 @@ public class BookController {
 
 	@PostMapping(Mappings.CREATE)
 	public MessageInfo createBook(@RequestBody @Valid  BookDTO bookDTO, BindingResult bindingResult){
-		if(bindingResult.hasErrors()){
-			List<String> errorsList = bindingResult.getAllErrors().stream()
-					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-			return MessageInfo.failure(errorsList);
-		}
-		return MessageInfo.success(bookService.createBook(bookDTO), Arrays.asList("Book created successfully"));
+		return getMessageInfo(bindingResult, bookDTO, "Book created successfully");
 	}
 
 	@PostMapping(Mappings.UPDATE)
 	public MessageInfo updateBook(@PathVariable Long id, @RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult){
-		if(bindingResult.hasErrors()){
-			List<String> errorsList = bindingResult.getAllErrors().stream()
-					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-			return MessageInfo.failure(errorsList);
-		}
-		return MessageInfo.success(bookService.updateBook(id, bookDTO), Arrays.asList("Book updated successfully"));
+		return getMessageInfo(bindingResult, bookDTO, "Book updated successfully");
 	}
 
 	@DeleteMapping(Mappings.REMOVE)
@@ -57,4 +47,13 @@ public class BookController {
 		bookService.deleteBook(id);
 		return MessageInfo.success(null, Arrays.asList("Book with ID = " + id.toString() + " removed successfully"));
 	}
+
+	private MessageInfo getMessageInfo(BindingResult bindingResult, BookDTO bookDTO, String defaultMessageForSuccess) {
+        if(bindingResult.hasErrors()){
+            List<String> errorsList = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+            return MessageInfo.failure(errorsList);
+        }
+        return MessageInfo.success(bookService.createBook(bookDTO), Arrays.asList(defaultMessageForSuccess));
+    }
 }

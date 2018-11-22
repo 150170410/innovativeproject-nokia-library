@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -72,9 +73,7 @@ public class BookDetailsControllerTest {
 
 	@Test
 	public void getBookDetailsListTest() throws Exception {
-		List<BookDetails> bookDetailsList = new ArrayList<>();
-		bookDetailsList.add(bookDetails);
-		when(service.getAllBookDetails()).thenReturn(bookDetailsList);
+		when(service.getAllBookDetails()).thenReturn(Arrays.asList(bookDetails));
 		mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print())

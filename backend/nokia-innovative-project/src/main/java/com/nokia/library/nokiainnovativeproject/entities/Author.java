@@ -13,7 +13,6 @@ import java.io.Serializable;
 
 @Entity
 @Data
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Author implements Serializable {
 

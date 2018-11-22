@@ -13,7 +13,6 @@ import java.util.List;
 @Entity
 @Table(name="\"User\"")
 @Data
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class User implements Serializable {
 

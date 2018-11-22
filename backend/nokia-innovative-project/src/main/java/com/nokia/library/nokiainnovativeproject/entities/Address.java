@@ -9,13 +9,12 @@ import java.io.Serializable;
 
 @Entity
 @Data
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Address implements Serializable {
 
     @Id
     @Setter(AccessLevel.NONE)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty(message = "City name can't be empty")

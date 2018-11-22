@@ -17,7 +17,6 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class BookDetails implements Serializable {
 

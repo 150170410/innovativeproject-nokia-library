@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
@@ -64,9 +65,7 @@ class AuthorControllerTest {
 
     @Test
     public void getAuthorsTest() throws Exception {
-        List<Author> authors = new ArrayList<>();
-        authors.add(author);
-        when(service.getAllAuthors()).thenReturn(authors);
+        when(service.getAllAuthors()).thenReturn(Arrays.asList(author));
         mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

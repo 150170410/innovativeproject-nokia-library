@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
@@ -61,9 +62,7 @@ public class BookCategoryControllerTest {
 
 	@Test
 	public void getBookCategoriesTest() throws Exception {
-		List<BookCategory> bookCategories = new ArrayList<>();
-		bookCategories.add(bookCategory);
-		when(service.getAllBookCategories()).thenReturn(bookCategories);
+		when(service.getAllBookCategories()).thenReturn(Arrays.asList(bookCategory));
 		mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print())

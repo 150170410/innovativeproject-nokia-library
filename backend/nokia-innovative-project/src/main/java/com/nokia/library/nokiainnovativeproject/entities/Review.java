@@ -13,7 +13,6 @@ import java.util.Date;
 
 @Entity
 @Data
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Review implements Serializable {
 

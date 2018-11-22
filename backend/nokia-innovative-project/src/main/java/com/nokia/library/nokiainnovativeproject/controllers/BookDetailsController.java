@@ -35,22 +35,13 @@ public class BookDetailsController {
 
 	@PostMapping(Mappings.CREATE)
 	public MessageInfo createBookDetails(@RequestBody @Valid BookDetailsDTO bookDetailsDTO, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()){
-			List<String> errorsList = bindingResult.getAllErrors().stream()
-					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-			return MessageInfo.failure(errorsList);
-		}
-		return MessageInfo.success(bookDetailsService.createBookDetails(bookDetailsDTO), Arrays.asList("bookDetails created successfully"));
+		return getMessageInfo(bindingResult, bookDetailsDTO, "bookDetails created successfully");
 	}
 
 	@PostMapping(Mappings.UPDATE)
 	public MessageInfo updateBookDetails(@PathVariable Long id, @RequestBody @Valid BookDetailsDTO bookDetailsDTO, BindingResult bindingResult){
-		if(bindingResult.hasErrors()){
-			List<String> errorsList = bindingResult.getAllErrors().stream()
-					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-			return MessageInfo.failure(errorsList);
-		}
-		return MessageInfo.success(bookDetailsService.updateBookDetails(id, bookDetailsDTO), Arrays.asList("bookDetails updated successfully"));
+		return getMessageInfo(bindingResult, bookDetailsDTO, "bookDetails updated successfully");
+
 	}
 
 	@DeleteMapping(Mappings.REMOVE)
@@ -58,4 +49,13 @@ public class BookDetailsController {
 		bookDetailsService.deleteBookDetails(id);
 		return MessageInfo.success(null, Arrays.asList("bookDetails with ID = " + id.toString() + " removed successfully"));
 	}
+
+	private MessageInfo getMessageInfo(BindingResult bindingResult, BookDetailsDTO bookDetailsDTO, String defaultMessageForSuccess) {
+        if(bindingResult.hasErrors()){
+            List<String> errorsList = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+            return MessageInfo.failure(errorsList);
+        }
+        return MessageInfo.success(bookDetailsService.createBookDetails(bookDetailsDTO), Arrays.asList(defaultMessageForSuccess));
+    }
 }
