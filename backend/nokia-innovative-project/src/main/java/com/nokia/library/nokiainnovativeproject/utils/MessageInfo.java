@@ -19,4 +19,5 @@ public class MessageInfo {
 	public static MessageInfo failure(List<String> message) {
 		return new MessageInfo(false, null, message);
 	}
+
 }

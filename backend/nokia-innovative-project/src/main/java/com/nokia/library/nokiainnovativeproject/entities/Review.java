@@ -2,6 +2,7 @@ package com.nokia.library.nokiainnovativeproject.entities;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -28,6 +29,9 @@ public class Review implements Serializable {
     @Setter(AccessLevel.NONE)
     @CreationTimestamp
     private Date creationDate;
+
+    @UpdateTimestamp
+    private Date dateOfLastEdition;
 
     @ManyToOne( cascade = { CascadeType.DETACH,
                             CascadeType.MERGE,

@@ -23,11 +23,11 @@ public class Author implements Serializable {
 	private Long id;
 
 	@NotBlank(message = "Author's name is required")
-	@Size(max = 300, message = "The author's name must be 0-300 characters long")
+	@Size(max = 300, message = "The maximum length of the author's name can't exceed 300 characters")
 	private String authorName;
 
 	@NotBlank(message = "Author's surname is required")
-	@Size(max = 300, message = "The author's surname must be 1-25 characters long")
+	@Size(max = 300, message = "The maximum length of the author's surname can't exceed 300 characters")
 	private String authorSurname;
 
 	@Size(max = 10000, message = "Author description should have no more than 10000 characters")

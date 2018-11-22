@@ -34,7 +34,7 @@ public class BookDetailsDTO {
 	@Size(max = 1000, message = "Cover picture URL can't exceed 1000 characters")
 	private String coverPictureUrl;
 
-	@Past(message = "Rental date should be a past date")
+	@Past(message = "The publication date of the book should be a past date")
 	private Date dateOfPublication;
 
 	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")

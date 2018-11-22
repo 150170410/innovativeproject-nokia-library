@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class BookDTO {
 
-	@Size(max = 5000, message = "Comments can't exceed 300 characters")
+	@Size(max = 5000, message = "Comments can't exceed 5000 characters")
 	private String comments;
 
 	@NotNull(message = "Book details are required.")
