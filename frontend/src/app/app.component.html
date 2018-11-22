@@ -1,29 +1,23 @@
 <app-navbar class="navbar"></app-navbar>
-<mat-sidenav-container class="center-content">
-	<mat-sidenav #sidenav mode="side" opened class="sidenav-menu">
+<mat-sidenav-container class="content-all">
+	<mat-sidenav class="sidenav-menu" #sidenav (keydown.escape)="close()">
+
+		<!--<button class="sidenav-button-close" mat-raised-button color="primary" (click)="close()">Close panel</button>-->
+
 		<mat-list>
-			<h3>List of components</h3>
 			<mat-list-item>
 				<button color="primary" mat-raised-button routerLink="/homepage" routerLinkActive="active">Homepage</button>
 			</mat-list-item>
 			<mat-list-item>
 				<button color="primary" mat-raised-button routerLink="/manage-book-details" routerLinkActive="active">Manage entities</button>
 			</mat-list-item>
-			<mat-list-item>
-				<button color="accent" mat-raised-button routerLink="/contact" routerLinkActive="active">Contact developers</button>
-			</mat-list-item>
-			<h3>Not working (yet)</h3>
-			<mat-list-item>
-				<button color="warn" mat-raised-button routerLink="/not_such_page" routerLinkActive="active">Your reservations</button>
-			</mat-list-item>
-			<mat-list-item>
-				<button color="warn" mat-raised-button routerLink="/not_such_page" routerLinkActive="active">Request a book</button>
-			</mat-list-item>
 		</mat-list>
 	</mat-sidenav>
 
+
 	<mat-sidenav-content>
-		<div class="main-content">
+		<button class="sidenav-button" mat-raised-button color="primary" (click)="sidenav.open()">Menu panel</button>
+		<div class="main-content center-content">
 			<router-outlet></router-outlet>
 		</div>
 	</mat-sidenav-content>

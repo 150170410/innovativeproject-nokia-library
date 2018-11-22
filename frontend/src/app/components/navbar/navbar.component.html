@@ -3,10 +3,10 @@
 		<img class="nav-link white" src="../../../assets/images/nokia-logo.png">
 
 		<a class="nav-link white">Nokia library</a>
-		<a class="nav-link white" target="_blank" href="https://github.com/nokia-wroclaw/innovativeproject-nokia-library" >Github page</a>
+		<a class="nav-link white" target="_blank" href="https://github.com/nokia-wroclaw/innovativeproject-nokia-library">Github page</a>
 
-		<div class="search-bar-wrapper" >
-			<form class="search-bar" >
+		<div class="search-bar-wrapper">
+			<form class="search-bar">
 				<mat-form-field class="search-bar-field">
 					<input type="search" matInput placeholder="Search">
 					<mat-icon>search</mat-icon>
@@ -15,6 +15,8 @@
 		</div>
 
 		<span class="toolbar-spacer"></span>
+
+		<button mat-raised-button class="contact-us-button" color="accent" (click)="openDialog()">Contact developers</button>
 
 		<div>Logged as User</div>
 		<button mat-icon-button [matMenuTriggerFor]="menuOptions">

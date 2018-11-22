@@ -1,29 +1,29 @@
-<mat-card class="entity-form">
-	<div>
-		<h4>Contact the developers</h4>
-		<form (ngSubmit)="sendEmail(contactParams)">
-			<div>
-				<mat-form-field>
-					<input placeholder="Category"
-						   matInput required>
-				</mat-form-field>
-			</div>
-			<div>
-				<mat-form-field>
-					<input placeholder="Subject"
-						   matInput required>
-				</mat-form-field>
-			</div>
-			<div>
-				<mat-form-field>
-					<textarea placeholder="Message" matInput></textarea>
-				</mat-form-field>
-			</div>
-			<div>
-				<button mat-raised-button color="primary" [type]="submit">
-					Send message
-				</button>
-			</div>
-		</form>
-	</div>
-</mat-card>
+<div mat-dialog-title>Contact the developers</div>
+<div mat-dialog-content>
+	<form (ngSubmit)="sendEmail(contactParams)">
+		<div>
+			<p>Select type of issue</p>
+			<mat-select placeholder="Type of issue">
+				<mat-option *ngFor="let category of categories" [value]="category.value">
+					{{category}}
+				</mat-option>
+			</mat-select>
+		</div>
+		<div>
+			<mat-form-field>
+				<input placeholder="Subject"
+					   matInput required>
+			</mat-form-field>
+		</div>
+		<div>
+			<mat-form-field>
+				<textarea placeholder="Message" matInput></textarea>
+			</mat-form-field>
+		</div>
+		<div>
+			<button mat-raised-button color="primary" [type]="submit">
+				Send message
+			</button>
+		</div>
+	</form>
+</div>

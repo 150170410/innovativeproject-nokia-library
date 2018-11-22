@@ -27,3 +27,7 @@
 .toolbar-spacer {
 	flex: 1 1 auto;
 }
+
+.contact-us-button {
+	margin-right: 20px;
+}

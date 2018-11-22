@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RestService } from '../../services/rest/rest.service';
 import { BookCategoryDTO } from '../../models/database/DTOs/BookCategoryDTO';
-import { AuthorDTO } from '../../models/database/DTOs/Author';
+import { AuthorDTO } from '../../models/database/DTOs/AuthorDTO';
 import { BookDetailsDTO } from '../../models/database/DTOs/BookDetailsDTO';
 import { BookCategory } from '../../models/database/entites/BookCategory';
 import { MessageInfo } from '../../models/MessageInfo';
