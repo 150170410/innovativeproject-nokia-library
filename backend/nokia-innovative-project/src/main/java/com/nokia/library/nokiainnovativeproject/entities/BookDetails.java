@@ -45,27 +45,21 @@ public class BookDetails implements Serializable {
 	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
 	private String tableOfContents;
 
-	@ManyToMany(cascade = {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH},
-			fetch = FetchType.LAZY)
+	@ManyToMany(cascade = {	CascadeType.MERGE,
+							CascadeType.PERSIST},
+							fetch = FetchType.LAZY)
 	@JoinColumn(name = "authors")
 	private List<Author> authors;
 
-	@ManyToMany(cascade = {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH},
-			fetch = FetchType.LAZY)
+	@ManyToMany(cascade = {	CascadeType.MERGE,
+							CascadeType.PERSIST},
+							fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_category_id")
 	private List<BookCategory> categories;
 
-	@OneToMany(cascade = {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH},
-			fetch = FetchType.LAZY)
+	@OneToMany(cascade = { 	CascadeType.MERGE,
+							CascadeType.PERSIST},
+							fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_id")
 	private List<Review> reviews;
 }

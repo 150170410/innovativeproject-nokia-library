@@ -105,9 +105,11 @@ class AuthorControllerTest {
     public void updateAuthorTest() throws Exception {
         AuthorDTO updatedDTO = new AuthorDTO();
         updatedDTO.setAuthorName("updated name");
+        updatedDTO.setAuthorSurname("updated surname");
 
         Author updatedAuthor = new Author();
         updatedAuthor.setAuthorName("updated name");
+        updatedAuthor.setAuthorSurname("updated surname");
 
         String jsonRequest = mapper.writeValueAsString(updatedDTO);
 
@@ -117,7 +119,8 @@ class AuthorControllerTest {
                 .content(jsonRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorName", Matchers.is("updated name")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorName", Matchers.is("updated name")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorSurname", Matchers.is("updated surname")));
     }
 
     @Test

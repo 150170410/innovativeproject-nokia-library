@@ -2,6 +2,7 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
+import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.services.BookService;
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,6 +42,20 @@ class BookControllerTest {
     private static ObjectMapper mapper;
     private MockMvc mockMvc;
     private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.BOOKS;
+
+    public BookDetails genereteBookDetails() {
+        Date date = new Date();
+        BookDetails bookDetails = new BookDetails();
+        bookDetails.setTitle("test title");
+        bookDetails.setDescription("test description");
+        bookDetails.setIsbn("test isbn123");
+        bookDetails.setTableOfContents("test table of contents");
+        bookDetails.setCoverPictureUrl("test cover picture url");
+        bookDetails.setDateOfPublication(date);
+        bookDetails.setAuthors(new ArrayList<>());
+        bookDetails.setCategories(new ArrayList<>());
+        return bookDetails;
+    }
 
     @Mock
     private BookService service;
@@ -100,9 +116,11 @@ class BookControllerTest {
     public void updateBookTest() throws Exception {
         BookDTO updatedDTO = new BookDTO();
         updatedDTO.setComments("updated comments");
+        updatedDTO.setBookDetails(genereteBookDetails());
 
         Book updatedBook = new Book();
         updatedBook.setComments("updated comments");
+        updatedBook.setBookDetails(genereteBookDetails());
 
         String jsonRequest = mapper.writeValueAsString(updatedDTO);
 

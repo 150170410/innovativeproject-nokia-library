@@ -1,7 +1,11 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nokia.library.nokiainnovativeproject.DTOs.AuthorDTO;
+import com.nokia.library.nokiainnovativeproject.DTOs.BookCategoryDTO;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
+import com.nokia.library.nokiainnovativeproject.entities.Author;
+import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.services.BookDetailsService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
@@ -117,18 +121,28 @@ public class BookDetailsControllerTest {
 	public void updateBookDetailsTest() throws Exception {
 		BookDetailsDTO updatedDTO = new BookDetailsDTO();
 		updatedDTO.setTitle("updated title");
+		updatedDTO.setIsbn("111111111111");
+		updatedDTO.setAuthors(new ArrayList<Author>());
+		updatedDTO.setCategories(new ArrayList<BookCategory>());
+
+
 		BookDetails updatedBookDetails = new BookDetails();
 		updatedBookDetails.setTitle("updated title");
+		updatedBookDetails.setIsbn("111111111111");
+		updatedBookDetails.setAuthors(new ArrayList<Author>());
+		updatedBookDetails.setCategories(new ArrayList<BookCategory>());
 
 		String jsonRequest = mapper.writeValueAsString(updatedDTO);
-
 		when(service.updateBookDetails(1L, updatedDTO)).thenReturn(updatedBookDetails);
 		mockMvc.perform(post(BASE_URL + Mappings.UPDATE, 1L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object.title", Matchers.is("updated title")));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.object.title", Matchers.is("updated title")))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.object.isbn", Matchers.is("111111111111")))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.object.authors", Matchers.hasSize(0)))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.object.categories", Matchers.hasSize(0)));
 	}
 
 	@Test

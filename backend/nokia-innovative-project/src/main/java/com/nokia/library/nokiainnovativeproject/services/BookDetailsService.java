@@ -33,12 +33,12 @@ public class BookDetailsService {
 		bookDetails.setAuthors(new ArrayList<>());
 		bookDetails.setCategories(new ArrayList<>());
 
-		Long bookId = bookDetailsRepository.save(bookDetails).getId();
-		bookDetails = bookDetailsRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException("BookDetailsRepository", "id", bookId));
-		bookDetails.setAuthors(bookDetailsDTO.getAuthors());
-		bookDetails.setCategories(bookDetailsDTO.getCategories());
+		BookDetails objectDetails = bookDetailsRepository.save(bookDetails);
 
-		return bookDetailsRepository.save(bookDetails);
+		objectDetails.setAuthors(bookDetailsDTO.getAuthors());
+		objectDetails.setCategories(bookDetailsDTO.getCategories());
+
+		return bookDetailsRepository.save(objectDetails);
 	}
 
 	public BookDetails updateBookDetails(Long id, BookDetailsDTO bookDetailsDTO) {
