@@ -24,6 +24,7 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
 import { ManageEntitiesComponent } from './components/manage-entities/manage-entities.component';
 import { ManageAuthorsComponent } from './components/manage-entities/forms/manage-authors/manage-authors.component';
 import { ManageCategoriesComponent } from './components/manage-entities/forms/manage-categories/manage-categories.component';
+import { SidenavService } from './services/sidenav/sidenav.service';
 
 @NgModule({
 	declarations: [
@@ -118,7 +119,7 @@ import { ManageCategoriesComponent } from './components/manage-entities/forms/ma
 		MatPaginatorModule,
 		MatNativeDateModule
 	],
-	providers: [BookService, RestService],
+	providers: [BookService, RestService, SidenavService],
 	bootstrap: [AppComponent]
 })
 export class AppModule {
