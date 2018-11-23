@@ -26,6 +26,6 @@ public class Book implements Serializable {
 			CascadeType.PERSIST,
 			CascadeType.REFRESH},
 			fetch = FetchType.LAZY)
-	@JoinColumn(name = "book_id")
+	@JoinColumn(name = "book_details_id")
 	private BookDetails bookDetails;
 }

@@ -2,7 +2,6 @@ package com.nokia.library.nokiainnovativeproject.entities;
 
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -45,21 +44,28 @@ public class BookDetails implements Serializable {
 	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
 	private String tableOfContents;
 
-	@ManyToMany(cascade = {	CascadeType.MERGE,
-							CascadeType.PERSIST},
-							fetch = FetchType.LAZY)
+	@ManyToMany(cascade = {CascadeType.MERGE,
+			CascadeType.PERSIST},
+			fetch = FetchType.LAZY)
 	@JoinColumn(name = "authors")
 	private List<Author> authors;
 
-	@ManyToMany(cascade = {	CascadeType.MERGE,
-							CascadeType.PERSIST},
-							fetch = FetchType.LAZY)
+	@ManyToMany(cascade = {CascadeType.MERGE,
+			CascadeType.PERSIST},
+			fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_category_id")
 	private List<BookCategory> categories;
 
-	@OneToMany(cascade = { 	CascadeType.MERGE,
-							CascadeType.PERSIST},
-							fetch = FetchType.LAZY)
-	@JoinColumn(name = "book_id")
+	@OneToMany(cascade = {CascadeType.MERGE,
+			CascadeType.PERSIST},
+			fetch = FetchType.LAZY)
+	@JoinColumn(name = "book_details_id")
 	private List<Review> reviews;
+
+	@OneToMany(cascade = {CascadeType.MERGE,
+			CascadeType.PERSIST},
+			fetch = FetchType.LAZY)
+	@JoinColumn(name = "book_details_id")
+	private List<Book> books;
+
 }

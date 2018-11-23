@@ -1,6 +1,7 @@
 package com.nokia.library.nokiainnovativeproject.DTOs;
 
 import com.nokia.library.nokiainnovativeproject.entities.Author;
+import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.entities.Review;
 import lombok.AllArgsConstructor;
@@ -47,4 +48,6 @@ public class BookDetailsDTO {
 	private List<BookCategory> categories;
 
 	private List<Review> reviews;
+
+	private List<Book> books;
 }
