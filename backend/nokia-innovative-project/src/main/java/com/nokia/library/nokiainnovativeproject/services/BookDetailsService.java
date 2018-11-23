@@ -20,6 +20,8 @@ public class BookDetailsService {
 	private final BookDetailsRepository bookDetailsRepository;
 
 	public List<BookDetails> getAllBookDetails() {
+		//TODO: This metod returns BookDetails without authors, categories and reviews. Was that supposed to be like that? How this details will be loaded in FE part? Separate requests for authors, categories, etc?
+		//https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26#discussion_r232793457
 		return bookDetailsRepository.findAll();
 	}
 
@@ -33,6 +35,8 @@ public class BookDetailsService {
 		bookDetails.setAuthors(new ArrayList<>());
 		bookDetails.setCategories(new ArrayList<>());
 
+		// TODO: Why do you load just saved entity? save(..) returns this entity.
+		// https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26#discussion_r232793952
 		BookDetails objectDetails = bookDetailsRepository.save(bookDetails);
 
 		objectDetails.setAuthors(bookDetailsDTO.getAuthors());
