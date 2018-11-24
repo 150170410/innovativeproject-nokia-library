@@ -3,27 +3,27 @@
 	<h1>{{bookDetails.title}}</h1>
 	<img src="{{bookDetails.coverPictureUrl}}">
 
-	<h4>About book:</h4>
+	<div><b>About book:</b></div>
 	<div>{{bookDetails.description}}</div>
 
-	<h4>Authors:</h4>
-	<div *ngFor="let author of bookDetails.authors">
-		{{author.authorName}} {{author.authorSurname}}
-	</div>
-	<h4>Categories:</h4>
-	<div *ngFor="let category of bookDetails.categories">
-		{{category.bookCategoryName}}
-	</div>
+	<div><b>Authors:</b> {{bookDetails.authors | arrToStr:'author'}}</div>
+	<div><b>Categories:</b> {{bookDetails.categories| arrToStr:'category'}}</div>
+
 
 	<h5>Comments:</h5>
 	<div *ngFor="let review of reviews">{{review.comment}}</div>
 
-	<div>Date of publication: {{bookDetails.dateOfPublication | date: 'dd.MM.yyyy'}}</div>
-
 	<h5>Book details:</h5>
-	<div>ISBN: {{bookDetails.isbn}}</div>
-	<div>Table of Contents: {{bookDetails.tableOfContents}}</div>
+	<ol>
+		<li>
+			<b>ISBN:</b> {{bookDetails.isbn}}
+		</li>
+		<li>
+			<b>Date of publication:</b> {{bookDetails.dateOfPublication | date: 'dd.MM.yyyy'}}
+		</li>
+		<li><b>Table of contents:</b> {{bookDetails.tableOfContents}}</li>
+	</ol>
 
-	<h4>Available copies:</h4>
+	<h5>Available copies:</h5>
 </mat-card>
 

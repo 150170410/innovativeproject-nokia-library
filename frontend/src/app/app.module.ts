@@ -26,6 +26,8 @@ import { ManageAuthorsComponent } from './components/manage-entities/forms/manag
 import { ManageCategoriesComponent } from './components/manage-entities/forms/manage-categories/manage-categories.component';
 import { SidenavService } from './services/sidenav/sidenav.service';
 import { ListviewItemComponent } from './components/listview/listview-item/listview-item.component';
+import { ArrToStrPipe } from './pipes/arr-to-str.pipe';
+import { UserPanelComponent } from './components/user-panel/user-panel.component';
 
 @NgModule({
 	declarations: [
@@ -41,7 +43,9 @@ import { ListviewItemComponent } from './components/listview/listview-item/listv
 		ManageEntitiesComponent,
 		ManageAuthorsComponent,
 		ManageCategoriesComponent,
-		ListviewItemComponent
+		ListviewItemComponent,
+		ArrToStrPipe,
+		UserPanelComponent
 	],
 	imports: [
 		BrowserModule,

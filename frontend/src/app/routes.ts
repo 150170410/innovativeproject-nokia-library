@@ -6,6 +6,7 @@ import { GridViewComponent } from './components/grid-view/grid-view.component';
 import { SingleBookViewComponent } from './components/single-book-view/single-book-view';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
 import { ManageEntitiesComponent } from './components/manage-entities/manage-entities.component';
+import { UserPanelComponent } from './components/user-panel/user-panel.component';
 
 export const routes: Routes = [
 	{ path: '', redirectTo: 'homepage', pathMatch: 'full' },
@@ -13,6 +14,7 @@ export const routes: Routes = [
 	{ path: 'listView', component: ListviewComponent },
 	{ path: 'gridView', component: GridViewComponent },
 	{ path: 'manage-entities', component: ManageEntitiesComponent },
+	{ path: 'user-panel', component: UserPanelComponent },
 	{ path: 'single-book-view/:id', component: SingleBookViewComponent, data: { id: 'id' } },
 	{ path: 'contact', component: ContactUsComponent },
 

@@ -3,9 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { MessageInfo } from '../../models/MessageInfo';
 import { RestService } from '../../services/rest/rest.service';
 import { BookDetails } from '../../models/database/entites/BookDetails';
-import { Author } from '../../models/database/entites/Author';
-import { Review } from '../../models/database/entites/Review';
-import { BookCategory } from '../../models/database/entites/BookCategory';
 
 @Component({
 	selector: 'app-book-details',
@@ -16,10 +13,6 @@ export class SingleBookViewComponent implements OnInit {
 
 	id: any;
 	bookDetails: BookDetails = new BookDetails();
-	authors: Author[] = [];
-	reviews: Review[] = [];
-	bookCopies: Review[] = [];
-	categories: BookCategory[] = [];
 
 	constructor(private activatedRoute: ActivatedRoute, private http: RestService) {
 	}
@@ -28,9 +21,7 @@ export class SingleBookViewComponent implements OnInit {
 		this.activatedRoute.params.subscribe((params) => {
 			this.id = params['id'];
 		});
-
 		this.getBookDetails();
-
 		console.log(this.id);
 
 	}
