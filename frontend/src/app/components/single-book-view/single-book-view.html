@@ -1,21 +1,29 @@
-<a routerLink="/listView" routerLinkActive="active">< Go back to listview</a>
-<h1>Book id: {{id}}</h1>
+<button mat-button routerLink="/listView" routerLinkActive="active">< Go back</button>
+<mat-card>
+	<h1>{{bookDetails.title}}</h1>
+	<img src="{{bookDetails.coverPictureUrl}}">
 
-<div> Title: {{bookDetails.title}}</div>
-<div><br></div>
-<div>Authors:</div>
-<div *ngFor="let author of authors"> {{author.authorName}}  {{author.authorSurname}}  {{author.authorDescription}}</div>
-<div><br></div>
-<div>Comments:</div>
-<div *ngFor="let review of reviews">{{review.comment}}</div>
-<div><br></div>
-<div> Cover picture URL: {{bookDetails.coverPictureUrl}}</div>
-<div><br></div>
-<div>Date of publication: {{bookDetails.dateOfPublication}}</div>
-<div><br></div>
-<div>Description: {{bookDetails.description}}</div>
-<div><br></div>
-<div>ISBN: {{bookDetails.isbn}}</div>
-<div><br></div>
-<div>Table of Contents: {{bookDetails.tableOfContents}}</div>
+	<h4>About book:</h4>
+	<div>{{bookDetails.description}}</div>
+
+	<h4>Authors:</h4>
+	<div *ngFor="let author of bookDetails.authors">
+		{{author.authorName}} {{author.authorSurname}}
+	</div>
+	<h4>Categories:</h4>
+	<div *ngFor="let category of bookDetails.categories">
+		{{category.bookCategoryName}}
+	</div>
+
+	<h5>Comments:</h5>
+	<div *ngFor="let review of reviews">{{review.comment}}</div>
+
+	<div>Date of publication: {{bookDetails.dateOfPublication | date: 'dd.MM.yyyy'}}</div>
+
+	<h5>Book details:</h5>
+	<div>ISBN: {{bookDetails.isbn}}</div>
+	<div>Table of Contents: {{bookDetails.tableOfContents}}</div>
+
+	<h4>Available copies:</h4>
+</mat-card>
 

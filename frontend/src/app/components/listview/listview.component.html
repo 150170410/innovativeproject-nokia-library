@@ -1,41 +1,41 @@
 <mat-card>
 
-	<h2>List of books</h2>
-	<button mat-raised-button color="primary" (click)="getBooks()">Get books</button>
+	<h2>List of newly added books</h2>
 
-	<mat-paginator [length]="length"
-				   [pageSize]="pageSize"
-				   [pageSizeOptions]="pageSizeOptions"
-				   (page)="pageEvent = $event; onPaginateEvent($event)">
-	</mat-paginator>
-
-
-	<div *ngIf="pageEvent">
-		<h5>Page Change Event Properties</h5>
-		<div>List length: {{pageEvent.length}}</div>
+	<div *ngFor="let book of allBooks">
+		<app-listview-item [bookDetails]="book"></app-listview-item>
 	</div>
 
+
 	<ol>
-		<li class="cursor-pointer" *ngFor="let bookDetails of allBooks | slice: paginationFrom(pageEvent) : paginationTo(pageEvent)">
+		<li class="cursor-pointer" *ngFor="let bookDetails of allBooks">
 			<div routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" class="wrapper clearfix">
 				<div class="book-cover box-borders">
-					<img class="image-look" src="https://books.goalkicker.com/JavaBook/JavaGrow.png"/>
+					<img class="image-look" src="{{bookDetails.coverPictureUrl}}"/>
 				</div>
 				<div class="text-area box-borders cursor-pointer">
 					<table>
 						<tr>
-							<!--<th>Id</th>-->
 							<th>Title</th>
-							<th>ISBN</th>
 							<th>Description</th>
+							<th>Authors</th>
+							<th>Categories</th>
 							<th>Date of publication</th>
 						</tr>
 						<tr>
-							<!--<td>{{bookDetails.id}}</td>-->
 							<td>{{bookDetails.title}}</td>
-							<td>{{bookDetails.isbn}}</td>
 							<td>{{bookDetails.description}}</td>
-							<td>{{bookDetails.dateOfPublication | date:'dd/MM/yyyy'}}</td>
+							<td>
+								<div *ngFor="let author of bookDetails.authors">
+									{{author.authorName}} {{author.authorSurname}}
+								</div>
+							</td>
+							<td>
+								<div *ngFor="let category of bookDetails.categories">
+									{{category.bookCategoryName}}
+								</div>
+							</td>
+							<td>{{bookDetails.dateOfPublication | date:'dd.MM.yyyy'}}</td>
 						</tr>
 					</table>
 				</div>
@@ -44,3 +44,6 @@
 		</li>
 	</ol>
 </mat-card>
+
+
+

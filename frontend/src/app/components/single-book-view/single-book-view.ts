@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {MessageInfo} from '../../models/MessageInfo';
-import {RestService} from '../../services/rest/rest.service';
-import {BookDetails} from '../../models/database/entites/BookDetails';
-import {Author} from '../../models/database/entites/Author';
-import {Review} from '../../models/database/entites/Review';
-import {BookCategory} from '../../models/database/entites/BookCategory';
+import { MessageInfo } from '../../models/MessageInfo';
+import { RestService } from '../../services/rest/rest.service';
+import { BookDetails } from '../../models/database/entites/BookDetails';
+import { Author } from '../../models/database/entites/Author';
+import { Review } from '../../models/database/entites/Review';
+import { BookCategory } from '../../models/database/entites/BookCategory';
 
 @Component({
 	selector: 'app-book-details',
@@ -15,9 +15,10 @@ import {BookCategory} from '../../models/database/entites/BookCategory';
 export class SingleBookViewComponent implements OnInit {
 
 	id: any;
-	bookDetails: BookDetails;
+	bookDetails: BookDetails = new BookDetails();
 	authors: Author[] = [];
 	reviews: Review[] = [];
+	bookCopies: Review[] = [];
 	categories: BookCategory[] = [];
 
 	constructor(private activatedRoute: ActivatedRoute, private http: RestService) {
@@ -34,16 +35,8 @@ export class SingleBookViewComponent implements OnInit {
 
 	}
 
-  async getBookDetails() {
-    const response: MessageInfo = await this.http.getAll('bookDetails/getOne/' + this.id);
-    this.bookDetails = response.object;
-    this.authors = this.bookDetails.authors;
-    this.reviews = this.bookDetails.reviews;
-    this.categories = this.bookDetails.categories;
-
-    console.log(this.bookDetails);
-    console.log(this.authors);
-    console.log(this.reviews);
-    console.log(this.categories);
-  }
+	async getBookDetails() {
+		const response: MessageInfo = await this.http.getAll('bookDetails/getOne/' + this.id);
+		this.bookDetails = response.object;
+	}
 }

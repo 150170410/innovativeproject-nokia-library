@@ -5,6 +5,7 @@ export class BookDetails {
 		authorSurname: string;
 		id: number
 	}];
+	books: []
 	categories: [{
 		bookCategoryName: string;
 		id: number

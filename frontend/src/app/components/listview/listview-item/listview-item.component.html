@@ -1,0 +1,24 @@
+<mat-card>
+	<mat-card-header routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" class="cursor-pointer">
+		<img mat-card-avatar src="{{bookDetails.coverPictureUrl}}">
+		<mat-card-title>{{bookDetails.title}}</mat-card-title>
+		<mat-card-subtitle>
+			<div *ngFor="let author of bookDetails.authors">
+				{{author.authorName}} {{author.authorSurname}}
+			</div>
+		</mat-card-subtitle>
+	</mat-card-header>
+	<mat-card-content>
+		<h5>Categories:</h5>
+		<div *ngFor="let category of bookDetails.categories">
+			{{category.bookCategoryName}}
+		</div>
+		<h5>About:</h5>
+		<p>
+			{{bookDetails.description}}
+		</p>
+	</mat-card-content>
+	<mat-card-actions>
+		<button routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" mat-raised-button color="primary">More info</button>
+	</mat-card-actions>
+</mat-card>

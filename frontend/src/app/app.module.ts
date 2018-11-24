@@ -25,6 +25,7 @@ import { ManageEntitiesComponent } from './components/manage-entities/manage-ent
 import { ManageAuthorsComponent } from './components/manage-entities/forms/manage-authors/manage-authors.component';
 import { ManageCategoriesComponent } from './components/manage-entities/forms/manage-categories/manage-categories.component';
 import { SidenavService } from './services/sidenav/sidenav.service';
+import { ListviewItemComponent } from './components/listview/listview-item/listview-item.component';
 
 @NgModule({
 	declarations: [
@@ -39,7 +40,8 @@ import { SidenavService } from './services/sidenav/sidenav.service';
 		ContactUsComponent,
 		ManageEntitiesComponent,
 		ManageAuthorsComponent,
-		ManageCategoriesComponent
+		ManageCategoriesComponent,
+		ListviewItemComponent
 	],
 	imports: [
 		BrowserModule,
