@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmailMessage } from '../../models/EmailMessage';
-import { MatDialogRef } from '@angular/material';
 
 @Component({
 	selector: 'app-contact-us',
@@ -15,8 +14,7 @@ export class ContactUsComponent implements OnInit {
 	categories = ['Report a bug', 'Request new feature', 'Other'];
 	emails = []; // TODO: to which emails these messages should be sent?
 
-	constructor(private formBuilder: FormBuilder,
-				public dialogRef: MatDialogRef<ContactUsComponent>) {
+	constructor(private formBuilder: FormBuilder) {
 	}
 
 	ngOnInit() {
@@ -25,17 +23,17 @@ export class ContactUsComponent implements OnInit {
 
 	initForm() {
 		this.contactParams = this.formBuilder.group({
-			category: '',
-			title: '',
-			message: ''
+			category: ['', Validators.required],
+			title: ['', Validators.required],
+			message: ['', Validators.required]
 		});
 	}
 
 	sendEmail(contactParams: FormGroup) {
 		const email = new EmailMessage(contactParams.value.category, contactParams.value.title, contactParams.value.message);
-		console.log('sending email');
+		console.log(contactParams);
+		console.log('sending email: ' + '' + email.category + ' ' + email.title + ' ' + email.message);
 		// TODO: send emails
-
 	}
 
 }

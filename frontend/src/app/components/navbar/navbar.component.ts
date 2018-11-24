@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ContactUsComponent } from '../contact-us/contact-us.component';
 import { SidenavService } from '../../services/sidenav/sidenav.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
 	selector: 'app-navbar',
@@ -11,22 +12,35 @@ import { SidenavService } from '../../services/sidenav/sidenav.service';
 export class NavbarComponent implements OnInit {
 
 	placeHolder = 'Search for a book...';
+	searchParams: FormGroup;
+
 
 	constructor(public dialog: MatDialog,
-				private sidenavService: SidenavService) {
+				private sidenavService: SidenavService,
+				private formBuilder: FormBuilder) {
 	}
 
 	ngOnInit() {
+		this.initForm();
 	}
+
+	initForm() {
+		this.searchParams = this.formBuilder.group({
+			searchValue: ''
+		});
+	}
+
+	search(searchParams: any) {
+		console.log(searchParams.value.searchValue);
+	}
+
 
 	toggleSidenav() {
 		this.sidenavService.toggle();
 	}
 
 	openDialog() {
-		const dialogRef = this.dialog.open(ContactUsComponent, {
-			width: '600px',
-		});
+		const dialogRef = this.dialog.open(ContactUsComponent, {});
 	}
 
 	checkPlaceHolder() {

@@ -1,5 +1,12 @@
-.entity-form {
-	max-width: 18%;
-	margin-left: auto;
-	margin-right: auto;
+form{
+	width: 300px;
+}
+
+.form-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-container > * {
+	width: 100%;
 }

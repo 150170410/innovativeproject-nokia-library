@@ -9,13 +9,20 @@
 		<a class="nav-link white" target="_blank" href="https://github.com/nokia-wroclaw/innovativeproject-nokia-library">Github page</a>
 
 		<div class="search-bar-wrapper">
-			<form class="search-bar">
+			<form [formGroup]="searchParams" class="search-bar" (ngSubmit)="search(searchParams)">
 				<mat-form-field class="search-bar-field" floatLabel=never>
-					<input  matInput placeholder="{{placeHolder}}" (click)="checkPlaceHolder()" (blur)="checkPlaceHolder()" >
-					<button mat-button *ngIf="value" matSuffix mat-icon-button>
-						<mat-icon>close</mat-icon>
+					<input formControlName="searchValue"
+						   matInput
+						   placeholder="{{placeHolder}}"
+						   (click)="checkPlaceHolder()"
+						   (blur)="checkPlaceHolder()"
+					>
+					<!--<button mat-button *ngIf="placeHolder" matSuffix mat-icon-button>-->
+						<!--<mat-icon>close</mat-icon>-->
+					<!--</button>-->
+					<button mat-icon-button>
+						<mat-icon>search</mat-icon>
 					</button>
-					<mat-icon>search</mat-icon>
 
 				</mat-form-field>
 			</form>

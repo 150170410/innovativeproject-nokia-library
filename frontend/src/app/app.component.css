@@ -6,6 +6,7 @@
 
 .main-content {
 	height: calc(100vh - 64px);
+	width: 70%;
 }
 
 .navbar {
