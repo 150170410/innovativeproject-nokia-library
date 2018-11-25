@@ -39,8 +39,6 @@ public class AuthorService {
     }
 
     public void deleteAuthor(Long id) {
-		// TODO: We talked about messages for end user. I think the message AuthorRepository not found with id: 1 is not very good for the user. Please change all messages. You can prepare message for user on this level.
-		// https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26#discussion_r232792535
 		Author author = authorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("author"));
         authorRepository.delete(author);
     }

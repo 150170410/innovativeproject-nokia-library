@@ -32,17 +32,9 @@ public class BookDetailsService {
 	public BookDetails createBookDetails(BookDetailsDTO bookDetailsDTO) {
 		ModelMapper mapper = new ModelMapper();
 		BookDetails bookDetails = mapper.map(bookDetailsDTO, BookDetails.class);
-		bookDetails.setAuthors(new ArrayList<>());
-		bookDetails.setCategories(new ArrayList<>());
-
-		// TODO: Why do you load just saved entity? save(..) returns this entity.
-		// https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26#discussion_r232793952
-		BookDetails objectDetails = bookDetailsRepository.save(bookDetails);
-
-		objectDetails.setAuthors(bookDetailsDTO.getAuthors());
-		objectDetails.setCategories(bookDetailsDTO.getCategories());
-
-		return bookDetailsRepository.save(objectDetails);
+		bookDetails.setAuthors(bookDetailsDTO.getAuthors());
+		bookDetails.setCategories(bookDetailsDTO.getCategories());
+		return bookDetailsRepository.save(bookDetails);
 	}
 
 	public BookDetails updateBookDetails(Long id, BookDetailsDTO bookDetailsDTO) {
