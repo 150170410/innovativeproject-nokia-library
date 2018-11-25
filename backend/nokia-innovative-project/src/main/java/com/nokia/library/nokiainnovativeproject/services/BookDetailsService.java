@@ -26,7 +26,7 @@ public class BookDetailsService {
 	}
 
 	public BookDetails getBookDetailsById(Long id) {
-		return bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BookDetailsRepository", "id", id));
+		return bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
 	}
 
 	public BookDetails createBookDetails(BookDetailsDTO bookDetailsDTO) {
@@ -46,7 +46,7 @@ public class BookDetailsService {
 	}
 
 	public BookDetails updateBookDetails(Long id, BookDetailsDTO bookDetailsDTO) {
-		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BookDetailsRepository", "id", id));
+		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
 		bookDetails.setIsbn(bookDetailsDTO.getIsbn());
 		bookDetails.setTitle(bookDetailsDTO.getTitle());
 		bookDetails.setDescription(bookDetailsDTO.getDescription());
@@ -58,7 +58,7 @@ public class BookDetailsService {
 	}
 
 	public void deleteBookDetails(Long id) {
-		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BookDetaisRepository", "id", id));
+		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
 		bookDetailsRepository.delete(bookDetails);
 	}
 }

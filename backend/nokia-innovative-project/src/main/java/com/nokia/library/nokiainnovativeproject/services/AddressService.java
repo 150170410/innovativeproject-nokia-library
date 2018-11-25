@@ -21,7 +21,7 @@ public class AddressService {
     }
 
     public Address getAddressById(Long id) {
-        return addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("AddressRepository", "id", id));
+        return addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("address"));
     }
 
     public Address createAddress(AddressDTO addressDTO) {
@@ -31,14 +31,14 @@ public class AddressService {
     }
 
     public Address updateAddress(Long id, AddressDTO addressDTO) {
-        Address address = addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("AddressRepository", "id", id));
+        Address address = addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("address"));
         address.setCity(addressDTO.getCity());
         address.setBuilding(addressDTO.getBuilding());
         return addressRepository.save(address);
     }
 
     public void deleteAddress(Long id) {
-        Address address = addressRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("AddressRepository", "id", id));
+        Address address = addressRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("address"));
         addressRepository.delete(address);
     }
 }

@@ -21,7 +21,7 @@ public class ReviewService {
     }
 
     public  Review getReviewById(Long id){
-        return reviewRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("ReviewService", "id", id));
+        return reviewRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("review"));
     }
 
     public Review createReview(ReviewDTO reviewDTO){
@@ -31,13 +31,13 @@ public class ReviewService {
     }
 
     public Review updateReview(Long id, ReviewDTO reviewDTO){
-        Review review = reviewRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("ReviewService", "id", id));
+        Review review = reviewRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("review"));
         review.setComment(reviewDTO.getComment());
         return reviewRepository.save(review);
     }
 
     public void deleteReview(Long id){
-        Review review = reviewRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("ReviewService", "id", id));
+        Review review = reviewRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("review"));
         reviewRepository.delete(review);
     }
 }

@@ -22,7 +22,7 @@ public class BookCategoryService  {
 	}
 
 	public BookCategory getBookCategoryById(Long id) {
-		return bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BookCategory", "id", id));
+		return bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book category"));
 	}
 
 	public BookCategory createBookCategory(BookCategoryDTO bookCategoryDTO) {
@@ -32,13 +32,13 @@ public class BookCategoryService  {
 	}
 
 	public BookCategory updateBookCategory(Long id, BookCategoryDTO bookCategoryDTO) {
-		BookCategory bookCategory = bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BookCategory", "id", id));
+		BookCategory bookCategory = bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book category"));
 		bookCategory.setBookCategoryName(bookCategoryDTO.getBookCategoryName());
 		return bookCategoryRepository.save(bookCategory);
 	}
 
 	public void deleteBookCategory(Long id) {
-		BookCategory bookCategory = bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BookCategory", "id", id));
+		BookCategory bookCategory = bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book category"));
 		bookCategoryRepository.delete(bookCategory);
 	}
 }
