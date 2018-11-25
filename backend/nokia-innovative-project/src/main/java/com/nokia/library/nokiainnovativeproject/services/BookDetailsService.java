@@ -6,6 +6,7 @@ import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,23 @@ public class BookDetailsService {
 	private final BookDetailsRepository bookDetailsRepository;
 
 	public List<BookDetails> getAllBookDetails() {
-		//TODO: This metod returns BookDetails without authors, categories and reviews. Was that supposed to be like that? How this details will be loaded in FE part? Separate requests for authors, categories, etc?
-		//https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26#discussion_r232793457
-		return bookDetailsRepository.findAll();
+		List<BookDetails> list = bookDetailsRepository.findAll();
+		for(BookDetails bookDetails : list) {
+			Hibernate.initialize(bookDetails.getAuthors());
+			Hibernate.initialize(bookDetails.getCategories());
+			Hibernate.initialize(bookDetails.getReviews());
+			Hibernate.initialize(bookDetails.getBooks());
+		}
+		return list;
 	}
 
 	public BookDetails getBookDetailsById(Long id) {
-		return bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
+		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
+		Hibernate.initialize(bookDetails.getAuthors());
+		Hibernate.initialize(bookDetails.getCategories());
+		Hibernate.initialize(bookDetails.getReviews());
+		Hibernate.initialize(bookDetails.getBooks());
+		return bookDetails;
 	}
 
 	public BookDetails createBookDetails(BookDetailsDTO bookDetailsDTO) {
