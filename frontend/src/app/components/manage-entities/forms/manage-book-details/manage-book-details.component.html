@@ -1,150 +1,141 @@
-<mat-card class="entity-form">
-	<div><h1>Book details</h1></div>
-	<div>
-		<form name="bookDetailsParams" (ngSubmit)="createBookDetails(bookDetailsParams)" [formGroup]="bookDetailsParams">
-			<div>
-				<mat-form-field class="input-button">
-					<input formControlName="isbn"
-						   placeholder="ISBN number"
-						   matInput required>
-					<mat-error *ngIf="bookDetailsParams.controls.isbn.hasError">
-						<div *ngIf="bookDetailsParams.controls.isbn.errors?.required">
-							Isbn number is required
-						</div>
-						<div *ngIf="bookDetailsParams.controls.isbn.errors?.maxlength">
-							The maximum length is 13 characters
-						</div>
-						<div *ngIf="bookDetailsParams.controls.isbn.errors?.minlength">
-							The minimum length is 10 characters
-						</div>
-					</mat-error>
-				</mat-form-field>
-				<button mat-raised-button color="accent" type="button" (click)="getInfoFromAPI()">Get details</button>
-			</div>
-
-			<div>
-				<mat-form-field class="element-in-table">
-					<input formControlName="title"
-						   placeholder="Book title"
-						   matInput>
-					<mat-error *ngIf="bookDetailsParams.controls.title.hasError">
-						<div *ngIf="bookDetailsParams.controls.title.errors?.required">
-							Title is required
-						</div>
-						<div *ngIf="bookDetailsParams.controls.title.errors?.maxlength">
-							The maximum length is 100 characters
-						</div>
-					</mat-error>
-				</mat-form-field>
-			</div>
-
-			<div>
-				<mat-form-field class="element-in-table">
-					<mat-select placeholder="Categories" [(ngModel)]="selectedCategories" [formControl]="categoryForm" multiple required>
-						<mat-option *ngFor="let category of bookCategories" [value]="category">{{category.bookCategoryName}}</mat-option>
-					</mat-select>
-					<mat-error>
-						At least one category ir required
-					</mat-error>
-				</mat-form-field>
-			</div>
-
-			<div>
-				<mat-form-field class="author-chip-list">
-					<mat-chip-list #chipList minlength="1">
-						<mat-chip
-							*ngFor="let author of myAuthors; let indx=index"
-							[selectable]="selectable"
-							[removable]="removable"
-							(removed)="remove(author,indx)">
-							{{(author.authorName + " " + author.authorSurname)}}
-							<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-						</mat-chip>
-						<input
-							placeholder="New author..."
-							#authorInput
-							[formControl]="authorCtrl"
-							[matAutocomplete]="auto"
-							[matChipInputFor]="chipList"
-							[matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-							[matChipInputAddOnBlur]="addOnBlur"
-							(matChipInputTokenEnd)="add($event)">
-					</mat-chip-list>
-					<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-						<mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
-							{{(author.authorName + " " + author.authorSurname)}}
-						</mat-option>
-					</mat-autocomplete>
-				</mat-form-field>
-			</div>
-
-
-			<div>
-				<mat-form-field class="element-in-table">
-					<input formControlName="tableOfContents"
-						   placeholder="Table of contents"
-						   matInput>
-					<mat-error *ngIf="bookDetailsParams.controls.tableOfContents.hasError">
-						<div *ngIf="bookDetailsParams.controls.tableOfContents.errors?.maxlength">
-							The maximum length is 100 characters
-						</div>
-					</mat-error>
-				</mat-form-field>
-			</div>
-
-			<div>
-				<mat-form-field class="publication-date-in-table">
-					<input matInput [max]="maxDate" [matDatepicker]="myDatepicker"
-						   placeholder="Publication date" disabled required
-						   formControlName="dateOfPublication">
-					<mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
-					<mat-datepicker startView="multi-year" #myDatepicker disabled="false"></mat-datepicker>
-
-					<mat-error *ngIf="bookDetailsParams.controls.dateOfPublication.hasError">
-						<div *ngIf="bookDetailsParams.controls.dateOfPublication.errors?.required">
-							Publication date is required
-						</div>
-					</mat-error>
-
-				</mat-form-field>
-			</div>
-
-
-			<div>
-				<mat-form-field class="element-in-table">
-					<input formControlName="coverPictureUrl"
-						   placeholder="Cover picture URL"
-						   matInput>
-					<mat-error *ngIf="bookDetailsParams.controls.coverPictureUrl.hasError">
-						<div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">
-							The maximum length is 1000 characters
-						</div>
-					</mat-error>
-				</mat-form-field>
-			</div>
-
-			<div>
-				<mat-form-field class="element-in-table">
-              <textarea formControlName="description"
-						placeholder="Book description" matInput>
-              </textarea>
-					<mat-error *ngIf="bookDetailsParams.controls.coverPictureUrl.hasError">
-						<div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">
-							The maximum length is 1000 characters
-						</div>
-					</mat-error>
-				</mat-form-field>
-			</div>
-
-			<div>
-				<button mat-raised-button color="primary" [type]="submit">
-					Create new book details
-				</button>
-
-				<button mat-raised-button color="accent" type="button" (click)="autoFillBookDetialsForm()">Demo</button>
-			</div>
-		</form>
+<mat-card class="form-wrapper">
+	<div class="form-title">
+		<h1>Book details</h1>
 	</div>
+	<form name="bookDetailsParams" (ngSubmit)="createBookDetails(bookDetailsParams)" [formGroup]="bookDetailsParams">
+		<div class="form-container">
+			<mat-form-field class="isbn-field">
+				<input formControlName="isbn"
+					   placeholder="ISBN number"
+					   matInput required>
+				<mat-error *ngIf="bookDetailsParams.controls.isbn.hasError">
+					<div *ngIf="bookDetailsParams.controls.isbn.errors?.required">
+						Isbn number is required
+					</div>
+					<div *ngIf="bookDetailsParams.controls.isbn.errors?.maxlength">
+						The maximum length is 13 characters
+					</div>
+					<div *ngIf="bookDetailsParams.controls.isbn.errors?.minlength">
+						The minimum length is 10 characters
+					</div>
+				</mat-error>
+			</mat-form-field>
+			<button mat-raised-button color="accent" type="button" (click)="getInfoFromAPI()">Get details</button>
+
+			<mat-form-field>
+				<input formControlName="title"
+					   placeholder="Title"
+					   matInput>
+				<mat-error *ngIf="bookDetailsParams.controls.title.hasError">
+					<div *ngIf="bookDetailsParams.controls.title.errors?.required">
+						Title is required
+					</div>
+					<div *ngIf="bookDetailsParams.controls.title.errors?.maxlength">
+						The maximum length is 100 characters
+					</div>
+				</mat-error>
+			</mat-form-field>
+
+			<mat-form-field>
+				<mat-chip-list #chipList minlength="1">
+					<mat-chip
+						*ngFor="let author of myAuthors; let indx=index"
+						[selectable]="selectable"
+						[removable]="removable"
+						(removed)="remove(author,indx)">
+						{{(author.authorName + " " + author.authorSurname)}}
+						<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+					</mat-chip>
+					<input
+						placeholder="Authors"
+						#authorInput
+						[formControl]="authorCtrl"
+						[matAutocomplete]="auto"
+						[matChipInputFor]="chipList"
+						[matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+						[matChipInputAddOnBlur]="addOnBlur"
+						(matChipInputTokenEnd)="add($event)">
+				</mat-chip-list>
+				<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+					<mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
+						{{(author.authorName + " " + author.authorSurname)}}
+					</mat-option>
+				</mat-autocomplete>
+			</mat-form-field>
+
+			<mat-form-field>
+				<mat-select placeholder="Categories" [(ngModel)]="selectedCategories" [formControl]="categoryForm" multiple required>
+					<mat-option *ngFor="let category of bookCategories" [value]="category">{{category.bookCategoryName}}</mat-option>
+				</mat-select>
+				<mat-error>
+					At least one category is required
+				</mat-error>
+			</mat-form-field>
+
+			<mat-form-field>
+				<input formControlName="tableOfContents"
+					   placeholder="Table of contents"
+					   matInput>
+				<mat-error *ngIf="bookDetailsParams.controls.tableOfContents.hasError">
+					<div *ngIf="bookDetailsParams.controls.tableOfContents.errors?.maxlength">
+						The maximum length is 100 characters
+					</div>
+				</mat-error>
+			</mat-form-field>
+
+			<mat-form-field>
+				<input formControlName="dateOfPublication"
+					   [max]="maxDate"
+					   [matDatepicker]="myDatepicker"
+					   placeholder="Publication date"
+					   disabled
+					   matInput required>
+				<mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+				<mat-datepicker startView="multi-year" #myDatepicker disabled="false"></mat-datepicker>
+
+				<mat-error *ngIf="bookDetailsParams.controls.dateOfPublication.hasError">
+					<div *ngIf="bookDetailsParams.controls.dateOfPublication.errors?.required">
+						Publication date is required
+					</div>
+				</mat-error>
+
+			</mat-form-field>
+
+			<mat-form-field>
+				<input formControlName="coverPictureUrl"
+					   placeholder="Cover picture URL"
+					   matInput>
+				<mat-error *ngIf="bookDetailsParams.controls.coverPictureUrl.hasError">
+					<div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">
+						The maximum length is 1000 characters
+					</div>
+				</mat-error>
+			</mat-form-field>
+
+			<mat-form-field>
+              <textarea formControlName="description"
+						placeholder="Book description"
+						matInput>
+              </textarea>
+				<mat-error *ngIf="bookDetailsParams.controls.coverPictureUrl.hasError">
+					<div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">
+						The maximum length is 1000 characters
+					</div>
+				</mat-error>
+			</mat-form-field>
+
+		</div>
+
+		<div>
+			<button mat-raised-button color="primary" [type]="submit">
+				Submit
+			</button>
+
+			<button class="demo-button" mat-raised-button color="accent" type="button" (click)="autoFillBookDetialsForm()">
+				Demo
+			</button>
+		</div>
+	</form>
 </mat-card>
 <mat-divider></mat-divider>
 <table mat-table [dataSource]="booksDetails">

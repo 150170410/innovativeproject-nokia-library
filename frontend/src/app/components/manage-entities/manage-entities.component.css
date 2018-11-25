@@ -1,34 +1,10 @@
-.entity-form {
-	max-width: 70%;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.data-table {
-	width: 100%;
-}
-
-.author-chip-list {
-	width: 80%;
-}
-
-.element-in-table {
-	width: 80%;
-}
-
-.publication-date-in-table {
-	width: 80%;
-}
-
-table {
-	width: 100%;
-}
-
-.input-button {
-	width: 60%;
-}
-
-.half-div{
+.half-div {
 	float: left;
 	width: 50%;
 }
+
+
+
+
+
+

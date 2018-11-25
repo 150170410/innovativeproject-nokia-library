@@ -1,63 +1,62 @@
-<mat-card class="entity-form">
-	<div><h1>Author</h1>
-		<div>
-			<form name="authorsParams" (ngSubmit)="createAuthor(authorParams)" [formGroup]="authorParams">
+<mat-card class="form-wrapper">
+	<div class="form-title">
+		<h1>Authors</h1>
+	</div>
+	<form name="authorsParams" (ngSubmit)="createAuthor(authorParams)" [formGroup]="authorParams">
+		<div class="form-container">
 
-				<div>
-					<mat-form-field class="element-in-table">
-						<input formControlName="authorName"
-							   placeholder="Author name"
-							   matInput required>
-						<mat-error *ngIf="authorParams.controls.authorName.hasError">
-							<div *ngIf="authorParams.controls.authorName.errors?.required">
-								Author Name is required
-							</div>
-							<div *ngIf="authorParams.controls.authorName.errors?.maxlength">
-								The maximum length is 300 characters
-							</div>
-						</mat-error>
-					</mat-form-field>
-				</div>
+			<mat-form-field class="element-in-table">
+				<input formControlName="authorName"
+					   placeholder="Author name"
+					   matInput required>
+				<mat-error *ngIf="authorParams.controls.authorName.hasError">
+					<div *ngIf="authorParams.controls.authorName.errors?.required">
+						Author Name is required
+					</div>
+					<div *ngIf="authorParams.controls.authorName.errors?.maxlength">
+						The maximum length is 300 characters
+					</div>
+				</mat-error>
+			</mat-form-field>
 
-				<div>
-					<mat-form-field class="element-in-table">
-						<input formControlName="authorSurname"
-							   placeholder="Author surname"
-							   matInput required>
-						<mat-error *ngIf="authorParams.controls.authorSurname.hasError">
-							<div *ngIf="authorParams.controls.authorSurname.errors?.required">
-								Author Surname is required
-							</div>
-							<div *ngIf="authorParams.controls.authorSurname.errors?.maxlength">
-								The maximum length is 300 characters
-							</div>
-						</mat-error>
-					</mat-form-field>
-				</div>
+			<mat-form-field class="element-in-table">
+				<input formControlName="authorSurname"
+					   placeholder="Author surname"
+					   matInput required>
+				<mat-error *ngIf="authorParams.controls.authorSurname.hasError">
+					<div *ngIf="authorParams.controls.authorSurname.errors?.required">
+						Author Surname is required
+					</div>
+					<div *ngIf="authorParams.controls.authorSurname.errors?.maxlength">
+						The maximum length is 300 characters
+					</div>
+				</mat-error>
+			</mat-form-field>
 
-				<div>
-					<mat-form-field class="element-in-table">
+			<mat-form-field class="element-in-table">
                 <textarea formControlName="authorDescription"
 						  placeholder="Author description" matInput>
                 </textarea>
-						<mat-error *ngIf="authorParams.controls.authorDescription.hasError">
-							<div *ngIf="authorParams.controls.authorDescription.errors?.maxlength">
-								The maximum length is 10000 characters
-							</div>
-						</mat-error>
-					</mat-form-field>
-				</div>
-
-				<div>
-					<button mat-raised-button color="primary" [type]="submit">
-						Create new author
-					</button>
-					<button mat-raised-button color="accent" type="button" (click)="autoFillAuthorForm()">Demo</button>
-				</div>
-
-			</form>
+				<mat-error *ngIf="authorParams.controls.authorDescription.hasError">
+					<div *ngIf="authorParams.controls.authorDescription.errors?.maxlength">
+						The maximum length is 10000 characters
+					</div>
+				</mat-error>
+			</mat-form-field>
 		</div>
-	</div>
+
+		<div>
+			<button mat-raised-button color="primary" [type]="submit">
+				Submit
+			</button>
+			<button class="demo-button" mat-raised-button color="accent" type="button" (click)="autoFillAuthorForm()">
+				Demo
+			</button>
+		</div>
+
+	</form>
+
+
 </mat-card>
 <mat-divider></mat-divider>
 <table mat-table [dataSource]="authors">
