@@ -21,3 +21,7 @@ spring:
     open-in-view: true
 server:
   port: 8081
+mail:
+  username: nokia.library@gmail.com
+  password: NokiaLibrary2018
+  debug: true

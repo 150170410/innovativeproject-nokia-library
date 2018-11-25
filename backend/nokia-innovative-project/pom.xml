@@ -122,6 +122,16 @@
 			<version>2.3.0</version>
 		</dependency>
 
+		<!--  Email service -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
