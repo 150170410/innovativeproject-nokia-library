@@ -1,4 +1,7 @@
-
+* {
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+}
 
 .main-content {
 	height: calc(100vh - 64px);
@@ -12,21 +15,22 @@
 	height: 64px;
 }
 
-::ng-deep .mat-sidenav-container{
-	height:calc(100vh - 64px) !important; /* or 100% */
+::ng-deep .mat-sidenav-container {
+	height: calc(100vh - 64px) !important; /* or 100% */
 }
 
-.sidenav-menu{
+.sidenav-menu {
 	background-color: #ffffff;
 	width: 223px;
 }
 
-.sidenav-button-close{
+.sidenav-button-close {
 	position: relative;
 	top: 14px;
 	left: 50px;
 }
 
-.content-all{
+.content-all {
 	background: #d1eaff;
 }
+

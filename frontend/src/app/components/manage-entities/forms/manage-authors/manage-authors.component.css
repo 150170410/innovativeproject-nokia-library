@@ -11,10 +11,15 @@ mat-form-field {
 	margin: auto;
 }
 
-.demo-button{
+.demo-button {
 	margin-left: 10px;
 }
 
 .form-title {
 	text-align: center;
+}
+
+.vert-spacer {
+	border-left: 1px black solid;
+	margin-left: 10px;
 }

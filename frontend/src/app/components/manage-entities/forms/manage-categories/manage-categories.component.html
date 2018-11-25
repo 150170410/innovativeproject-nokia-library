@@ -33,14 +33,16 @@
 
 </div>
 
-<table mat-table [dataSource]="bookCategories">
+<div class="form-table-spacer">
+	<table mat-table [dataSource]="bookCategories">
 
-	<ng-container matColumnDef="bookCategoryName">
-		<th mat-header-cell *matHeaderCellDef>Category name</th>
-		<td mat-cell *matCellDef="let category"> {{category.bookCategoryName}}</td>
-	</ng-container>
+		<ng-container matColumnDef="bookCategoryName">
+			<th mat-header-cell *matHeaderCellDef>Category name</th>
+			<td mat-cell *matCellDef="let category"> {{category.bookCategoryName}}</td>
+		</ng-container>
 
-	<tr mat-header-row *matHeaderRowDef="displayedCategoryColumns"></tr>
-	<tr mat-row *matRowDef="let row; columns: displayedCategoryColumns"></tr>
+		<tr mat-header-row *matHeaderRowDef="displayedCategoryColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedCategoryColumns"></tr>
 
-</table>
+	</table>
+</div>

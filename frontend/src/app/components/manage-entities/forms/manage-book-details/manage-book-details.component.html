@@ -12,12 +12,8 @@
 					<div *ngIf="bookDetailsParams.controls.isbn.errors?.required">
 						Isbn number is required
 					</div>
-					<div *ngIf="bookDetailsParams.controls.isbn.errors?.maxlength">
-						The maximum length is 13 characters
-					</div>
-					<div *ngIf="bookDetailsParams.controls.isbn.errors?.minlength">
-						The minimum length is 10 characters
-					</div>
+					<div *ngIf="bookDetailsParams.controls.isbn.errors?.maxlength">The maximum length is 13 characters</div>
+					<div *ngIf="bookDetailsParams.controls.isbn.errors?.minlength">The minimum length is 10 characters</div>
 				</mat-error>
 			</mat-form-field>
 			<button mat-raised-button color="accent" type="button" (click)="getInfoFromAPI()">Get details</button>
@@ -27,23 +23,19 @@
 					   placeholder="Title"
 					   matInput>
 				<mat-error *ngIf="bookDetailsParams.controls.title.hasError">
-					<div *ngIf="bookDetailsParams.controls.title.errors?.required">
-						Title is required
-					</div>
-					<div *ngIf="bookDetailsParams.controls.title.errors?.maxlength">
-						The maximum length is 100 characters
-					</div>
+					<div *ngIf="bookDetailsParams.controls.title.errors?.required">Title is required</div>
+					<div *ngIf="bookDetailsParams.controls.title.errors?.maxlength">The maximum length is 100 characters</div>
 				</mat-error>
 			</mat-form-field>
 
 			<mat-form-field>
 				<mat-chip-list #chipList minlength="1">
 					<mat-chip
-						*ngFor="let author of myAuthors; let indx=index"
+						*ngFor="let author of selectedAuthors; let i of index;"
 						[selectable]="selectable"
 						[removable]="removable"
-						(removed)="remove(author,indx)">
-						{{(author.authorName + " " + author.authorSurname)}}
+						(removed)="remove(author, i)">
+						{{author.toString()}}
 						<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
 					</mat-chip>
 					<input
@@ -67,9 +59,7 @@
 				<mat-select placeholder="Categories" [(ngModel)]="selectedCategories" [formControl]="categoryForm" multiple required>
 					<mat-option *ngFor="let category of bookCategories" [value]="category">{{category.bookCategoryName}}</mat-option>
 				</mat-select>
-				<mat-error>
-					At least one category is required
-				</mat-error>
+				<mat-error>At least one category is required</mat-error>
 			</mat-form-field>
 
 			<mat-form-field>
@@ -77,9 +67,7 @@
 					   placeholder="Table of contents"
 					   matInput>
 				<mat-error *ngIf="bookDetailsParams.controls.tableOfContents.hasError">
-					<div *ngIf="bookDetailsParams.controls.tableOfContents.errors?.maxlength">
-						The maximum length is 100 characters
-					</div>
+					<div *ngIf="bookDetailsParams.controls.tableOfContents.errors?.maxlength">The maximum length is 100 characters</div>
 				</mat-error>
 			</mat-form-field>
 
@@ -94,9 +82,7 @@
 				<mat-datepicker startView="multi-year" #myDatepicker disabled="false"></mat-datepicker>
 
 				<mat-error *ngIf="bookDetailsParams.controls.dateOfPublication.hasError">
-					<div *ngIf="bookDetailsParams.controls.dateOfPublication.errors?.required">
-						Publication date is required
-					</div>
+					<div *ngIf="bookDetailsParams.controls.dateOfPublication.errors?.required">Publication date is required</div>
 				</mat-error>
 
 			</mat-form-field>
@@ -106,9 +92,7 @@
 					   placeholder="Cover picture URL"
 					   matInput>
 				<mat-error *ngIf="bookDetailsParams.controls.coverPictureUrl.hasError">
-					<div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">
-						The maximum length is 1000 characters
-					</div>
+					<div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">The maximum length is 1000 characters</div>
 				</mat-error>
 			</mat-form-field>
 
@@ -118,9 +102,7 @@
 						matInput>
               </textarea>
 				<mat-error *ngIf="bookDetailsParams.controls.coverPictureUrl.hasError">
-					<div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">
-						The maximum length is 1000 characters
-					</div>
+					<div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">The maximum length is 1000 characters</div>
 				</mat-error>
 			</mat-form-field>
 

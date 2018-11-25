@@ -1,7 +1,19 @@
 .half-div {
 	float: left;
-	width: 50%;
+	width: 48%;
 }
+
+.vert-spacer {
+	/*margin-left: 1px;*/
+	border-left: 1px solid black;
+}
+
+.full-card {
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+}
+
 
 
 

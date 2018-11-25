@@ -8,7 +8,7 @@ import { Author } from '../../../../models/database/entites/Author';
 import { BookDetails } from '../../../../models/database/entites/BookDetails';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatSort, MatTableDataSource } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
@@ -23,7 +23,8 @@ export class ManageBookDetailsComponent implements OnInit {
 	bookCategories: BookCategory[] = [];
 	authors: Author[] = [];
 	booksDetails: BookDetails[] = [];
-	displayedBookDetailColumns: string[] = ['title', 'authors', 'categories', 'coverURL', 'isbn', 'dateOfPublication' ];
+	displayedBookDetailColumns: string[] = ['title', 'authors', 'categories', 'coverURL', 'isbn', 'dateOfPublication'];
+
 
 	// variable for date validation
 	currentDate = new Date();
@@ -46,9 +47,10 @@ export class ManageBookDetailsComponent implements OnInit {
 	separatorKeysCodes: number[] = [ENTER, COMMA];
 	authorCtrl = new FormControl();
 	filteredAuthors: Observable<string[]>;
-	myAuthors: any[] = [];
+	selectedAuthors: any[] = [];
 	@ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement>;
 	@ViewChild('auto') matAutocomplete: MatAutocomplete;
+
 
 	constructor(private formBuilder: FormBuilder, private http: RestService) {
 		this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
@@ -63,7 +65,7 @@ export class ManageBookDetailsComponent implements OnInit {
 			const value = event.value;
 
 			if ((value || '').trim()) {
-				this.myAuthors.push({
+				this.selectedAuthors.push({
 					id: Math.random(),
 					authorName: value.trim()
 				});
@@ -80,12 +82,12 @@ export class ManageBookDetailsComponent implements OnInit {
 	remove(author, index): void {
 
 		if (index >= 0) {
-			this.myAuthors.splice(index, 1);
+			this.selectedAuthors.splice(index, 1);
 		}
 	}
 
 	selected(event: MatAutocompleteSelectedEvent): void {
-		this.myAuthors.push(event.option.value);
+		this.selectedAuthors.push(event.option.value);
 		this.authorInput.nativeElement.value = '';
 		this.authorCtrl.setValue(null);
 
@@ -109,12 +111,12 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	initBookDetailsForm() {
 		this.bookDetailsParams = this.formBuilder.group({
-			coverPictureUrl: ['', Validators.maxLength(1000)],
-			dateOfPublication: ['', [Validators.required]],
-			description: ['', Validators.maxLength(1000)],
 			isbn: ['', [Validators.required, Validators.maxLength(13), Validators.minLength(10)]],
+			title: ['', [Validators.required, Validators.maxLength(100)]],
 			tableOfContents: ['', Validators.maxLength(100)],
-			title: ['', [Validators.required, Validators.maxLength(100)]]
+			dateOfPublication: ['', [Validators.required]],
+			coverPictureUrl: ['', Validators.maxLength(1000)],
+			description: ['', Validators.maxLength(1000)],
 		});
 		this.getBookDetails();
 	}
@@ -123,14 +125,14 @@ export class ManageBookDetailsComponent implements OnInit {
 
 		this.bookDetailsSubmitted = true;
 
-		if (this.bookDetailsParams.invalid || this.myAuthors.length === 0 || this.selectedCategories.length === 0) {
+		if (this.bookDetailsParams.invalid || this.selectedAuthors.length === 0 || this.selectedCategories.length === 0) {
 			console.log('mistakes in parameters');
 			return;
 		}
 
 		const body = new BookDetailsDTO(params.value.coverPictureUrl, params.value.dateOfPublication,
 			params.value.description, params.value.isbn,
-			params.value.tableOfContents, params.value.title, this.myAuthors, this.selectedCategories);
+			params.value.tableOfContents, params.value.title, this.selectedAuthors, this.selectedCategories);
 		this.http.save('bookDetails/create', body).subscribe(() => {
 			console.log('book details created');
 		});

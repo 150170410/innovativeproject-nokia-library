@@ -17,7 +17,8 @@
 		</p>
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-raised-button color="accent">Borrow book</button>
+		<button mat-raised-button color="accent" disabled>Borrow book</button>
+		<button mat-button color="accent" disabled>Reserve book</button>
 		<button routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" mat-raised-button color="primary">More info</button>
 	</mat-card-actions>
 </mat-card>

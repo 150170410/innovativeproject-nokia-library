@@ -1,6 +1,17 @@
 export class Author {
+	id: number;
 	authorName: string;
 	authorSurname: string;
 	authorDescription: string;
-	id: number;
+
+	constructor(id: number, authorName: string, authorSurname: string, authorDescription: string) {
+		this.id = id;
+		this.authorName = authorName;
+		this.authorSurname = authorSurname;
+		this.authorDescription = authorDescription;
+	}
+
+	toString(): string{
+		return this.authorName + ' '+ this.authorSurname;
+	}
 }
