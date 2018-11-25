@@ -14,7 +14,7 @@ export class ManageAuthorsComponent implements OnInit {
 	
 	authorParams: FormGroup;
 	authors: Author[] = [];
-	displayedAuthorsColumn: string[] = ['authorName', 'authorSurname'];
+	displayedAuthorsColumn: string[] = ['authorName', 'authorSurname', 'authorDescription'];
 
 	// variables helpful for mistakes catching
 	authorSubmitted = false;

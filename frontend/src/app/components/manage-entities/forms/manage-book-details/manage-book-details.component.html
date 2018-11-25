@@ -140,24 +140,34 @@
 <mat-divider></mat-divider>
 <table mat-table [dataSource]="booksDetails">
 
-	<ng-container matColumnDef="id">
-		<th mat-header-cell *matHeaderCellDef> Id</th>
-		<td mat-cell *matCellDef="let bookDetails"> {{bookDetails.id}}</td>
-	</ng-container>
-
 	<ng-container matColumnDef="title">
 		<th mat-header-cell *matHeaderCellDef> Title</th>
-		<td mat-cell *matCellDef="let bookDetails"> {{bookDetails.title}}</td>
+		<td mat-cell *matCellDef="let bookDetails">{{bookDetails.title}}</td>
 	</ng-container>
 
-	<ng-container matColumnDef="dateOfPublication">
-		<th mat-header-cell *matHeaderCellDef> Publication Date</th>
-		<td mat-cell *matCellDef="let bookDetails"> {{bookDetails.dateOfPublication | date: 'yyyy'}}</td>
+	<ng-container matColumnDef="authors">
+		<th mat-header-cell *matHeaderCellDef>Authors</th>
+		<td mat-cell *matCellDef="let bookDetails">{{bookDetails.authors | arrToStr:'author'}}</td>
+	</ng-container>
+
+	<ng-container matColumnDef="categories">
+		<th mat-header-cell *matHeaderCellDef>Categories</th>
+		<td mat-cell *matCellDef="let bookDetails">{{bookDetails.categories | arrToStr:'category'}}</td>
+	</ng-container>
+
+	<ng-container matColumnDef="coverURL">
+		<th mat-header-cell *matHeaderCellDef>Cover URL</th>
+		<td mat-cell *matCellDef="let bookDetails">{{bookDetails.coverPictureUrl}}</td>
 	</ng-container>
 
 	<ng-container matColumnDef="isbn">
-		<th mat-header-cell *matHeaderCellDef> ISBN</th>
-		<td mat-cell *matCellDef="let bookDetails"> {{bookDetails.isbn}}</td>
+		<th mat-header-cell *matHeaderCellDef>ISBN</th>
+		<td mat-cell *matCellDef="let bookDetails">{{bookDetails.isbn}}</td>
+	</ng-container>
+
+	<ng-container matColumnDef="dateOfPublication">
+		<th mat-header-cell *matHeaderCellDef>Publication Date</th>
+		<td mat-cell *matCellDef="let bookDetails">{{bookDetails.dateOfPublication | date: 'yyyy'}}</td>
 	</ng-container>
 
 	<tr mat-header-row *matHeaderRowDef="displayedBookDetailColumns"></tr>

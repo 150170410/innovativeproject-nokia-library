@@ -7,42 +7,42 @@
 	</div>
 
 
-	<ol>
-		<li class="cursor-pointer" *ngFor="let bookDetails of allBooks">
-			<div routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" class="wrapper clearfix">
-				<div class="book-cover box-borders">
-					<img class="image-look" src="{{bookDetails.coverPictureUrl}}"/>
-				</div>
-				<div class="text-area box-borders cursor-pointer">
-					<table>
-						<tr>
-							<th>Title</th>
-							<th>Description</th>
-							<th>Authors</th>
-							<th>Categories</th>
-							<th>Date of publication</th>
-						</tr>
-						<tr>
-							<td>{{bookDetails.title}}</td>
-							<td>{{bookDetails.description}}</td>
-							<td>
-								<div *ngFor="let author of bookDetails.authors">
-									{{author.authorName}} {{author.authorSurname}}
-								</div>
-							</td>
-							<td>
-								<div *ngFor="let category of bookDetails.categories">
-									{{category.bookCategoryName}}
-								</div>
-							</td>
-							<td>{{bookDetails.dateOfPublication | date:'dd.MM.yyyy'}}</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			<mat-divider></mat-divider>
-		</li>
-	</ol>
+	<!--<ol>-->
+		<!--<li class="cursor-pointer" *ngFor="let bookDetails of allBooks">-->
+			<!--<div routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" class="wrapper clearfix">-->
+				<!--<div class="book-cover box-borders">-->
+					<!--<img class="image-look" src="{{bookDetails.coverPictureUrl}}"/>-->
+				<!--</div>-->
+				<!--<div class="text-area box-borders cursor-pointer">-->
+					<!--<table>-->
+						<!--<tr>-->
+							<!--<th>Title</th>-->
+							<!--<th>Description</th>-->
+							<!--<th>Authors</th>-->
+							<!--<th>Categories</th>-->
+							<!--<th>Date of publication</th>-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<td>{{bookDetails.title}}</td>-->
+							<!--<td>{{bookDetails.description}}</td>-->
+							<!--<td>-->
+								<!--<div *ngFor="let author of bookDetails.authors">-->
+									<!--{{author.authorName}} {{author.authorSurname}}-->
+								<!--</div>-->
+							<!--</td>-->
+							<!--<td>-->
+								<!--<div *ngFor="let category of bookDetails.categories">-->
+									<!--{{category.bookCategoryName}}-->
+								<!--</div>-->
+							<!--</td>-->
+							<!--<td>{{bookDetails.dateOfPublication | date:'dd.MM.yyyy'}}</td>-->
+						<!--</tr>-->
+					<!--</table>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<mat-divider></mat-divider>-->
+		<!--</li>-->
+	<!--</ol>-->
 </mat-card>
 
 

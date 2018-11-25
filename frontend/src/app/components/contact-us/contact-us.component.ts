@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmailMessage } from '../../models/EmailMessage';
+import { EmailDTO } from '../../models/EmailDTO';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
 	selector: 'app-contact-us',
@@ -12,9 +13,10 @@ export class ContactUsComponent implements OnInit {
 	contactParams: FormGroup;
 
 	categories = ['Report a bug', 'Request new feature', 'Other'];
-	emails = []; // TODO: to which emails these messages should be sent?
+	recipients = ['nokia.library@gmail.com']; // TODO: to which emails these messages should be sent?
 
-	constructor(private formBuilder: FormBuilder) {
+	constructor(private formBuilder: FormBuilder,
+				public dialogRef: MatDialogRef<ContactUsComponent>) {
 	}
 
 	ngOnInit() {
@@ -24,16 +26,25 @@ export class ContactUsComponent implements OnInit {
 	initForm() {
 		this.contactParams = this.formBuilder.group({
 			category: ['', Validators.required],
-			title: ['', Validators.required],
+			subject: ['', Validators.required],
 			message: ['', Validators.required]
 		});
 	}
 
 	sendEmail(contactParams: FormGroup) {
-		const email = new EmailMessage(contactParams.value.category, contactParams.value.title, contactParams.value.message);
+		const subject = contactParams.value.subject;
+		const category = contactParams.value.category;
+		const context = contactParams.value.message;
 		console.log(contactParams);
-		console.log('sending email: ' + '' + email.category + ' ' + email.title + ' ' + email.message);
+ 		const email = new EmailDTO(category + ' ' + subject, context, this.recipients);
+ 		console.log(email);
+
+		this.emailSent();
+
 		// TODO: send emails
 	}
 
+	emailSent(): void {
+		this.dialogRef.close();
+	}
 }

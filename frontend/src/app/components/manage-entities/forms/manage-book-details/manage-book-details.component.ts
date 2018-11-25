@@ -18,27 +18,22 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class ManageBookDetailsComponent implements OnInit {
 
-
 	bookDetailsParams: FormGroup;
-
 
 	bookCategories: BookCategory[] = [];
 	authors: Author[] = [];
 	booksDetails: BookDetails[] = [];
-	displayedBookDetailColumns: string[] = ['title', 'dateOfPublication', 'isbn'];
+	displayedBookDetailColumns: string[] = ['title', 'authors', 'categories', 'coverURL', 'isbn', 'dateOfPublication' ];
 
 	// variable for date validation
 	currentDate = new Date();
 	currentYear = this.currentDate.getFullYear();
 	currentMonth = this.currentDate.getMonth();
 	currentDay = this.currentDate.getDay();
-
 	maxDate = new Date(this.currentYear, this.currentMonth, this.currentDay);
-
 
 	// variables helpful for mistakes catching
 	bookDetailsSubmitted = false;
-
 
 	// variables for categories form
 	selectedCategories: BookCategory[] = [];
@@ -54,7 +49,6 @@ export class ManageBookDetailsComponent implements OnInit {
 	myAuthors: any[] = [];
 	@ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement>;
 	@ViewChild('auto') matAutocomplete: MatAutocomplete;
-
 
 	constructor(private formBuilder: FormBuilder, private http: RestService) {
 		this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
@@ -113,7 +107,6 @@ export class ManageBookDetailsComponent implements OnInit {
 		console.log(this.currentDate);
 	}
 
-
 	initBookDetailsForm() {
 		this.bookDetailsParams = this.formBuilder.group({
 			coverPictureUrl: ['', Validators.maxLength(1000)],
@@ -125,8 +118,6 @@ export class ManageBookDetailsComponent implements OnInit {
 		});
 		this.getBookDetails();
 	}
-
-
 
 	createBookDetails(params: any) {
 
@@ -165,8 +156,6 @@ export class ManageBookDetailsComponent implements OnInit {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
 		this.booksDetails = response.object;
 	}
-
-
 
 	autoFillBookDetialsForm() {
 		const sampleBookDTO = {

@@ -2,9 +2,9 @@
 <mat-sidenav-container class="content-all">
 	<mat-sidenav class="sidenav-menu" #sidenav (keydown.escape)="close()">
 
-		<mat-list >
+		<mat-list>
 			<mat-list-item>
-				 <h2>Options:</h2>
+				<h2>Options:</h2>
 			</mat-list-item>
 			<mat-list-item>
 				<button (click)="sidenav.toggle()" color="primary" mat-raised-button routerLink="/homepage" routerLinkActive="active">Homepage</button>
@@ -21,7 +21,9 @@
 
 	<mat-sidenav-content>
 		<div class="main-content">
-			<router-outlet></router-outlet>
+			<mat-card>
+				<router-outlet></router-outlet>
+			</mat-card>
 		</div>
 	</mat-sidenav-content>
 </mat-sidenav-container>

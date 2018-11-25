@@ -1,19 +1,17 @@
-<mat-card>
-	<h1>Manage books, authors and categories</h1>
+<h1>Manage books, authors and categories</h1>
 
-	<mat-tab-group mat-stretch-tabs>
-		<mat-tab label="Book details">
-			<app-manage-book-details></app-manage-book-details>
-		</mat-tab>
-		<mat-tab style="width: 100%;" label="Authors and categories">
-			<div class="half-div">
-				<app-manage-authors></app-manage-authors>
-			</div>
-			<div class="half-div">
-				<app-manage-categories></app-manage-categories>
-			</div>
+<mat-tab-group mat-stretch-tabs>
+	<mat-tab label="Book details">
+		<app-manage-book-details></app-manage-book-details>
+	</mat-tab>
+	<mat-tab label="Authors and categories">
+		<div class="half-div">
+			<app-manage-authors></app-manage-authors>
+		</div>
+		<div class="half-div">
+			<app-manage-categories></app-manage-categories>
+		</div>
 
-		</mat-tab>
+	</mat-tab>
 
-	</mat-tab-group>
-</mat-card>
+</mat-tab-group>
