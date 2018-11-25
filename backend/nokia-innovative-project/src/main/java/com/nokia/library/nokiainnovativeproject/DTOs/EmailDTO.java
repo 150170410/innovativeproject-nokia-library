@@ -23,5 +23,5 @@ public class EmailDTO {
     private String messageContext;
 
     @NotNull(message = "You must specify at least one recipient")
-    private List<String> recipient;
+    private List<String> recipients;
 }

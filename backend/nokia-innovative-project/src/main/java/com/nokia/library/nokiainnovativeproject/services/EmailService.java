@@ -3,7 +3,6 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.EmailDTO;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 
@@ -24,7 +23,7 @@ public class EmailService {
     public MessageInfo sendSimpleMessage(EmailDTO emailDTO) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(emailDTO.getRecipient().toArray(new String[emailDTO.getRecipient().size()]));
+            message.setTo(emailDTO.getRecipients().toArray(new String[emailDTO.getRecipients().size()]));
             message.setSubject(emailDTO.getSubject());
             message.setText(emailDTO.getMessageContext());
 
@@ -33,7 +32,7 @@ public class EmailService {
             exception.printStackTrace();
             return new MessageInfo(false, exception.toString(), Arrays.asList("Failed to send messages"));
         }
-        return MessageInfo.success(null, Arrays.asList("Email sent successfully"));
+        return new MessageInfo(true, "success", Arrays.asList("Email sent successfully"));
     }
 
     private JavaMailSender javaMailSender() {
