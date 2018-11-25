@@ -23,7 +23,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	bookCategories: BookCategory[] = [];
 	authors: Author[] = [];
 	booksDetails: BookDetails[] = [];
-	displayedBookDetailColumns: string[] = ['title', 'authors', 'categories', 'coverURL', 'isbn', 'dateOfPublication'];
+	displayedBookDetailColumns: string[] = ['title', 'authors', 'categories', 'coverURL', 'isbn', 'dateOfPublication', 'actions'];
 
 
 	// variable for date validation
@@ -174,5 +174,14 @@ export class ManageBookDetailsComponent implements OnInit {
 	getInfoFromAPI() {
 		// TODO: connect to some book rest API so it autocomplete form when ISBN is given
 		console.log('not connected to any API yet');
+	}
+
+	async removeBookDetails(id: number) {
+		await this.http.remove('bookDetails/remove/' + `${id}`).subscribe();
+		// TODO: refresh view after removing book details
+	}
+
+	editBookDetails(id: number) {
+		// TODO: patch values in form, then call different function when submitting form
 	}
 }

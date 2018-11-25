@@ -26,3 +26,8 @@ mat-form-field {
 .form-title {
 	text-align: center;
 }
+
+.mat-cell {
+	text-align: center;
+	border-right: 1px solid black;
+}
