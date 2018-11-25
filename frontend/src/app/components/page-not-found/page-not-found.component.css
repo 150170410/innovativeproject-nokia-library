@@ -1,9 +1,8 @@
-.overlay {
-	opacity: 1;
-	background-color: white;
-	position: fixed;
-	width: 50%;
-	height: 50%;
-	margin: auto;
-	z-index: 1000;
+.center-contest  {
+	text-align: center;
+}
+
+img {
+	width: 40%;
+	height: 40%;
 }
