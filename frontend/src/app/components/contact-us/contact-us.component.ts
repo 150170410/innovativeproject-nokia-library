@@ -12,9 +12,12 @@ import { RestService } from '../../services/rest/rest.service';
 export class ContactUsComponent implements OnInit {
 
 	contactParams: FormGroup;
-
+	sendingEmail = false;
 	categories = ['Report a bug', 'Request new feature', 'I don\'t like...', 'Other'];
 	recipients = ['aabc0041@gmail.com']; // TODO: to which emails these messages should be sent?
+	sendingFailed = false;
+	errorMessage;
+
 
 	constructor(private formBuilder: FormBuilder,
 				public dialogRef: MatDialogRef<ContactUsComponent>,
@@ -34,15 +37,18 @@ export class ContactUsComponent implements OnInit {
 	}
 
 	sendEmail(contactParams: FormGroup) {
-		const subject = contactParams.value.subject;
-		const category = contactParams.value.category;
-		const context = contactParams.value.message;
- 		const email = new EmailDTO(category + ': ' + subject, context, this.recipients);
- 		console.log(email);
+		this.sendingEmail = true;
+		this.sendingFailed = false;
+		const email = new EmailDTO(contactParams.value.category + ': ' + contactParams.value.subject, contactParams.value.message, this.recipients);
 
-		this.http.save('email/create', email).subscribe(() => {
-			console.log('email sent');
-			this.emailSent();
+		this.http.save('email/create', email).subscribe((response) => {
+			if (response.success === true) {
+				this.emailSent();
+			} else if (response.success === false) {
+				this.sendingFailed = true;
+				this.errorMessage = response.message[0];
+			}
+			this.sendingEmail = false;
 		});
 	}
 

@@ -5,8 +5,8 @@
 
 			<mat-form-field>
 				<p>Select type of issue</p>
-				<mat-select formControlName="category" >
-					<mat-option *ngFor="let category of categories" [value]="category" >
+				<mat-select formControlName="category">
+					<mat-option *ngFor="let category of categories" [value]="category">
 						{{category}}
 					</mat-option>
 				</mat-select>
@@ -24,7 +24,11 @@
 		<div>
 			<button mat-raised-button color="primary" [type]="submit" [disabled]="!contactParams.valid">
 				Send message
+				<mat-spinner class="spinner-placement" *ngIf="sendingEmail == true" color="accent" [diameter]="20"></mat-spinner>
 			</button>
+			<div *ngIf="sendingFailed" >{{errorMessage}}</div>
 		</div>
+
+
 	</form>
 </div>
