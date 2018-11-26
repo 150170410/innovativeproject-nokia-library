@@ -1,29 +1,43 @@
 <button mat-button routerLink="/listView" routerLinkActive="active">< Go back</button>
-<mat-card>
-	<h1>{{bookDetails.title}}</h1>
-	<img src="{{bookDetails.coverPictureUrl}}">
 
-	<div><b>About book:</b></div>
-	<div>{{bookDetails.description}}</div>
+<h1>{{bookDetails.title}}</h1>
+<h5>by: {{bookDetails.authors | arrToStr:'author'}}</h5>
+<div class="wrapper">
+	<div class="cover-wrapper">
+		<img src="{{bookDetails.coverPictureUrl}}">
+	</div>
+	<div class="info-box-wrapper">
+		<div><b>Categories:</b> {{bookDetails.categories| arrToStr:'category'}}</div>
+		<div><b>About book: </b>{{bookDetails.description}}</div>
+	</div>
+</div>
+<div>
+	<button mat-raised-button color="accent">
+		<mat-icon>done</mat-icon>
+		Borrow book
+	</button>
+	<button mat-button color="primary">
+		<mat-icon>star</mat-icon>
+		Reserve book
+	</button>
+</div>
 
-	<div><b>Authors:</b> {{bookDetails.authors | arrToStr:'author'}}</div>
-	<div><b>Categories:</b> {{bookDetails.categories| arrToStr:'category'}}</div>
+<h5>Book details:</h5>
+<ol>
+	<li>
+		<b>ISBN:</b> {{bookDetails.isbn}}
+	</li>
+	<li>
+		<b>Date of publication:</b> {{bookDetails.dateOfPublication | date: 'dd.MM.yyyy'}}
+	</li>
+	<li>
+		<b>Table of contents:</b> {{bookDetails.tableOfContents}}
+	</li>
+</ol>
+
+<h5>Comments:</h5>
+<div *ngFor="let review of reviews">{{review.comment}}</div>
 
 
-	<h5>Comments:</h5>
-	<div *ngFor="let review of reviews">{{review.comment}}</div>
-
-	<h5>Book details:</h5>
-	<ol>
-		<li>
-			<b>ISBN:</b> {{bookDetails.isbn}}
-		</li>
-		<li>
-			<b>Date of publication:</b> {{bookDetails.dateOfPublication | date: 'dd.MM.yyyy'}}
-		</li>
-		<li><b>Table of contents:</b> {{bookDetails.tableOfContents}}</li>
-	</ol>
-
-	<h5>Available copies:</h5>
-</mat-card>
+<h5>Available copies:</h5>
 

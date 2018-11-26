@@ -1,6 +1,8 @@
 .half-div {
 	float: left;
 	width: 48%;
+	display: inline-block;
+	margin: 10px;
 }
 
 .vert-spacer {
@@ -14,9 +16,11 @@
 	box-sizing: border-box;
 }
 
-
-
-
+.forms-container {
+	margin: 10px auto;
+	position: relative;
+	text-align: center;
+}
 
 
 

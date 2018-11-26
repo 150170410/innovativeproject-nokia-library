@@ -5,8 +5,14 @@
 		</button>
 		<img class="nav-link white" src="../../../assets/images/nokia-logo.png">
 
-		<a class="nav-link white" routerLink="/homepage" routerLinkActive="active">Nokia library</a>
-		<a class="nav-link white" target="_blank" href="https://github.com/nokia-wroclaw/innovativeproject-nokia-library">Github page</a>
+		<a class="nav-link white" routerLink="/homepage" routerLinkActive="active">
+				<mat-icon>home</mat-icon>
+				Nokia library
+		</a>
+		<a class="nav-link white" target="_blank" href="https://github.com/nokia-wroclaw/innovativeproject-nokia-library">
+			<mat-icon>link</mat-icon>
+			Github page
+		</a>
 
 		<div class="search-bar-wrapper">
 			<form [formGroup]="searchParams" class="search-bar" (ngSubmit)="search(searchParams)">
@@ -30,7 +36,10 @@
 
 		<span class="toolbar-spacer"></span>
 
-		<button mat-raised-button class="contact-us-button" color="accent" (click)="openDialog()">Contact developers</button>
+		<button mat-raised-button class="contact-us-button" color="accent" (click)="openDialog()">
+			<mat-icon>feedback</mat-icon>
+			Contact developers
+		</button>
 
 		<div>Logged as User</div>
 		<button mat-icon-button [matMenuTriggerFor]="menuOptions">

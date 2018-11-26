@@ -22,3 +22,11 @@ mat-form-field {
 .form-table-spacer {
 	margin-top: 165px;
 }
+.mat-cell {
+	text-align: center;
+	border-right: 1px solid black;
+}
+
+.mat-header-cell {
+	text-align: center;
+}

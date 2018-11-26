@@ -1,5 +1,5 @@
 <mat-card class="form-wrapper">
-	<div class="form-title">
+	<div class="center">
 		<h1>Book details</h1>
 	</div>
 	<form name="bookDetailsParams" (ngSubmit)="createBookDetails(bookDetailsParams)" [formGroup]="bookDetailsParams">
@@ -108,7 +108,7 @@
 
 		</div>
 
-		<div>
+		<div class="form-title">
 			<button mat-raised-button color="primary" [type]="submit">
 				Submit
 			</button>
@@ -173,3 +173,4 @@
 	<tr mat-row *matRowDef="let row; columns: displayedBookDetailColumns"></tr>
 
 </table>
+

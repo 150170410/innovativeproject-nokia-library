@@ -1,6 +1,10 @@
-* {
-	font-family: 'Lato', sans-serif;
-	font-weight: 400;
+/** {*/
+	/*font-family: 'Lato', sans-serif;*/
+	/*font-weight: 400;*/
+/*}*/
+
+.mat-icon {
+	font-family: 'Material Icons';
 }
 
 .main-content {

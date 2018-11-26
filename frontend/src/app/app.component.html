@@ -7,14 +7,24 @@
 				<h2>Options:</h2>
 			</mat-list-item>
 			<mat-list-item>
-				<button (click)="sidenav.toggle()" color="primary" mat-raised-button routerLink="/homepage" routerLinkActive="active">Homepage</button>
+				<button (click)="sidenav.toggle()" color="primary" mat-raised-button routerLink="/homepage" routerLinkActive="active">
+					<mat-icon>home</mat-icon>
+					Homepage
+				</button>
 			</mat-list-item>
 			<mat-list-item>
-				<button (click)="sidenav.toggle()" color="primary" mat-raised-button routerLink="/manage-entities" routerLinkActive="active">Manage entities</button>
+				<button (click)="sidenav.toggle()" color="primary" mat-raised-button routerLink="/user-panel" routerLinkActive="active">
+					<mat-icon>library_books</mat-icon>
+					User panel
+				</button>
 			</mat-list-item>
 			<mat-list-item>
-				<button (click)="sidenav.toggle()" color="primary" mat-raised-button routerLink="/user-panel" routerLinkActive="active">User panel</button>
+				<button (click)="sidenav.toggle()" color="primary" mat-raised-button routerLink="/manage-entities" routerLinkActive="active">
+					<mat-icon>ballot</mat-icon>
+					Admin panel
+				</button>
 			</mat-list-item>
+
 		</mat-list>
 	</mat-sidenav>
 
