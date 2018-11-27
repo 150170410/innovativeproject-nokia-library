@@ -25,16 +25,23 @@ jobs:
         env: TAG=$TRAVIS_COMMIT_MESSAGE
         if: branch = develop
         script:
+          - nmp i heroku-cli
+          - heroku login <<< $"$HEROKU_EMAIL\n$HEROKU_PASSWORD\n"
+          - heroku container:login
           - cd backend/nokia-innovative-project
           - mvn package -DskipTests=true
           - docker build -t $DOCKER_USERNAME/nokia.inno.lib.be:$TAG .
+          - heroku container:push web --app nokia-library-api
           - cd ../../frontend
           - npm install
-          - npm run build
+          - npm run build --prod
+          - heroku container:push web --app nokia-library-client
           - docker build -t $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG .
           - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           - docker push $DOCKER_USERNAME/nokia.inno.lib.be:$TAG
           - docker push $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG
+          - heroku container:release web --app nokia-library-api
+          - heroku container:release web --app nokia-library-client
 cache:
    directories:
     - $HOME/.m2
