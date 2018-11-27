@@ -1,6 +1,7 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import com.nokia.library.nokiainnovativeproject.DTOs.EmailDTO;
 import com.nokia.library.nokiainnovativeproject.services.EmailService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
@@ -71,4 +72,18 @@ public class EmailControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.contains("You must specify at least one recipient")));
     }
+
+    @Test
+	public void emailDoesntExistTest() throws Exception {
+		String jsonRequest = mapper.writeValueAsString(emailDTO);
+		emailDTO.setRecipients(Arrays.asList("noSuchEmail"));
+		mockMvc.perform(post(BASE_URL + Mappings.CREATE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonRequest))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.success", Matchers.contains(true)))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.contains("Email doesnt exist")));
+	
+	}
 }

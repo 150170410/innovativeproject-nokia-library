@@ -1,12 +1,9 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.EmailDTO;
-import com.nokia.library.nokiainnovativeproject.beans.EmailSender;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
-
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -18,7 +15,6 @@ import java.util.Arrays;
 public class EmailService {
 
 	private final JavaMailSender emailSender;
-	private final Environment environment;
 
 	public MessageInfo sendSimpleMessage(EmailDTO emailDTO) {
 		try {

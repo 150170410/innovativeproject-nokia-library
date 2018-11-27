@@ -8,7 +8,7 @@ spring:
     port: 587
     properties:
       mail:
-        transport.protocl: smtp
+        transport.protocol: smtp
         smtp:
           auth: true
           starttls.enable: true
