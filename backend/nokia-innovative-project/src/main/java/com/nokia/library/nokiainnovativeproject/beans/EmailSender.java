@@ -10,23 +10,21 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-@RequiredArgsConstructor
 public class EmailSender {
 
-	private final Environment environment;
 
 	@Bean
-	public JavaMailSender javaMailSender() {
+	public JavaMailSender javaMailSender(Environment environment) {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost("smtp.gmail.com");
 		mailSender.setPort(587);
-		mailSender.setUsername(environment.getProperty("mail.username"));
-		mailSender.setPassword(environment.getProperty("mail.password"));
+		mailSender.setUsername(environment.getProperty("spring.mail.username"));
+		mailSender.setPassword(environment.getProperty("spring.mail.password"));
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.debug", environment.getProperty("mail.debug"));
+		props.put("mail.debug", environment.getProperty("spring.mail.debug"));
 		return mailSender;
 	}
 }
