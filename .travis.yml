@@ -42,7 +42,7 @@ jobs:
            - heroku login <<< $"$HEROKU_EMAIL\n$HEROKU_PASSWORD\n"
            - heroku container:login
            - cd backend/nokia-innovative-project
-           - mvn package
+           - mvn package -Dspring.profiles.active=production
            - heroku container:push web --app nokia-library-api
            - cd ../../frontend
            - npm install
