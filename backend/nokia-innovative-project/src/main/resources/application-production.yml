@@ -1,11 +1,16 @@
 spring:
+  datasource:
+      url: ${JDBC_DATABASE_URL}
+      username: ${JDBC_DATABASE_USERNAME}
+      password: ${JDBC_DATABASE_PASSWORD}
+      driver-class-name: org.postgresql.Driver
   jpa:
     properties:
       hibernate:
         hbm2ddl:
-          auto: create-drop
+          auto: validate
         dialect: org.hibernate.dialect.PostgreSQL94Dialect
-        ddl-auto: create-drop
+        ddl-auto: validate
         jdbc:
           lob:
             non_contextual_creation: true
