@@ -1,5 +1,5 @@
 <mat-card class="form-wrapper">
-	<div class="center">
+	<div class="form-title">
 		<h1>Book details</h1>
 	</div>
 	<form name="bookDetailsParams" (ngSubmit)="createBookDetails(bookDetailsParams)" [formGroup]="bookDetailsParams">
@@ -113,14 +113,14 @@
 				Submit
 			</button>
 
-			<button class="demo-button" mat-raised-button color="accent" type="button" (click)="autoFillBookDetialsForm()">
+			<button class="demo-button" mat-raised-button color="accent" type="button" (click)="autoFillBookDetailsForm()">
 				Demo
 			</button>
 		</div>
 	</form>
 </mat-card>
 <mat-divider></mat-divider>
-<table mat-table [dataSource]="booksDetails">
+<table mat-table [dataSource]="dataSource">
 
 	<ng-container matColumnDef="title">
 		<th mat-header-cell *matHeaderCellDef> Title</th>
@@ -139,7 +139,7 @@
 
 	<ng-container matColumnDef="coverURL">
 		<th mat-header-cell *matHeaderCellDef>Cover picture</th>
-		<td mat-cell *matCellDef="let bookDetails">some picture</td>
+		<td mat-cell *matCellDef="let bookDetails">thumbnail</td>
 	</ng-container>
 
 	<ng-container matColumnDef="isbn">
@@ -148,7 +148,7 @@
 	</ng-container>
 
 	<ng-container matColumnDef="dateOfPublication">
-		<th mat-header-cell *matHeaderCellDef>Publication Date</th>
+		<th mat-header-cell *matHeaderCellDef>Publication date</th>
 		<td mat-cell *matCellDef="let bookDetails">{{bookDetails.dateOfPublication | date: 'yyyy'}}</td>
 	</ng-container>
 
@@ -156,7 +156,7 @@
 		<th mat-header-cell *matHeaderCellDef>Actions</th>
 		<td mat-cell *matCellDef="let bookDetails">
 			<p>
-				<button mat-button (click)="editBookDetails(bookDetails.id)" disabled>
+				<button mat-button (click)="editBookDetails(bookDetails)">
 					<mat-icon>edit</mat-icon>
 					Edit
 				</button>

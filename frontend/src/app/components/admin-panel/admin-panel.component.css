@@ -7,7 +7,7 @@
 
 .vert-spacer {
 	/*margin-left: 1px;*/
-	border-left: 1px solid black;
+	/*border-left: 1px solid black;*/
 }
 
 .full-card {
@@ -21,6 +21,4 @@
 	position: relative;
 	text-align: center;
 }
-
-
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Author } from '../../../../models/database/entites/Author';
 import { RestService } from '../../../../services/rest/rest.service';
 import { MessageInfo } from '../../../../models/MessageInfo';
@@ -11,19 +11,22 @@ import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
 	styleUrls: ['./manage-authors.component.css']
 })
 export class ManageAuthorsComponent implements OnInit {
-	
+
 	authorParams: FormGroup;
 	authors: Author[] = [];
-	displayedAuthorsColumn: string[] = ['authorName', 'authorSurname', 'authorDescription'];
+	displayedAuthorsColumn: string[] = ['authorName', 'authorSurname', 'authorDescription', 'actions'];
 
 	// variables helpful for mistakes catching
 	authorSubmitted = false;
 
-	constructor(private formBuilder: FormBuilder, private http: RestService) {
+	constructor(private formBuilder: FormBuilder,
+				private http: RestService,
+				private changeDetectorRefs: ChangeDetectorRef) {
 	}
 
 	ngOnInit() {
 		this.initAuthorForm();
+		this.getAuthors();
 	}
 
 	initAuthorForm() {
@@ -32,7 +35,6 @@ export class ManageAuthorsComponent implements OnInit {
 			authorSurname: ['', [Validators.required, Validators.maxLength(300)]],
 			authorDescription: ['', Validators.maxLength(10000)]
 		});
-		this.getAuthors();
 	}
 
 	createAuthor(params: any) {
@@ -48,12 +50,9 @@ export class ManageAuthorsComponent implements OnInit {
 		console.log(body);
 		this.http.save('author/create', body).subscribe(() => {
 			console.log('author created');
+			this.getAuthors();
+			this.changeDetectorRefs.detectChanges();
 		});
-
-		// MUST BE DELETED AFTER BACKEND VALIDATION
-		this.getAuthors();
-		// MUST BE DELETED AFTER BACKEND VALIDATION
-
 		this.authorSubmitted = false;
 	}
 
@@ -67,4 +66,15 @@ export class ManageAuthorsComponent implements OnInit {
 	}
 
 
+	editAuthor(author: Author) {
+		this.authorParams.patchValue({
+			'authorName': author.authorName,
+			'authorSurname': author.authorSurname,
+			'authorDescription': author.authorDescription
+		});
+	}
+
+	removeAuthor(id: number) {
+
+	}
 }

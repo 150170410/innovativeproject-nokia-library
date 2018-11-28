@@ -5,15 +5,15 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { GridViewComponent } from './components/grid-view/grid-view.component';
 import { SingleBookViewComponent } from './components/single-book-view/single-book-view';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
-import { ManageEntitiesComponent } from './components/manage-entities/manage-entities.component';
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 
 export const routes: Routes = [
 	{ path: '', redirectTo: 'homepage', pathMatch: 'full' },
 	{ path: 'homepage', component: HomepageComponent },
 	{ path: 'listView', component: ListviewComponent },
 	{ path: 'gridView', component: GridViewComponent },
-	{ path: 'manage-entities', component: ManageEntitiesComponent },
+	{ path: 'admin-panel', component: AdminPanelComponent },
 	{ path: 'user-panel', component: UserPanelComponent },
 	{ path: 'single-book-view/:id', component: SingleBookViewComponent, data: { id: 'id' } },
 	{ path: 'contact', component: ContactUsComponent },

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RestService } from '../../../../services/rest/rest.service';
 import { BookDetailsDTO } from '../../../../models/database/DTOs/BookDetailsDTO';
@@ -22,16 +22,11 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	bookCategories: BookCategory[] = [];
 	authors: Author[] = [];
-	booksDetails: BookDetails[] = [];
+	dataSource = new MatTableDataSource<BookDetails>();
 	displayedBookDetailColumns: string[] = ['title', 'authors', 'categories', 'coverURL', 'isbn', 'dateOfPublication', 'actions'];
 
-
-	// variable for date validation
 	currentDate = new Date();
-	currentYear = this.currentDate.getFullYear();
-	currentMonth = this.currentDate.getMonth();
-	currentDay = this.currentDate.getDay();
-	maxDate = new Date(this.currentYear, this.currentMonth, this.currentDay);
+	maxDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDay());
 
 	// variables helpful for mistakes catching
 	bookDetailsSubmitted = false;
@@ -52,7 +47,9 @@ export class ManageBookDetailsComponent implements OnInit {
 	@ViewChild('auto') matAutocomplete: MatAutocomplete;
 
 
-	constructor(private formBuilder: FormBuilder, private http: RestService) {
+	constructor(private formBuilder: FormBuilder,
+				private http: RestService,
+				private changeDetectorRefs: ChangeDetectorRef) {
 		this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
 			startWith(null),
 			map((author: string | null) => author ? this._filter(author) : this.authors.slice()));
@@ -80,7 +77,6 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	remove(author, index): void {
-
 		if (index >= 0) {
 			this.selectedAuthors.splice(index, 1);
 		}
@@ -104,6 +100,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	ngOnInit() {
 		this.initBookDetailsForm();
+		this.getBookDetails();
 		this.getCategories();
 		this.getAuthors();
 		console.log(this.currentDate);
@@ -118,7 +115,6 @@ export class ManageBookDetailsComponent implements OnInit {
 			coverPictureUrl: ['', Validators.maxLength(1000)],
 			description: ['', Validators.maxLength(1000)],
 		});
-		this.getBookDetails();
 	}
 
 	createBookDetails(params: any) {
@@ -134,13 +130,9 @@ export class ManageBookDetailsComponent implements OnInit {
 			params.value.description, params.value.isbn,
 			params.value.tableOfContents, params.value.title, this.selectedAuthors, this.selectedCategories);
 		this.http.save('bookDetails/create', body).subscribe(() => {
-			console.log('book details created');
+			this.getBookDetails();
+			this.changeDetectorRefs.detectChanges();
 		});
-
-		// MUST BE DELETED AFTER BACKEND VALIDATION
-		this.getBookDetails();
-		// MUST BE DELETED AFTER BACKEND VALIDATION
-
 		this.bookDetailsSubmitted = false;
 	}
 
@@ -156,10 +148,10 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	async getBookDetails() {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
-		this.booksDetails = response.object;
+		this.dataSource = response.object;
 	}
 
-	autoFillBookDetialsForm() {
+	autoFillBookDetailsForm() {
 		const sampleBookDTO = {
 			'coverPictureUrl': 'https://itbook.store/img/books/9781491985571.png',
 			'dateOfPublication': new Date(),
@@ -176,12 +168,24 @@ export class ManageBookDetailsComponent implements OnInit {
 		console.log('not connected to any API yet');
 	}
 
-	async removeBookDetails(id: number) {
-		await this.http.remove('bookDetails/remove/' + `${id}`).subscribe();
-		// TODO: refresh view after removing book details
+	editBookDetails(bookDetails: BookDetails) {
+		const bookDetailsToUpdate = {
+			'coverPictureUrl': bookDetails.coverPictureUrl,
+			'dateOfPublication': new Date(),
+			'description': bookDetails.description,
+			'isbn': bookDetails.isbn,
+			'tableOfContents': bookDetails.tableOfContents,
+			'title': bookDetails.title
+		};
+		this.bookDetailsParams.patchValue(bookDetailsToUpdate);
 	}
 
-	editBookDetails(id: number) {
-		// TODO: patch values in form, then call different function when submitting form
+	async removeBookDetails(id: number) {
+		await this.http.remove('bookDetails/remove/' + `${id}`).subscribe(() => {
+			this.getBookDetails();
+			this.changeDetectorRefs.detectChanges();
+		});
 	}
+
+
 }

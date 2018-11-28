@@ -1,6 +1,14 @@
 table {
 	width: 100%;
+	border: 1px solid black;
+	border-collapse: collapse;
 }
+
+th, tr, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
 
 .input-button {
 	width: 60%;
@@ -29,7 +37,6 @@ mat-form-field {
 
 .mat-cell {
 	text-align: center;
-	border-right: 1px solid black;
 }
 
 .mat-header-cell {

@@ -15,7 +15,7 @@ export class ManageCategoriesComponent implements OnInit {
 	categoryParams: FormGroup;
 
 	bookCategories: BookCategory[] = [];
-	displayedCategoryColumns: string[] = ['bookCategoryName'];
+	displayedCategoryColumns: string[] = ['bookCategoryName', 'actions'];
 
 	// variables helpful for mistakes catching
 	categorySubmitted = false;
@@ -62,4 +62,11 @@ export class ManageCategoriesComponent implements OnInit {
 		this.bookCategories = response.object;
 	}
 
+	editCategory(category: BookCategory) {
+
+	}
+
+	removeCategory(id: number) {
+
+	}
 }

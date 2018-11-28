@@ -18,16 +18,18 @@ import { BookService } from './services/book/book.service';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { RestService } from './services/rest/rest.service';
 import { GridViewComponent } from './components/grid-view/grid-view.component';
-import { ManageBookDetailsComponent } from './components/manage-entities/forms/manage-book-details/manage-book-details.component';
 import { SingleBookViewComponent } from './components/single-book-view/single-book-view';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
-import { ManageEntitiesComponent } from './components/manage-entities/manage-entities.component';
-import { ManageAuthorsComponent } from './components/manage-entities/forms/manage-authors/manage-authors.component';
-import { ManageCategoriesComponent } from './components/manage-entities/forms/manage-categories/manage-categories.component';
+
 import { SidenavService } from './services/sidenav/sidenav.service';
 import { ListviewItemComponent } from './components/listview/listview-item/listview-item.component';
 import { ArrToStrPipe } from './pipes/arr-to-str.pipe';
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
+import { ManageBookDetailsComponent } from './components/admin-panel/forms/manage-book-details/manage-book-details.component';
+import { ManageAuthorsComponent } from './components/admin-panel/forms/manage-authors/manage-authors.component';
+import { ManageCategoriesComponent } from './components/admin-panel/forms/manage-categories/manage-categories.component';
+import { ManageBooksComponent } from './components/admin-panel/forms/manage-books/manage-books.component';
 
 @NgModule({
 	declarations: [
@@ -40,12 +42,13 @@ import { UserPanelComponent } from './components/user-panel/user-panel.component
 		GridViewComponent,
 		ManageBookDetailsComponent,
 		ContactUsComponent,
-		ManageEntitiesComponent,
 		ManageAuthorsComponent,
 		ManageCategoriesComponent,
 		ListviewItemComponent,
 		ArrToStrPipe,
-		UserPanelComponent
+		UserPanelComponent,
+		ManageBooksComponent,
+		AdminPanelComponent
 	],
 	imports: [
 		BrowserModule,

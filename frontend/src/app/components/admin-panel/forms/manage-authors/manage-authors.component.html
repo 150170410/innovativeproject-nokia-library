@@ -77,6 +77,23 @@
 			<td mat-cell *matCellDef="let author"> {{author.authorDescription}}</td>
 		</ng-container>
 
+		<ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef>Actions</th>
+			<td mat-cell *matCellDef="let author">
+				<p>
+					<button mat-button (click)="editAuthor(author)">
+						<mat-icon>edit</mat-icon>
+						Edit
+					</button>
+					<button mat-button (click)="removeAuthor(author.id)">
+						<mat-icon>cancel</mat-icon>
+						Remove
+					</button>
+				</p>
+
+			</td>
+		</ng-container>
+
 		<tr mat-header-row *matHeaderRowDef="displayedAuthorsColumn"></tr>
 		<tr mat-row *matRowDef="let row; columns: displayedAuthorsColumn"></tr>
 

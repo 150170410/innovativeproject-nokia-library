@@ -1,0 +1,39 @@
+table {
+	width: 100%;
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+th, tr, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+mat-form-field {
+	width: 300px;
+}
+
+.form-wrapper {
+	width: 300px;
+	margin: auto;
+}
+
+.demo-button {
+	margin-left: 10px;
+}
+
+.form-title {
+	text-align: center;
+}
+
+.form-table-spacer {
+	margin-top: 165px;
+}
+
+.mat-cell {
+	text-align: center;
+}
+
+.mat-header-cell {
+	text-align: center;
+}

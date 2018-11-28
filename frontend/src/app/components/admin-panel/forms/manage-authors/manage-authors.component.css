@@ -1,5 +1,12 @@
 table {
 	width: 100%;
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+th, tr, td {
+	border: 1px solid black;
+	border-collapse: collapse;
 }
 
 mat-form-field {
@@ -17,14 +24,6 @@ mat-form-field {
 
 .form-title {
 	text-align: center;
-}
-
-.form-table-spacer {
-	margin-top: 165px;
-}
-.mat-cell {
-	text-align: center;
-	border-right: 1px solid black;
 }
 
 .mat-header-cell {
