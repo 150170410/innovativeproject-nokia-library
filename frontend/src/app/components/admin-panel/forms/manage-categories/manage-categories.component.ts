@@ -4,6 +4,7 @@ import { MessageInfo } from '../../../../models/MessageInfo';
 import { BookCategory } from '../../../../models/database/entites/BookCategory';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookCategoryDTO } from '../../../../models/database/DTOs/BookCategoryDTO';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
 	selector: 'app-manage-categories',
@@ -14,7 +15,7 @@ export class ManageCategoriesComponent implements OnInit {
 
 	categoryParams: FormGroup;
 
-	bookCategories: BookCategory[] = [];
+	dataSource = new MatTableDataSource<BookCategory>();
 	displayedCategoryColumns: string[] = ['bookCategoryName', 'actions'];
 
 	// variables helpful for mistakes catching
@@ -45,28 +46,26 @@ export class ManageCategoriesComponent implements OnInit {
 
 		const body = new BookCategoryDTO(params.value.categoryName);
 		this.http.save('bookCategory/create', body).subscribe(() => {
-			console.log('category created');
 			this.getCategories();
 		});
-
-		// MUST BE DELETED AFTER BACKEND VALIDATION
-		this.getCategories();
-		console.log(this.bookCategories);
-		// MUST BE DELETED AFTER BACKEND VALIDATION
 
 		this.categorySubmitted = false;
 	}
 
 	async getCategories() {
 		const response: MessageInfo = await this.http.getAll('bookCategory/getAll');
-		this.bookCategories = response.object;
+		this.dataSource =  new MatTableDataSource( response.object);
 	}
 
 	editCategory(category: BookCategory) {
-
+		this.categoryParams.patchValue({
+			'categoryName': category.bookCategoryName
+		});
 	}
 
-	removeCategory(id: number) {
-
+	async removeCategory(id: number) {
+		await this.http.remove('bookCategory/remove/' + `${id}`).subscribe(() => {
+			this.getCategories();
+		});
 	}
 }

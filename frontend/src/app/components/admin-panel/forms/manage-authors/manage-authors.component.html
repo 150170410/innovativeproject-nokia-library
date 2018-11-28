@@ -58,9 +58,12 @@
 
 
 </div>
-<mat-divider></mat-divider>
+
 <div>
-	<table mat-table [dataSource]="authors">
+	<mat-form-field>
+		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+	</mat-form-field>
+	<table mat-table [dataSource]="dataSource">
 
 		<ng-container matColumnDef="authorName">
 			<th mat-header-cell *matHeaderCellDef>Name</th>

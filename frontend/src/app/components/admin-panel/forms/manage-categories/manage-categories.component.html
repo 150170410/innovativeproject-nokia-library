@@ -34,7 +34,10 @@
 </div>
 
 <div class="form-table-spacer">
-	<table mat-table [dataSource]="bookCategories">
+	<mat-form-field>
+		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+	</mat-form-field>
+	<table mat-table [dataSource]="dataSource">
 
 		<ng-container matColumnDef="bookCategoryName">
 			<th mat-header-cell *matHeaderCellDef>Category name</th>

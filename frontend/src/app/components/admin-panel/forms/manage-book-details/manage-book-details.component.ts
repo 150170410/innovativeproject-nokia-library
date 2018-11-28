@@ -48,8 +48,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 
 	constructor(private formBuilder: FormBuilder,
-				private http: RestService,
-				private changeDetectorRefs: ChangeDetectorRef) {
+				private http: RestService) {
 		this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
 			startWith(null),
 			map((author: string | null) => author ? this._filter(author) : this.authors.slice()));
@@ -131,7 +130,6 @@ export class ManageBookDetailsComponent implements OnInit {
 			params.value.tableOfContents, params.value.title, this.selectedAuthors, this.selectedCategories);
 		this.http.save('bookDetails/create', body).subscribe(() => {
 			this.getBookDetails();
-			this.changeDetectorRefs.detectChanges();
 		});
 		this.bookDetailsSubmitted = false;
 	}
@@ -148,19 +146,19 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	async getBookDetails() {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
-		this.dataSource = response.object;
+		this.dataSource = new MatTableDataSource(response.object);
 	}
 
 	autoFillBookDetailsForm() {
-		const sampleBookDTO = {
+		this.bookDetailsParams.patchValue({
 			'coverPictureUrl': 'https://itbook.store/img/books/9781491985571.png',
 			'dateOfPublication': new Date(),
 			'description': 'desc',
 			'isbn': '12312312312',
 			'tableOfContents': 'string',
 			'title': 'Book ' + Math.floor(Math.random() * 100)
-		};
-		this.bookDetailsParams.patchValue(sampleBookDTO);
+		});
+		// TODO: also patchValue for authors and categories
 	}
 
 	getInfoFromAPI() {
@@ -169,23 +167,24 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	editBookDetails(bookDetails: BookDetails) {
-		const bookDetailsToUpdate = {
+		this.bookDetailsParams.patchValue({
 			'coverPictureUrl': bookDetails.coverPictureUrl,
 			'dateOfPublication': new Date(),
 			'description': bookDetails.description,
 			'isbn': bookDetails.isbn,
 			'tableOfContents': bookDetails.tableOfContents,
 			'title': bookDetails.title
-		};
-		this.bookDetailsParams.patchValue(bookDetailsToUpdate);
+		});
+		// TODO: also patchValue for authors and categories
 	}
 
 	async removeBookDetails(id: number) {
 		await this.http.remove('bookDetails/remove/' + `${id}`).subscribe(() => {
 			this.getBookDetails();
-			this.changeDetectorRefs.detectChanges();
 		});
 	}
 
-
+	applyFilter(filterValue: string) {
+		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
 }

@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { routes } from './routes';
 import 'hammerjs';
 import { AppComponent } from './app.component';
-import { HomepageComponent } from './components/homepage/homepage.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
+import { HomepageComponent } from './utils/components/homepage/homepage.component';
+import { NavbarComponent } from './utils/components/navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
 	MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatNativeDateModule,
@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { ListviewComponent } from './components/listview/listview.component';
 import { BookService } from './services/book/book.service';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './utils/components/page-not-found/page-not-found.component';
 import { RestService } from './services/rest/rest.service';
 import { GridViewComponent } from './components/grid-view/grid-view.component';
 import { SingleBookViewComponent } from './components/single-book-view/single-book-view';

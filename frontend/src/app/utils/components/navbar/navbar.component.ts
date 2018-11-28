@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { ContactUsComponent } from '../contact-us/contact-us.component';
-import { SidenavService } from '../../services/sidenav/sidenav.service';
+import { ContactUsComponent } from '../../../components/contact-us/contact-us.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { SidenavService } from '../../../services/sidenav/sidenav.service';
 
 @Component({
 	selector: 'app-navbar',

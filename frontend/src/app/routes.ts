@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { HomepageComponent } from './components/homepage/homepage.component';
+import { HomepageComponent } from './utils/components/homepage/homepage.component';
 import { ListviewComponent } from './components/listview/listview.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './utils/components/page-not-found/page-not-found.component';
 import { GridViewComponent } from './components/grid-view/grid-view.component';
 import { SingleBookViewComponent } from './components/single-book-view/single-book-view';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';

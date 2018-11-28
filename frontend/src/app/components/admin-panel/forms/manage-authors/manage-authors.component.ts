@@ -1,9 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Author } from '../../../../models/database/entites/Author';
 import { RestService } from '../../../../services/rest/rest.service';
 import { MessageInfo } from '../../../../models/MessageInfo';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
 	selector: 'app-manage-authors',
@@ -13,15 +14,14 @@ import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
 export class ManageAuthorsComponent implements OnInit {
 
 	authorParams: FormGroup;
-	authors: Author[] = [];
+	dataSource = new MatTableDataSource<Author>();
 	displayedAuthorsColumn: string[] = ['authorName', 'authorSurname', 'authorDescription', 'actions'];
 
 	// variables helpful for mistakes catching
 	authorSubmitted = false;
 
 	constructor(private formBuilder: FormBuilder,
-				private http: RestService,
-				private changeDetectorRefs: ChangeDetectorRef) {
+				private http: RestService) {
 	}
 
 	ngOnInit() {
@@ -47,18 +47,15 @@ export class ManageAuthorsComponent implements OnInit {
 		}
 
 		const body = new AuthorDTO(params.value.authorName, params.value.authorSurname, params.value.authorDescription);
-		console.log(body);
 		this.http.save('author/create', body).subscribe(() => {
-			console.log('author created');
 			this.getAuthors();
-			this.changeDetectorRefs.detectChanges();
 		});
 		this.authorSubmitted = false;
 	}
 
 	async getAuthors() {
 		const response: MessageInfo = await this.http.getAll('author/getAll');
-		this.authors = response.object;
+		this.dataSource = new MatTableDataSource(response.object);
 	}
 
 	autoFillAuthorForm() {
@@ -74,7 +71,13 @@ export class ManageAuthorsComponent implements OnInit {
 		});
 	}
 
-	removeAuthor(id: number) {
+	async removeAuthor(id: number) {
+		await this.http.remove('author/remove/' + `${id}`).subscribe(() => {
+			this.getAuthors();
+		});
+	}
 
+	applyFilter(filterValue: string) {
+		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 }
