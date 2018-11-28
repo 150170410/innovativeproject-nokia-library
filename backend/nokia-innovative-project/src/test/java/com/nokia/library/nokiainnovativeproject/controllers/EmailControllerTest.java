@@ -52,6 +52,9 @@ public class EmailControllerTest {
     @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(emailController).build();
+        emailDTO.setSubject("subject");
+        emailDTO.setMessageContext("message context");
+        emailDTO.setRecipients(Arrays.asList("efesvddvve@gmail.com"));
     }
 
     @Test
@@ -62,28 +65,57 @@ public class EmailControllerTest {
                 .content(jsonRequest))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
 
+    @Test
+    public void emailCantContainNull() throws Exception {
         emailDTO.setRecipients(null);
-        jsonRequest = mapper.writeValueAsString(emailDTO);
+        String jsonRequest = mapper.writeValueAsString(emailDTO);
         mockMvc.perform(post(BASE_URL + Mappings.CREATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success", Matchers.is(false)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.contains("You must specify at least one recipient")));
     }
 
     @Test
 	public void emailDoesntExistTest() throws Exception {
-		String jsonRequest = mapper.writeValueAsString(emailDTO);
 		emailDTO.setRecipients(Arrays.asList("noSuchEmail"));
+        String jsonRequest = mapper.writeValueAsString(emailDTO);
 		mockMvc.perform(post(BASE_URL + Mappings.CREATE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.success", Matchers.contains(true)))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.contains("Email doesnt exist")));
-	
+				.andExpect(MockMvcResultMatchers.jsonPath("$.success", Matchers.is(false)))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.contains("Email addresses must be in the right form")));
 	}
+
+	@Test
+	public void messageCantBeEmpty() throws Exception {
+        emailDTO.setMessageContext("");
+        String jsonRequest = mapper.writeValueAsString(emailDTO);
+        mockMvc.perform(post(BASE_URL + Mappings.CREATE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success", Matchers.is(false)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.contains("The message can't be empty")));
+    }
+
+    @Test
+    public void subjectContBeEmpty() throws Exception {
+        emailDTO.setSubject("");
+        String jsonRequest = mapper.writeValueAsString(emailDTO);
+        mockMvc.perform(post(BASE_URL + Mappings.CREATE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success", Matchers.is(false)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.contains("The subject of the message is required")));
+    }
 }

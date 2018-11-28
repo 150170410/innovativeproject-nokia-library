@@ -2,18 +2,14 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.EmailDTO;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
-import com.sun.mail.util.MailConnectException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor

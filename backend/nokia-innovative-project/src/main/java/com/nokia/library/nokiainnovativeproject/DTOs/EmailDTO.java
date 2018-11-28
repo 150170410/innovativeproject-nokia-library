@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -23,5 +24,5 @@ public class EmailDTO {
     private String messageContext;
 
     @NotEmpty(message = "You must specify at least one recipient")
-    private List<String> recipients;
+    private List<@Email(message = "Email addresses must be in the right form") String> recipients;
 }
