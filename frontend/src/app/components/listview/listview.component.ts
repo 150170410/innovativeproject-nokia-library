@@ -15,15 +15,6 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 	allBooks: BookDetails[] = [];
 	errorMessage: any;
 
-	newBookDTO = {
-		'coverPictureUrl': 'https://itbook.store/img/books/9781491985571.png',
-		'dateOfPublication': new Date(),
-		'description': 'desc',
-		'isbn': '12312312312',
-		'tableOfContents': 'string',
-		'title': 'Book ' + Math.floor(Math.random() * 100)
-	};
-
 	constructor(private bookDetailsService: BookDetailsService, private http: RestService) {
 	}
 
@@ -45,9 +36,6 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
 		this.allBooks = response.object.sort().reverse();
-
-		console.log(this.books);
-		console.log(this.allBooks);
 	}
 
 }

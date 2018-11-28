@@ -35,7 +35,7 @@
 						[selectable]="selectable"
 						[removable]="removable"
 						(removed)="remove(author, i)">
-						{{author.toString()}}
+						{{(author.authorName + " " + author.authorSurname)}}
 						<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
 					</mat-chip>
 					<input
@@ -57,7 +57,7 @@
 
 			<mat-form-field>
 				<mat-select placeholder="Categories" [(ngModel)]="selectedCategories" [formControl]="categoryForm" multiple required>
-					<mat-option *ngFor="let category of bookCategories" [value]="category">{{category.bookCategoryName}}</mat-option>
+					<mat-option *ngFor="let category of availableCategories" [value]="category">{{category.bookCategoryName}}</mat-option>
 				</mat-select>
 				<mat-error>At least one category is required</mat-error>
 			</mat-form-field>

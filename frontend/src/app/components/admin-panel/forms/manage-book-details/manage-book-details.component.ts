@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RestService } from '../../../../services/rest/rest.service';
 import { BookDetailsDTO } from '../../../../models/database/DTOs/BookDetailsDTO';
@@ -8,7 +8,7 @@ import { Author } from '../../../../models/database/entites/Author';
 import { BookDetails } from '../../../../models/database/entites/BookDetails';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatSort, MatTableDataSource } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatTableDataSource } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
@@ -20,8 +20,8 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	bookDetailsParams: FormGroup;
 
-	bookCategories: BookCategory[] = [];
-	authors: Author[] = [];
+	availableCategories: BookCategory[] = [];
+	availableAuthors: Author[] = [];
 	dataSource = new MatTableDataSource<BookDetails>();
 	displayedBookDetailColumns: string[] = ['title', 'authors', 'categories', 'coverURL', 'isbn', 'dateOfPublication', 'actions'];
 
@@ -51,7 +51,7 @@ export class ManageBookDetailsComponent implements OnInit {
 				private http: RestService) {
 		this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
 			startWith(null),
-			map((author: string | null) => author ? this._filter(author) : this.authors.slice()));
+			map((author: string | null) => author ? this._filter(author) : this.availableAuthors.slice()));
 	}
 
 	// methods helpful to chip list of authors
@@ -88,11 +88,11 @@ export class ManageBookDetailsComponent implements OnInit {
 
 		this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
 			startWith(null),
-			map((author: string | null) => author ? this._filter(author) : this.authors.slice()));
+			map((author: string | null) => author ? this._filter(author) : this.availableAuthors.slice()));
 	}
 
 	private _filter(value: any): any[] {
-		return this.authors.filter(author => author.authorName.toLowerCase().includes(value.toLowerCase()));
+		return this.availableAuthors.filter(author => author.authorName.toLowerCase().includes(value.authorName.toLowerCase()));
 	}
 
 	// end of methods helpful to chip list of authors
@@ -102,7 +102,6 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.getBookDetails();
 		this.getCategories();
 		this.getAuthors();
-		console.log(this.currentDate);
 	}
 
 	initBookDetailsForm() {
@@ -136,12 +135,12 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	async getCategories() {
 		const response: MessageInfo = await this.http.getAll('bookCategory/getAll');
-		this.bookCategories = response.object;
+		this.availableCategories = response.object;
 	}
 
 	async getAuthors() {
 		const response: MessageInfo = await this.http.getAll('author/getAll');
-		this.authors = response.object;
+		this.availableAuthors = response.object;
 	}
 
 	async getBookDetails() {
