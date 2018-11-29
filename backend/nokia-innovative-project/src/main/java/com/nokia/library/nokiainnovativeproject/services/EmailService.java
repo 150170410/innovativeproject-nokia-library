@@ -1,15 +1,14 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
-import com.nokia.library.nokiainnovativeproject.DTOs.EmailDTO;
-import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
+import com.nokia.library.nokiainnovativeproject.DTOs.Email;
+import com.nokia.library.nokiainnovativeproject.utils.EmailRecipients;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.retry.support.RetryTemplate;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -17,24 +16,17 @@ public class EmailService {
 
 	private final JavaMailSender emailSender;
 
-	private final RetryTemplate retryTemplate;
+	@Retryable(
+			value = MailException.class,
+			maxAttempts = 5,
+			backoff = @Backoff(delay = 1000 * 60 * 10))
+	public void sendSimpleMessage(Email email) {
 
-	public MessageInfo sendSimpleMessage(EmailDTO emailDTO) {
-		try {
-			retryTemplate.execute(context -> {
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(EmailRecipients.recipients.toArray(new String[0]));
+		message.setSubject(email.getSubject());
+		message.setText(email.getMessageContext());
 
-				SimpleMailMessage message = new SimpleMailMessage();
-				message.setTo(emailDTO.getRecipients().toArray(new String[0]));
-				message.setSubject(emailDTO.getSubject());
-				message.setText(emailDTO.getMessageContext());
-
-				emailSender.send(message);
-
-				return new MessageInfo(true, "success", Arrays.asList("Email sent successfully"));
-			});
-		}catch (MailException exc) {
-			return new MessageInfo(false, exc.toString(), Arrays.asList("Failed to send messages"));
-		}
-		return new MessageInfo(true, "success", Arrays.asList("Email sent successfully"));
+		emailSender.send(message);
 	}
 }
