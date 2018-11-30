@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { RestService } from '../../../../services/rest/rest.service';
 import { BookDetailsDTO } from '../../../../models/database/DTOs/BookDetailsDTO';
 import { BookCategory } from '../../../../models/database/entites/BookCategory';
@@ -48,7 +49,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 
 	constructor(private formBuilder: FormBuilder,
-				private http: RestService) {
+				private http: RestService, private httpClient: HttpClient) {
 		this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
 			startWith(null),
 			map((author: string | null) => author ? this._filter(author) : this.availableAuthors.slice()));
@@ -161,8 +162,26 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	getInfoFromAPI() {
-		// TODO: connect to some book rest API so it autocomplete form when ISBN is given
-		console.log('not connected to any API yet');
+        if(this.bookDetailsParams.get('isbn').value.length == 13){
+			this.httpClient.get<any>('https://api.itbook.store/1.0/books/' + this.bookDetailsParams.get('isbn').value)
+			.subscribe(data => {
+				this.bookDetailsParams.patchValue({
+					'coverPictureUrl': data['image'],
+					'description': data['desc'],
+					'tableOfContents' : 'string',
+					'title' : data['title'],
+				});
+				var authors = data['authors'].toString().split(",");
+				authors.forEach(element => {
+					var author = element.trim().toString().split(" ");
+					this.selectedAuthors.push({
+						id: Math.random(),
+						authorName: author[0],
+						authorSurname: author[author.length - 1]
+					});
+				});
+			});
+		} 
 	}
 
 	editBookDetails(bookDetails: BookDetails) {
