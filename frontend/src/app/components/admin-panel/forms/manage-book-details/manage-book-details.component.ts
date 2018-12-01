@@ -8,7 +8,7 @@ import { Author } from '../../../../models/database/entites/Author';
 import { BookDetails } from '../../../../models/database/entites/BookDetails';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatTableDataSource } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatTableDataSource } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
@@ -45,6 +45,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	selectedAuthors: any[] = [];
 	@ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement>;
 	@ViewChild('auto') matAutocomplete: MatAutocomplete;
+	@ViewChild(MatPaginator) paginator: MatPaginator;
 
 
 	constructor(private formBuilder: FormBuilder,
@@ -145,7 +146,8 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	async getBookDetails() {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
-		this.dataSource = new MatTableDataSource(response.object);
+		this.dataSource = new MatTableDataSource(response.object.reverse());
+		this.dataSource.paginator = this.paginator;
 	}
 
 	autoFillBookDetailsForm() {

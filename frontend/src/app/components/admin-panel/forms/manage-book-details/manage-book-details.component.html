@@ -108,21 +108,25 @@
 
 		</div>
 
-		<div class="form-title">
+		<div class="buttons-row form-title">
 			<button mat-raised-button color="primary" [type]="submit">
 				Submit
 			</button>
-
-			<button class="demo-button" mat-raised-button color="accent" type="button" (click)="autoFillBookDetailsForm()">
+			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()" >
+				Clear
+			</button>
+			<button class="button-spacer" mat-raised-button color="accent" type="button" (click)="autoFillBookDetailsForm()">
 				Demo
 			</button>
 		</div>
 	</form>
 </mat-card>
 <div>
-	<mat-form-field>
+	<mat-form-field class="">
 		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 	</mat-form-field>
+
+	<mat-paginator sy [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 	<table mat-table [dataSource]="dataSource">
 
 		<ng-container matColumnDef="title">
@@ -159,11 +163,11 @@
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
 			<td mat-cell *matCellDef="let bookDetails">
 				<p>
-					<button mat-button (click)="editBookDetails(bookDetails)">
+					<button color="primary" mat-button (click)="editBookDetails(bookDetails)">
 						<mat-icon>edit</mat-icon>
 						Edit
 					</button>
-					<button mat-button (click)="removeBookDetails(bookDetails.id)">
+					<button color="warn" mat-button (click)="removeBookDetails(bookDetails.id)">
 						<mat-icon>cancel</mat-icon>
 						Remove
 					</button>

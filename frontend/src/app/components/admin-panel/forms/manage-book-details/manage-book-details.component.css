@@ -31,7 +31,7 @@ mat-form-field {
 	margin: auto;
 }
 
-.demo-button {
+.button-spacer {
 	margin-left: 10px;
 }
 
@@ -45,4 +45,8 @@ mat-form-field {
 
 .mat-header-cell {
 	text-align: center;
+}
+
+.buttons-row{
+	margin-top: 10px;
 }
