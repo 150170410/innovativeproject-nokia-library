@@ -178,7 +178,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	async removeBookDetails(id: number) {
-		await this.http.remove('bookDetails/remove/' + `${id}`).subscribe(() => {
+		await this.http.remove('bookDetails' , id).subscribe(() => {
 			this.getBookDetails();
 		});
 	}

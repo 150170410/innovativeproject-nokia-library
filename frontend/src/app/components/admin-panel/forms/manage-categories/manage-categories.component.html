@@ -1,4 +1,4 @@
-<div class="form-wrapper">
+<mat-card class="form-wrapper">
 	<div class="form-title">
 		<h1>Categories</h1>
 	</div>
@@ -27,19 +27,21 @@
 			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()" >
 				Clear
 			</button>
-			<button class="button-spacer" mat-raised-button color="accent" type="button" >
+			<button class="button-spacer" mat-raised-button color="accent" type="button" (click)="autoFillCategoryForm()" >
 				Demo
 			</button>
 		</div>
 
 	</form>
 
-</div>
+</mat-card>
 
 <div class="form-table-spacer">
 	<mat-form-field>
 		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 	</mat-form-field>
+
+	<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 	<table mat-table [dataSource]="dataSource">
 
 		<ng-container matColumnDef="bookCategoryName">

@@ -38,8 +38,8 @@ export class RestService {
 		);
 	}
 
-	remove(url: string) {
-		return this.http.delete<any>(this.URL + url)
+	remove(url: string, id: number) {
+		return this.http.delete<any>(this.URL + url + '/remove/' + `${id}`)
 		.pipe(
 			catchError(this.handleError)
 		);
