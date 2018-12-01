@@ -18,8 +18,8 @@ export class ManageCategoriesComponent implements OnInit {
 	dataSource = new MatTableDataSource<BookCategory>();
 	displayedCategoryColumns: string[] = ['bookCategoryName', 'actions'];
 
-	// variables helpful for mistakes catching
-	categorySubmitted = false;
+	isUpdating = false;
+	toUpdate: BookCategory;
 
 	constructor(private formBuilder: FormBuilder, private http: RestService) {
 	}
@@ -36,31 +36,43 @@ export class ManageCategoriesComponent implements OnInit {
 	}
 
 	createCategory(params: any) {
+		if (this.isUpdating == false) {
+			if (this.categoryParams.invalid) {
+				console.log('mistakes in parameters');
+				return;
+			}
 
-		this.categorySubmitted = true;
-
-		if (this.categoryParams.invalid) {
-			console.log('mistakes in parameters');
-			return;
+			const body = new BookCategoryDTO(params.value.categoryName);
+			this.http.save('bookCategory', body).subscribe(() => {
+				this.getCategories();
+			});
+		} else {
+			console.log('update');
+			this.http.update('bookCategory', this.toUpdate.id, new BookCategoryDTO(params.value.categoryName)).subscribe((respone) => {
+				console.log('update worked');
+				this.clearForm();
+				this.isUpdating = false;
+				this.getCategories();
+				this.clearForm();
+			})
 		}
-
-		const body = new BookCategoryDTO(params.value.categoryName);
-		this.http.save('bookCategory/create', body).subscribe(() => {
-			this.getCategories();
-		});
-
-		this.categorySubmitted = false;
 	}
 
 	async getCategories() {
 		const response: MessageInfo = await this.http.getAll('bookCategory/getAll');
-		this.dataSource =  new MatTableDataSource( response.object);
+		this.dataSource = new MatTableDataSource(response.object);
+	}
+
+	clearForm() {
+		this.categoryParams.reset();
 	}
 
 	editCategory(category: BookCategory) {
 		this.categoryParams.patchValue({
 			'categoryName': category.bookCategoryName
 		});
+		this.isUpdating = true;
+		this.toUpdate = category;
 	}
 
 	async removeCategory(id: number) {

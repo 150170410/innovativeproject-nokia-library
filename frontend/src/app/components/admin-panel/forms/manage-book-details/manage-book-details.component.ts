@@ -127,7 +127,7 @@ export class ManageBookDetailsComponent implements OnInit {
 		const body = new BookDetailsDTO(params.value.coverPictureUrl, params.value.dateOfPublication,
 			params.value.description, params.value.isbn,
 			params.value.tableOfContents, params.value.title, this.selectedAuthors, this.selectedCategories);
-		this.http.save('bookDetails/create', body).subscribe(() => {
+		this.http.save('bookDetails', body).subscribe(() => {
 			this.getBookDetails();
 		});
 		this.bookDetailsSubmitted = false;
