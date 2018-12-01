@@ -42,15 +42,16 @@ export class ManageAuthorsComponent implements OnInit {
 	}
 
 	createAuthor(params: any) {
-
+		const body = new AuthorDTO(
+			params.value.authorName,
+			params.value.authorSurname,
+			params.value.authorDescription);
 		if (this.isUpdating == false) {
-			const body = new BookCategoryDTO(params.value.categoryName);
 			this.http.save('author', body).subscribe(() => {
 				this.getAuthors();
 			});
 		} else {
-			const authorDTO = new AuthorDTO(params.value.authorName, params.value.authorSurname, params.value.authorDescription);
-			this.http.update('author', this.toUpdate.id, authorDTO).subscribe((respone) => {
+			this.http.update('author', this.toUpdate.id, body).subscribe((respone) => {
 				this.getAuthors();
 				this.isUpdating = false;
 				this.clearForm();

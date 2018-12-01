@@ -23,7 +23,8 @@ export class ManageCategoriesComponent implements OnInit {
 
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 
-	constructor(private formBuilder: FormBuilder, private http: RestService) {
+	constructor(private formBuilder: FormBuilder,
+				private http: RestService) {
 	}
 
 	ngOnInit() {
@@ -38,14 +39,13 @@ export class ManageCategoriesComponent implements OnInit {
 	}
 
 	createCategory(params: any) {
+		const body = new BookCategoryDTO(params.value.categoryName);
 		if (this.isUpdating == false) {
-			const body = new BookCategoryDTO(params.value.categoryName);
 			this.http.save('bookCategory', body).subscribe(() => {
 				this.getCategories();
 			});
 		} else {
-			const bookCategoryDTO = new BookCategoryDTO(params.value.categoryName);
-			this.http.update('bookCategory', this.toUpdate.id, bookCategoryDTO).subscribe((respone) => {
+			this.http.update('bookCategory', this.toUpdate.id, body).subscribe((respone) => {
 				this.getCategories();
 				this.isUpdating = false;
 				this.clearForm();
