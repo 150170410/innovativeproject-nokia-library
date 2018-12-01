@@ -3,32 +3,38 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Singleton;
 import com.cloudinary.utils.ObjectUtils;
+import com.nokia.library.nokiainnovativeproject.exceptions.TypeNotSupportedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
+
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class PictureService {
-    public Map uploadPicture(MultipartFile picture) throws IOException {
 
+    private final List<String> supportedTypes = Arrays.asList (MediaType.IMAGE_JPEG.toString(), MediaType.IMAGE_PNG.toString());
+    public Map uploadPicture(MultipartFile picture) throws IOException {
         validateFile(picture);
         Map uploadResult = null;
-        if (picture != null) {
-            Cloudinary cloudinary = Singleton.getCloudinary();
-            uploadResult = cloudinary.uploader().upload(picture.getBytes(),
-                    ObjectUtils.asMap("resource_type", "auto"));
-        }
+        Cloudinary cloudinary = Singleton.getCloudinary();
+        uploadResult = cloudinary.uploader().upload(picture.getBytes(),
+                ObjectUtils.asMap("resource_type", "auto"));
         return uploadResult;
     }
 
-    private void validateFile(MultipartFile file) throws IOException {
-        String contentType = file.getContentType();
-        if (!contentType.equals(MediaType.IMAGE_JPEG.toString()) && !contentType.equals(MediaType.IMAGE_PNG.toString()))
-            throw new IOException("Invalid media type. Make sure file is of type .jpeg or .png.");
+    private void validateFile(MultipartFile file) throws FileNotFoundException {
+        if(file == null || file.isEmpty()){
+            throw new FileNotFoundException("File is either null or empty");
+        }
+        if (!supportedTypes.contains(file.getContentType()))
+            throw new TypeNotSupportedException(supportedTypes);
     }
 }
