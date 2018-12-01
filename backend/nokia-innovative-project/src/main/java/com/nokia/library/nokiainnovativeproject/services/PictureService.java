@@ -24,7 +24,10 @@ public class PictureService {
     public Map uploadPicture(MultipartFile picture) throws IOException {
         validateFile(picture);
         Map uploadResult = null;
-        Cloudinary cloudinary = Singleton.getCloudinary();
+        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", "drkqvtiuz",
+                "api_key", "878127959754956",
+                "api_secret", "tOauaQUIBLKO8Ar7FVOcx0A69d8"));
         uploadResult = cloudinary.uploader().upload(picture.getBytes(),
                 ObjectUtils.asMap("resource_type", "auto"));
         return uploadResult;
