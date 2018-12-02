@@ -21,6 +21,9 @@ public class Mappings {
 	public static final String BOOK_REVIEW = "/review";
 	public static final String BOOK_COPY = "/bookCopy";
 
+	public static final String USERS = "/users";
 	public static final String LIBRARY = "/library";
 	public static final String BOOKS = "/books";
+    public static final String RESERVATIONS = "/reservations" ;
+	public static final String RENTALS = "/rentals";
 }
