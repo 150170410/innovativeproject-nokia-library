@@ -46,7 +46,7 @@
 		</div>
 
 		<div class="buttons-row">
-			<button mat-raised-button color="primary" [type]="submit">
+			<button mat-raised-button color="primary" [type]="submit" [disabled]="!authorParams.valid">
 				Submit
 			</button>
 			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()" >
@@ -63,10 +63,16 @@
 </mat-card>
 
 <div>
-	<mat-form-field>
-		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-	</mat-form-field>
-	<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+	<div class="filter-paginator-wrapper">
+		<div  class="filter">
+			<mat-form-field>
+				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+			</mat-form-field>
+		</div>
+		<div class="paginator">
+			<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+		</div>
+	</div>
 	<table mat-table [dataSource]="dataSource">
 
 		<ng-container matColumnDef="authorName">

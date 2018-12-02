@@ -5,7 +5,6 @@ import { MessageInfo } from '../../../../models/MessageInfo';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { BookCategoryDTO } from '../../../../models/database/DTOs/BookCategoryDTO';
 
 @Component({
 	selector: 'app-manage-authors',
@@ -16,13 +15,14 @@ export class ManageAuthorsComponent implements OnInit {
 
 	authorParams: FormGroup;
 
-	dataSource = new MatTableDataSource<Author>();
-	displayedAuthorsColumn: string[] = ['authorName', 'authorSurname', 'authorDescription', 'actions'];
-
 	isUpdating = false;
 	toUpdate: Author;
 
+	//table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
+	dataSource = new MatTableDataSource<Author>();
+	displayedAuthorsColumn: string[] = ['authorName', 'authorSurname', 'authorDescription', 'actions'];
+
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService) {

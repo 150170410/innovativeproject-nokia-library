@@ -15,13 +15,13 @@ export class ManageCategoriesComponent implements OnInit {
 
 	categoryParams: FormGroup;
 
-	dataSource = new MatTableDataSource<BookCategory>();
-	displayedCategoryColumns: string[] = ['bookCategoryName', 'actions'];
-
 	isUpdating = false;
 	toUpdate: BookCategory;
 
+	//table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
+	dataSource = new MatTableDataSource<BookCategory>();
+	displayedCategoryColumns: string[] = ['bookCategoryName', 'actions'];
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService) {

@@ -19,8 +19,24 @@ import { map, startWith } from 'rxjs/operators';
 export class ManageBookDetailsComponent implements OnInit {
 
 	bookDetailsParams: FormGroup;
+	authorsFormControl = new FormControl('');
+	categoriesFormControl = new FormControl('');
+
 	isUpdating = false;
 	toUpdate: BookDetails;
+
+	today = new Date();
+	maxDate;
+
+	// mat-chips
+	selectable = true;
+	removable = true;
+	addOnBlur = true;
+	separatorKeysCodes: number[] = [ENTER, COMMA];
+	@ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement>;
+	@ViewChild('autoAth') autoAuthor: MatAutocomplete;
+	@ViewChild('categoryInput') categoryInput: ElementRef<HTMLInputElement>;
+	@ViewChild('autoCat') autoCategory: MatAutocomplete;
 
 	allCategories: BookCategory[] = [];
 	availableCategories: string[] = [];
@@ -31,24 +47,6 @@ export class ManageBookDetailsComponent implements OnInit {
 	availableAuthors: string[] = [];
 	selectedAuthors: string[] = [];
 	filteredAuthors: Observable<string[]>;
-
-
-	selectable = true;
-	removable = true;
-	addOnBlur = true;
-
-	authorsFormControl = new FormControl('');
-	categoriesFormControl = new FormControl('');
-	separatorKeysCodes: number[] = [ENTER, COMMA];
-
-
-	@ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement>;
-	@ViewChild('autoAth') autoAuthor: MatAutocomplete;
-	@ViewChild('categoryInput') categoryInput: ElementRef<HTMLInputElement>;
-	@ViewChild('autoCat') autoCategory: MatAutocomplete;
-
-	today = new Date();
-	maxDate;
 
 	// table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -89,11 +87,6 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	createBookDetails(params: any) {
-
-		if (this.selectedAuthors.length === 0 || this.selectedCategories.length === 0) {
-			console.log('mistakes in parameters');
-			return;
-		}
 		const body = new BookDetailsDTO(params.value.isbn,
 			params.value.title,
 			this.authorsToAuthor(this.selectedAuthors),
@@ -115,7 +108,6 @@ export class ManageBookDetailsComponent implements OnInit {
 				this.clearForm();
 			});
 		}
-
 	}
 
 	async getCategories() {

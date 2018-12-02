@@ -32,8 +32,8 @@
 				<mat-chip-list #chipListAuthors minlength="1">
 					<mat-chip
 						*ngFor="let author of selectedAuthors"
-						[selectable]="'true'"
-						[removable]="'true'"
+						[selectable]="selectable"
+						[removable]="removable"
 						(removed)="removeAth(author)">
 						{{(author)}}
 						<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -126,7 +126,7 @@
 		</div>
 
 		<div class="buttons-row form-title">
-			<button mat-raised-button color="primary" [type]="submit" [disabled]="!bookDetailsParams.valid">
+			<button mat-raised-button color="primary" [type]="submit" [disabled]="!bookDetailsParams.valid || selectedAuthors.length === 0 || selectedCategories.length === 0">
 				Submit
 			</button>
 			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()" >
@@ -139,11 +139,16 @@
 	</form>
 </mat-card>
 <div>
-	<mat-form-field class="">
-		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-	</mat-form-field>
-
-	<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+	<div class="filter-paginator-wrapper">
+		<div  class="filter">
+			<mat-form-field>
+				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+			</mat-form-field>
+		</div>
+		<div class="paginator">
+			<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+		</div>
+	</div>
 	<table mat-table [dataSource]="dataSource">
 
 		<ng-container matColumnDef="title">
