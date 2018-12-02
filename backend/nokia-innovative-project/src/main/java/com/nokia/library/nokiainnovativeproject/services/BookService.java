@@ -26,16 +26,12 @@ public class BookService {
 	}
 
 	public Book createBook(BookDTO bookDTO) {
-		// TODO: I think that here BookDetails should be attached to book entity.
-		// https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26#discussion_r232794317
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
 		return bookRepository.save(book);
 	}
 
 	public Book updateBook(Long id, BookDTO bookDTO) {
-		// TODO: What about BookDetails? This can also be changed.
-		// https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26#discussion_r232794464
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 		book.setComments(bookDTO.getComments());
 		book.setBookDetails(bookDTO.getBookDetails());
