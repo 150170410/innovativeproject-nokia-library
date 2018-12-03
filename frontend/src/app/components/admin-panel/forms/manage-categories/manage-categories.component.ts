@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RestService } from '../../../../services/rest/rest.service';
 import { MessageInfo } from '../../../../models/MessageInfo';
 import { BookCategory } from '../../../../models/database/entites/BookCategory';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookCategoryDTO } from '../../../../models/database/DTOs/BookCategoryDTO';
-import { MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
 	selector: 'app-manage-categories',
@@ -15,13 +15,16 @@ export class ManageCategoriesComponent implements OnInit {
 
 	categoryParams: FormGroup;
 
+	isUpdating = false;
+	toUpdate: BookCategory;
+
+	//table
+	@ViewChild(MatPaginator) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookCategory>();
 	displayedCategoryColumns: string[] = ['bookCategoryName', 'actions'];
 
-	// variables helpful for mistakes catching
-	categorySubmitted = false;
-
-	constructor(private formBuilder: FormBuilder, private http: RestService) {
+	constructor(private formBuilder: FormBuilder,
+				private http: RestService) {
 	}
 
 	ngOnInit() {
@@ -36,36 +39,50 @@ export class ManageCategoriesComponent implements OnInit {
 	}
 
 	createCategory(params: any) {
-
-		this.categorySubmitted = true;
-
-		if (this.categoryParams.invalid) {
-			console.log('mistakes in parameters');
-			return;
-		}
-
 		const body = new BookCategoryDTO(params.value.categoryName);
-		this.http.save('bookCategory/create', body).subscribe(() => {
-			this.getCategories();
-		});
-
-		this.categorySubmitted = false;
+		if (this.isUpdating == false) {
+			this.http.save('bookCategory', body).subscribe(() => {
+				this.getCategories();
+			});
+		} else {
+			this.http.update('bookCategory', this.toUpdate.id, body).subscribe((respone) => {
+				this.getCategories();
+				this.isUpdating = false;
+				this.clearForm();
+			});
+		}
 	}
 
 	async getCategories() {
 		const response: MessageInfo = await this.http.getAll('bookCategory/getAll');
-		this.dataSource =  new MatTableDataSource( response.object);
+		this.dataSource = new MatTableDataSource(response.object.reverse());
+		this.dataSource.paginator = this.paginator;
 	}
 
 	editCategory(category: BookCategory) {
 		this.categoryParams.patchValue({
 			'categoryName': category.bookCategoryName
 		});
+		this.isUpdating = true;
+		this.toUpdate = category;
 	}
 
 	async removeCategory(id: number) {
-		await this.http.remove('bookCategory/remove/' + `${id}`).subscribe(() => {
+		await this.http.remove('bookCategory', id).subscribe(() => {
 			this.getCategories();
 		});
+	}
+
+	clearForm() {
+		this.categoryParams.reset();
+		this.categoryParams.markAsUntouched();
+	}
+
+	applyFilter(filterValue: string) {
+		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
+
+	autoFillCategoryForm() {
+		this.categoryParams.patchValue({ 'categoryName': 'cat' + Math.floor(Math.random() * 100) });
 	}
 }

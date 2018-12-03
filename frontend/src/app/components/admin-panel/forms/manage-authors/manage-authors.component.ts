@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Author } from '../../../../models/database/entites/Author';
 import { RestService } from '../../../../services/rest/rest.service';
 import { MessageInfo } from '../../../../models/MessageInfo';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
-import { MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
 	selector: 'app-manage-authors',
@@ -14,11 +14,15 @@ import { MatTableDataSource } from '@angular/material';
 export class ManageAuthorsComponent implements OnInit {
 
 	authorParams: FormGroup;
+
+	isUpdating = false;
+	toUpdate: Author;
+
+	//table
+	@ViewChild(MatPaginator) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Author>();
 	displayedAuthorsColumn: string[] = ['authorName', 'authorSurname', 'authorDescription', 'actions'];
 
-	// variables helpful for mistakes catching
-	authorSubmitted = false;
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService) {
@@ -38,30 +42,28 @@ export class ManageAuthorsComponent implements OnInit {
 	}
 
 	createAuthor(params: any) {
-
-		this.authorSubmitted = true;
-
-		if (this.authorParams.invalid) {
-			console.log('mistakes in parameters');
-			return;
+		const body = new AuthorDTO(
+			params.value.authorName,
+			params.value.authorSurname,
+			params.value.authorDescription);
+		if (this.isUpdating == false) {
+			this.http.save('author', body).subscribe(() => {
+				this.getAuthors();
+			});
+		} else {
+			this.http.update('author', this.toUpdate.id, body).subscribe((respone) => {
+				this.getAuthors();
+				this.isUpdating = false;
+				this.clearForm();
+			});
 		}
-
-		const body = new AuthorDTO(params.value.authorName, params.value.authorSurname, params.value.authorDescription);
-		this.http.save('author/create', body).subscribe(() => {
-			this.getAuthors();
-		});
-		this.authorSubmitted = false;
 	}
 
 	async getAuthors() {
 		const response: MessageInfo = await this.http.getAll('author/getAll');
-		this.dataSource = new MatTableDataSource(response.object);
+		this.dataSource = new MatTableDataSource(response.object.reverse());
+		this.dataSource.paginator = this.paginator;
 	}
-
-	autoFillAuthorForm() {
-		this.authorParams.patchValue(new AuthorDTO('JRR', 'Tolkien', 'frodo and shit'));
-	}
-
 
 	editAuthor(author: Author) {
 		this.authorParams.patchValue({
@@ -69,15 +71,30 @@ export class ManageAuthorsComponent implements OnInit {
 			'authorSurname': author.authorSurname,
 			'authorDescription': author.authorDescription
 		});
+		this.isUpdating = true;
+		this.toUpdate = author;
 	}
 
 	async removeAuthor(id: number) {
-		await this.http.remove('author/remove/' + `${id}`).subscribe(() => {
+		await this.http.remove('author', id).subscribe(() => {
 			this.getAuthors();
 		});
 	}
 
+	clearForm() {
+		this.authorParams.reset();
+		this.authorParams.markAsUntouched();
+	}
+
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
+
+	autoFillAuthorForm() {
+		this.authorParams.patchValue({
+			'authorName': 'J.R.R.',
+			'authorSurname': 'Tolkien',
+			'authorDescription': 'frodo ' + Math.floor(Math.random() * 100)
+		});
 	}
 }

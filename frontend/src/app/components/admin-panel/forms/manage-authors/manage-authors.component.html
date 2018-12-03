@@ -1,4 +1,4 @@
-<div class="form-wrapper">
+<mat-card class="form-wrapper">
 	<div class="form-title">
 		<h1>Authors</h1>
 	</div>
@@ -45,11 +45,14 @@
 			</mat-form-field>
 		</div>
 
-		<div>
-			<button mat-raised-button color="primary" [type]="submit">
+		<div class="buttons-row">
+			<button mat-raised-button color="primary" [type]="submit" [disabled]="!authorParams.valid">
 				Submit
 			</button>
-			<button class="demo-button" mat-raised-button color="accent" type="button" (click)="autoFillAuthorForm()">
+			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()" >
+				Clear
+			</button>
+			<button class="button-spacer" mat-raised-button color="accent" type="button" (click)="autoFillAuthorForm()">
 				Demo
 			</button>
 		</div>
@@ -57,12 +60,19 @@
 	</form>
 
 
-</div>
+</mat-card>
 
 <div>
-	<mat-form-field>
-		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-	</mat-form-field>
+	<div class="filter-paginator-wrapper">
+		<div  class="filter">
+			<mat-form-field>
+				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+			</mat-form-field>
+		</div>
+		<div class="paginator">
+			<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+		</div>
+	</div>
 	<table mat-table [dataSource]="dataSource">
 
 		<ng-container matColumnDef="authorName">
@@ -84,11 +94,11 @@
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
 			<td mat-cell *matCellDef="let author">
 				<p>
-					<button mat-button (click)="editAuthor(author)">
+					<button color="primary" mat-button (click)="editAuthor(author)">
 						<mat-icon>edit</mat-icon>
 						Edit
 					</button>
-					<button mat-button (click)="removeAuthor(author.id)">
+					<button color="warn" mat-button (click)="removeAuthor(author.id)">
 						<mat-icon>cancel</mat-icon>
 						Remove
 					</button>

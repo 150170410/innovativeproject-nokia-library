@@ -24,22 +24,22 @@ export class RestService {
 		).toPromise();
 	}
 
-	save(url: string, book: any): Observable<any> {
-		return this.http.post<any>(this.URL + url, book, this.httpOptions)
+	save(url: string, item: any): Observable<any> {
+		return this.http.post<any>(this.URL  + url + '/create', item, this.httpOptions)
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
-	update(url: string, book: any) {
-		return this.http.post<any>(this.URL + url, book, this.httpOptions)
+	update(url: string, id: number, item: any) {
+		return this.http.post<any>(this.URL + url + '/update/' + `${id}`, item, this.httpOptions)
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
-	remove(url: string) {
-		return this.http.delete<any>(this.URL + url)
+	remove(url: string, id: number) {
+		return this.http.delete<any>(this.URL + url + '/remove/' + `${id}`)
 		.pipe(
 			catchError(this.handleError)
 		);

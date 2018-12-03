@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmailDTO } from '../../models/EmailDTO';
+import { EmailMessage } from '../../models/EmailMessage';
 import { MatDialogRef } from '@angular/material';
 import { RestService } from '../../services/rest/rest.service';
 
@@ -14,10 +14,8 @@ export class ContactUsComponent implements OnInit {
 	contactParams: FormGroup;
 	sendingEmail = false;
 	categories = ['Report a bug', 'Request new feature', 'I don\'t like...', 'Other'];
-	recipients = ['aabc0041@gmail.com']; // TODO: to which emails these messages should be sent?
 	sendingFailed = false;
 	errorMessage;
-
 
 	constructor(private formBuilder: FormBuilder,
 				public dialogRef: MatDialogRef<ContactUsComponent>,
@@ -39,7 +37,7 @@ export class ContactUsComponent implements OnInit {
 	sendEmail(contactParams: FormGroup) {
 		this.sendingEmail = true;
 		this.sendingFailed = false;
-		const email = new EmailDTO(contactParams.value.category + ': ' + contactParams.value.subject, contactParams.value.message, this.recipients);
+		const email = new EmailMessage(contactParams.value.category + ': ' + contactParams.value.subject, contactParams.value.message);
 
 		this.http.save('email/create', email).subscribe((response) => {
 			if (response.success === true) {

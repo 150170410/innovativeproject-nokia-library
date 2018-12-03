@@ -4,11 +4,15 @@ table {
 	border-collapse: collapse;
 }
 
+th {
+	font-size: 18px;
+	font-weight: bold;
+}
+
 th, tr, td {
 	border: 1px solid black;
 	border-collapse: collapse;
 }
-
 
 .input-button {
 	width: 60%;
@@ -27,7 +31,7 @@ mat-form-field {
 	margin: auto;
 }
 
-.demo-button {
+.button-spacer {
 	margin-left: 10px;
 }
 
@@ -41,4 +45,21 @@ mat-form-field {
 
 .mat-header-cell {
 	text-align: center;
+}
+
+.buttons-row{
+	margin-top: 10px;
+}
+
+.filter-paginator-wrapper {
+	display: flex;
+	justify-content: space-between;
+}
+
+.paginator {
+
+}
+
+.filter mat-form-field{
+	width: 150px;
 }
