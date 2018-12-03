@@ -29,13 +29,12 @@ public class Review implements Serializable {
     @CreationTimestamp
     private Date creationDate;
 
+    @Setter(AccessLevel.NONE)
     @UpdateTimestamp
-    private Date dateOfLastEdition;
+    private Date lastEditionDate;
 
-    @ManyToOne( cascade = { CascadeType.DETACH,
-                            CascadeType.MERGE,
-                            CascadeType.PERSIST,
-                            CascadeType.REFRESH },
+    @ManyToOne( cascade = {CascadeType.MERGE,
+                            CascadeType.PERSIST,},
                 fetch = FetchType.LAZY  )
     @JoinColumn(name = "user_id")
     private User user;

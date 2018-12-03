@@ -39,33 +39,39 @@ public class BookDetails implements Serializable {
 	private String coverPictureUrl;
 
 	@Past(message = "Rental date should be a past date")
-	private Date dateOfPublication;
+	private Date publicationDate;
 
 	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
 	private String tableOfContents;
 
-	@ManyToMany(cascade = {CascadeType.MERGE,
-			CascadeType.PERSIST},
+	@ManyToMany(cascade = {
+			CascadeType.MERGE,
+            CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
-	@JoinColumn(name = "authors")
+	@JoinTable(name = "books_details_authors",
+			joinColumns = @JoinColumn(name = "book_details_id"),
+			inverseJoinColumns = @JoinColumn(name = "author_id"))
 	private List<Author> authors;
 
-	@ManyToMany(cascade = {CascadeType.MERGE,
-			CascadeType.PERSIST},
+	@ManyToMany(cascade = {
+			CascadeType.MERGE,
+            CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
-	@JoinColumn(name = "book_category_id")
+	@JoinTable(name = "books_details_category",
+			joinColumns = @JoinColumn(name = "book_details_id"),
+			inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private List<BookCategory> categories;
 
-	@OneToMany(cascade = {CascadeType.MERGE,
-			CascadeType.PERSIST},
+	@OneToMany(cascade = {
+			CascadeType.MERGE,
+            CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_details_id")
 	private List<Review> reviews;
 
 	@OneToMany(mappedBy = "bookDetails",
 			cascade = {CascadeType.MERGE,
-			CascadeType.PERSIST},
+                    CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
 	private List<Book> books;
-
 }

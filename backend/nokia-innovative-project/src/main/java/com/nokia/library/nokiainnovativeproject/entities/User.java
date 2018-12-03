@@ -34,31 +34,28 @@ public class User implements Serializable {
     @Size(min = 10, max = 40, message = "User email must be 10-40 characters long")
     private String email;
 
-    @OneToOne(  cascade = CascadeType.ALL,
+    @OneToOne(  cascade = {
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REMOVE},
                 fetch = FetchType.LAZY  )
     @JoinColumn(name = "address_id")
     private Address address;
 
     @OneToMany(mappedBy = "user",
                 fetch = FetchType.LAZY,
-                cascade = {CascadeType.DETACH,
-                        CascadeType.MERGE,
-                        CascadeType.PERSIST,
-                        CascadeType.REFRESH})
+                cascade = {CascadeType.MERGE,
+                        CascadeType.PERSIST})
     private List<Reservation> reservations;
 
     @OneToMany( mappedBy = "user",
-                cascade = { CascadeType.DETACH,
-                            CascadeType.MERGE,
-                            CascadeType.PERSIST,
-                            CascadeType.REFRESH },
+                cascade = { CascadeType.MERGE,
+                            CascadeType.PERSIST},
                 fetch = FetchType.LAZY)
     private List<Review> reviews;
 
-    @ManyToMany(cascade ={  CascadeType.DETACH,
-                            CascadeType.MERGE,
-                            CascadeType.PERSIST,
-                            CascadeType.REFRESH},
+    @ManyToMany(cascade ={  CascadeType.MERGE,
+                            CascadeType.PERSIST},
                 fetch = FetchType.LAZY)
     private List<Book> books;
 

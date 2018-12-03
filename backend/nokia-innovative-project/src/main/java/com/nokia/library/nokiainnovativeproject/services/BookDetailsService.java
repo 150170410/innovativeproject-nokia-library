@@ -2,8 +2,10 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Author;
+import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
+import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +46,9 @@ public class BookDetailsService {
 	public BookDetails createBookDetails(BookDetailsDTO bookDetailsDTO) {
 		ModelMapper mapper = new ModelMapper();
 		BookDetails bookDetails = mapper.map(bookDetailsDTO, BookDetails.class);
+        bookDetails.setAuthors(new ArrayList<Author>());
+        bookDetails.setCategories(new ArrayList<BookCategory>());
+		bookDetails = bookDetailsRepository.save(bookDetails);
 		bookDetails.setAuthors(bookDetailsDTO.getAuthors());
 		bookDetails.setCategories(bookDetailsDTO.getCategories());
 		return bookDetailsRepository.save(bookDetails);
@@ -54,7 +60,7 @@ public class BookDetailsService {
 		bookDetails.setTitle(bookDetailsDTO.getTitle());
 		bookDetails.setDescription(bookDetailsDTO.getDescription());
 		bookDetails.setCoverPictureUrl(bookDetailsDTO.getCoverPictureUrl());
-		bookDetails.setDateOfPublication(bookDetailsDTO.getDateOfPublication());
+		bookDetails.setPublicationDate(bookDetailsDTO.getPublicationDate());
 		bookDetails.setTableOfContents(bookDetailsDTO.getTableOfContents());
 		bookDetails.setAuthors(bookDetailsDTO.getAuthors());
 		return bookDetailsRepository.save(bookDetails);

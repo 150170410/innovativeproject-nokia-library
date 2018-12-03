@@ -36,7 +36,7 @@ public class BookDetailsDTO {
 	private String coverPictureUrl;
 
 	@Past(message = "The publication date of the book should be a past date")
-	private Date dateOfPublication;
+	private Date publicationDate;
 
 	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
 	private String tableOfContents;
@@ -46,8 +46,4 @@ public class BookDetailsDTO {
 
 	@NotNull(message = "At least one book category is required.")
 	private List<BookCategory> categories;
-
-	private List<Review> reviews;
-
-	private List<Book> books;
 }
