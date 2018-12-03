@@ -9,5 +9,9 @@ spring:
         dialect: org.hibernate.dialect.Oracle12cDialect
         ddl-auto: update
     open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 200KB
+      max-request-size: 200KB
 server:
   port: 8082
