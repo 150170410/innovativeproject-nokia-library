@@ -32,11 +32,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -50,8 +46,9 @@ public class UserService implements UserDetailsService {
     public User createUser(UserDTO userDTO) {
         ModelMapper mapper = new ModelMapper();
         User user = mapper.map(userDTO, User.class);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-        // everyone user should have employee role
+        // everyone user should have at least employee role
         List<Role> roles = roleRepository.findRoleByName("ROLE_EMPLOYEE");
         Role role;
         if(roles == null || roles.size() == 0){
@@ -66,6 +63,7 @@ public class UserService implements UserDetailsService {
         user.setRoles(roles);
 
 
+
         Logger logger = Logger.getLogger(getClass().getName());
         logger.info("info");
 
@@ -78,7 +76,7 @@ public class UserService implements UserDetailsService {
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setAddress(userDTO.getAddress());
-        user.setPassword(passwordEncoder().encode(userDTO.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         return userRepository.save(user);
     }
 
@@ -98,7 +96,7 @@ public class UserService implements UserDetailsService {
     }
 
     private org.springframework.security.core.userdetails.User buildUserForAuthentication(User user, List<GrantedAuthority> authorities){
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), passwordEncoder().encode(user.getPassword()), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
     private List<GrantedAuthority> buildUserAuthority(List<Role> roles) {
