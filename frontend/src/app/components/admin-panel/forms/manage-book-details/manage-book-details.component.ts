@@ -11,6 +11,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatTableDataSource } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
+import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
 
 @Component({
 	selector: 'app-manage-book-details',
@@ -56,7 +57,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService, private httpClient: HttpClient) {
-		this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
+		this.filteredAuthors = this.authorsFormControl.valueChanges.pipe(
 			startWith(null),
 			map((author: string | null) => author ? this.filterAth(author) : this.availableAuthors.slice()));
 
@@ -140,16 +141,18 @@ export class ManageBookDetailsComponent implements OnInit {
 						'tableOfContents' : 'string',
 						'title' : data['title'],
 					});
-					var authors = data['authors'].toString().split(",");
-					console.log(this.selectedAuthors)
+					const authors = data['authors'].toString().trim().split(", ");
 					authors.forEach(element => {
-						var author = element.trim().toString().split(" ");
-						this.selectedAuthors.push({
-							id: Math.random(),
-							authorName: author[0],
-							authorSurname: author[author.length - 1]
-						});
+						const info = element.toString().split(" ");
+						console.log(info);
+						const authorDTO = new AuthorDTO(info[0], info[info.length - 1], '');
+						const author = new Author(Math.floor(Math.random()) + 1 , info[0], info[info.length - 1], '');
+						this.selectedAuthors.push(element);
+						this.allAuthors.push(author);
+
 					});
+					console.log(this.selectedAuthors);
+					console.log(this.allAuthors);
 				} else
 					this.httpClient.get<any>('https://www.googleapis.com/books/v1/volumes?q=' + this.bookDetailsParams.get('isbn').value)
 					.subscribe(data => {
@@ -159,16 +162,16 @@ export class ManageBookDetailsComponent implements OnInit {
 								'tableOfContents' : 'string',
 								'title' : data['items'][0].volumeInfo.title,
 							});
-							var authors = data['items'][0].volumeInfo.authors;
-							console.log(this.selectedAuthors)
+							const authors = data['items'][0].volumeInfo.authors;
 							authors.forEach(element => {
-								var author = element.trim().toString().split(" ");
+								const author = element.trim().toString().split(" ");
 								if(this.selectedAuthors){
-								this.selectedAuthors.push({
-									id: Math.random(),
-									authorName: author[0],
-									authorSurname: author[author.length - 1]
-								});
+
+								// this.selectedAuthors.push({
+								// 	id: Math.random(),
+								// 	authorName: author[0],
+								// 	authorSurname: author[author.length - 1]
+								// });
 								}
 							});
 					});
@@ -213,7 +216,7 @@ export class ManageBookDetailsComponent implements OnInit {
 			'coverPictureUrl': 'https://itbook.store/img/books/9781491985571.png',
 			'dateOfPublication': new Date(),
 			'description': 'desc',
-			'isbn': '12312312312',
+			'isbn': '9781484206485',
 			'tableOfContents': 'string',
 			'title': 'Book ' + Math.floor(Math.random() * 100)
 		});

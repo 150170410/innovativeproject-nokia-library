@@ -39,7 +39,7 @@ export class ContactUsComponent implements OnInit {
 		this.sendingFailed = false;
 		const email = new EmailMessage(contactParams.value.category + ': ' + contactParams.value.subject, contactParams.value.message);
 
-		this.http.save('email/create', email).subscribe((response) => {
+		this.http.save('email', email).subscribe((response) => {
 			if (response.success === true) {
 				this.emailSent();
 			} else if (response.success === false) {
@@ -52,5 +52,6 @@ export class ContactUsComponent implements OnInit {
 
 	emailSent(): void {
 		this.dialogRef.close();
+		// TODO: pop up a snackbar when finished
 	}
 }
