@@ -51,22 +51,18 @@ public class BookDetailsService {
 		BookDetails bookDetails = mapper.map(bookDetailsDTO, BookDetails.class);
 
 		List<Author> authors = bookDetailsDTO.getAuthors();
-		if(authors != null && authors.size() > 0) {
-			for(Author author : authors) {
-				if(author.getId() != null){
-					authors.remove(author);
-					authors.add(authorRepository.findById(author.getId()).orElseThrow(()-> new ResourceNotFoundException("author")));
-				}
+		for(Author author : authors) {
+			if(author.getId() != null){
+				authors.remove(author);
+				authors.add(authorRepository.findById(author.getId()).orElseThrow(()-> new ResourceNotFoundException("author")));
 			}
 		}
 
 		List<BookCategory> categories = bookDetailsDTO.getCategories();
-		if(categories != null && categories.size() > 0) {
-			for(BookCategory bookCategory : categories) {
-				if(bookCategory.getId() != null){
-					categories.remove(bookCategory);
-					categories.add(bookCategoryRepository.findById(bookCategory.getId()).orElseThrow(()-> new ResourceNotFoundException("category")));
-				}
+		for(BookCategory bookCategory : categories) {
+			if(bookCategory.getId() != null){
+				categories.remove(bookCategory);
+				categories.add(bookCategoryRepository.findById(bookCategory.getId()).orElseThrow(()-> new ResourceNotFoundException("category")));
 			}
 		}
 
