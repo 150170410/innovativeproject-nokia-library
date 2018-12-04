@@ -6,6 +6,7 @@ import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.BookCategoryRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
@@ -22,6 +23,8 @@ import java.util.logging.Logger;
 public class BookDetailsService {
 
 	private final BookDetailsRepository bookDetailsRepository;
+	private final AuthorRepository authorRepository;
+	private final BookCategoryRepository bookCategoryRepository;
 
 	public List<BookDetails> getAllBookDetails() {
 		List<BookDetails> list = bookDetailsRepository.findAll();
@@ -46,11 +49,29 @@ public class BookDetailsService {
 	public BookDetails createBookDetails(BookDetailsDTO bookDetailsDTO) {
 		ModelMapper mapper = new ModelMapper();
 		BookDetails bookDetails = mapper.map(bookDetailsDTO, BookDetails.class);
-        bookDetails.setAuthors(new ArrayList<Author>());
-        bookDetails.setCategories(new ArrayList<BookCategory>());
-		bookDetails = bookDetailsRepository.save(bookDetails);
-		bookDetails.setAuthors(bookDetailsDTO.getAuthors());
-		bookDetails.setCategories(bookDetailsDTO.getCategories());
+
+		List<Author> authors = bookDetailsDTO.getAuthors();
+		if(authors != null && authors.size() > 0) {
+			for(Author author : authors) {
+				if(author.getId() != null){
+					authors.remove(author);
+					authors.add(authorRepository.findById(author.getId()).orElseThrow(()-> new ResourceNotFoundException("author")));
+				}
+			}
+		}
+
+		List<BookCategory> categories = bookDetailsDTO.getCategories();
+		if(categories != null && categories.size() > 0) {
+			for(BookCategory bookCategory : categories) {
+				if(bookCategory.getId() != null){
+					categories.remove(bookCategory);
+					categories.add(bookCategoryRepository.findById(bookCategory.getId()).orElseThrow(()-> new ResourceNotFoundException("category")));
+				}
+			}
+		}
+
+		bookDetails.setAuthors(authors);
+		bookDetails.setCategories(categories);
 		return bookDetailsRepository.save(bookDetails);
 	}
 
