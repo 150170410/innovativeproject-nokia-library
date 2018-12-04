@@ -23,5 +23,9 @@ public class Mappings {
 
 	public static final String LIBRARY = "/library";
 	public static final String BOOKS = "/books";
+
 	public static final String PICTURES = "/pictures";
+
+	public static final String EMAIL = "/email";
+
 }
