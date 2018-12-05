@@ -1,11 +1,13 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookToOrderDTO;
+import com.nokia.library.nokiainnovativeproject.DTOs.Email;
 import com.nokia.library.nokiainnovativeproject.entities.BookToOrder;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookToOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 public class BookToOrderService {
 
     private final BookToOrderRepository bookToOrderRepository;
+    private final EmailService emailService;
 
     public List<BookToOrder> getAllBookToOrders() {
         return bookToOrderRepository.findAll();
@@ -27,6 +30,11 @@ public class BookToOrderService {
     public BookToOrder createBookToOrder(BookToOrderDTO bookToOrderDTO) {
         ModelMapper mapper = new ModelMapper();
         BookToOrder bookToOrder = mapper.map(bookToOrderDTO, BookToOrder.class);
+
+        Email email = new Email();
+
+
+
         return bookToOrderRepository.save(bookToOrder);
     }
 
@@ -34,6 +42,10 @@ public class BookToOrderService {
         BookToOrder bookToOrder= bookToOrderRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("bookToOrder"));
         bookToOrder.setIsbn(bookToOrderDTO.getIsbn());
         bookToOrder.setTitle(bookToOrderDTO.getTitle());
+
+
+
+
         return bookToOrderRepository.save(bookToOrder);
     }
 
