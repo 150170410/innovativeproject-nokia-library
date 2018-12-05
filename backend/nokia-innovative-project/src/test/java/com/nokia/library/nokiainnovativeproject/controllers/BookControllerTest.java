@@ -51,7 +51,7 @@ class BookControllerTest {
         bookDetails.setIsbn("test isbn123");
         bookDetails.setTableOfContents("test table of contents");
         bookDetails.setCoverPictureUrl("test cover picture url");
-        bookDetails.setDateOfPublication(date);
+        bookDetails.setPublicationDate(date);
         bookDetails.setAuthors(new ArrayList<>());
         bookDetails.setCategories(new ArrayList<>());
         return bookDetails;

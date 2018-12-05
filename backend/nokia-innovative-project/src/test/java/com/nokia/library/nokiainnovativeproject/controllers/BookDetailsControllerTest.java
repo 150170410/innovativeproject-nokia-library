@@ -63,11 +63,11 @@ public class BookDetailsControllerTest {
 		bookDetails.setIsbn("test isbn123");
 		bookDetails.setTableOfContents("test table of contents");
 		bookDetails.setCoverPictureUrl("test cover picture url");
-		bookDetails.setDateOfPublication(date);
+		bookDetails.setPublicationDate(date);
 		bookDetails.setAuthors(new ArrayList<>());
 		bookDetails.setCategories(new ArrayList<>());
 
-		bookDetailsDTO = new BookDetailsDTO("test isbn123", "test title", "test description", "test cover picture url", date, "test table of contents", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+		bookDetailsDTO = new BookDetailsDTO("test isbn123", "test title", "test description", "test cover picture url", date, "test table of contents", new ArrayList<>(), new ArrayList<>());
 	}
 
 	@BeforeEach
@@ -111,7 +111,7 @@ public class BookDetailsControllerTest {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.object.isbn", Matchers.is("test isbn123")))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.object.tableOfContents", Matchers.is("test table of contents")))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.object.coverPictureUrl", Matchers.is("test cover picture url")))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object.dateOfPublication", Matchers.is(date.getTime())))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.object.publicationDate", Matchers.is(date.getTime())))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.object.authors",Matchers.hasSize(0)))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.object.categories",Matchers.hasSize(0)));
 

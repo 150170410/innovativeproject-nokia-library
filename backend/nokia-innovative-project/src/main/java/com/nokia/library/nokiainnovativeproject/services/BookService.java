@@ -22,7 +22,7 @@ public class BookService {
 
 	public Book getBookById(Long id) {
 		return bookRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
+				.orElseThrow(() -> new ResourceNotFoundException("book"));
 	}
 
 	public Book createBook(BookDTO bookDTO) {
@@ -32,7 +32,7 @@ public class BookService {
 	}
 
 	public Book updateBook(Long id, BookDTO bookDTO) {
-		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
+		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 		book.setComments(bookDTO.getComments());
 		book.setBookDetails(bookDTO.getBookDetails());
 		return bookRepository.save(book);
@@ -41,7 +41,7 @@ public class BookService {
 	public void deleteBook(Long id)
 			throws ResourceNotFoundException {
 		Book book = bookRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
+				.orElseThrow(() -> new ResourceNotFoundException("book"));
 		bookRepository.delete(book);
 	}
 }

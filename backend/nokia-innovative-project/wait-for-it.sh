@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 #   Use this script to test if a given TCP host/port are available
 
+# TODO What is the purpose of this file?
+# https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26
+
 WAITFORIT_cmdname=${0##*/}
 
 echoerr() { if [[ $WAITFORIT_QUIET -ne 1 ]]; then echo "$@" 1>&2; fi }

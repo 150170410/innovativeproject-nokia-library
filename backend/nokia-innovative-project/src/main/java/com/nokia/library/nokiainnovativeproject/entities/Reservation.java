@@ -28,18 +28,14 @@ public class Reservation implements Serializable {
 	@Future(message = "The return date should be future")
 	private Date returnDate;
 
-	@ManyToOne(cascade = {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH},
+	@ManyToOne(cascade = {CascadeType.MERGE,
+			CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@ManyToOne(cascade = {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH},
+	@ManyToOne(cascade = {CascadeType.MERGE,
+			CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_catalog_number")
 	private Book book;

@@ -32,6 +32,8 @@ public class BookCategoryController {
 
 	@PostMapping(Mappings.CREATE)
 	public MessageInfo createBookCategory(@RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult) {
+		// TODO: If I understood correctly you decided to create a book category with book details. Why did you decide to create this endpoint?
+		// https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26#discussion_r232785455
 		MessageInfo errors = MessageInfo.getErrors(bindingResult);
 		return errors != null ? errors : MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO), Arrays.asList("BookCategory created successfully"));
 	}
