@@ -4,7 +4,7 @@ import { MessageInfo } from '../../../../models/MessageInfo';
 import { BookCategory } from '../../../../models/database/entites/BookCategory';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookCategoryDTO } from '../../../../models/database/DTOs/BookCategoryDTO';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
 
 @Component({
 	selector: 'app-manage-categories',
@@ -15,8 +15,7 @@ export class ManageCategoriesComponent implements OnInit {
 
 	categoryParams: FormGroup;
 
-	isUpdating = false;
-	toUpdate: BookCategory;
+	toUpdate: BookCategory = null;
 
 	//table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -24,7 +23,8 @@ export class ManageCategoriesComponent implements OnInit {
 	displayedCategoryColumns: string[] = ['bookCategoryName', 'actions'];
 
 	constructor(private formBuilder: FormBuilder,
-				private http: RestService) {
+				private http: RestService,
+				public snackBar: MatSnackBar) {
 	}
 
 	ngOnInit() {
@@ -40,14 +40,20 @@ export class ManageCategoriesComponent implements OnInit {
 
 	createCategory(params: any) {
 		const body = new BookCategoryDTO(params.value.categoryName);
-		if (this.isUpdating == false) {
-			this.http.save('bookCategory', body).subscribe(() => {
+		if (!this.toUpdate) {
+			this.http.save('bookCategory', body).subscribe((response) => {
 				this.getCategories();
+				if(response.success){
+					this.openSnackBar('Category added successfully!', 'OK');
+				}
 			});
 		} else {
-			this.http.update('bookCategory', this.toUpdate.id, body).subscribe((respone) => {
+			this.http.update('bookCategory', this.toUpdate.id, body).subscribe((response) => {
+				if(response.success){
+					this.openSnackBar('Category edited successfully!', 'OK');
+				}
 				this.getCategories();
-				this.isUpdating = false;
+				this.toUpdate = null;
 				this.clearForm();
 			});
 		}
@@ -63,12 +69,15 @@ export class ManageCategoriesComponent implements OnInit {
 		this.categoryParams.patchValue({
 			'categoryName': category.bookCategoryName
 		});
-		this.isUpdating = true;
+
 		this.toUpdate = category;
 	}
 
 	async removeCategory(id: number) {
-		await this.http.remove('bookCategory', id).subscribe(() => {
+		await this.http.remove('bookCategory', id).subscribe((response) => {
+			if(response.success){
+				this.openSnackBar('Category removed successfully!', 'OK');
+			}
 			this.getCategories();
 		});
 	}
@@ -84,5 +93,11 @@ export class ManageCategoriesComponent implements OnInit {
 
 	autoFillCategoryForm() {
 		this.categoryParams.patchValue({ 'categoryName': 'cat' + Math.floor(Math.random() * 100) });
+	}
+
+	openSnackBar(message: string, action: string) {
+		this.snackBar.open(message, action, {
+			duration: 3000,
+		});
 	}
 }

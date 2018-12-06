@@ -4,7 +4,7 @@ import { RestService } from '../../../../services/rest/rest.service';
 import { MessageInfo } from '../../../../models/MessageInfo';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
 
 @Component({
 	selector: 'app-manage-authors',
@@ -15,8 +15,7 @@ export class ManageAuthorsComponent implements OnInit {
 
 	authorParams: FormGroup;
 
-	isUpdating = false;
-	toUpdate: Author;
+	toUpdate: Author = null;
 
 	//table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -25,7 +24,8 @@ export class ManageAuthorsComponent implements OnInit {
 
 
 	constructor(private formBuilder: FormBuilder,
-				private http: RestService) {
+				private http: RestService,
+				public snackBar: MatSnackBar) {
 	}
 
 	ngOnInit() {
@@ -46,14 +46,20 @@ export class ManageAuthorsComponent implements OnInit {
 			params.value.authorName,
 			params.value.authorSurname,
 			params.value.authorDescription);
-		if (this.isUpdating == false) {
-			this.http.save('author', body).subscribe(() => {
+		if (!this.toUpdate) {
+			this.http.save('author', body).subscribe((response) => {
+				if(response.success){
+					this.openSnackBar('Author added successfully!', 'OK');
+				}
 				this.getAuthors();
 			});
 		} else {
-			this.http.update('author', this.toUpdate.id, body).subscribe((respone) => {
+			this.http.update('author', this.toUpdate.id, body).subscribe((response) => {
+				if(response.success){
+					this.openSnackBar('Author edited successfully!', 'OK');
+				}
 				this.getAuthors();
-				this.isUpdating = false;
+				this.toUpdate = null;
 				this.clearForm();
 			});
 		}
@@ -71,12 +77,14 @@ export class ManageAuthorsComponent implements OnInit {
 			'authorSurname': author.authorSurname,
 			'authorDescription': author.authorDescription
 		});
-		this.isUpdating = true;
 		this.toUpdate = author;
 	}
 
 	async removeAuthor(id: number) {
-		await this.http.remove('author', id).subscribe(() => {
+		await this.http.remove('author', id).subscribe((response) => {
+			if(response.success){
+				this.openSnackBar('Author removed successfully!', 'OK');
+			}
 			this.getAuthors();
 		});
 	}
@@ -95,6 +103,12 @@ export class ManageAuthorsComponent implements OnInit {
 			'authorName': 'J.R.R.',
 			'authorSurname': 'Tolkien',
 			'authorDescription': 'frodo ' + Math.floor(Math.random() * 100)
+		});
+	}
+
+	openSnackBar(message: string, action: string) {
+		this.snackBar.open(message, action, {
+			duration: 3000,
 		});
 	}
 }

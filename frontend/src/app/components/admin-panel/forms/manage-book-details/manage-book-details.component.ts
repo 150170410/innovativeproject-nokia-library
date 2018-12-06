@@ -9,7 +9,7 @@ import { Author } from '../../../../models/database/entites/Author';
 import { BookDetails } from '../../../../models/database/entites/BookDetails';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
 
@@ -24,8 +24,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	authorsFormControl = new FormControl('');
 	categoriesFormControl = new FormControl('');
 
-	isUpdating = false;
-	toUpdate: BookDetails;
+	toUpdate: BookDetails = null;
 
 	today = new Date();
 	maxDate;
@@ -53,10 +52,12 @@ export class ManageBookDetailsComponent implements OnInit {
 	// table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookDetails>();
-	displayedBookDetailColumns: string[] = ['title', 'authors', 'categories', 'coverURL', 'isbn', 'dateOfPublication', 'actions'];
+	displayedBookDetailColumns: string[] = ['title', 'authors', 'categories', 'coverURL', 'isbn', 'publicationDate', 'actions'];
 
 	constructor(private formBuilder: FormBuilder,
-				private http: RestService, private httpClient: HttpClient) {
+				private http: RestService,
+				private httpClient: HttpClient,
+				public snackBar: MatSnackBar) {
 		this.filteredAuthors = this.authorsFormControl.valueChanges.pipe(
 			startWith(null),
 			map((author: string | null) => author ? this.filterAth(author) : this.availableAuthors.slice()));
@@ -81,7 +82,7 @@ export class ManageBookDetailsComponent implements OnInit {
 			title: ['', [Validators.required, Validators.maxLength(100)]],
 			authors: this.authorsFormControl,
 			categories: this.categoriesFormControl,
-			dateOfPublication: ['', [Validators.required]],
+			publicationDate: ['', [Validators.required]],
 			tableOfContents: ['', Validators.maxLength(100)],
 			description: ['', Validators.maxLength(1000)],
 			coverPictureUrl: ['', Validators.maxLength(1000)],
@@ -93,20 +94,26 @@ export class ManageBookDetailsComponent implements OnInit {
 			params.value.title,
 			this.authorsToAuthor(this.selectedAuthors),
 			this.categoriesToBookCategory(this.selectedCategories),
-			params.value.dateOfPublication,
+			params.value.publicationDate,
 			params.value.description,
 			params.value.tableOfContents,
 			params.value.coverPictureUrl
 		);
-		if (this.isUpdating == false) {
-
-			this.http.save('bookDetails', body).subscribe(() => {
+		console.log(body);
+		if (!this.toUpdate) {
+			this.http.save('bookDetails', body).subscribe((response) => {
+				if(response.success){
+					this.openSnackBar('Book details added successfully!', 'OK');
+				}
 				this.getBookDetails();
 			});
 		} else {
-			this.http.update('bookDetails', this.toUpdate.id, body).subscribe((respone) => {
+			this.http.update('bookDetails', this.toUpdate.id, body).subscribe((response) => {
+				if(response.success){
+					this.openSnackBar('Book details edited successfully!', 'OK');
+				}
 				this.getBookDetails();
-				this.isUpdating = false;
+				this.toUpdate = null;
 				this.clearForm();
 			});
 		}
@@ -131,71 +138,71 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	getInfoFromAPI() {
-        if(this.bookDetailsParams.get('isbn').value.length == 13){
+		if (this.bookDetailsParams.get('isbn').value.length == 13) {
 			this.httpClient.get<any>('https://api.itbook.store/1.0/books/' + this.bookDetailsParams.get('isbn').value)
 			.subscribe(data => {
-				if(data['title']){
+				if (data['title']) {
 					this.bookDetailsParams.patchValue({
 						'coverPictureUrl': data['image'],
 						'description': data['desc'],
-						'tableOfContents' : 'string',
-						'title' : data['title'],
+						'tableOfContents': 'string',
+						'title': data['title'],
 					});
 					const authors = data['authors'].toString().trim().split(", ");
 					authors.forEach(element => {
 						const info = element.toString().split(" ");
 						console.log(info);
 						const authorDTO = new AuthorDTO(info[0], info[info.length - 1], '');
-						const author = new Author(Math.floor(Math.random()) + 1 , info[0], info[info.length - 1], '');
+						const author = new Author(null, info[0], info[info.length - 1], '');
 						this.selectedAuthors.push(element);
 						this.allAuthors.push(author);
 
 					});
-					console.log(this.selectedAuthors);
-					console.log(this.allAuthors);
 				} else
 					this.httpClient.get<any>('https://www.googleapis.com/books/v1/volumes?q=' + this.bookDetailsParams.get('isbn').value)
 					.subscribe(data => {
-							this.bookDetailsParams.patchValue({
-								'coverPictureUrl': data['items'][0].volumeInfo.imageLinks.thumbnail,
-								'description': data['items'][0].volumeInfo.description,
-								'tableOfContents' : 'string',
-								'title' : data['items'][0].volumeInfo.title,
-							});
-							const authors = data['items'][0].volumeInfo.authors;
-							authors.forEach(element => {
-								const author = element.trim().toString().split(" ");
-								if(this.selectedAuthors){
+						this.bookDetailsParams.patchValue({
+							'coverPictureUrl': data['items'][0].volumeInfo.imageLinks.thumbnail,
+							'description': data['items'][0].volumeInfo.description,
+							'tableOfContents': 'string',
+							'title': data['items'][0].volumeInfo.title,
+						});
+						const authors = data['items'][0].volumeInfo.authors;
+						authors.forEach(element => {
+							const author = element.trim().toString().split(" ");
+							if (this.selectedAuthors) {
 
 								// this.selectedAuthors.push({
 								// 	id: Math.random(),
 								// 	authorName: author[0],
 								// 	authorSurname: author[author.length - 1]
 								// });
-								}
-							});
+							}
+						});
 					});
-			});	
+			});
 		}
 	}
 
 	editBookDetails(bookDetails: BookDetails) {
 		this.bookDetailsParams.patchValue({
 			'coverPictureUrl': bookDetails.coverPictureUrl,
-			'dateOfPublication': new Date(),
+			'publicationDate': new Date(),
 			'description': bookDetails.description,
 			'isbn': bookDetails.isbn,
 			'tableOfContents': bookDetails.tableOfContents,
 			'title': bookDetails.title
 		});
-		this.isUpdating = true;
 		this.toUpdate = bookDetails;
 		this.selectedAuthors = this.authorsToString(bookDetails.authors);
 		this.selectedCategories = this.categoriesToString(bookDetails.categories);
 	}
 
 	async removeBookDetails(id: number) {
-		await this.http.remove('bookDetails', id).subscribe(() => {
+		await this.http.remove('bookDetails', id).subscribe((response) => {
+			if(response.success){
+				this.openSnackBar('Book details removed successfully!', 'OK');
+			}
 			this.getBookDetails();
 		});
 	}
@@ -214,7 +221,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	autoFillBookDetailsForm() {
 		this.bookDetailsParams.patchValue({
 			'coverPictureUrl': 'https://itbook.store/img/books/9781491985571.png',
-			'dateOfPublication': new Date(),
+			'publicationDate': new Date(2016, 6, 1 ),
 			'description': 'desc',
 			'isbn': '9781484206485',
 			'tableOfContents': 'string',
@@ -253,7 +260,7 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.selectedAuthors.push(event.option.viewValue);
 		this.authorInput.nativeElement.value = '';
 
-		this.availableAuthors = this.availableAuthors.filter(e => e !== event.option.viewValue);
+		// this.availableAuthors = this.availableAuthors.filter(e => e !== event.option.viewValue);
 		this.authorsFormControl.setValue(null);
 	}
 
@@ -306,7 +313,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	selectedCat(event: MatAutocompleteSelectedEvent): void {
 		this.selectedCategories.push(event.option.viewValue);
 		this.categoryInput.nativeElement.value = '';
-		this.availableCategories = this.availableCategories.filter(e => e !== event.option.viewValue);
+		// this.availableCategories = this.availableCategories.filter(e => e !== event.option.viewValue);
 		this.categoriesFormControl.setValue(null);
 	}
 
@@ -328,5 +335,11 @@ export class ManageBookDetailsComponent implements OnInit {
 			arr.push(this.allCategories.filter(e => e.bookCategoryName == val)[0]);
 		});
 		return arr;
+	}
+
+	openSnackBar(message: string, action: string) {
+		this.snackBar.open(message, action, {
+			duration: 3000,
+		});
 	}
 }

@@ -21,7 +21,7 @@
 			<mat-form-field>
 				<input formControlName="title"
 					   placeholder="Title"
-					   matInput>
+					   matInput required>
 				<mat-error *ngIf="bookDetailsParams.controls.title.hasError">
 					<div *ngIf="bookDetailsParams.controls.title.errors?.required">Title is required</div>
 					<div *ngIf="bookDetailsParams.controls.title.errors?.maxlength">The maximum length is 100 characters</div>
@@ -82,16 +82,16 @@
 
 
 			<mat-form-field>
-				<input formControlName="dateOfPublication"
-					   [max]="maxDate"
+				<input formControlName="publicationDate"
 					   [matDatepicker]="myDatepicker"
+					   [max]="maxDate"
 					   placeholder="Publication date"
 					   matInput required>
-				<mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
-				<mat-datepicker startView="multi-year" #myDatepicker></mat-datepicker>
+				<mat-datepicker-toggle matSuffix  [for]="myDatepicker"></mat-datepicker-toggle>
+				<mat-datepicker  startView="multi-year" #myDatepicker></mat-datepicker>
 
-				<mat-error *ngIf="bookDetailsParams.controls.dateOfPublication.hasError">
-					<div *ngIf="bookDetailsParams.controls.dateOfPublication.errors?.required">Publication date is required</div>
+				<mat-error *ngIf="bookDetailsParams.controls.publicationDate.hasError">
+					<div *ngIf="bookDetailsParams.controls.publicationDate.errors?.required">Publication date is required</div>
 				</mat-error>
 			</mat-form-field>
 
@@ -176,9 +176,9 @@
 			<td mat-cell *matCellDef="let bookDetails">{{bookDetails.isbn}}</td>
 		</ng-container>
 
-		<ng-container matColumnDef="dateOfPublication">
+		<ng-container matColumnDef="publicationDate">
 			<th mat-header-cell *matHeaderCellDef>Publication date</th>
-			<td mat-cell *matCellDef="let bookDetails">{{bookDetails.dateOfPublication | date: 'yyyy'}}</td>
+			<td mat-cell *matCellDef="let bookDetails">{{bookDetails.publicationDate | date: 'yyyy'}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="actions">

@@ -6,7 +6,7 @@ export class BookDetailsDTO {
 	title: string;
 	authors: Array<Author>;
 	categories: Array<BookCategory>;
-	dateOfPublication: Date;
+	publicationDate: Date;
 	description: string;
 	tableOfContents: string;
 	coverPictureUrl: string;
@@ -16,7 +16,7 @@ export class BookDetailsDTO {
 		this.title = title;
 		this.authors = authors;
 		this.categories = categories;
-		this.dateOfPublication = dateOfPublication;
+		this.publicationDate = dateOfPublication;
 		this.description = description;
 		this.tableOfContents = tableOfContents;
 		this.coverPictureUrl = coverPictureUrl;
