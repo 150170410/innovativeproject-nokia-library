@@ -20,7 +20,7 @@ export class ManageAuthorsComponent implements OnInit {
 	//table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Author>();
-	displayedAuthorsColumn: string[] = ['authorName', 'authorSurname', 'authorDescription', 'actions'];
+	displayedAuthorsColumn: string[] = ['authorFullName', 'actions'];
 
 
 	constructor(private formBuilder: FormBuilder,
@@ -35,17 +35,13 @@ export class ManageAuthorsComponent implements OnInit {
 
 	initAuthorForm() {
 		this.authorParams = this.formBuilder.group({
-			authorName: ['', [Validators.required, Validators.maxLength(300)]],
-			authorSurname: ['', [Validators.required, Validators.maxLength(300)]],
-			authorDescription: ['', Validators.maxLength(10000)]
+			authorFullName: ['', [Validators.required, Validators.maxLength(300)]],
 		});
 	}
 
 	createAuthor(params: any) {
 		const body = new AuthorDTO(
-			params.value.authorName,
-			params.value.authorSurname,
-			params.value.authorDescription);
+			params.value.authorFullName);
 		if (!this.toUpdate) {
 			this.http.save('author', body).subscribe((response) => {
 				if(response.success){
@@ -73,9 +69,7 @@ export class ManageAuthorsComponent implements OnInit {
 
 	editAuthor(author: Author) {
 		this.authorParams.patchValue({
-			'authorName': author.authorName,
-			'authorSurname': author.authorSurname,
-			'authorDescription': author.authorDescription
+			'authorFullName': author.authorFullName,
 		});
 		this.toUpdate = author;
 	}

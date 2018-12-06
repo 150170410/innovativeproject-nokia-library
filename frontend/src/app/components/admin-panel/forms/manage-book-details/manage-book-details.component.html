@@ -49,7 +49,7 @@
 				</mat-chip-list>
 				<mat-autocomplete #autoAth="matAutocomplete" (optionSelected)="selectedAth($event)">
 					<mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
-						{{( author)}}
+						{{(author)}}
 					</mat-option>
 				</mat-autocomplete>
 			</mat-form-field>

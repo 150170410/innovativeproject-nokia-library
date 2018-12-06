@@ -27,9 +27,9 @@ export class ArrToStrPipe implements PipeTransform {
 	transformAuthors(value: Author[]) {
 		let out = '';
 		for (let i = 0; i < value.length - 1; i++) {
-			out += value[i].authorName + ' ' + value[i].authorSurname + ', ';
+			out += value[i].authorFullName + ', ';
 		}
-		out += value[value.length - 1].authorName + ' ' + value[value.length - 1].authorSurname;
+		out += value[value.length - 1].authorFullName;
 		return out;
 	}
 

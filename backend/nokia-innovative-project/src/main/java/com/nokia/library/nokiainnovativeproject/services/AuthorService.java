@@ -32,9 +32,7 @@ public class AuthorService {
 
     public Author updateAuthor(Long id, AuthorDTO authorDTO) {
         Author author = authorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("author"));
-        author.setAuthorName(authorDTO.getAuthorName());
-        author.setAuthorSurname(authorDTO.getAuthorSurname());
-        author.setAuthorDescription(authorDTO.getAuthorDescription());
+        author.setAuthorFullName(authorDTO.getAuthorFullName());
         return authorRepository.save(author);
     }
 

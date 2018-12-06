@@ -102,14 +102,14 @@ export class ManageBookDetailsComponent implements OnInit {
 		console.log(body);
 		if (!this.toUpdate) {
 			this.http.save('bookDetails', body).subscribe((response) => {
-				if(response.success){
+				if (response.success) {
 					this.openSnackBar('Book details added successfully!', 'OK');
 				}
 				this.getBookDetails();
 			});
 		} else {
 			this.http.update('bookDetails', this.toUpdate.id, body).subscribe((response) => {
-				if(response.success){
+				if (response.success) {
 					this.openSnackBar('Book details edited successfully!', 'OK');
 				}
 				this.getBookDetails();
@@ -135,6 +135,12 @@ export class ManageBookDetailsComponent implements OnInit {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
+
+		// TODO: override this method to filter nested arrays of objects
+		// this.dataSource.filterPredicate = (data, filter: string) => {
+		//
+		// 	return;
+		// };
 	}
 
 	getInfoFromAPI() {
@@ -150,10 +156,8 @@ export class ManageBookDetailsComponent implements OnInit {
 					});
 					const authors = data['authors'].toString().trim().split(", ");
 					authors.forEach(element => {
-						const info = element.toString().split(" ");
-						console.log(info);
-						const authorDTO = new AuthorDTO(info[0], info[info.length - 1], '');
-						const author = new Author(null, info[0], info[info.length - 1], '');
+						const authorDTO = new AuthorDTO(element);
+						const author = new Author(null, element);
 						this.selectedAuthors.push(element);
 						this.allAuthors.push(author);
 
@@ -174,7 +178,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 								// this.selectedAuthors.push({
 								// 	id: Math.random(),
-								// 	authorName: author[0],
+								// 	authorFullName: author[0],
 								// 	authorSurname: author[author.length - 1]
 								// });
 							}
@@ -187,7 +191,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	editBookDetails(bookDetails: BookDetails) {
 		this.bookDetailsParams.patchValue({
 			'coverPictureUrl': bookDetails.coverPictureUrl,
-			'publicationDate': new Date(),
+			'publicationDate': new Date(bookDetails.publicationDate),
 			'description': bookDetails.description,
 			'isbn': bookDetails.isbn,
 			'tableOfContents': bookDetails.tableOfContents,
@@ -200,7 +204,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	async removeBookDetails(id: number) {
 		await this.http.remove('bookDetails', id).subscribe((response) => {
-			if(response.success){
+			if (response.success) {
 				this.openSnackBar('Book details removed successfully!', 'OK');
 			}
 			this.getBookDetails();
@@ -221,7 +225,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	autoFillBookDetailsForm() {
 		this.bookDetailsParams.patchValue({
 			'coverPictureUrl': 'https://itbook.store/img/books/9781491985571.png',
-			'publicationDate': new Date(2016, 6, 1 ),
+			'publicationDate': new Date(2016, 6, 1),
 			'description': 'desc',
 			'isbn': '9781484206485',
 			'tableOfContents': 'string',
@@ -239,6 +243,8 @@ export class ManageBookDetailsComponent implements OnInit {
 
 			if ((value || '').trim()) {
 				this.selectedAuthors.push(value.trim());
+				this.allAuthors.push(new Author(null, value));
+				this.availableAuthors.push(value);
 			}
 
 			if (input) {
@@ -252,6 +258,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	removeAth(author: string): void {
 		const index = this.selectedAuthors.indexOf(author);
 		if (index >= 0) {
+			this.availableAuthors.push(this.selectedAuthors[index]);
 			this.selectedAuthors.splice(index, 1);
 		}
 	}
@@ -259,8 +266,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	selectedAth(event: MatAutocompleteSelectedEvent): void {
 		this.selectedAuthors.push(event.option.viewValue);
 		this.authorInput.nativeElement.value = '';
-
-		// this.availableAuthors = this.availableAuthors.filter(e => e !== event.option.viewValue);
+		this.availableAuthors = this.availableAuthors.filter(e => e !== event.option.viewValue);
 		this.authorsFormControl.setValue(null);
 	}
 
@@ -271,7 +277,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	authorsToString(authors: Author[]) {
 		const arr = [];
 		authors.forEach((val) => {
-			arr.push(val.authorName + ' ' + val.authorSurname);
+			arr.push(val.authorFullName);
 		});
 		return arr;
 	}
@@ -279,8 +285,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	authorsToAuthor(authors: string[]) {
 		const arr: Author[] = [];
 		authors.forEach((val) => {
-			const ath = val.split(' ');
-			arr.push(this.allAuthors.filter(e => e.authorName === ath[0] && e.authorSurname === ath[1])[0]);
+			arr.push(this.allAuthors.filter(e => e.authorFullName === val)[0]);
 		});
 		return arr;
 	}
@@ -293,6 +298,8 @@ export class ManageBookDetailsComponent implements OnInit {
 
 			if ((value || '').trim()) {
 				this.selectedCategories.push(value.trim());
+				this.allCategories.push(new BookCategory(null, value));
+				this.availableCategories.push(value);
 			}
 
 			if (input) {
@@ -306,6 +313,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	removeCat(category: string): void {
 		const index = this.selectedCategories.indexOf(category);
 		if (index >= 0) {
+			this.availableCategories.push(this.selectedCategories[index])
 			this.selectedCategories.splice(index, 1);
 		}
 	}
@@ -337,6 +345,7 @@ export class ManageBookDetailsComponent implements OnInit {
 		return arr;
 	}
 
+	// snackbar
 	openSnackBar(message: string, action: string) {
 		this.snackBar.open(message, action, {
 			duration: 3000,

@@ -1,11 +1,7 @@
 export class AuthorDTO {
-	authorName: string;
-	authorSurname: string;
-	authorDescription: string;
+	authorFullName: string;
 
-	constructor(authorName: string, authorSurname: string, authorDescription: string) {
-		this.authorName = authorName;
-		this.authorSurname = authorSurname;
-		this.authorDescription = authorDescription;
+	constructor(authorFullName: string) {
+		this.authorFullName = authorFullName;
 	}
 }

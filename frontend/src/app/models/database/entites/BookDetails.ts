@@ -1,8 +1,6 @@
 export class BookDetails {
 	authors: [{
-		authorDescription: string;
-		authorName: string;
-		authorSurname: string;
+		authorFullName: string;
 		id: number
 	}];
 	books: []
@@ -11,7 +9,7 @@ export class BookDetails {
 		id: number
 	}];
 	coverPictureUrl: string;
-	dateOfPublication: Date;
+	publicationDate: Date;
 	description: string;
 	id: number;
 	isbn: string;

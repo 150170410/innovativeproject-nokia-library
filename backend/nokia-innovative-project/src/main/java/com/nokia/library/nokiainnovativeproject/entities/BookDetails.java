@@ -48,7 +48,7 @@ public class BookDetails implements Serializable {
 			CascadeType.MERGE,
             CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
-	@JoinTable(name = "books_details_authors",
+	@JoinTable(name = "book_details_authors",
 			joinColumns = @JoinColumn(name = "book_details_id"),
 			inverseJoinColumns = @JoinColumn(name = "author_id"))
 	private List<Author> authors;
@@ -57,7 +57,7 @@ public class BookDetails implements Serializable {
 			CascadeType.MERGE,
             CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
-	@JoinTable(name = "books_details_category",
+	@JoinTable(name = "book_details_categories",
 			joinColumns = @JoinColumn(name = "book_details_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private List<BookCategory> categories;
