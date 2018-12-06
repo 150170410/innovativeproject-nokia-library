@@ -63,3 +63,7 @@ mat-form-field {
 .filter mat-form-field{
 	width: 150px;
 }
+
+.thumbnail{
+	max-height: 80px;
+}

@@ -23,13 +23,14 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
 
 import { SidenavService } from './services/sidenav/sidenav.service';
 import { ListviewItemComponent } from './components/listview/listview-item/listview-item.component';
-import { ArrToStrPipe } from './pipes/arr-to-str.pipe';
+import { ArrToStrPipe } from './pipes/arr-to-str/arr-to-str.pipe';
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { ManageBookDetailsComponent } from './components/admin-panel/forms/manage-book-details/manage-book-details.component';
 import { ManageAuthorsComponent } from './components/admin-panel/forms/manage-authors/manage-authors.component';
 import { ManageCategoriesComponent } from './components/admin-panel/forms/manage-categories/manage-categories.component';
 import { ManageBooksComponent } from './components/admin-panel/forms/manage-books/manage-books.component';
+import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
 
 @NgModule({
 	declarations: [
@@ -48,7 +49,8 @@ import { ManageBooksComponent } from './components/admin-panel/forms/manage-book
 		ArrToStrPipe,
 		UserPanelComponent,
 		ManageBooksComponent,
-		AdminPanelComponent
+		AdminPanelComponent,
+		LimitToPipe
 	],
 	imports: [
 		BrowserModule,

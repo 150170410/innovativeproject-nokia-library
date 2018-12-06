@@ -80,6 +80,7 @@ public class BookDetailsService {
 		bookDetails.setPublicationDate(bookDetailsDTO.getPublicationDate());
 		bookDetails.setTableOfContents(bookDetailsDTO.getTableOfContents());
 		bookDetails.setAuthors(bookDetailsDTO.getAuthors());
+		bookDetails.setCategories(bookDetailsDTO.getCategories());
 		return bookDetailsRepository.save(bookDetails);
 	}
 

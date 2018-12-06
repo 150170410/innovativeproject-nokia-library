@@ -94,9 +94,7 @@ export class ManageAuthorsComponent implements OnInit {
 
 	autoFillAuthorForm() {
 		this.authorParams.patchValue({
-			'authorName': 'J.R.R.',
-			'authorSurname': 'Tolkien',
-			'authorDescription': 'frodo ' + Math.floor(Math.random() * 100)
+			'authorFullName': 'J.R.R. Tolkien'
 		});
 	}
 

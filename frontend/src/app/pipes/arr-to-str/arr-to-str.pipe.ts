@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Author } from '../models/database/entites/Author';
-import { BookCategory } from '../models/database/entites/BookCategory';
+import { Author } from '../../models/database/entites/Author';
+import { BookCategory } from '../../models/database/entites/BookCategory';
 
 @Pipe({
 	name: 'arrToStr'
