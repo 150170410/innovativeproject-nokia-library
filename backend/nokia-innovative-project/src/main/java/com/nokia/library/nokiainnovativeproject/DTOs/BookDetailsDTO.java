@@ -25,7 +25,7 @@ public class BookDetailsDTO {
 	@NotBlank(message = "ISBN is required")
 	private String isbn;
 
-	@Length(max = 100, message = "Title can't exceed 100 characters")
+	@Size(max = 100, message = "Title can't exceed 100 characters")
 	@NotBlank(message = "Title is required")
 	private String title;
 

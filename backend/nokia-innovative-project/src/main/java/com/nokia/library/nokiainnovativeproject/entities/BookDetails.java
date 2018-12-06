@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -28,7 +29,7 @@ public class BookDetails implements Serializable {
 	@NotBlank(message = "ISBN is required")
 	private String isbn;
 
-	@Length(max = 100, message = "Title can't exceed 100 characters")
+	@Size(max = 100, message = "Title can't exceed 100 characters")
 	@NotBlank(message = "Title is required")
 	private String title;
 
@@ -44,6 +45,7 @@ public class BookDetails implements Serializable {
 	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
 	private String tableOfContents;
 
+	@NotNull(message = "At least one book author is required.")
 	@ManyToMany(cascade = {
 			CascadeType.MERGE,
             CascadeType.PERSIST},
@@ -53,6 +55,7 @@ public class BookDetails implements Serializable {
 			inverseJoinColumns = @JoinColumn(name = "author_id"))
 	private List<Author> authors;
 
+	@NotNull(message = "At least one book category is required.")
 	@ManyToMany(cascade = {
 			CascadeType.MERGE,
             CascadeType.PERSIST},
