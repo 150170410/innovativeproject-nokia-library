@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -50,24 +51,31 @@ public class BookDetailsService {
 		ModelMapper mapper = new ModelMapper();
 		BookDetails bookDetails = mapper.map(bookDetailsDTO, BookDetails.class);
 
+		List<Author> authorsToRemove = new ArrayList<>();
+		List<Author> existingAuthors = new ArrayList<>();
 		List<Author> authors = bookDetailsDTO.getAuthors();
 		for(Author author : authors) {
 			if(author.getId() != null){
-				authors.remove(author);
-				authors.add(authorRepository.findById(author.getId()).orElseThrow(()-> new ResourceNotFoundException("author")));
+				authorsToRemove.add(author);
+				existingAuthors.add(authorRepository.findById(author.getId()).orElseThrow(()-> new ResourceNotFoundException("author")));
 			}
 		}
-
+		List<BookCategory> categoriesToRemove = new ArrayList<>();
+		List<BookCategory> existingCategories = new ArrayList<>();
 		List<BookCategory> categories = bookDetailsDTO.getCategories();
 		for(BookCategory bookCategory : categories) {
 			if(bookCategory.getId() != null){
-				categories.remove(bookCategory);
-				categories.add(bookCategoryRepository.findById(bookCategory.getId()).orElseThrow(()-> new ResourceNotFoundException("category")));
+				categoriesToRemove.add(bookCategory);
+				existingCategories.add(bookCategoryRepository.findById(bookCategory.getId()).orElseThrow(()-> new ResourceNotFoundException("category")));
 			}
 		}
-
-		bookDetails.setAuthors(authors);
+		categories.removeAll(categoriesToRemove);
+		categories.addAll(existingCategories);
 		bookDetails.setCategories(categories);
+
+		authors.removeAll(authorsToRemove);
+		authors.addAll(existingAuthors);
+		bookDetails.setAuthors(authors);
 		return bookDetailsRepository.save(bookDetails);
 	}
 
@@ -79,8 +87,33 @@ public class BookDetailsService {
 		bookDetails.setCoverPictureUrl(bookDetailsDTO.getCoverPictureUrl());
 		bookDetails.setPublicationDate(bookDetailsDTO.getPublicationDate());
 		bookDetails.setTableOfContents(bookDetailsDTO.getTableOfContents());
-		bookDetails.setAuthors(bookDetailsDTO.getAuthors());
-		bookDetails.setCategories(bookDetailsDTO.getCategories());
+
+		List<Author> authorsToRemove = new ArrayList<>();
+		List<Author> existingAuthors = new ArrayList<>();
+		List<Author> authors = bookDetailsDTO.getAuthors();
+		for(Author author : authors) {
+			if(author.getId() != null){
+				authorsToRemove.add(author);
+				existingAuthors.add(authorRepository.findById(author.getId()).orElseThrow(()-> new ResourceNotFoundException("author")));
+			}
+		}
+		List<BookCategory> categoriesToRemove = new ArrayList<>();
+		List<BookCategory> existingCategories = new ArrayList<>();
+		List<BookCategory> categories = bookDetailsDTO.getCategories();
+		for(BookCategory bookCategory : categories) {
+			if(bookCategory.getId() != null){
+				categoriesToRemove.add(bookCategory);
+				existingCategories.add(bookCategoryRepository.findById(bookCategory.getId()).orElseThrow(()-> new ResourceNotFoundException("category")));
+			}
+		}
+		categories.removeAll(categoriesToRemove);
+		categories.addAll(existingCategories);
+		bookDetails.setCategories(categories);
+
+		authors.removeAll(authorsToRemove);
+		authors.addAll(existingAuthors);
+		bookDetails.setAuthors(authors);
+
 		return bookDetailsRepository.save(bookDetails);
 	}
 

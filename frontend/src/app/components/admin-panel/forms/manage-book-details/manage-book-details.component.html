@@ -95,7 +95,7 @@
 				</mat-error>
 			</mat-form-field>
 
-			<mat-form-field>
+			<mat-form-field class="cover-picture-field">
 				<input formControlName="coverPictureUrl"
 					   placeholder="Cover picture URL"
 					   matInput>
@@ -103,14 +103,18 @@
 					<div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">The maximum length is 1000 characters</div>
 				</mat-error>
 			</mat-form-field>
+			<mat-spinner class="spinner-placement" *ngIf="uploadingFile == true" color="primary" [diameter]="20"></mat-spinner>
+			<input class="upload-button" type="file" (change)="uploadFile($event)"/>
+
+
 
 			<mat-form-field>
-				<input formControlName="tableOfContents"
-					   placeholder="Table of contents"
-					   matInput>
-				<mat-error *ngIf="bookDetailsParams.controls.tableOfContents.hasError">
-					<div *ngIf="bookDetailsParams.controls.tableOfContents.errors?.maxlength">The maximum length is 100 characters</div>
-				</mat-error>
+			<input formControlName="tableOfContents"
+			placeholder="Table of contents"
+			matInput>
+			<mat-error *ngIf="bookDetailsParams.controls.tableOfContents.hasError">
+			<div *ngIf="bookDetailsParams.controls.tableOfContents.errors?.maxlength">The maximum length is 100 characters</div>
+			</mat-error>
 			</mat-form-field>
 
 			<mat-form-field>
