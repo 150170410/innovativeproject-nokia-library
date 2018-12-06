@@ -1,16 +1,19 @@
 package com.nokia.library.nokiainnovativeproject.DTOs;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
+import lombok.*;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
 public class BookDTO {
 
-    private String title;
-    private String authorName;
-    private String authorSurname;
+	@Size(max = 5000, message = "Comments can't exceed 5000 characters")
+	private String comments;
 
+	@NotNull(message = "Book details are required.")
+	private BookDetails bookDetails;
 }

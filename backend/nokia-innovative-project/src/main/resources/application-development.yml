@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://192.168.99.100:5432/postgres
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -18,6 +18,10 @@ spring:
         higernate:
           temp:
             use_jdbc_metadata_defaults: false
-    open-in-view: false
+    open-in-view: true
+  servlet:
+   multipart:
+     max-file-size: 200KB
+     max-request-size: 200KB
 server:
   port: 8081
