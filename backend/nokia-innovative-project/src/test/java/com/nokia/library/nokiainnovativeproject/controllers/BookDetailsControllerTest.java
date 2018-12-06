@@ -100,7 +100,7 @@ public class BookDetailsControllerTest {
 	@Test
 	public void createBookDetailsTest() throws Exception {
 		String jsonRequest = mapper.writeValueAsString(bookDetailsDTO);
-		when(service.createBookDetails(bookDetailsDTO)).thenReturn(bookDetails);
+		//when(service.createBookDetails(bookDetailsDTO)).thenReturn(bookDetails);
 		mockMvc.perform(post(BASE_URL + Mappings.CREATE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
@@ -133,7 +133,7 @@ public class BookDetailsControllerTest {
 		updatedBookDetails.setCategories(new ArrayList<BookCategory>());
 
 		String jsonRequest = mapper.writeValueAsString(updatedDTO);
-		when(service.updateBookDetails(1L, updatedDTO)).thenReturn(updatedBookDetails);
+		//when(service.updateBookDetails(1L, updatedDTO)).thenReturn(updatedBookDetails);
 		mockMvc.perform(post(BASE_URL + Mappings.UPDATE, 1L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))

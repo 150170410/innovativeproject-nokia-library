@@ -8,11 +8,13 @@ import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundExcep
 import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookCategoryRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
+import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -47,39 +49,14 @@ public class BookDetailsService {
 		return bookDetails;
 	}
 
-	public BookDetails createBookDetails(BookDetailsDTO bookDetailsDTO) {
+	public MessageInfo createBookDetails(BookDetailsDTO bookDetailsDTO) {
 		ModelMapper mapper = new ModelMapper();
 		BookDetails bookDetails = mapper.map(bookDetailsDTO, BookDetails.class);
 
-		List<Author> authorsToRemove = new ArrayList<>();
-		List<Author> existingAuthors = new ArrayList<>();
-		List<Author> authors = bookDetailsDTO.getAuthors();
-		for(Author author : authors) {
-			if(author.getId() != null){
-				authorsToRemove.add(author);
-				existingAuthors.add(authorRepository.findById(author.getId()).orElseThrow(()-> new ResourceNotFoundException("author")));
-			}
-		}
-		List<BookCategory> categoriesToRemove = new ArrayList<>();
-		List<BookCategory> existingCategories = new ArrayList<>();
-		List<BookCategory> categories = bookDetailsDTO.getCategories();
-		for(BookCategory bookCategory : categories) {
-			if(bookCategory.getId() != null){
-				categoriesToRemove.add(bookCategory);
-				existingCategories.add(bookCategoryRepository.findById(bookCategory.getId()).orElseThrow(()-> new ResourceNotFoundException("category")));
-			}
-		}
-		categories.removeAll(categoriesToRemove);
-		categories.addAll(existingCategories);
-		bookDetails.setCategories(categories);
-
-		authors.removeAll(authorsToRemove);
-		authors.addAll(existingAuthors);
-		bookDetails.setAuthors(authors);
-		return bookDetailsRepository.save(bookDetails);
+		return saveBookDetails(persistingRequiredEntities(bookDetails, bookDetailsDTO), "bookDetails created successfully");
 	}
 
-	public BookDetails updateBookDetails(Long id, BookDetailsDTO bookDetailsDTO) {
+	public MessageInfo updateBookDetails(Long id, BookDetailsDTO bookDetailsDTO) {
 		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
 		bookDetails.setIsbn(bookDetailsDTO.getIsbn());
 		bookDetails.setTitle(bookDetailsDTO.getTitle());
@@ -88,24 +65,38 @@ public class BookDetailsService {
 		bookDetails.setPublicationDate(bookDetailsDTO.getPublicationDate());
 		bookDetails.setTableOfContents(bookDetailsDTO.getTableOfContents());
 
+		return saveBookDetails(persistingRequiredEntities(bookDetails, bookDetailsDTO), "bookDetails updated successfully");
+	}
+
+	public void deleteBookDetails(Long id) {
+		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
+		bookDetailsRepository.delete(bookDetails);
+	}
+
+	private BookDetails persistingRequiredEntities(BookDetails bookDetails, BookDetailsDTO bookDetailsDTO) {
+
 		List<Author> authorsToRemove = new ArrayList<>();
 		List<Author> existingAuthors = new ArrayList<>();
 		List<Author> authors = bookDetailsDTO.getAuthors();
+
 		for(Author author : authors) {
 			if(author.getId() != null){
 				authorsToRemove.add(author);
 				existingAuthors.add(authorRepository.findById(author.getId()).orElseThrow(()-> new ResourceNotFoundException("author")));
 			}
 		}
+
 		List<BookCategory> categoriesToRemove = new ArrayList<>();
 		List<BookCategory> existingCategories = new ArrayList<>();
 		List<BookCategory> categories = bookDetailsDTO.getCategories();
+
 		for(BookCategory bookCategory : categories) {
 			if(bookCategory.getId() != null){
 				categoriesToRemove.add(bookCategory);
 				existingCategories.add(bookCategoryRepository.findById(bookCategory.getId()).orElseThrow(()-> new ResourceNotFoundException("category")));
 			}
 		}
+
 		categories.removeAll(categoriesToRemove);
 		categories.addAll(existingCategories);
 		bookDetails.setCategories(categories);
@@ -114,11 +105,16 @@ public class BookDetailsService {
 		authors.addAll(existingAuthors);
 		bookDetails.setAuthors(authors);
 
-		return bookDetailsRepository.save(bookDetails);
+		return bookDetails;
 	}
 
-	public void deleteBookDetails(Long id) {
-		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
-		bookDetailsRepository.delete(bookDetails);
+	private MessageInfo saveBookDetails(BookDetails bookDetails, String defaultMessageForSuccess){
+		try {
+			bookDetails = bookDetailsRepository.save(bookDetails);
+		}
+		catch (ConstraintViolationException exc){
+			return MessageInfo.getErrors(exc);
+		}
+		return new MessageInfo(true, bookDetails, Arrays.asList(defaultMessageForSuccess));
 	}
 }

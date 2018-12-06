@@ -35,13 +35,17 @@ public class BookDetailsController {
 	@PostMapping(Mappings.CREATE)
 	public MessageInfo createBookDetails(@RequestBody @Valid BookDetailsDTO bookDetailsDTO, BindingResult bindingResult) {
 		MessageInfo errors = MessageInfo.getErrors(bindingResult);
-		return errors != null ? errors : MessageInfo.success(bookDetailsService.createBookDetails(bookDetailsDTO), Arrays.asList("bookDetails created successfully"));
+		if(errors != null)
+			return errors;
+		return bookDetailsService.createBookDetails(bookDetailsDTO);
 	}
 
 	@PostMapping(Mappings.UPDATE)
 	public MessageInfo updateBookDetails(@PathVariable Long id, @RequestBody @Valid BookDetailsDTO bookDetailsDTO, BindingResult bindingResult){
 		MessageInfo errors = MessageInfo.getErrors(bindingResult);
-		return errors != null ? errors : MessageInfo.success(bookDetailsService.updateBookDetails(id, bookDetailsDTO), Arrays.asList("bookDetails updated successfully"));
+		if(errors != null)
+			return errors;
+		return bookDetailsService.updateBookDetails(id, bookDetailsDTO);
 	}
 
 	@DeleteMapping(Mappings.REMOVE)
