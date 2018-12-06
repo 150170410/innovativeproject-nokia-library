@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -21,9 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -52,10 +49,8 @@ class AuthorControllerTest {
     public static void init() {
         mapper = new ObjectMapper();
         author = new Author();
-        author.setAuthorName("test name");
-        author.setAuthorSurname("test surname");
-        author.setAuthorDescription("test description");
-        authorDTO = new AuthorDTO("test name", "test surname", "test description");
+        author.setAuthorFullName("test name");
+        authorDTO = new AuthorDTO("test name");
     }
 
     @BeforeEach
@@ -70,9 +65,7 @@ class AuthorControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].authorName", Matchers.is("test name")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].authorSurname", Matchers.is("test surname")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].authorDescription", Matchers.is("test description")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].authorFullName", Matchers.is("test name")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.object.*", Matchers.hasSize(1)));
     }
 
@@ -82,9 +75,8 @@ class AuthorControllerTest {
         mockMvc.perform(get(BASE_URL + Mappings.GET_ONE, 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorName", Matchers.is("test name")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorSurname", Matchers.is("test surname")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorDescription", Matchers.is("test description")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorFullName", Matchers.is("test name")));
+
     }
 
     @Test
@@ -96,20 +88,16 @@ class AuthorControllerTest {
                 .content(jsonRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorName", Matchers.is("test name")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorSurname", Matchers.is("test surname")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorDescription", Matchers.is("test description")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorFullName", Matchers.is("test name")));
     }
 
     @Test
     public void updateAuthorTest() throws Exception {
         AuthorDTO updatedDTO = new AuthorDTO();
-        updatedDTO.setAuthorName("updated name");
-        updatedDTO.setAuthorSurname("updated surname");
+        updatedDTO.setAuthorFullName("updated name");
 
         Author updatedAuthor = new Author();
-        updatedAuthor.setAuthorName("updated name");
-        updatedAuthor.setAuthorSurname("updated surname");
+        updatedAuthor.setAuthorFullName("updated name");
 
         String jsonRequest = mapper.writeValueAsString(updatedDTO);
 
@@ -119,8 +107,8 @@ class AuthorControllerTest {
                 .content(jsonRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorName", Matchers.is("updated name")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorSurname", Matchers.is("updated surname")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.authorFullName", Matchers.is("updated name")));
+
     }
 
     @Test

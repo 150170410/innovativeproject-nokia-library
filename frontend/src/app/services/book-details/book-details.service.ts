@@ -3,15 +3,15 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable, throwError } from 'rxjs/index';
 import { catchError } from 'rxjs/internal/operators';
 import { API_URL } from '../../config';
-import { BookDetails } from '../../models/entites/BookDetails';
-import { BookDetailsDTO } from '../../models/DTOs/BookDetailsDTO';
+import { BookDetails } from '../../models/database/entites/BookDetails';
+import { BookDetailsDTO } from '../../models/database/DTOs/BookDetailsDTO';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class BookDetailsService {
 
-	url = API_URL + '/api/v1/library/bookDetails';
+	url = API_URL + '/api/v1/bookDetails';
 
 	httpOptions = {
 		headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -21,7 +21,7 @@ export class BookDetailsService {
 	}
 
 	async getBooks(id?: number) {
-		const url = id ? this.url + `/${id}` : this.url;
+		const url = id ? this.url + '/getOne' + `/${id}` : this.url + '/getAll';
 		return await this.http.get<BookDetails[]>(url).toPromise();
 	}
 

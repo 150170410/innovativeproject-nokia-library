@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { API_URL } from '../../config';
 import { catchError } from 'rxjs/internal/operators';
 import { BehaviorSubject, Observable, throwError } from 'rxjs/index';
-import { Book } from '../../models/entites/Book';
+import { Book } from '../../models/database/entites/Book';
 
 
 @Injectable({

@@ -1,0 +1,24 @@
+.half-div {
+	float: left;
+	width: 48%;
+	display: inline-block;
+	margin: 10px;
+}
+
+.vert-spacer {
+	/*margin-left: 1px;*/
+	/*border-left: 1px solid black;*/
+}
+
+.full-card {
+	width: 100%;
+	height: calc(100vh - 64spx);
+	box-sizing: border-box;
+}
+
+.forms-container {
+	margin: 10px auto;
+	position: relative;
+	text-align: center;
+}
+

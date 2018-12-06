@@ -1,0 +1,32 @@
+<div mat-dialog-title>Contact the developers</div>
+<div mat-dialog-content>
+	<form name="contactParams" [formGroup]="contactParams" (ngSubmit)="sendEmail(contactParams)">
+		<div class="form-container">
+
+			<mat-form-field>
+				<p>Select type of issue</p>
+				<mat-select [formControlName]="'category'">
+					<mat-option *ngFor="let category of categories" [value]="category">
+						{{category}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field>
+				<input formControlName="subject" placeholder="Subject" matInput required>
+			</mat-form-field>
+
+			<mat-form-field>
+				<textarea formControlName="message" placeholder="Message" matInput required></textarea>
+			</mat-form-field>
+		</div>
+
+		<div>
+			<button mat-raised-button color="primary" [type]="submit" [disabled]="!contactParams.valid">
+				Send message
+			</button>
+			<div *ngIf="sendingFailed" >{{errorMessage}}</div>
+		</div>
+
+	</form>
+</div>

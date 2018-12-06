@@ -2,10 +2,6 @@
 	border: 1px solid black;
 }
 
-.image-look {
-	max-height: 200px;
-}
-
 .book-cover {
 	float: left;
 	width: 20%;
@@ -33,4 +29,12 @@
 table, th, td {
 	border: 1px solid black;
 	border-collapse: collapse;
+}
+
+img {
+	max-height: 200px;
+}
+
+table {
+	width: 100%;
 }

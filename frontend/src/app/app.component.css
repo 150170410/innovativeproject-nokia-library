@@ -1,21 +1,62 @@
-.center-content {
-	max-width: 70%;
-	margin: auto;
+* {
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+}
+
+.mat-icon {
+	font-family: 'Material Icons';
 }
 
 .main-content {
 	height: calc(100vh - 64px);
+	width: 65%;
+	max-width: 70%;
+	background: white;
+	margin: auto;
 }
 
 .navbar {
-	height: 64px;
+	height: 63px;
 }
 
-::ng-deep .mat-sidenav-container{
-	height:calc(100vh - 64px) !important; /* or 100% */
+::ng-deep .mat-sidenav-container {
+	height: calc(100vh - 64px) !important; /* or 100% */
 }
 
-.sidenav-menu{
-	background-color: #e6f2ff;
-	max-width: 20%;
+.sidenav-menu {
+	background-color: #ffffff;
+	width: 223px;
+}
+
+.sidenav-button-close {
+	position: relative;
+	top: 14px;
+	left: 50px;
+}
+
+.content-all {
+	/*background: #d1eaff;*/
+	background: url(https://i.imgur.com/0gwQmWl.jpg) no-repeat;
+	background-size: cover;
+	height: calc(100vh - 64spx);
+}
+
+.footer {
+	left: 0;
+	bottom: 0;
+	padding: 0;
+	height: 45px;
+	width: 100%;
+	background-color: #124191;
+	color: white;
+	text-align: center;
+}
+
+.site{
+	display: flex;
+	flex-direction: column;
+}
+
+.content{
+	flex: 1;
 }

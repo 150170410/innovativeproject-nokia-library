@@ -3,12 +3,13 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { catchError } from 'rxjs/internal/operators';
 import { API_URL } from '../../config';
 import { Observable, throwError } from 'rxjs/index';
+import { MessageInfo } from '../../models/MessageInfo';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class RestService {
-	URL = API_URL + '/api/v1/library';
+	URL = API_URL + '/api/v1/';
 	httpOptions = {
 		headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 	};
@@ -17,28 +18,28 @@ export class RestService {
 	}
 
 	async getAll(url: string) {
-		return await this.http.get<any[]>(this.URL + url)
+		return await this.http.get<MessageInfo>(this.URL + url)
 		.pipe(
 			catchError(this.handleError)
 		).toPromise();
 	}
 
-	save(url: string, book: any): Observable<any> {
-		return this.http.post<any>(this.URL + url, book, this.httpOptions)
+	save(url: string, item: any): Observable<any> {
+		return this.http.post<any>(this.URL  + url + '/create', item, this.httpOptions)
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
-	update(url: string, book: any) {
-		return this.http.post<any>(this.URL + url, book, this.httpOptions)
+	update(url: string, id: number, item: any) {
+		return this.http.post<any>(this.URL + url + '/update/' + `${id}`, item, this.httpOptions)
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
-	remove(url: string) {
-		return this.http.delete<any>(this.URL + url)
+	remove(url: string, id: number) {
+		return this.http.delete<any>(this.URL + url + '/remove/' + `${id}`)
 		.pipe(
 			catchError(this.handleError)
 		);
