@@ -1,0 +1,16 @@
+form {
+	width: 300px;
+}
+
+.form-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-container > * {
+	width: 100%;
+}
+
+.spinner-placement {
+	float: right;
+}

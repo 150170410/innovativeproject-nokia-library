@@ -1,0 +1,12 @@
+div h1, h2 {
+	text-align: center;
+}
+
+.inno {
+	max-width: 300px;
+	margin: auto;
+
+}
+.inno img {
+	max-width: 300px;
+}
