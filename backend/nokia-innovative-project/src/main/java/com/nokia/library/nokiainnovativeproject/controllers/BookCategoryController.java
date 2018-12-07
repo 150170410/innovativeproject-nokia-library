@@ -6,6 +6,7 @@ import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,31 +22,31 @@ public class BookCategoryController {
 	private final BookCategoryService bookCategoryService;
 
 	@GetMapping(Mappings.GET_ALL)
-	public MessageInfo getAllBookCategories() {
+	public ResponseEntity getAllBookCategories() {
 		return MessageInfo.success(bookCategoryService.getAllBookCategories(), Arrays.asList("list of bookCategories"));
 	}
 
 	@GetMapping(Mappings.GET_ONE)
-	public MessageInfo getBookCategoryById(@PathVariable Long id) {
+	public ResponseEntity getBookCategoryById(@PathVariable Long id) {
 		return MessageInfo.success(bookCategoryService.getBookCategoryById(id), Arrays.asList("BookCategory of ID = " + id.toString()));
 	}
 
 	@PostMapping(Mappings.CREATE)
-	public MessageInfo createBookCategory(@RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult) {
+	public ResponseEntity createBookCategory(@RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult) {
 		// TODO: If I understood correctly you decided to create a book category with book details. Why did you decide to create this endpoint?
 		// https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26#discussion_r232785455
-		MessageInfo errors = MessageInfo.getErrors(bindingResult);
+		ResponseEntity errors = MessageInfo.getErrors(bindingResult);
 		return errors != null ? errors : MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO), Arrays.asList("BookCategory created successfully"));
 	}
 
 	@PostMapping(Mappings.UPDATE)
-	public MessageInfo updateBookCategory(@PathVariable Long id, @RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult){
-		MessageInfo errors = MessageInfo.getErrors(bindingResult);
+	public ResponseEntity updateBookCategory(@PathVariable Long id, @RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult){
+		ResponseEntity errors = MessageInfo.getErrors(bindingResult);
 		return errors != null ? errors : MessageInfo.success(bookCategoryService.updateBookCategory(id, bookCategoryDTO), Arrays.asList("BookCategory updated successfully"));
 	}
 
 	@DeleteMapping(Mappings.REMOVE)
-	public MessageInfo deleteBookCategory(@PathVariable Long id) {
+	public ResponseEntity deleteBookCategory(@PathVariable Long id) {
 		bookCategoryService.deleteBookCategory(id);
 		return MessageInfo.success(null, Arrays.asList("BookCategory with ID = " + id.toString() + " removed successfully"));
 	}

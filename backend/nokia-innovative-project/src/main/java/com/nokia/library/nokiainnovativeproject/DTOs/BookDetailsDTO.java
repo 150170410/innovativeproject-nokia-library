@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -41,9 +42,11 @@ public class BookDetailsDTO {
 	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
 	private String tableOfContents;
 
+	@Valid
 	@NotNull(message = "At least one book author is required.")
 	private List<Author> authors;
 
+	@Valid
 	@NotNull(message = "At least one book category is required.")
 	private List<BookCategory> categories;
 }

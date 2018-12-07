@@ -5,6 +5,7 @@ import com.nokia.library.nokiainnovativeproject.services.ReviewService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,29 +21,29 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping(Mappings.GET_ALL)
-    public MessageInfo getAllReviews(){
+    public ResponseEntity getAllReviews(){
         return MessageInfo.success(reviewService.getAllReviews(), Arrays.asList("list of reviews"));
     }
 
     @GetMapping(Mappings.GET_ONE)
-    public MessageInfo getReviewById(@PathVariable Long id){
+    public ResponseEntity getReviewById(@PathVariable Long id){
         return MessageInfo.success(reviewService.getReviewById(id), Arrays.asList("Review of ID = " + id.toString()));
     }
 
     @PostMapping(Mappings.CREATE)
-    public MessageInfo createReview(@RequestBody @Valid ReviewDTO reviewDTO, BindingResult bindingResult){
-        MessageInfo errors = MessageInfo.getErrors(bindingResult);
+    public ResponseEntity createReview(@RequestBody @Valid ReviewDTO reviewDTO, BindingResult bindingResult){
+        ResponseEntity errors = MessageInfo.getErrors(bindingResult);
         return errors != null ? errors : MessageInfo.success(reviewService.createReview(reviewDTO), Arrays.asList("Review created successfully"));
     }
 
     @PostMapping(Mappings.UPDATE)
-    public MessageInfo updateReview(@PathVariable Long id, @RequestBody @Valid ReviewDTO reviewDTO, BindingResult bindingResult){
-        MessageInfo errors = MessageInfo.getErrors(bindingResult);
+    public ResponseEntity updateReview(@PathVariable Long id, @RequestBody @Valid ReviewDTO reviewDTO, BindingResult bindingResult){
+        ResponseEntity errors = MessageInfo.getErrors(bindingResult);
         return errors != null ? errors : MessageInfo.success(reviewService.updateReview(id, reviewDTO), Arrays.asList("Review updated successfully"));
     }
 
     @DeleteMapping(Mappings.REMOVE)
-    public MessageInfo deleteReview(@PathVariable Long id){
+    public ResponseEntity deleteReview(@PathVariable Long id){
         reviewService.deleteReview(id);
         return MessageInfo.success(null, Arrays.asList("Review with ID = " + id.toString() + " removed successfully"));
     }

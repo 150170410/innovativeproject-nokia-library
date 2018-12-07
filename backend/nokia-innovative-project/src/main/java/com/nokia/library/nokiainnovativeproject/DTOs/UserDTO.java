@@ -1,15 +1,12 @@
 package com.nokia.library.nokiainnovativeproject.DTOs;
 
 import com.nokia.library.nokiainnovativeproject.entities.Address;
-import com.nokia.library.nokiainnovativeproject.entities.Reservation;
-import com.nokia.library.nokiainnovativeproject.entities.Review;
 import lombok.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,5 +26,6 @@ public class UserDTO {
     @Size(min = 10, max = 40, message = "User email must be 10-40 characters long")
     private String email;
 
+    @Valid
     private Address address;
 }

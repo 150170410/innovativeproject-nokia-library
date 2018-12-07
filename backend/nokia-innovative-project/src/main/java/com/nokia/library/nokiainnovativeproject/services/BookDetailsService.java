@@ -49,14 +49,13 @@ public class BookDetailsService {
 		return bookDetails;
 	}
 
-	public MessageInfo createBookDetails(BookDetailsDTO bookDetailsDTO) {
+	public BookDetails createBookDetails(BookDetailsDTO bookDetailsDTO) {
 		ModelMapper mapper = new ModelMapper();
 		BookDetails bookDetails = mapper.map(bookDetailsDTO, BookDetails.class);
-
-		return saveBookDetails(persistingRequiredEntities(bookDetails, bookDetailsDTO), "bookDetails created successfully");
+		return bookDetailsRepository.save(persistingRequiredEntities(bookDetails, bookDetailsDTO));
 	}
 
-	public MessageInfo updateBookDetails(Long id, BookDetailsDTO bookDetailsDTO) {
+	public BookDetails updateBookDetails(Long id, BookDetailsDTO bookDetailsDTO) {
 		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
 		bookDetails.setIsbn(bookDetailsDTO.getIsbn());
 		bookDetails.setTitle(bookDetailsDTO.getTitle());
@@ -64,8 +63,7 @@ public class BookDetailsService {
 		bookDetails.setCoverPictureUrl(bookDetailsDTO.getCoverPictureUrl());
 		bookDetails.setPublicationDate(bookDetailsDTO.getPublicationDate());
 		bookDetails.setTableOfContents(bookDetailsDTO.getTableOfContents());
-
-		return saveBookDetails(persistingRequiredEntities(bookDetails, bookDetailsDTO), "bookDetails updated successfully");
+		return bookDetailsRepository.save(persistingRequiredEntities(bookDetails, bookDetailsDTO));
 	}
 
 	public void deleteBookDetails(Long id) {
@@ -106,15 +104,5 @@ public class BookDetailsService {
 		bookDetails.setAuthors(authors);
 
 		return bookDetails;
-	}
-
-	private MessageInfo saveBookDetails(BookDetails bookDetails, String defaultMessageForSuccess){
-		try {
-			bookDetails = bookDetailsRepository.save(bookDetails);
-		}
-		catch (ConstraintViolationException exc){
-			return MessageInfo.getErrors(exc);
-		}
-		return new MessageInfo(true, bookDetails, Arrays.asList(defaultMessageForSuccess));
 	}
 }

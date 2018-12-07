@@ -66,13 +66,12 @@ public class BookDetailsControllerTest {
 		bookDetails.setPublicationDate(date);
 		bookDetails.setAuthors(new ArrayList<>());
 		bookDetails.setCategories(new ArrayList<>());
-
-		bookDetailsDTO = new BookDetailsDTO("test isbn123", "test title", "test description", "test cover picture url", date, "test table of contents", new ArrayList<>(), new ArrayList<>());
 	}
 
 	@BeforeEach
 	public void setUp() {
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+		bookDetailsDTO = new BookDetailsDTO("test isbn123", "test title", "test description", "test cover picture url", date, "test table of contents", new ArrayList<>(), new ArrayList<>());
 	}
 
 	@Test
@@ -100,7 +99,7 @@ public class BookDetailsControllerTest {
 	@Test
 	public void createBookDetailsTest() throws Exception {
 		String jsonRequest = mapper.writeValueAsString(bookDetailsDTO);
-		//when(service.createBookDetails(bookDetailsDTO)).thenReturn(bookDetails);
+		when(service.createBookDetails(bookDetailsDTO)).thenReturn(bookDetails);
 		mockMvc.perform(post(BASE_URL + Mappings.CREATE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
@@ -133,7 +132,7 @@ public class BookDetailsControllerTest {
 		updatedBookDetails.setCategories(new ArrayList<BookCategory>());
 
 		String jsonRequest = mapper.writeValueAsString(updatedDTO);
-		//when(service.updateBookDetails(1L, updatedDTO)).thenReturn(updatedBookDetails);
+		when(service.updateBookDetails(1L, updatedDTO)).thenReturn(updatedBookDetails);
 		mockMvc.perform(post(BASE_URL + Mappings.UPDATE, 1L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
@@ -151,5 +150,22 @@ public class BookDetailsControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 		verify(service).deleteBookDetails(1L);
+	}
+
+	@Test
+	public void createBookDetailsWithMistakesTest() throws Exception {
+		bookDetailsDTO.setIsbn("13");
+		bookDetailsDTO.setTitle("");
+		Author author = new Author();
+		author.setAuthorFullName("");
+		bookDetailsDTO.setAuthors(Arrays.asList(author));
+		String jsonRequest = mapper.writeValueAsString(bookDetailsDTO);
+		mockMvc.perform(post(BASE_URL + Mappings.CREATE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonRequest))
+				.andDo(print())
+				.andExpect(status().isBadRequest())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.containsInAnyOrder(
+						"Title is required", "ISBN must be 10-13 numbers long", "Author's name is required")));
 	}
 }

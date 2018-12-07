@@ -28,17 +28,17 @@ public class BookService {
 				.orElseThrow(() -> new ResourceNotFoundException("book"));
 	}
 
-	public MessageInfo createBook(BookDTO bookDTO) {
+	public Book createBook(BookDTO bookDTO) {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
-		return saveBook(book, "Book created successfully");
+		return bookRepository.save(book);
 	}
 
-	public MessageInfo updateBook(Long id, BookDTO bookDTO) {
+	public Book updateBook(Long id, BookDTO bookDTO) {
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 		book.setComments(bookDTO.getComments());
 		book.setBookDetails(bookDTO.getBookDetails());
-		return saveBook(book, "Book updated successfully");
+		return bookRepository.save(book);
 	}
 
 	public void deleteBook(Long id)
@@ -46,15 +46,5 @@ public class BookService {
 		Book book = bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("book"));
 		bookRepository.delete(book);
-	}
-
-	private MessageInfo saveBook(Book book, String defaultMessageForSuccess){
-		try {
-			book = bookRepository.save(book);
-		}
-		catch (ConstraintViolationException exc){
-			return MessageInfo.getErrors(exc);
-		}
-		return new MessageInfo(true, book, Arrays.asList(defaultMessageForSuccess));
 	}
 }
