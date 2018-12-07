@@ -33,7 +33,7 @@ For admins only:
   * [Mockito 2](https://site.mockito.org/)
 * Frontend
   * [Angular 7](https://angular.io/)
-  * [Angular Material](https://material.angular.io/)
+  * [Angular Material 7](https://material.angular.io/)
 * Other
   * [Docker](https://www.docker.com/)
   * [Travis CI](https://travis-ci.org/)

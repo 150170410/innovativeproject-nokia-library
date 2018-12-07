@@ -130,7 +130,7 @@
 		</div>
 
 		<div class="buttons-row form-title">
-			<button mat-raised-button color="primary" [type]="submit" [disabled]="!bookDetailsParams.valid || selectedAuthors.length === 0 || selectedCategories.length === 0">
+			<button mat-raised-button color="primary" type="submit" [disabled]="!bookDetailsParams.valid || selectedAuthors.length === 0 || selectedCategories.length === 0">
 				Submit
 			</button>
 			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()">
