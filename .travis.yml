@@ -46,7 +46,7 @@ jobs:
           - cd ../../frontend
           - npm install
           - npm install @types/node --save-dev
-          - npm run build --prod
+          - ng build --prod
           - docker build -t registry.heroku.com/nokia-library-client/web -f Dockerfile.prod .
           - docker push registry.heroku.com/nokia-library-api/web
           - docker push registry.heroku.com/nokia-library-client/web
