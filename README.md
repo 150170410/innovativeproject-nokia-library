@@ -42,13 +42,16 @@ For admins only:
   * [Cloudinary](https://cloudinary.com/) 
 
 # 4. Installation guide
-Docker something something...
+In a source folder execute:
+```
+docker-compose up
+```
 
 # 5. Contributing
 Students:
 * Mikołaj Banaszkiewicz
-* Alex Kostiukov
-* Wojciech Sponton
+* Alex Kostiukov [Github](https://github.com/KostiukovAleksey)
+* Wojciech Sponton 
 * Jacek Zalewski [Github](https://github.com/tubidubidam)
 
 Nokia supervisors:
