@@ -5,7 +5,7 @@ install: true
 env:
  -TO_BUILD=FRONTEND
  -TO_BUILD=BACKEND
- -TAG=test
+ -TAG=$TRAVIS_COMMIT_MESSAGE
 services:
   - docker
 before_install:
@@ -18,15 +18,13 @@ jobs:
          - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; chmod +x mvnw; mvn test; fi
       - stage: build
         script:
-         - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm i; fi
+         - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm i; ng build --prod; fi
          - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V; fi
       - stage: docker_build
         if: (branch = master OR branch = develop) AND type in (push)
-        env: TAG=$TRAVIS_COMMIT_MESSAGE
-        if: branch = develop
         script:
           - cd backend/nokia-innovative-project
-          - mvn package -DskipTests=true
+          - mvn package
           - docker build -t $DOCKER_USERNAME/nokia.inno.lib.be:$TAG .
           - cd ../../frontend
           - npm install
@@ -35,6 +33,28 @@ jobs:
           - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           - docker push $DOCKER_USERNAME/nokia.inno.lib.be:$TAG
           - docker push $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG
+      - stage: deploy
+        if: branch = master
+        script: 
+          - docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com
+          - cd backend/nokia-innovative-project
+          - mvn package -DskipTests
+          - docker build -t registry.heroku.com/nokia-library-api/web -f Dockerfile.prod .
+          - cd ../../frontend
+          - npm install
+          - npm run build --prod
+          - docker build -t registry.heroku.com/nokia-library-client/web -f Dockerfile.prod .
+          - docker push registry.heroku.com/nokia-library-api/web
+          - docker push registry.heroku.com/nokia-library-client/web
+        deploy:
+          - provider: heroku
+            api_key: 
+              secure: $HEROKU_TOKEN
+            app: nokia-library-api
+          - provider: heroku
+            api_key: 
+              secure: $HEROKU_TOKEN
+            app: nokia-library-client
 cache:
    directories:
     - $HOME/.m2
