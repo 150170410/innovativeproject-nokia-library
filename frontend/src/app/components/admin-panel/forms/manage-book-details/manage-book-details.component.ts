@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { RestService } from '../../../../services/rest/rest.service';
 import { BookDetailsDTO } from '../../../../models/database/DTOs/BookDetailsDTO';
 import { BookCategory } from '../../../../models/database/entites/BookCategory';
@@ -12,7 +12,6 @@ import { Observable } from 'rxjs';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
-import { logging } from 'selenium-webdriver';
 
 @Component({
 	selector: 'app-manage-book-details',
@@ -149,8 +148,6 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.fileToUpload = <File>event.target.files[0];
 		const fd = new FormData();
 		fd.append('picture', this.fileToUpload);
-
-		const headers = new HttpHeaders({'Content-Type': 'multipart/form-data'});
 		this.httpClient.post('http://localhost:8081/api/v1/pictures/upload', fd).subscribe((response: MessageInfo) => {
 			if (response.success) {
 				this.bookDetailsParams
