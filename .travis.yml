@@ -5,6 +5,7 @@ install: true
 env:
  -TO_BUILD=FRONTEND
  -TO_BUILD=BACKEND
+ -HEROKU_API_KEY=$HEROKU_TOKEN
  -TAG=$TRAVIS_COMMIT_MESSAGE
 services:
   - docker
@@ -28,6 +29,7 @@ jobs:
           - docker build -t $DOCKER_USERNAME/nokia.inno.lib.be:$TAG .
           - cd ../../frontend
           - npm install
+          - npm install @types/node --save-dev
           - npm run build
           - docker build -t $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG .
           - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
@@ -36,25 +38,20 @@ jobs:
       - stage: deploy
         if: branch = master
         script: 
+          - curl https://cli-assets.heroku.com/install-standalone.sh | sh
           - docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com
           - cd backend/nokia-innovative-project
           - mvn package -DskipTests
           - docker build -t registry.heroku.com/nokia-library-api/web -f Dockerfile.prod .
           - cd ../../frontend
           - npm install
+          - npm install @types/node --save-dev
           - npm run build --prod
           - docker build -t registry.heroku.com/nokia-library-client/web -f Dockerfile.prod .
           - docker push registry.heroku.com/nokia-library-api/web
           - docker push registry.heroku.com/nokia-library-client/web
-        deploy:
-          - provider: heroku
-            api_key: 
-              secure: $HEROKU_TOKEN
-            app: nokia-library-api
-          - provider: heroku
-            api_key: 
-              secure: $HEROKU_TOKEN
-            app: nokia-library-client
+          - /usr/local/bin/heroku container:release web -a nokia-library-api 
+          - /usr/local/bin/heroku container:release web -a nokia-library-client 
 cache:
    directories:
     - $HOME/.m2

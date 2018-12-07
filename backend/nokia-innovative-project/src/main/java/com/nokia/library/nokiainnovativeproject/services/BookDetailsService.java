@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +48,7 @@ public class BookDetailsService {
 		return bookDetails;
 	}
 
+    @Transactional
 	public BookDetails createBookDetails(BookDetailsDTO bookDetailsDTO) {
 		ModelMapper mapper = new ModelMapper();
 		BookDetails bookDetails = mapper.map(bookDetailsDTO, BookDetails.class);
