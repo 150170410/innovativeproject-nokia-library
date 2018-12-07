@@ -1,3 +1,15 @@
 spring:
   profiles:
     active: development
+  mail:
+    host: smtp.gmail.com
+    username: nokia.library@gmail.com
+    password: NokiaLibrary2018
+    port: 587
+    properties:
+      mail:
+        transport.protocol: smtp
+        smtp:
+          auth: true
+          starttls.enable: true
+    debug: true

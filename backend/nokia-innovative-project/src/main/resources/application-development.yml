@@ -18,6 +18,10 @@ spring:
         higernate:
           temp:
             use_jdbc_metadata_defaults: false
-    open-in-view: false
+    open-in-view: true
+  servlet:
+   multipart:
+     max-file-size: 200KB
+     max-request-size: 200KB
 server:
   port: 8081

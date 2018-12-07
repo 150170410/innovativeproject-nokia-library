@@ -14,4 +14,3 @@ spring:
           temp:
             use_jdbc_metadata_defaults: false
     open-in-view: false
-
