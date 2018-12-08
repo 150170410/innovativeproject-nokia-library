@@ -8,18 +8,13 @@ import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundExcep
 import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookCategoryRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
-import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,35 +68,30 @@ public class BookDetailsService {
 
 	private BookDetails persistingRequiredEntities(BookDetails bookDetails, BookDetailsDTO bookDetailsDTO) {
 
-		List<Author> authorsToRemove = new ArrayList<>();
-		List<Author> existingAuthors = new ArrayList<>();
 		List<Author> authors = bookDetailsDTO.getAuthors();
+		List<Author> authorsToRemove = authors.stream().filter(author -> author.getId() != null).collect(Collectors.toList());
+		Iterable<Long> iterable = authorsToRemove.stream().map(Author::getId).collect(Collectors.toList());
+		List<Author> existingAuthors = authorRepository.findAllById(iterable);
 
-		for(Author author : authors) {
-			if(author.getId() != null){
-				authorsToRemove.add(author);
-				existingAuthors.add(authorRepository.findById(author.getId()).orElseThrow(()-> new ResourceNotFoundException("author")));
-			}
-		}
-
-		List<BookCategory> categoriesToRemove = new ArrayList<>();
-		List<BookCategory> existingCategories = new ArrayList<>();
 		List<BookCategory> categories = bookDetailsDTO.getCategories();
+		List<BookCategory> categoriesToRemove = categories.stream().filter(
+				bookCategory -> bookCategory.getId() != null).collect(Collectors.toList());
+		iterable = categoriesToRemove.stream().map(BookCategory::getId).collect(Collectors.toList());
+		List<BookCategory> existingCategories = bookCategoryRepository.findAllById(iterable);
 
-		for(BookCategory bookCategory : categories) {
-			if(bookCategory.getId() != null){
-				categoriesToRemove.add(bookCategory);
-				existingCategories.add(bookCategoryRepository.findById(bookCategory.getId()).orElseThrow(()-> new ResourceNotFoundException("category")));
-			}
-		}
-
+		int size = categories.size();
 		categories.removeAll(categoriesToRemove);
 		categories.addAll(existingCategories);
 		bookDetails.setCategories(categories);
+		if(categories.size() != size)
+			throw new ResourceNotFoundException("category");
 
+		size = authors.size();
 		authors.removeAll(authorsToRemove);
 		authors.addAll(existingAuthors);
 		bookDetails.setAuthors(authors);
+		if(authors.size() != size)
+			throw new ResourceNotFoundException("author");
 
 		return bookDetails;
 	}
