@@ -1,69 +1,75 @@
 <mat-toolbar color="primary">
 	<mat-toolbar-row>
-		<button mat-icon-button (click)="toggleSidenav()">
-			<mat-icon>menu</mat-icon>
-		</button>
+		<!--<a class="nav-link white" routerLink="/homepage" routerLinkActive="active">-->
+			<!--<mat-icon>home</mat-icon>-->
+		<!--</a>-->
 		<img class="nav-link white" src="../../../../assets/images/nokia-logo.png">
 
 		<a class="nav-link white" routerLink="/homepage" routerLinkActive="active">
-				<mat-icon>home</mat-icon>
-				Nokia library
-		</a>
-		<a class="nav-link white" target="_blank" href="https://github.com/nokia-wroclaw/innovativeproject-nokia-library">
-			<mat-icon>link</mat-icon>
-			Github page
+			<mat-icon>home</mat-icon>
+			Homepage
 		</a>
 
-		<div class="search-bar-wrapper">
-			<form [formGroup]="searchParams" class="search-bar" (ngSubmit)="search(searchParams)">
-				<mat-form-field class="search-bar-field" floatLabel=never>
-					<input formControlName="searchValue"
-						   matInput
-						   placeholder="{{placeHolder}}"
-						   (click)="checkPlaceHolder()"
-						   (blur)="checkPlaceHolder()"
-					>
-					<!--<button mat-button *ngIf="placeHolder" matSuffix mat-icon-button>-->
-						<!--<mat-icon>close</mat-icon>-->
-					<!--</button>-->
-					<button mat-icon-button>
-						<mat-icon>search</mat-icon>
-					</button>
+		<a class="nav-link white" routerLink="/user-panel" routerLinkActive="active">
+			<mat-icon>library_books</mat-icon>
+			User panel
+		</a>
 
-				</mat-form-field>
-			</form>
-		</div>
+		<a class="nav-link white" routerLink="/admin-panel" routerLinkActive="active">
+			<mat-icon>ballot</mat-icon>
+			Admin panel
+		</a>
+
+		<!--<div class="search-bar-wrapper">-->
+		<!--<form [formGroup]="searchParams" class="search-bar" (ngSubmit)="search(searchParams)">-->
+		<!--<mat-form-field class="search-bar-field" floatLabel=never>-->
+		<!--<input formControlName="searchValue"-->
+		<!--matInput-->
+		<!--placeholder="{{placeHolder}}"-->
+		<!--(click)="checkPlaceHolder()"-->
+		<!--(blur)="checkPlaceHolder()"-->
+		<!--&gt;-->
+		<!--&lt;!&ndash;<button mat-button *ngIf="placeHolder" matSuffix mat-icon-button>&ndash;&gt;-->
+		<!--&lt;!&ndash;<mat-icon>close</mat-icon>&ndash;&gt;-->
+		<!--&lt;!&ndash;</button>&ndash;&gt;-->
+		<!--<button mat-icon-button>-->
+		<!--<mat-icon>search</mat-icon>-->
+		<!--</button>-->
+
+		<!--</mat-form-field>-->
+		<!--</form>-->
+		<!--</div>-->
 
 		<span class="toolbar-spacer"></span>
 
 		<button mat-raised-button class="contact-us-button" color="accent" (click)="openDialog()">
 			<mat-icon>feedback</mat-icon>
-			Contact developers
+			Request feature/report bug
 		</button>
 
-		<div>Logged as User</div>
-		<button mat-icon-button [matMenuTriggerFor]="menuOptions">
-			<mat-icon>more_vert</mat-icon>
-		</button>
-		<mat-menu #menuOptions="matMenu">
-			<button mat-menu-item>
-				<mat-icon>account_circle</mat-icon>
-				<span>Your account</span>
-			</button>
-			<button mat-menu-item [matMenuTriggerFor]="menuSomeOptions">
-				<mat-icon>settings</mat-icon>
-				<span>Settings</span>
-			</button>
-			<button mat-menu-item>
-				<mat-icon>exit_to_app</mat-icon>
-				<span>Logout</span>
-			</button>
-		</mat-menu>
-		<mat-menu #menuSomeOptions="matMenu">
-			<button mat-menu-item>Option 1</button>
-			<button mat-menu-item>Option 2</button>
-			<button mat-menu-item>Option 3</button>
-		</mat-menu>
+		<!--<div>Logged as User</div>-->
+		<!--<button mat-icon-button [matMenuTriggerFor]="menuOptions">-->
+		<!--<mat-icon>more_vert</mat-icon>-->
+		<!--</button>-->
+		<!--<mat-menu #menuOptions="matMenu">-->
+		<!--<button mat-menu-item>-->
+		<!--<mat-icon>account_circle</mat-icon>-->
+		<!--<span>Your account</span>-->
+		<!--</button>-->
+		<!--<button mat-menu-item [matMenuTriggerFor]="menuSomeOptions">-->
+		<!--<mat-icon>settings</mat-icon>-->
+		<!--<span>Settings</span>-->
+		<!--</button>-->
+		<!--<button mat-menu-item>-->
+		<!--<mat-icon>exit_to_app</mat-icon>-->
+		<!--<span>Logout</span>-->
+		<!--</button>-->
+		<!--</mat-menu>-->
+		<!--<mat-menu #menuSomeOptions="matMenu">-->
+		<!--<button mat-menu-item>Option 1</button>-->
+		<!--<button mat-menu-item>Option 2</button>-->
+		<!--<button mat-menu-item>Option 3</button>-->
+		<!--</mat-menu>-->
 
 	</mat-toolbar-row>
 </mat-toolbar>

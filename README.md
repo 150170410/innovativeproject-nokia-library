@@ -5,24 +5,25 @@
 3. Technologies
 4. Installation guide
 5. Contributing
+
 # 1. Project overview
 The goal of the project is to create a library web application.
 
 Demo available at: https://nokia-library-client.herokuapp.com
 # 2. Functionality
 For all users:
-* Borrowing and reserving books
-* Prolongation of borrowed books.
-* Requesting new book.
-* Reminder about returning a book.
-* Notification about book availability.
-* Contact with developers form (report a bug, request new feature, etc.).
-* Reviewing a book.
-* User accounts.
+* Borrowing and reserving books,
+* prolongation of borrowed books,
+* requesting new book,
+* reminder about returning a book,
+* notification about book availability,
+* contact with developers form (report a bug, request new feature),
+* reviewing a book,
+* user accounts.
 
 For admins only:
-* Books management (add, edit, remove).
-* Semi automated book details completion.
+* Books management (add, edit, remove),
+* semi-automated book details completion.
 
 # 3. Technologies
 * Backend
@@ -42,10 +43,8 @@ For admins only:
   * [Cloudinary](https://cloudinary.com/) 
 
 # 4. Installation guide
-In a source folder execute:
-```
-docker-compose up
-```
+1. Install docker on your local machine.
+2. In a project's source folder execute: ``` docker-compose up ```
 
 # 5. Contributing
 Students:

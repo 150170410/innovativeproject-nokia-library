@@ -91,10 +91,6 @@ export class ManageCategoriesComponent implements OnInit {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	autoFillCategoryForm() {
-		this.categoryParams.patchValue({ 'categoryName': 'cat' + Math.floor(Math.random() * 100) });
-	}
-
 	openSnackBar(message: string, action: string) {
 		this.snackBar.open(message, action, {
 			duration: 3000,

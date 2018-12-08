@@ -92,12 +92,6 @@ export class ManageAuthorsComponent implements OnInit {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	autoFillAuthorForm() {
-		this.authorParams.patchValue({
-			'authorFullName': 'J.R.R. Tolkien'
-		});
-	}
-
 	openSnackBar(message: string, action: string) {
 		this.snackBar.open(message, action, {
 			duration: 3000,

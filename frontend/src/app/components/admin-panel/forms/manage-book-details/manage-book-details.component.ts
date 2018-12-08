@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
+import { API_URL } from '../../../../config';
 
 @Component({
 	selector: 'app-manage-book-details',
@@ -148,7 +149,7 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.fileToUpload = <File>event.target.files[0];
 		const fd = new FormData();
 		fd.append('picture', this.fileToUpload);
-		this.httpClient.post('http://localhost:8081/api/v1/pictures/upload', fd).subscribe((response: MessageInfo) => {
+		this.httpClient.post(API_URL + '/api/v1/pictures/upload', fd).subscribe((response: MessageInfo) => {
 			if (response.success) {
 				this.bookDetailsParams
 				.patchValue({ 'coverPictureUrl': response.object });
@@ -246,19 +247,6 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
-	}
-
-	autoFillBookDetailsForm() {
-		this.bookDetailsParams.patchValue({
-			'coverPictureUrl': 'https://itbook.store/img/books/9781491985571.png',
-			'publicationDate': new Date(2016, 6, 1),
-			'description': 'desc',
-			'isbn': '9781484206485',
-			'tableOfContents': 'string',
-			'title': 'Book ' + Math.floor(Math.random() * 100)
-		});
-		this.selectedAuthors = [this.availableAuthors[0]];
-		this.selectedCategories = [this.availableCategories[0]];
 	}
 
 	// authors chips
