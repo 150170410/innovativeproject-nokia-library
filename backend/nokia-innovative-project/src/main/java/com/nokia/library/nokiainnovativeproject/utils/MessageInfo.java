@@ -23,12 +23,4 @@ public class MessageInfo {
 		return new MessageInfo(false, null, message);
 	}
 
-	public static MessageInfo getErrors(BindingResult bindingResult) {
-		if(bindingResult.hasErrors()){
-			List<String> errorsList = bindingResult.getAllErrors().stream()
-					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-			return MessageInfo.failure(errorsList);
-		}
-		return null;
-	}
 }

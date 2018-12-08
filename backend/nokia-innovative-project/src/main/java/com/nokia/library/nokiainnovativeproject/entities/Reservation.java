@@ -1,9 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -17,7 +14,6 @@ import java.util.Date;
 
 @Entity
 @Data
-@EntityListeners(AuditingEntityListener.class)
 public class Reservation implements Serializable {
 
     @Id
@@ -26,29 +22,20 @@ public class Reservation implements Serializable {
     private Long id;
 
     @CreationTimestamp
-    @Setter(AccessLevel.NONE)
     private Date reservationDate;
 
     @NotNull(message = "The return date should be defined")
     @Future(message = "The return date should be future")
     private Date returnDate;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Setter
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "book_catalog_number")
     private Book book;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Reservation )) return false;
-        return id != null && id.equals(((Reservation) o).id);
-    }
 }

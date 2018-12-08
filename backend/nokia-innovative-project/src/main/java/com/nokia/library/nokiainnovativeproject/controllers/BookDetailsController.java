@@ -4,8 +4,9 @@ import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
 
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.services.BookDetailsService;
-import com.nokia.library.nokiainnovativeproject.utils.Mappings;
+import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
+import com.nokia.library.nokiainnovativeproject.validators.BindingResultsValidator;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.validation.BindingResult;
@@ -17,34 +18,34 @@ import java.util.Arrays;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(Mappings.API_VERSION + Mappings.BOOK_DETAILS)
+@RequestMapping(API_VERSION + BOOK_DETAILS)
 public class BookDetailsController {
 
 	private final BookDetailsService bookDetailsService;
 
-	@GetMapping(Mappings.GET_ALL)
+	@GetMapping(GET_ALL)
 	public MessageInfo getAllBookDetails() {
 		return MessageInfo.success(bookDetailsService.getAllBookDetails(), Arrays.asList("list of bookDetails"));
 	}
 
-	@GetMapping(Mappings.GET_ONE)
+	@GetMapping(GET_ONE)
 	public MessageInfo getBookDetailsById(@PathVariable Long id) {
 		return MessageInfo.success(bookDetailsService.getBookDetailsById(id), Arrays.asList("bookDetails of ID = " + id.toString()));
 	}
 
-	@PostMapping(Mappings.CREATE)
+	@PostMapping(CREATE)
 	public MessageInfo createBookDetails(@RequestBody @Valid BookDetailsDTO bookDetailsDTO, BindingResult bindingResult) {
-		MessageInfo errors = MessageInfo.getErrors(bindingResult);
-		return errors != null ? errors : MessageInfo.success(bookDetailsService.createBookDetails(bookDetailsDTO), Arrays.asList("bookDetails created successfully"));
+		BindingResultsValidator.validateBindingResults(bindingResult, bookDetailsDTO.getClass().getSimpleName());
+		return MessageInfo.success(bookDetailsService.createBookDetails(bookDetailsDTO), Arrays.asList("bookDetails created successfully"));
 	}
 
-	@PostMapping(Mappings.UPDATE)
+	@PostMapping(UPDATE)
 	public MessageInfo updateBookDetails(@PathVariable Long id, @RequestBody @Valid BookDetailsDTO bookDetailsDTO, BindingResult bindingResult){
-		MessageInfo errors = MessageInfo.getErrors(bindingResult);
-		return errors != null ? errors : MessageInfo.success(bookDetailsService.updateBookDetails(id, bookDetailsDTO), Arrays.asList("bookDetails updated successfully"));
+		BindingResultsValidator.validateBindingResults(bindingResult, bookDetailsDTO.getClass().getSimpleName());
+		return MessageInfo.success(bookDetailsService.updateBookDetails(id, bookDetailsDTO), Arrays.asList("bookDetails updated successfully"));
 	}
 
-	@DeleteMapping(Mappings.REMOVE)
+	@DeleteMapping(REMOVE)
 	public MessageInfo deleteBookDetails(@PathVariable Long id) throws ResourceNotFoundException {
 		bookDetailsService.deleteBookDetails(id);
 		return MessageInfo.success(null, Arrays.asList("bookDetails with ID = " + id.toString() + " removed successfully"));

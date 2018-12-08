@@ -9,18 +9,14 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Getter
 public class RentalDTO {
 
-    @Getter
+
     @NotNull(message = "User ID is required.")
     private Long userId;
 
-    @Getter
     @NotNull(message = "Book ID is required.")
     private Long bookId;
 
-    @NotNull(message = "The return date should be defined")
-    @Future(message = "The return date should be future")
-    @Getter
-    private Date returnDate;
 }

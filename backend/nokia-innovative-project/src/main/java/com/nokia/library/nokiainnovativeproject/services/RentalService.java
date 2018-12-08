@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -43,9 +44,10 @@ public class RentalService {
         return rentalRepository.save(rental);
     }
 
-    public Object updateRental(Long id, RentalDTO rentalDTO) {
+    //TODO Implement prolongation functionality
+    public Rental updateRental(Long id) {
         Rental rental = rentalRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Rental", "id", id));
-        rental.setReturnDate(rentalDTO.getReturnDate());
+        rental.setReturnDate(LocalDate.now().plusMonths(1));
         return rentalRepository.save(rental);
     }
 

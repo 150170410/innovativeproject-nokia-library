@@ -16,7 +16,7 @@ public class Book implements Serializable {
 	@Id
 	@Setter(AccessLevel.NONE)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long catalogNumber;
+	private Long id;
 
 	@Size(max = 5000, message = "Comments can't exceed 5000 characters")
 	private String comments;
