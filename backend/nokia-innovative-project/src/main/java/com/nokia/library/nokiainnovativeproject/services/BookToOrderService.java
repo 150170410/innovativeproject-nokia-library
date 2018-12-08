@@ -8,7 +8,6 @@ import com.nokia.library.nokiainnovativeproject.repositories.BookToOrderReposito
 import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,14 +32,8 @@ public class BookToOrderService {
     public BookToOrder createBookToOrder(BookToOrderDTO bookToOrderDTO) {
         ModelMapper mapper = new ModelMapper();
         BookToOrder bookToOrder = mapper.map(bookToOrderDTO, BookToOrder.class);
-
         List<String> adminsEmail = userRepository.getAdminsEmail();
-        try {
-            emailService.sendSimpleMessage(createMessage(bookToOrder), adminsEmail);
-        }
-        catch(MailException e) {
-        }
-
+        emailService.sendSimpleMessage(createMessage(bookToOrder), adminsEmail);
         return bookToOrderRepository.save(bookToOrder);
     }
 
@@ -48,14 +41,8 @@ public class BookToOrderService {
         BookToOrder bookToOrder= bookToOrderRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("bookToOrder"));
         bookToOrder.setIsbn(bookToOrderDTO.getIsbn());
         bookToOrder.setTitle(bookToOrderDTO.getTitle());
-
         List<String> adminsEmail = userRepository.getAdminsEmail();
-        try {
-            emailService.sendSimpleMessage(createMessage(bookToOrder), adminsEmail);
-        }
-        catch(MailException e) {
-        }
-
+        emailService.sendSimpleMessage(createMessage(bookToOrder), adminsEmail);
         return bookToOrderRepository.save(bookToOrder);
     }
 

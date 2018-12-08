@@ -27,11 +27,7 @@ public class EmailController {
     public ResponseEntity sendEmail(@RequestBody @Valid Email email, BindingResult bindingResult) {
         ResponseEntity errors = MessageInfo.getErrors(bindingResult);
         if (errors != null) return errors;
-        try{
-            emailService.sendSimpleMessage(email, EmailRecipients.recipients);
-        }
-        catch(MailException e){
-        }
+        emailService.sendSimpleMessage(email, EmailRecipients.recipients);
         return MessageInfo.success(null, Arrays.asList("Email sent successfully"));
     }
 }

@@ -78,12 +78,7 @@ INSERT INTO book_details_authors VALUES (7, 4);
 INSERT INTO book_details_authors VALUES (7, 5);
 
 INSERT INTO "user" (id, email, first_name, last_name) VALUES (1, 'wojtekspoton@gmail.com', 'Wojtek', 'Wojtek');
-INSERT INTO "user" (id, email, first_name, last_name) VALUES (2, 'aabc0041@gmail.com', 'Jacek', 'Jacek');
-INSERT INTO "user" (id, email, first_name, last_name) VALUES (3, 'nokia.library@gmail.com', 'Nokia', 'Nokia');
-INSERT INTO "user" (id, email, first_name, last_name) VALUES (4, 'client@gmail.com', 'Client', 'Client');
 INSERT INTO "role" (id, role) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO "role" (id, role) VALUES (2, 'ROLE_USER');
 INSERT INTO "user_roles" (user_id, roles_id) VALUES (1, 1);
-INSERT INTO "user_roles" (user_id, roles_id) VALUES (2, 1);
-INSERT INTO "user_roles" (user_id, roles_id) VALUES (3, 1);
-INSERT INTO "user_roles" (user_id, roles_id) VALUES (4, 2);
+
