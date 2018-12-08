@@ -46,8 +46,7 @@ public class RentalController {
     }
 
     @PostMapping(RENTALS + UPDATE)
-    public MessageInfo updateRental(@PathVariable Long id, @RequestBody @Valid RentalDTO rentalDTO, BindingResult bindingResult){
-        BindingResultsValidator.validateBindingResults(bindingResult, rentalDTO.getClass().getSimpleName());
+    public MessageInfo updateRental(@PathVariable Long id){
         return MessageInfo.success(rentalService.updateRental(id), Arrays.asList("Rental updated successfully"));
     }
 

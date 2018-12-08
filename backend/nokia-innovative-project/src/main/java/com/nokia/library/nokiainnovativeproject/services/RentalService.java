@@ -2,7 +2,9 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.RentalDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Rental;
+import com.nokia.library.nokiainnovativeproject.entities.Reservation;
 import com.nokia.library.nokiainnovativeproject.entities.Review;
+import com.nokia.library.nokiainnovativeproject.exceptions.BookReservedException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class RentalService {
     private final RentalRepository rentalRepository;
     private final UserService userService;
     private final BookService bookService;
+    private final ReservationService reservationService;
 
     public List<Rental> getAllRentals() {
         return rentalRepository.findAll();
@@ -44,11 +47,17 @@ public class RentalService {
         return rentalRepository.save(rental);
     }
 
-    //TODO Implement prolongation functionality
+
     public Rental updateRental(Long id) {
         Rental rental = rentalRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Rental", "id", id));
-        rental.setReturnDate(LocalDate.now().plusMonths(1));
-        return rentalRepository.save(rental);
+        List<Reservation> reservations = reservationService.getReservationsByBookId(rental.getBook().getId());
+        if(reservations == null || reservations.isEmpty()){
+            rental.setReturnDate(LocalDate.now().plusMonths(1));
+            return rentalRepository.save(rental);
+        }
+        else{
+            throw new BookReservedException(rental.getBook().getId());
+        }
     }
 
     public void deleteRental(Long id) {
