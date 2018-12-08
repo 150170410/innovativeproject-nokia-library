@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { RestService } from '../../../../services/rest/rest.service';
@@ -59,7 +59,8 @@ export class ManageBookDetailsComponent implements OnInit {
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
 				private httpClient: HttpClient,
-				public snackBar: MatSnackBar) {
+				public snackBar: MatSnackBar,
+				private cd: ChangeDetectorRef) {
 		this.filteredAuthors = this.authorsFormControl.valueChanges.pipe(
 			startWith(null),
 			map((author: string | null) => author ? this.filterAth(author) : this.availableAuthors.slice()));
@@ -104,18 +105,20 @@ export class ManageBookDetailsComponent implements OnInit {
 		if (!this.toUpdate) {
 			this.http.save('bookDetails', body).subscribe((response) => {
 				if (response.success) {
+					this.clearForm();
+					this.getBookDetails();
 					this.openSnackBar('Book details added successfully!', 'OK');
 				}
-				this.getBookDetails();
 			});
 		} else {
 			this.http.update('bookDetails', this.toUpdate.id, body).subscribe((response) => {
 				if (response.success) {
+					this.toUpdate = null;
+					this.clearForm();
+					this.getBookDetails();
 					this.openSnackBar('Book details edited successfully!', 'OK');
 				}
-				this.getBookDetails();
-				this.toUpdate = null;
-				this.clearForm();
+
 			});
 		}
 	}
@@ -123,7 +126,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	async getCategories() {
 		const response: MessageInfo = await this.http.getAll('bookCategory/getAll');
 		this.allCategories = response.object;
-		this.availableCategories = this.categoriesToString(this.allCategories);
+		this.availableCategories = this.categoriesToString(this.allCategories).sort();
 		this.bookDetailsParams.patchValue({ 'categories': '' });
 	}
 
@@ -240,9 +243,14 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	clearForm() {
 		this.bookDetailsParams.reset();
+		this.bookDetailsParams.markAsPristine();
+		this.bookDetailsParams.markAsUntouched();
+
+		this.availableAuthors.push(...this.selectedAuthors);
+		this.availableCategories.push(...this.selectedCategories);
 		this.selectedCategories = [];
 		this.selectedAuthors = [];
-		this.bookDetailsParams.markAsUntouched();
+		this.cd.markForCheck();
 	}
 
 	applyFilter(filterValue: string) {
@@ -289,18 +297,18 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	private filterAth(value: string): string[] {
-		return this.availableAuthors.filter(author => author.toLowerCase().indexOf(value.toLowerCase()) === 0);
+		return this.availableAuthors.filter(author => author.toLowerCase().indexOf(value.toLowerCase()) === 0).sort();
 	}
 
-	authorsToString(authors: Author[]) {
+	authorsToString(authors: Author[]): string[] {
 		const arr = [];
 		authors.forEach((val) => {
 			arr.push(val.authorFullName);
 		});
-		return arr;
+		return arr.sort();
 	}
 
-	authorsToAuthor(authors: string[]) {
+	authorsToAuthor(authors: string[]): Author[] {
 		const arr: Author[] = [];
 		authors.forEach((val) => {
 			arr.push(this.allAuthors.filter(e => e.authorFullName === val)[0]);
@@ -348,10 +356,10 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	private filterCat(value: string): string[] {
-		return this.availableCategories.filter(category => category.toLowerCase().indexOf(value.toLowerCase()) === 0);
+		return this.availableCategories.filter(category => category.toLowerCase().indexOf(value.toLowerCase()) === 0).sort();
 	}
 
-	categoriesToString(categories: BookCategory[]) {
+	categoriesToString(categories: BookCategory[]): string[] {
 		const arr = [];
 		categories.forEach((val) => {
 			arr.push(val.bookCategoryName);
@@ -369,8 +377,6 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	// snackbar
 	openSnackBar(message: string, action: string) {
-		this.snackBar.open(message, action, {
-			duration: 3000,
-		});
+		this.snackBar.open(message, action);
 	}
 }

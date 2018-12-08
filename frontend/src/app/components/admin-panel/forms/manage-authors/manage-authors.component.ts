@@ -45,18 +45,21 @@ export class ManageAuthorsComponent implements OnInit {
 		if (!this.toUpdate) {
 			this.http.save('author', body).subscribe((response) => {
 				if(response.success){
+					this.clearForm();
+					this.getAuthors();
 					this.openSnackBar('Author added successfully!', 'OK');
 				}
-				this.getAuthors();
+
 			});
 		} else {
 			this.http.update('author', this.toUpdate.id, body).subscribe((response) => {
 				if(response.success){
+					this.toUpdate = null;
+					this.clearForm();
+					this.getAuthors();
 					this.openSnackBar('Author edited successfully!', 'OK');
 				}
-				this.getAuthors();
-				this.toUpdate = null;
-				this.clearForm();
+
 			});
 		}
 	}
@@ -85,6 +88,7 @@ export class ManageAuthorsComponent implements OnInit {
 
 	clearForm() {
 		this.authorParams.reset();
+		this.authorParams.markAsPristine();
 		this.authorParams.markAsUntouched();
 	}
 
@@ -93,8 +97,6 @@ export class ManageAuthorsComponent implements OnInit {
 	}
 
 	openSnackBar(message: string, action: string) {
-		this.snackBar.open(message, action, {
-			duration: 3000,
-		});
+		this.snackBar.open(message, action);
 	}
 }

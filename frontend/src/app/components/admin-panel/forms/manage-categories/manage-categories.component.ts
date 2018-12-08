@@ -42,19 +42,20 @@ export class ManageCategoriesComponent implements OnInit {
 		const body = new BookCategoryDTO(params.value.categoryName);
 		if (!this.toUpdate) {
 			this.http.save('bookCategory', body).subscribe((response) => {
-				this.getCategories();
 				if(response.success){
+					this.clearForm();
+					this.getCategories();
 					this.openSnackBar('Category added successfully!', 'OK');
 				}
 			});
 		} else {
 			this.http.update('bookCategory', this.toUpdate.id, body).subscribe((response) => {
 				if(response.success){
+					this.toUpdate = null;
+					this.clearForm();
+					this.getCategories();
 					this.openSnackBar('Category edited successfully!', 'OK');
 				}
-				this.getCategories();
-				this.toUpdate = null;
-				this.clearForm();
 			});
 		}
 	}
@@ -84,6 +85,7 @@ export class ManageCategoriesComponent implements OnInit {
 
 	clearForm() {
 		this.categoryParams.reset();
+		this.categoryParams.markAsPristine();
 		this.categoryParams.markAsUntouched();
 	}
 
@@ -92,8 +94,6 @@ export class ManageCategoriesComponent implements OnInit {
 	}
 
 	openSnackBar(message: string, action: string) {
-		this.snackBar.open(message, action, {
-			duration: 3000,
-		});
+		this.snackBar.open(message, action);
 	}
 }

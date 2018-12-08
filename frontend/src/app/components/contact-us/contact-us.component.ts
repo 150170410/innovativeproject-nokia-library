@@ -48,8 +48,6 @@ export class ContactUsComponent implements OnInit {
 	}
 
 	openSnackBar(message: string, action: string) {
-		this.snackBar.open(message, action, {
-			duration: 3000,
-		});
+		this.snackBar.open(message, action);
 	}
 }
