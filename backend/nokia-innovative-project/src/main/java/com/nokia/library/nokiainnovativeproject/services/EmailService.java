@@ -10,6 +10,9 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.logging.Logger;
+
 @Service
 @RequiredArgsConstructor
 public class EmailService {
@@ -20,10 +23,15 @@ public class EmailService {
 			value = MailException.class,
 			maxAttempts = 5,
 			backoff = @Backoff(delay = 1000 * 60 * 10))
-	public void sendSimpleMessage(Email email) {
+	public void sendSimpleMessage(Email email, List<String> recipients) {
+
+		Logger logger = Logger.getLogger(getClass().getName());
+		for(String s : recipients){
+			logger.info(s);
+		}
 
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(EmailRecipients.recipients.toArray(new String[0]));
+		message.setTo(recipients.toArray(new String[0]));
 		message.setSubject(email.getSubject());
 		message.setText(email.getMessageContext());
 

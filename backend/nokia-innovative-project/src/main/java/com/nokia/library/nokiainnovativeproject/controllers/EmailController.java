@@ -2,6 +2,7 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.Email;
 import com.nokia.library.nokiainnovativeproject.services.EmailService;
+import com.nokia.library.nokiainnovativeproject.utils.EmailRecipients;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class EmailController {
         ResponseEntity errors = MessageInfo.getErrors(bindingResult);
         if (errors != null) return errors;
         try{
-            emailService.sendSimpleMessage(email);
+            emailService.sendSimpleMessage(email, EmailRecipients.recipients);
         }
         catch(MailException e){
         }
