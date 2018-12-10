@@ -3,26 +3,33 @@ jdk:
   - oraclejdk8
 install: true
 env:
- -TO_BUILD=FRONTEND
- -TO_BUILD=BACKEND
  -HEROKU_API_KEY=$HEROKU_TOKEN
  -TAG=$TRAVIS_COMMIT_MESSAGE
 services:
   - docker
 before_install:
   - npm install -g @angular/cli
+stages: 
+  - name: test
+  - name: build
+  - name: docker_build
+    if: branch = develop OR branch = develop
+  - name: deploy
+    if: branch = master
 jobs:
   include:
       - stage: test
         script:
-         - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm test; fi
-         - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; chmod +x mvnw; mvn test; fi
+         - cd backend/nokia-innovative-project 
+         - chmod +x mvnw 
+         - mvn test
       - stage: build
         script:
-         - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm i; ng build --prod; fi
-         - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V; fi
+         - cd frontend
+         - npm i 
+         - ng build --prod
+         - ../backend/nokia-innovative-project mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       - stage: docker_build
-        if: (branch = master OR branch = develop) AND type in (push)
         script:
           - cd backend/nokia-innovative-project
           - mvn package
@@ -36,7 +43,6 @@ jobs:
           - docker push $DOCKER_USERNAME/nokia.inno.lib.be:$TAG
           - docker push $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG
       - stage: deploy
-        if: branch = master
         script: 
           - curl https://cli-assets.heroku.com/install-standalone.sh | sh
           - docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com
