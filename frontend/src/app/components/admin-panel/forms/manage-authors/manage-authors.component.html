@@ -22,21 +22,24 @@
 
 		<div class="buttons-row">
 			<button mat-raised-button color="primary" type="submit" [disabled]="!authorParams.valid">
-				Submit
+				{{formMode}}
 			</button>
-			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()" >
+			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()">
 				Clear
 			</button>
 		</div>
 
+
 	</form>
 
-
+	<div *ngIf="errorMsg !== ''">
+		{{errorMsg}}
+	</div>
 </mat-card>
 
 <div>
 	<div class="filter-paginator-wrapper">
-		<div  class="filter">
+		<div class="filter">
 			<mat-form-field>
 				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 			</mat-form-field>

@@ -41,7 +41,7 @@ public class BookDetails implements Serializable {
 	@Past(message = "Publication date should be a past date")
 	private Date publicationDate;
 
-	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
+	@Size(max = 1000, message = "Table of contents URL can't exceed 1000 characters")
 	private String tableOfContents;
 
 	@ManyToMany(cascade = {

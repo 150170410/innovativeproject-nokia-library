@@ -22,7 +22,7 @@
 		</div>
 		<div class="buttons-row">
 			<button mat-raised-button color="primary" type="submit" [disabled]="!categoryParams.valid">
-				Submit
+				{{formMode}}
 			</button>
 			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()">
 				Clear

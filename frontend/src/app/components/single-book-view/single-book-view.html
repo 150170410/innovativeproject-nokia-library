@@ -1,43 +1,49 @@
 <button mat-raised-button color="primary" routerLink="/listView" routerLinkActive="active">< Go back</button>
-
-<h1>{{bookDetails.title}}</h1>
-<h5>by: {{bookDetails.authors | arrToStr:'author'}}</h5>
-<div class="wrapper">
-	<div class="cover-wrapper">
-		<img src="{{bookDetails.coverPictureUrl}}">
+<mat-spinner *ngIf="pageLoading"></mat-spinner>
+<div *ngIf="!pageLoading">
+	<h1>{{bookDetails.title}}</h1>
+	<h5>by: {{bookDetails.authors | arrToStr:'author'}}</h5>
+	<div class="wrapper">
+		<div class="cover-wrapper">
+			<img *ngIf="bookDetails.coverPictureUrl" src="{{bookDetails.coverPictureUrl}}">
+			<img *ngIf="!bookDetails.coverPictureUrl" src="../../../assets/images/default-cover.png">
+		</div>
+		<div class="info-box-wrapper">
+			<div><b>Categories:</b> {{bookDetails.categories| arrToStr:'category'}}</div>
+			<div><b>About book: </b>{{bookDetails.description}}</div>
+		</div>
 	</div>
-	<div class="info-box-wrapper">
-		<div><b>Categories:</b> {{bookDetails.categories| arrToStr:'category'}}</div>
-		<div><b>About book: </b>{{bookDetails.description}}</div>
+	<div>
+		<button mat-raised-button color="accent" disabled>
+			<mat-icon>done</mat-icon>
+			Borrow book
+		</button>
+		<button mat-raised-button class="reserve-button" disabled>
+			<mat-icon>star</mat-icon>
+			Reserve book
+		</button>
 	</div>
+
+	<h5>Book details:</h5>
+	<ul>
+		<li>
+			<b>ISBN:</b> {{bookDetails.isbn}}
+		</li>
+		<li>
+			<b>Date of publication:</b> {{bookDetails.publicationDate | date: 'dd.MM.yyyy'}}
+		</li>
+		<li>
+			<b>Table of contents:</b> {{bookDetails.tableOfContents}}
+		</li>
+	</ul>
+
+	<h5>Comments:</h5>
+	<div *ngFor="let review of bookDetails.reviews">{{review.comment}}</div>
+
+
+	<h5>Available copies:</h5>
+	<div *ngFor="let book of bookDetails.books">{{book.id}}</div>
+
 </div>
-<div>
-	<button mat-raised-button color="accent" disabled>
-		<mat-icon>done</mat-icon>
-		Borrow book
-	</button>
-	<button mat-raised-button class="reserve-button" disabled>
-		<mat-icon>star</mat-icon>
-		Reserve book
-	</button>
-</div>
 
-<h5>Book details:</h5>
-<ol>
-	<li>
-		<b>ISBN:</b> {{bookDetails.isbn}}
-	</li>
-	<li>
-		<b>Date of publication:</b> {{bookDetails.publicationDate | date: 'dd.MM.yyyy'}}
-	</li>
-	<li>
-		<b>Table of contents:</b> {{bookDetails.tableOfContents}}
-	</li>
-</ol>
-
-<h5>Comments:</h5>
-<!--<div *ngFor="let review of reviews">{{review.comment}}</div>-->
-
-
-<h5>Available copies:</h5>
 

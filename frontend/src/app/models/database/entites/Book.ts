@@ -1,5 +1,7 @@
+import { BookDetails } from './BookDetails';
+
 export class Book {
-	catalogNumber: number;
-	bookId: number;
+	id: number;
 	comments: string;
+	bookDetails: BookDetails;
 }

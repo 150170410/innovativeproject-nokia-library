@@ -14,8 +14,9 @@ import { MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material
 export class ManageAuthorsComponent implements OnInit {
 
 	authorParams: FormGroup;
-
+	formMode: string = 'Add';
 	toUpdate: Author = null;
+	errorMsg = '';
 
 	//table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -44,19 +45,25 @@ export class ManageAuthorsComponent implements OnInit {
 			params.value.authorFullName);
 		if (!this.toUpdate) {
 			this.http.save('author', body).subscribe((response) => {
-				if(response.success){
+
+				if (response.success) {
 					this.clearForm();
 					this.getAuthors();
 					this.openSnackBar('Author added successfully!', 'OK');
+				} else {
+					this.errorMsg = 'aaa';
+					console.log('failure');
 				}
-
+			}, (error) => {
+				this.errorMsg = 'Unexpected error';
 			});
 		} else {
 			this.http.update('author', this.toUpdate.id, body).subscribe((response) => {
-				if(response.success){
+				if (response.success) {
 					this.toUpdate = null;
 					this.clearForm();
 					this.getAuthors();
+					this.formMode = 'Add';
 					this.openSnackBar('Author edited successfully!', 'OK');
 				}
 
@@ -74,12 +81,13 @@ export class ManageAuthorsComponent implements OnInit {
 		this.authorParams.patchValue({
 			'authorFullName': author.authorFullName,
 		});
+		this.formMode = 'Update';
 		this.toUpdate = author;
 	}
 
 	async removeAuthor(id: number) {
 		await this.http.remove('author', id).subscribe((response) => {
-			if(response.success){
+			if (response.success) {
 				this.openSnackBar('Author removed successfully!', 'OK');
 			}
 			this.getAuthors();

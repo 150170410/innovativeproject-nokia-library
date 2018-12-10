@@ -14,7 +14,7 @@ import { MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material
 export class ManageCategoriesComponent implements OnInit {
 
 	categoryParams: FormGroup;
-
+	formMode: string = 'Add';
 	toUpdate: BookCategory = null;
 
 	//table
@@ -54,6 +54,7 @@ export class ManageCategoriesComponent implements OnInit {
 					this.toUpdate = null;
 					this.clearForm();
 					this.getCategories();
+					this.formMode = 'Add';
 					this.openSnackBar('Category edited successfully!', 'OK');
 				}
 			});
@@ -79,6 +80,7 @@ export class ManageCategoriesComponent implements OnInit {
 			if(response.success){
 				this.openSnackBar('Category removed successfully!', 'OK');
 			}
+			this.formMode = 'Update';
 			this.getCategories();
 		});
 	}

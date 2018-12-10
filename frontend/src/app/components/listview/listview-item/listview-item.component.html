@@ -1,6 +1,7 @@
 <mat-card>
 	<mat-card-header routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" class="cursor-pointer">
-		<img mat-card-avatar src="{{bookDetails.coverPictureUrl}}">
+		<img *ngIf="bookDetails.coverPictureUrl" mat-card-avatar src="{{bookDetails.coverPictureUrl}}">
+		<img *ngIf="!bookDetails.coverPictureUrl" mat-card-avatar src="../../../../assets/images/default-cover.png">
 		<mat-card-title> {{bookDetails.title}}</mat-card-title>
 		<mat-card-subtitle>
 			<h5>

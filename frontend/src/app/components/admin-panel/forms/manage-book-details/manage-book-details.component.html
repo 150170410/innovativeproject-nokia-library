@@ -8,12 +8,12 @@
 				<input formControlName="isbn"
 					   placeholder="ISBN number"
 					   matInput required>
-				<mat-error *ngIf="bookDetailsParams.controls.isbn.hasError">
-					<div *ngIf="bookDetailsParams.controls.isbn.errors?.required">
-						Isbn number is required
+				<mat-error *ngIf="bookDetailsParams.controls['isbn'].hasError">
+					<div *ngIf="bookDetailsParams.controls['isbn'].errors?.required">
+						ISBN number is required
 					</div>
-					<div *ngIf="bookDetailsParams.controls.isbn.errors?.maxlength">The maximum length is 13 characters</div>
-					<div *ngIf="bookDetailsParams.controls.isbn.errors?.minlength">The minimum length is 10 characters</div>
+					<div *ngIf="bookDetailsParams.controls['isbn'].errors?.maxlength">The maximum length is 13 characters</div>
+					<div *ngIf="bookDetailsParams.controls['isbn'].errors?.minlength">The minimum length is 10 characters</div>
 				</mat-error>
 			</mat-form-field>
 			<button mat-raised-button color="accent" type="button" (click)="getInfoFromAPI()">Get details</button>
@@ -22,23 +22,24 @@
 				<input formControlName="title"
 					   placeholder="Title"
 					   matInput required>
-				<mat-error *ngIf="bookDetailsParams.controls.title.hasError">
-					<div *ngIf="bookDetailsParams.controls.title.errors?.required">Title is required</div>
-					<div *ngIf="bookDetailsParams.controls.title.errors?.maxlength">The maximum length is 100 characters</div>
+				<mat-error *ngIf="bookDetailsParams.controls['title'].hasError">
+					<div *ngIf="bookDetailsParams.controls['title'].errors?.required">Title is required</div>
+					<div *ngIf="bookDetailsParams.controls['title'].errors?.maxlength">The maximum length is 100 characters</div>
 				</mat-error>
 			</mat-form-field>
 
 			<mat-form-field>
-				<mat-chip-list #chipListAuthors minlength="1">
+				<mat-chip-list #chipListAuthors>
 					<mat-chip
 						*ngFor="let author of selectedAuthors"
 						[selectable]="selectable"
 						[removable]="removable"
 						(removed)="removeAth(author)">
-						{{(author)}}
+						{{author}}
 						<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
 					</mat-chip>
 					<input
+						matInput
 						placeholder="Authors"
 						#authorInput
 						[formControl]="authorsFormControl"
@@ -46,16 +47,21 @@
 						[matChipInputFor]="chipListAuthors"
 						[matChipInputAddOnBlur]="'true'"
 						(matChipInputTokenEnd)="addAth($event)">
+					<mat-error *ngIf="selectedAuthors.length < 1">
+						At least 1 author is required
+					</mat-error>
 				</mat-chip-list>
+				<mat-hint>At least 1 author is required</mat-hint>
+
 				<mat-autocomplete #autoAth="matAutocomplete" [autoActiveFirstOption]="true" (optionSelected)="selectedAth($event)">
 					<mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
-						{{(author)}}
+						{{author}}
 					</mat-option>
 				</mat-autocomplete>
 			</mat-form-field>
 
 			<mat-form-field class="example-chip-list">
-				<mat-chip-list #chipListCategories minlength="1">
+				<mat-chip-list #chipListCategories>
 					<mat-chip
 						*ngFor="let cat of selectedCategories"
 						[selectable]="selectable"
@@ -65,6 +71,7 @@
 						<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
 					</mat-chip>
 					<input
+						matInput
 						placeholder="Category"
 						#categoryInput
 						[formControl]="categoriesFormControl"
@@ -72,7 +79,11 @@
 						[matChipInputFor]="chipListCategories"
 						[matChipInputAddOnBlur]="addOnBlur"
 						(matChipInputTokenEnd)="addCat($event)">
+					<mat-error *ngIf="selectedCategories.length < 1">
+						At least 1 category is required
+					</mat-error>
 				</mat-chip-list>
+				<mat-hint>At least 1 category is required</mat-hint>
 				<mat-autocomplete #autoCat="matAutocomplete" [autoActiveFirstOption]="true" (optionSelected)="selectedCat($event)">
 					<mat-option *ngFor="let cat of filteredCategories | async" [value]="cat">
 						{{cat}}
@@ -90,31 +101,32 @@
 				<mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
 				<mat-datepicker startView="multi-year" #myDatepicker></mat-datepicker>
 
-				<mat-error *ngIf="bookDetailsParams.controls.publicationDate.hasError">
-					<div *ngIf="bookDetailsParams.controls.publicationDate.errors?.required">Publication date is required</div>
+				<mat-error *ngIf="bookDetailsParams.controls['publicationDate'].hasError">
+					<div *ngIf="bookDetailsParams.controls['publicationDate'].errors?.required">Publication date is required</div>
 				</mat-error>
 			</mat-form-field>
+
 
 			<mat-form-field class="cover-picture-field">
 				<input formControlName="coverPictureUrl"
 					   placeholder="Cover picture URL"
 					   matInput>
-				<mat-error *ngIf="bookDetailsParams.controls.coverPictureUrl.hasError">
-					<div *ngIf="bookDetailsParams.controls.coverPictureUrl.errors?.maxlength">The maximum length is 1000 characters</div>
+				<mat-error *ngIf="bookDetailsParams.controls['coverPictureUrl'].hasError">
+					<div *ngIf="bookDetailsParams.controls['coverPictureUrl'].errors?.maxlength">The maximum length is 1000 characters</div>
 				</mat-error>
 			</mat-form-field>
 			<mat-spinner class="spinner-placement" *ngIf="uploadingFile == true" color="primary" [diameter]="20"></mat-spinner>
 			<input class="upload-button" type="file" (change)="uploadFile($event)"/>
 
 
-
 			<mat-form-field>
-			<input formControlName="tableOfContents"
-			placeholder="Table of contents"
-			matInput>
-			<mat-error *ngIf="bookDetailsParams.controls.tableOfContents.hasError">
-			<div *ngIf="bookDetailsParams.controls.tableOfContents.errors?.maxlength">The maximum length is 100 characters</div>
-			</mat-error>
+				<input formControlName="tableOfContents"
+					   placeholder="Table of contents"
+					   matInput required>
+				<mat-error *ngIf="bookDetailsParams.controls['tableOfContents'].hasError">
+					<div *ngIf="bookDetailsParams.controls['tableOfContents'].errors?.required">Table of contents is required</div>
+					<div *ngIf="bookDetailsParams.controls['tableOfContents'].errors?.maxlength">The maximum length is 100 characters</div>
+				</mat-error>
 			</mat-form-field>
 
 			<mat-form-field>
@@ -122,8 +134,8 @@
 						placeholder="Book description"
 						matInput>
               </textarea>
-				<mat-error *ngIf="bookDetailsParams.controls.description.hasError">
-					<div *ngIf="bookDetailsParams.controls.description.errors?.maxlength">The maximum length is 1000 characters</div>
+				<mat-error *ngIf="bookDetailsParams.controls['description'].hasError">
+					<div *ngIf="bookDetailsParams.controls['description'].errors?.maxlength">The maximum length is 1000 characters</div>
 				</mat-error>
 			</mat-form-field>
 
@@ -131,7 +143,7 @@
 
 		<div class="buttons-row form-title">
 			<button mat-raised-button color="primary" type="submit" [disabled]="!bookDetailsParams.valid || selectedAuthors.length === 0 || selectedCategories.length === 0">
-				Submit
+				{{formMode}}
 			</button>
 			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()">
 				Clear
@@ -175,8 +187,11 @@
 		<ng-container matColumnDef="coverURL">
 			<th mat-header-cell *matHeaderCellDef>Cover picture</th>
 			<td mat-cell *matCellDef="let bookDetails">
-				<div>
+				<div *ngIf="bookDetails.coverPictureUrl">
 					<img class="thumbnail" src="{{bookDetails.coverPictureUrl}}">
+				</div>
+				<div *ngIf="!bookDetails.coverPictureUrl">
+					<img class="thumbnail" src="../../../../../assets/images/default-cover.png">
 				</div>
 			</td>
 		</ng-container>

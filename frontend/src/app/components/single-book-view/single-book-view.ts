@@ -12,6 +12,7 @@ import { BookDetails } from '../../models/database/entites/BookDetails';
 export class SingleBookViewComponent implements OnInit {
 
 	id: any;
+	pageLoading = true;
 	bookDetails: BookDetails = new BookDetails();
 
 	constructor(private activatedRoute: ActivatedRoute, private http: RestService) {
@@ -22,12 +23,11 @@ export class SingleBookViewComponent implements OnInit {
 			this.id = params['id'];
 		});
 		this.getBookDetails();
-		console.log(this.id);
-
 	}
 
 	async getBookDetails() {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getOne/' + this.id);
 		this.bookDetails = response.object;
+		this.pageLoading = false;
 	}
 }

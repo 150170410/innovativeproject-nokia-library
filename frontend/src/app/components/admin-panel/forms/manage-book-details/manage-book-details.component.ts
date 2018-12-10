@@ -22,6 +22,7 @@ import { API_URL } from '../../../../config';
 export class ManageBookDetailsComponent implements OnInit {
 
 	bookDetailsParams: FormGroup;
+	formMode: string = 'Add';
 	authorsFormControl = new FormControl('');
 	categoriesFormControl = new FormControl('');
 
@@ -84,8 +85,8 @@ export class ManageBookDetailsComponent implements OnInit {
 			title: ['', [Validators.required, Validators.maxLength(100)]],
 			authors: this.authorsFormControl,
 			categories: this.categoriesFormControl,
-			publicationDate: ['', [Validators.required]],
-			tableOfContents: ['', Validators.maxLength(100)],
+			publicationDate: ['', Validators.required],
+			tableOfContents: ['', Validators.required, Validators.maxLength(1000)],
 			description: ['', Validators.maxLength(1000)],
 			coverPictureUrl: ['', Validators.maxLength(1000)],
 		});
@@ -116,6 +117,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.toUpdate = null;
 					this.clearForm();
 					this.getBookDetails();
+					this.formMode = 'Add';
 					this.openSnackBar('Book details edited successfully!', 'OK');
 				}
 
@@ -230,6 +232,7 @@ export class ManageBookDetailsComponent implements OnInit {
 		});
 		this.bookDetailsParams.patchValue({ 'categories': '' });
 		this.bookDetailsParams.patchValue({ 'authors': '' });
+		this.formMode = 'Update';
 	}
 
 	async removeBookDetails(id: number) {
