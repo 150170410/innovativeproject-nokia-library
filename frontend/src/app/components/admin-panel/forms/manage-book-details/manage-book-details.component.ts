@@ -13,11 +13,12 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPa
 import { map, startWith } from 'rxjs/operators';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
 import { API_URL } from '../../../../config';
+import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 
 @Component({
 	selector: 'app-manage-book-details',
 	templateUrl: './manage-book-details.component.html',
-	styleUrls: ['./manage-book-details.component.css']
+	styleUrls: ['./manage-book-details.component.css', '../../admin-panel.component.css']
 })
 export class ManageBookDetailsComponent implements OnInit {
 
@@ -60,7 +61,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
 				private httpClient: HttpClient,
-				public snackBar: MatSnackBar,
+				public snackbar: SnackbarService,
 				private cd: ChangeDetectorRef) {
 		this.filteredAuthors = this.authorsFormControl.valueChanges.pipe(
 			startWith(null),
@@ -81,12 +82,12 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	initBookDetailsForm() {
 		this.bookDetailsParams = this.formBuilder.group({
-			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13)]],
+			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13)]], // TODO: add regex for isbn number
 			title: ['', [Validators.required, Validators.maxLength(100)]],
 			authors: this.authorsFormControl,
 			categories: this.categoriesFormControl,
 			publicationDate: ['', Validators.required],
-			tableOfContents: ['', Validators.required, Validators.maxLength(1000)],
+			tableOfContents: ['', [Validators.required, Validators.maxLength(1000)]],
 			description: ['', Validators.maxLength(1000)],
 			coverPictureUrl: ['', Validators.maxLength(1000)],
 		});
@@ -108,8 +109,12 @@ export class ManageBookDetailsComponent implements OnInit {
 				if (response.success) {
 					this.clearForm();
 					this.getBookDetails();
-					this.openSnackBar('Book details added successfully!', 'OK');
+					this.snackbar.snackSuccess('Book details added successfully!', 'OK');
+				} else {
+					this.snackbar.snackError('Error', 'OK');
 				}
+			}, (error) => {
+				this.snackbar.snackError('Unexpected error :(', 'OK');
 			});
 		} else {
 			this.http.update('bookDetails', this.toUpdate.id, body).subscribe((response) => {
@@ -118,9 +123,12 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.clearForm();
 					this.getBookDetails();
 					this.formMode = 'Add';
-					this.openSnackBar('Book details edited successfully!', 'OK');
+					this.snackbar.snackSuccess('Book details edited successfully!', 'OK');
+				} else {
+					this.snackbar.snackError('Error', 'OK');
 				}
-
+			}, (error) => {
+				this.snackbar.snackError('Unexpected error :(', 'OK');
 			});
 		}
 	}
@@ -159,7 +167,11 @@ export class ManageBookDetailsComponent implements OnInit {
 				this.bookDetailsParams
 				.patchValue({ 'coverPictureUrl': response.object });
 				this.uploadingFile = false;
+			} else {
+				this.snackbar.snackError('Error', 'OK');
 			}
+		}, (error) => {
+			this.snackbar.snackError('Unexpected error :(', 'OK');
 		})
 	}
 
@@ -238,9 +250,13 @@ export class ManageBookDetailsComponent implements OnInit {
 	async removeBookDetails(id: number) {
 		await this.http.remove('bookDetails', id).subscribe((response) => {
 			if (response.success) {
-				this.openSnackBar('Book details removed successfully!', 'OK');
+				this.snackbar.snackSuccess('Book details removed successfully!', 'OK');
+			} else {
+				this.snackbar.snackError('Error', 'OK');
 			}
 			this.getBookDetails();
+		}, (error) => {
+			this.snackbar.snackError('Unexpected error :(', 'OK');
 		});
 	}
 
@@ -378,8 +394,4 @@ export class ManageBookDetailsComponent implements OnInit {
 		return arr;
 	}
 
-	// snackbar
-	openSnackBar(message: string, action: string) {
-		this.snackBar.open(message, action);
-	}
 }

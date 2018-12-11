@@ -16,7 +16,7 @@
 					<div *ngIf="bookDetailsParams.controls['isbn'].errors?.minlength">The minimum length is 10 characters</div>
 				</mat-error>
 			</mat-form-field>
-			<button mat-raised-button color="accent" type="button" (click)="getInfoFromAPI()">Get details</button>
+			<button mat-raised-button color="accent" type="button" (click)="getInfoFromAPI()" [disabled]="!bookDetailsParams.controls['isbn'].valid">Get details</button>
 
 			<mat-form-field>
 				<input formControlName="title"
@@ -29,7 +29,7 @@
 			</mat-form-field>
 
 			<mat-form-field>
-				<mat-chip-list #chipListAuthors>
+				<mat-chip-list #chipListAuthors minlength="1">
 					<mat-chip
 						*ngFor="let author of selectedAuthors"
 						[selectable]="selectable"
@@ -40,19 +40,15 @@
 					</mat-chip>
 					<input
 						matInput
-						placeholder="Authors"
+						placeholder="Authors *"
 						#authorInput
 						[formControl]="authorsFormControl"
 						[matAutocomplete]="autoAth"
 						[matChipInputFor]="chipListAuthors"
 						[matChipInputAddOnBlur]="'true'"
 						(matChipInputTokenEnd)="addAth($event)">
-					<mat-error *ngIf="selectedAuthors.length < 1">
-						At least 1 author is required
-					</mat-error>
 				</mat-chip-list>
 				<mat-hint>At least 1 author is required</mat-hint>
-
 				<mat-autocomplete #autoAth="matAutocomplete" [autoActiveFirstOption]="true" (optionSelected)="selectedAth($event)">
 					<mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
 						{{author}}
@@ -61,7 +57,7 @@
 			</mat-form-field>
 
 			<mat-form-field class="example-chip-list">
-				<mat-chip-list #chipListCategories>
+				<mat-chip-list #chipListCategories minlength="1">
 					<mat-chip
 						*ngFor="let cat of selectedCategories"
 						[selectable]="selectable"
@@ -72,16 +68,13 @@
 					</mat-chip>
 					<input
 						matInput
-						placeholder="Category"
+						placeholder="Category *"
 						#categoryInput
 						[formControl]="categoriesFormControl"
 						[matAutocomplete]="autoCat"
 						[matChipInputFor]="chipListCategories"
 						[matChipInputAddOnBlur]="addOnBlur"
 						(matChipInputTokenEnd)="addCat($event)">
-					<mat-error *ngIf="selectedCategories.length < 1">
-						At least 1 category is required
-					</mat-error>
 				</mat-chip-list>
 				<mat-hint>At least 1 category is required</mat-hint>
 				<mat-autocomplete #autoCat="matAutocomplete" [autoActiveFirstOption]="true" (optionSelected)="selectedCat($event)">
