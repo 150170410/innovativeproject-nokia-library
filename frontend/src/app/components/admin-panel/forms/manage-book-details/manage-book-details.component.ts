@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
+import { API_URL } from 'src/app/config';
 
 @Component({
 	selector: 'app-manage-book-details',
@@ -158,7 +159,35 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	getInfoFromAPI() {
-			this.httpClient.get<any>('https://api.itbook.store/1.0/books/' + this.bookDetailsParams.get('isbn').value)
+		if(this.bookDetailsParams.get('isbn').valid){
+		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value)
+		.subscribe((response: MessageInfo)=>{
+			if (response.success) {
+				this.bookDetailsParams.patchValue({
+					'title': response.object['title'],
+					'coverPictureUrl': response.object['coverPictureUrl'],
+					'description': response.object['description'],
+					'tableOfContents': '',
+					'publicationDate': response.object['publicationDate']
+				});
+				this.allCategories = []
+				this.selectedCategories = []
+				this.allAuthors = []
+				this.selectedAuthors = []
+				console.log(response.object['authors'])
+				response.object['authors'].forEach(element => {
+					console.log(element)
+						const author = new Author(null, element.authorFullName);
+						this.selectedAuthors.push(element.authorFullName);
+						this.allAuthors.push(author);
+				});
+			}
+		});	
+	}
+	
+	
+
+		/*	this.httpClient.get<any>('https://api.itbook.store/1.0/books/' + this.bookDetailsParams.get('isbn').value)
 			.subscribe(data => {
 				if (data['title']) {
 					this.bookDetailsParams.patchValue({
@@ -192,7 +221,7 @@ export class ManageBookDetailsComponent implements OnInit {
 							this.allAuthors.push(author);
 						});
 					});
-			});
+			});*/
 	}
 
 	editBookDetails(bookDetails: BookDetails) {

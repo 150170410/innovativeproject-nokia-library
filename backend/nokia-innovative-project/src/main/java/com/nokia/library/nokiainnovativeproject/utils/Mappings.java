@@ -28,4 +28,6 @@ public class Mappings {
 
 	public static final String EMAIL = "/email";
 
+	public static final String AUTOCOMPLETION = "/autocompletion";
+
 }
