@@ -24,10 +24,6 @@ public class Reservation implements Serializable {
     @CreationTimestamp
     private Date reservationDate;
 
-    @NotNull(message = "The return date should be defined")
-    @Future(message = "The return date should be future")
-    private Date returnDate;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
