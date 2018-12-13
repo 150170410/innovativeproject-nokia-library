@@ -88,7 +88,6 @@ public class BookDetailsService {
 		bookDetails.setDescription(bookDetailsDTO.getDescription());
 		bookDetails.setCoverPictureUrl(bookDetailsDTO.getCoverPictureUrl());
 		bookDetails.setPublicationDate(bookDetailsDTO.getPublicationDate());
-		bookDetails.setTableOfContents(bookDetailsDTO.getTableOfContents());
 
 		List<Author> authorsToRemove = new ArrayList<>();
 		List<Author> existingAuthors = new ArrayList<>();

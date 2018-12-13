@@ -49,7 +49,6 @@ class BookControllerTest {
         bookDetails.setTitle("test title");
         bookDetails.setDescription("test description");
         bookDetails.setIsbn("test isbn123");
-        bookDetails.setTableOfContents("test table of contents");
         bookDetails.setCoverPictureUrl("test cover picture url");
         bookDetails.setPublicationDate(date);
         bookDetails.setAuthors(new ArrayList<>());

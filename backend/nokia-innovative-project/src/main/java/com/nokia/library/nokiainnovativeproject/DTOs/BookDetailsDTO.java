@@ -37,10 +37,7 @@ public class BookDetailsDTO {
 
 	@Past(message = "The publication date of the book should be a past date")
 	private Date publicationDate;
-
-	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
-	private String tableOfContents;
-
+	
 	@NotNull(message = "At least one book author is required.")
 	private List<Author> authors;
 

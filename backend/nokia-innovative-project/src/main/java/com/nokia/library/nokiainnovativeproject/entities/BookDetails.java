@@ -1,8 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -47,9 +45,6 @@ public class BookDetails implements Serializable {
 
 	@Past(message = "Publication date should be a past date")
 	private Date publicationDate;
-
-	@Size(max = 1000, message = "Table of contents URL can't exceed 1000 characters")
-	private String tableOfContents;
 
 	@ManyToMany(cascade = {
 			CascadeType.MERGE,
