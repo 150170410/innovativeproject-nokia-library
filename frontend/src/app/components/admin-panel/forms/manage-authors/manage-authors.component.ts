@@ -4,17 +4,18 @@ import { RestService } from '../../../../services/rest/rest.service';
 import { MessageInfo } from '../../../../models/MessageInfo';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
-import { MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 
 @Component({
 	selector: 'app-manage-authors',
 	templateUrl: './manage-authors.component.html',
-	styleUrls: ['./manage-authors.component.css']
+	styleUrls: ['./manage-authors.component.css', '../../admin-panel.component.css']
 })
 export class ManageAuthorsComponent implements OnInit {
 
 	authorParams: FormGroup;
-
+	formMode: string = 'Add';
 	toUpdate: Author = null;
 
 	//table
@@ -25,7 +26,7 @@ export class ManageAuthorsComponent implements OnInit {
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
-				public snackBar: MatSnackBar) {
+				public snackbar: SnackbarService) {
 	}
 
 	ngOnInit() {
@@ -44,19 +45,29 @@ export class ManageAuthorsComponent implements OnInit {
 			params.value.authorFullName);
 		if (!this.toUpdate) {
 			this.http.save('author', body).subscribe((response) => {
-				if(response.success){
-					this.openSnackBar('Author added successfully!', 'OK');
+				if (response.success) {
+					this.clearForm();
+					this.getAuthors();
+					this.snackbar.snackSuccess('Author added successfully!', 'OK');
+				} else {
+					this.snackbar.snackError('Error', 'OK');
 				}
-				this.getAuthors();
+			}, (error) => {
+				this.snackbar.snackError('Unexpected error :(', 'OK');
 			});
 		} else {
 			this.http.update('author', this.toUpdate.id, body).subscribe((response) => {
-				if(response.success){
-					this.openSnackBar('Author edited successfully!', 'OK');
+				if (response.success) {
+					this.toUpdate = null;
+					this.clearForm();
+					this.getAuthors();
+					this.formMode = 'Add';
+					this.snackbar.snackSuccess('Author updated successfully!', 'OK');
+				} else {
+					this.snackbar.snackError('Error', 'OK');
 				}
-				this.getAuthors();
-				this.toUpdate = null;
-				this.clearForm();
+			}, (error) => {
+				this.snackbar.snackError('Unexpected error', 'OK');
 			});
 		}
 	}
@@ -71,20 +82,26 @@ export class ManageAuthorsComponent implements OnInit {
 		this.authorParams.patchValue({
 			'authorFullName': author.authorFullName,
 		});
+		this.formMode = 'Update';
 		this.toUpdate = author;
 	}
 
 	async removeAuthor(id: number) {
 		await this.http.remove('author', id).subscribe((response) => {
-			if(response.success){
-				this.openSnackBar('Author removed successfully!', 'OK');
+			if (response.success) {
+				this.snackbar.snackSuccess('Author removed successfully!', 'OK');
+			} else {
+				this.snackbar.snackError('Error', 'OK');
 			}
 			this.getAuthors();
+		}, (error) => {
+			this.snackbar.snackError('Unexpected error :(', 'OK');
 		});
 	}
 
 	clearForm() {
 		this.authorParams.reset();
+		this.authorParams.markAsPristine();
 		this.authorParams.markAsUntouched();
 	}
 
@@ -92,15 +109,4 @@ export class ManageAuthorsComponent implements OnInit {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	autoFillAuthorForm() {
-		this.authorParams.patchValue({
-			'authorFullName': 'J.R.R. Tolkien'
-		});
-	}
-
-	openSnackBar(message: string, action: string) {
-		this.snackBar.open(message, action, {
-			duration: 3000,
-		});
-	}
 }

@@ -1,6 +1,7 @@
 <mat-card>
 	<mat-card-header routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" class="cursor-pointer">
-		<img mat-card-avatar src="{{bookDetails.coverPictureUrl}}">
+		<img *ngIf="bookDetails.coverPictureUrl" mat-card-avatar src="{{bookDetails.coverPictureUrl}}">
+		<img *ngIf="!bookDetails.coverPictureUrl" mat-card-avatar src="../../../../assets/images/default-cover.png">
 		<mat-card-title> {{bookDetails.title}}</mat-card-title>
 		<mat-card-subtitle>
 			<h5>
@@ -17,11 +18,11 @@
 		</p>
 	</mat-card-content>
 	<mat-card-actions>
-		<button mat-raised-button color="accent">
+		<button mat-raised-button color="accent" disabled>
 			<mat-icon>done</mat-icon>
 			Borrow book
 		</button>
-		<button mat-raised-button>
+		<button mat-raised-button disabled>
 			<mat-icon>star</mat-icon>
 			Reserve book
 		</button>

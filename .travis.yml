@@ -9,7 +9,7 @@ services:
   - docker
 before_install:
   - npm install -g @angular/cli
-stages: 
+stages:
   - name: test
   - name: build
   - name: docker_build
@@ -20,15 +20,15 @@ jobs:
   include:
       - stage: test
         script:
-         - cd backend/nokia-innovative-project 
-         - chmod +x mvnw 
+         - cd backend/nokia-innovative-project
+         - chmod +x mvnw
          - mvn test
       - stage: build
         script:
          - cd frontend
-         - npm i 
+         - npm i
          - ng build --prod
-         - cd ../backend/nokia-innovative-project 
+         - cd ../backend/nokia-innovative-project
          - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       - stage: docker_build
         script:
@@ -44,7 +44,7 @@ jobs:
           - docker push $DOCKER_USERNAME/nokia.inno.lib.be:$TAG
           - docker push $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG
       - stage: deploy
-        script: 
+        script:
           - curl https://cli-assets.heroku.com/install-standalone.sh | sh
           - docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com
           - cd backend/nokia-innovative-project
@@ -57,8 +57,8 @@ jobs:
           - docker build -t registry.heroku.com/nokia-library-client/web -f Dockerfile.prod .
           - docker push registry.heroku.com/nokia-library-api/web
           - docker push registry.heroku.com/nokia-library-client/web
-          - /usr/local/bin/heroku container:release web -a nokia-library-api 
-          - /usr/local/bin/heroku container:release web -a nokia-library-client 
+          - /usr/local/bin/heroku container:release web -a nokia-library-api
+          - /usr/local/bin/heroku container:release web -a nokia-library-client
 cache:
    directories:
     - $HOME/.m2

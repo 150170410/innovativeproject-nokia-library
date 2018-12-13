@@ -35,10 +35,10 @@
 }
 
 .content-all {
-	/*background: #d1eaff;*/
-	background: url(https://i.imgur.com/0gwQmWl.jpg) no-repeat;
-	background-size: cover;
-	height: calc(100vh - 64spx);
+	background: #d1eaff;
+	/*background: url(https://i.imgur.com/0gwQmWl.jpg) no-repeat;*/
+	/*background-size: cover;*/
+	/*height: calc(100vh - 64spx);*/
 }
 
 .footer {
@@ -59,4 +59,11 @@
 
 .content{
 	flex: 1;
+}
+
+.innovative-projects {
+	width: 150px;
+	position: fixed;
+	bottom: 1rem;
+	right: 2rem;
 }

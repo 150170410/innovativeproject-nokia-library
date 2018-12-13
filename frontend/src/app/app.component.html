@@ -2,43 +2,21 @@
 <mat-sidenav-container class="content-all">
 	<mat-sidenav class="sidenav-menu" #sidenav (keydown.escape)="sidenav.close()">
 
-		<mat-list>
-			<mat-list-item>
-				<h2>Options:</h2>
-			</mat-list-item>
-			<mat-list-item>
-				<button (click)="sidenav.toggle()" color="primary" mat-raised-button routerLink="/homepage" routerLinkActive="active">
-					<mat-icon>home</mat-icon>
-					Homepage
-				</button>
-			</mat-list-item>
-			<mat-list-item>
-				<button (click)="sidenav.toggle()" color="primary" mat-raised-button routerLink="/user-panel" routerLinkActive="active">
-					<mat-icon>library_books</mat-icon>
-					User panel
-				</button>
-			</mat-list-item>
-			<mat-list-item>
-				<button (click)="sidenav.toggle()" color="primary" mat-raised-button routerLink="/admin-panel" routerLinkActive="active">
-					<mat-icon>ballot</mat-icon>
-					Admin panel
-				</button>
-			</mat-list-item>
-
-		</mat-list>
 	</mat-sidenav>
 
 
-	<mat-sidenav-content >
+	<mat-sidenav-content>
 		<div class="main-content site">
 			<mat-card class="content">
 				<router-outlet></router-outlet>
 			</mat-card>
-			<div class="footer" >
+			<div class="footer">
 				<div>Nokia Library v0.1</div>
+				<!--<div><img src="../assets/images/innovative_logo.png"></div>-->
 				<div>2018-2019</div>
 			</div>
 		</div>
 
+		<img src="../assets/images/innovative_logo.png" class="innovative-projects" >
 	</mat-sidenav-content>
 </mat-sidenav-container>
