@@ -8,6 +8,7 @@
 				<input formControlName="isbn"
 					   placeholder="ISBN number"
 					   matInput required>
+				<mat-hint>ISBN must be 10 or 13 digits</mat-hint>
 				<mat-error *ngIf="bookDetailsParams.controls['isbn'].hasError">
 					<div *ngIf="bookDetailsParams.controls['isbn'].errors?.required">
 						ISBN number is required
@@ -22,6 +23,7 @@
 				<input formControlName="title"
 					   placeholder="Title"
 					   matInput required>
+				<mat-hint>Title is required</mat-hint>
 				<mat-error *ngIf="bookDetailsParams.controls['title'].hasError">
 					<div *ngIf="bookDetailsParams.controls['title'].errors?.required">Title is required</div>
 					<div *ngIf="bookDetailsParams.controls['title'].errors?.maxlength">The maximum length is 100 characters</div>
@@ -91,9 +93,9 @@
 					   [max]="maxDate"
 					   placeholder="Publication date"
 					   matInput required>
+				<mat-hint>Publication date is required</mat-hint>
 				<mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
 				<mat-datepicker startView="multi-year" #myDatepicker></mat-datepicker>
-
 				<mat-error *ngIf="bookDetailsParams.controls['publicationDate'].hasError">
 					<div *ngIf="bookDetailsParams.controls['publicationDate'].errors?.required">Publication date is required</div>
 				</mat-error>
@@ -104,6 +106,7 @@
 				<input formControlName="coverPictureUrl"
 					   placeholder="Cover picture URL"
 					   matInput>
+				<mat-hint>File can't be larger than 5 MB</mat-hint>
 				<mat-error *ngIf="bookDetailsParams.controls['coverPictureUrl'].hasError">
 					<div *ngIf="bookDetailsParams.controls['coverPictureUrl'].errors?.maxlength">The maximum length is 1000 characters</div>
 				</mat-error>
@@ -111,16 +114,6 @@
 			<mat-spinner class="spinner-placement" *ngIf="uploadingFile == true" color="primary" [diameter]="20"></mat-spinner>
 			<input class="upload-button" type="file" (change)="uploadFile($event)"/>
 
-
-			<mat-form-field>
-				<input formControlName="tableOfContents"
-					   placeholder="Table of contents"
-					   matInput required>
-				<mat-error *ngIf="bookDetailsParams.controls['tableOfContents'].hasError">
-					<div *ngIf="bookDetailsParams.controls['tableOfContents'].errors?.required">Table of contents is required</div>
-					<div *ngIf="bookDetailsParams.controls['tableOfContents'].errors?.maxlength">The maximum length is 100 characters</div>
-				</mat-error>
-			</mat-form-field>
 
 			<mat-form-field>
               <textarea formControlName="description"

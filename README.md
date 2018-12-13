@@ -17,7 +17,7 @@ For all users:
 * requesting new book,
 * reminder about returning a book,
 * notification about book availability,
-* contact with developers form (report a bug, request new feature),
+* contact with developers (report a bug, request new feature),
 * reviewing a book,
 * user accounts.
 

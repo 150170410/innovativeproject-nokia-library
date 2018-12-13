@@ -82,12 +82,11 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	initBookDetailsForm() {
 		this.bookDetailsParams = this.formBuilder.group({
-			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13)]], // TODO: add regex for isbn number
+			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13), Validators.pattern('^[0-9]+')]], // TODO: fix regex for ISBN
 			title: ['', [Validators.required, Validators.maxLength(100)]],
 			authors: this.authorsFormControl,
 			categories: this.categoriesFormControl,
 			publicationDate: ['', Validators.required],
-			tableOfContents: ['', [Validators.required, Validators.maxLength(1000)]],
 			description: ['', Validators.maxLength(1000)],
 			coverPictureUrl: ['', Validators.maxLength(1000)],
 		});
@@ -160,19 +159,27 @@ export class ManageBookDetailsComponent implements OnInit {
 	uploadFile(event) {
 		this.uploadingFile = true;
 		this.fileToUpload = <File>event.target.files[0];
-		const fd = new FormData();
-		fd.append('picture', this.fileToUpload);
-		this.httpClient.post(API_URL + '/api/v1/pictures/upload', fd).subscribe((response: MessageInfo) => {
-			if (response.success) {
-				this.bookDetailsParams
-				.patchValue({ 'coverPictureUrl': response.object });
+		if (this.fileToUpload.size <= 5000000) {
+			const fd = new FormData();
+			fd.append('picture', this.fileToUpload);
+			this.httpClient.post(API_URL + '/api/v1/pictures/upload', fd).subscribe((response: MessageInfo) => {
+				if (response.success) {
+					this.bookDetailsParams
+					.patchValue({ 'coverPictureUrl': response.object });
+				} else {
+					this.snackbar.snackError('Error', 'OK');
+				}
 				this.uploadingFile = false;
-			} else {
-				this.snackbar.snackError('Error', 'OK');
-			}
-		}, (error) => {
-			this.snackbar.snackError('Unexpected error :(', 'OK');
-		})
+			}, (error) => {
+				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.uploadingFile = false;
+			})
+		} else {
+			this.snackbar.snackError('File is too big!', 'OK');
+			this.uploadingFile = false;
+		}
+
+
 	}
 
 	getInfoFromAPI() {
@@ -183,7 +190,6 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.bookDetailsParams.patchValue({
 						'coverPictureUrl': data['image'],
 						'description': data['desc'],
-						'tableOfContents': 'string',
 						'title': data['title'],
 					});
 					const authors = data['authors'].toString().trim().split(", ");
@@ -200,7 +206,6 @@ export class ManageBookDetailsComponent implements OnInit {
 						this.bookDetailsParams.patchValue({
 							'coverPictureUrl': data['items'][0].volumeInfo.imageLinks.thumbnail,
 							'description': data['items'][0].volumeInfo.description,
-							'tableOfContents': 'string',
 							'title': data['items'][0].volumeInfo.title,
 						});
 						const authors = data['items'][0].volumeInfo.authors;
