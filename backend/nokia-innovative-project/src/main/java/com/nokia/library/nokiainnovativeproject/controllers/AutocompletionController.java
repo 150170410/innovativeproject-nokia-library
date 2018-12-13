@@ -23,11 +23,15 @@ public class AutocompletionController {
     private final AutocompletionService autocompletionService;
 
     @GetMapping(Mappings.GET_ALL)
-    public MessageInfo getBookDetails(@RequestParam String isbn) throws ParseException {
+    public MessageInfo getBookDetails(@RequestParam String isbn) {
         List<BookDetailsDTO> list = new ArrayList<>();
-        list.add(autocompletionService.getBookDetailsFromApiItBookStore(isbn));
-        list.add(autocompletionService.getBookDetailsFromApiGoogle(isbn));
-        return MessageInfo.success(list, Arrays.asList("bookDetails"));
+        BookDetailsDTO bookDetailsItBookStore = autocompletionService.getBookDetailsFromApiItBookStore(isbn);
+        if(bookDetailsItBookStore != null)
+        list.add(bookDetailsItBookStore);
+        BookDetailsDTO bookDetailsGoogle = autocompletionService.getBookDetailsFromApiGoogle(isbn);
+        if(bookDetailsGoogle  != null)
+        list.add(bookDetailsGoogle);
+        return list.isEmpty() ? MessageInfo.failure(Arrays.asList("Book details with this isbn not found.")) : MessageInfo.success(list, Arrays.asList("bookDetails"));
     }
 
 }

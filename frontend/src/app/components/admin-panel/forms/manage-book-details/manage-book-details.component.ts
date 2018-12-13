@@ -210,12 +210,16 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value)
 		.subscribe((response: MessageInfo)=>{
 			if (response.success) {
+				console.log(response.object)
 				this.availableTitles = [];
 				this.availableBookDetails = response.object;
 				response.object.forEach(element => {
 					this.mapBookDetails.set(element.title, element);
 					this.availableTitles.push(element.title);
 				});
+				this.snackbar.snackSuccess('I have found something. Check title', 'OK');
+			} else {
+				this.snackbar.snackError('Nothing found', 'OK');
 			}
 		}, (error) =>{
 				this.snackbar.snackError('Unexpected error :(', 'OK');});	
