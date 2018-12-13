@@ -86,12 +86,12 @@ INSERT INTO book_details_authors VALUES (7, 4);
 INSERT INTO book_details_authors VALUES (7, 5);
 
 
-INSERT INTO book (book_details_id, comments) VALUES (1, 'dirty');
-INSERT INTO book (book_details_id, comments) VALUES (2, 'missing pages');
-INSERT INTO book (book_details_id, comments) VALUES (3, 'bad');
-INSERT INTO book (book_details_id, comments) VALUES (4, 'cool');
-INSERT INTO book (book_details_id, comments) VALUES (5, 'stupid');
-INSERT INTO book (book_details_id, comments) VALUES (6, 'lame');
+INSERT INTO book (signature, book_details_id, comments) VALUES ('booka', 1, 'dirty');
+INSERT INTO book (signature,book_details_id, comments) VALUES ('bookB',2, 'missing pages');
+INSERT INTO book (signature,book_details_id, comments) VALUES ('YHNANK',3, 'bad');
+INSERT INTO book (signature,book_details_id, comments) VALUES ('ALMNUM',4, 'cool');
+INSERT INTO book (signature,book_details_id, comments) VALUES ('SIG123',5, 'stupid');
+INSERT INTO book (signature,book_details_id, comments) VALUES ('OUF',6, 'lame');
 
 
 
