@@ -183,7 +183,6 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	getInfoFromAPI() {
-		if (this.bookDetailsParams.get('isbn').value.length == 13) {
 			this.httpClient.get<any>('https://api.itbook.store/1.0/books/' + this.bookDetailsParams.get('isbn').value)
 			.subscribe(data => {
 				if (data['title']) {
@@ -210,19 +209,13 @@ export class ManageBookDetailsComponent implements OnInit {
 						});
 						const authors = data['items'][0].volumeInfo.authors;
 						authors.forEach(element => {
-							const author = element.trim().toString().split(" ");
-							if (this.selectedAuthors) {
-
-								// this.selectedAuthors.push({
-								// 	id: Math.random(),
-								// 	authorFullName: author[0],
-								// 	authorSurname: author[author.length - 1]
-								// });
-							}
+							const authorDTO = new AuthorDTO(element);
+							const author = new Author(null, element);
+							this.selectedAuthors.push(element);
+							this.allAuthors.push(author);
 						});
 					});
 			});
-		}
 	}
 
 	editBookDetails(bookDetails: BookDetails) {
