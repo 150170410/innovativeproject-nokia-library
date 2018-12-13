@@ -51,6 +51,12 @@ export class ManageBookDetailsComponent implements OnInit {
 	selectedAuthors: string[] = [];
 	filteredAuthors: Observable<string[]>;
 
+	availableBookDetails: BookDetails[] = [];
+	mapBookDetails = new Map();
+
+	availableTitles: string[] = [];
+
+
 	// table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookDetails>();
@@ -149,7 +155,7 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.fileToUpload = <File>event.target.files[0];
 		const fd = new FormData();
 		fd.append('picture', this.fileToUpload);
-		this.httpClient.post('http://localhost:8081/api/v1/pictures/upload', fd).subscribe((response: MessageInfo) => {
+		this.httpClient.post(API_URL + '/api/v1/pictures/upload', fd).subscribe((response: MessageInfo) => {
 			if (response.success) {
 				this.bookDetailsParams
 				.patchValue({ 'coverPictureUrl': response.object });
@@ -158,70 +164,37 @@ export class ManageBookDetailsComponent implements OnInit {
 		})
 	}
 
+	selectedTitle(event: MatAutocompleteSelectedEvent): void {
+		const selectedBookDetails = this.mapBookDetails.get(this.bookDetailsParams.get('title').value);
+		this.allCategories = [];
+		this.selectedCategories = [];
+		this.allAuthors = [];
+		this.selectedAuthors = [];
+		this.bookDetailsParams.patchValue({
+			'title': selectedBookDetails['title'],
+			'coverPictureUrl': selectedBookDetails['coverPictureUrl'],
+			'description': selectedBookDetails['description'],
+			'publicationDate': new Date(selectedBookDetails['publicationDate'])
+		});
+		selectedBookDetails['authors'].forEach(element => {
+			const author = new Author(null, element.authorFullName);
+			this.selectedAuthors.push(element.authorFullName);
+			this.allAuthors.push(author);
+		});
+	}
+
 	getInfoFromAPI() {
-		if(this.bookDetailsParams.get('isbn').valid){
 		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value)
 		.subscribe((response: MessageInfo)=>{
 			if (response.success) {
-				this.bookDetailsParams.patchValue({
-					'title': response.object['title'],
-					'coverPictureUrl': response.object['coverPictureUrl'],
-					'description': response.object['description'],
-					'tableOfContents': '',
-					'publicationDate': response.object['publicationDate']
-				});
-				this.allCategories = []
-				this.selectedCategories = []
-				this.allAuthors = []
-				this.selectedAuthors = []
-				console.log(response.object['authors'])
-				response.object['authors'].forEach(element => {
-					console.log(element)
-						const author = new Author(null, element.authorFullName);
-						this.selectedAuthors.push(element.authorFullName);
-						this.allAuthors.push(author);
+				this.availableTitles = [];
+				this.availableBookDetails = response.object;
+				response.object.forEach(element => {
+					this.mapBookDetails.set(element.title, element);
+					this.availableTitles.push(element.title);
 				});
 			}
 		});	
-	}
-	
-	
-
-		/*	this.httpClient.get<any>('https://api.itbook.store/1.0/books/' + this.bookDetailsParams.get('isbn').value)
-			.subscribe(data => {
-				if (data['title']) {
-					this.bookDetailsParams.patchValue({
-						'coverPictureUrl': data['image'],
-						'description': data['desc'],
-						'tableOfContents': 'string',
-						'title': data['title'],
-					});
-					const authors = data['authors'].toString().trim().split(", ");
-					authors.forEach(element => {
-						const authorDTO = new AuthorDTO(element);
-						const author = new Author(null, element);
-						this.selectedAuthors.push(element);
-						this.allAuthors.push(author);
-
-					});
-				} else
-					this.httpClient.get<any>('https://www.googleapis.com/books/v1/volumes?q=' + this.bookDetailsParams.get('isbn').value)
-					.subscribe(data => {
-						this.bookDetailsParams.patchValue({
-							'coverPictureUrl': data['items'][0].volumeInfo.imageLinks.thumbnail,
-							'description': data['items'][0].volumeInfo.description,
-							'tableOfContents': 'string',
-							'title': data['items'][0].volumeInfo.title,
-						});
-						const authors = data['items'][0].volumeInfo.authors;
-						authors.forEach(element => {
-							const authorDTO = new AuthorDTO(element);
-							const author = new Author(null, element);
-							this.selectedAuthors.push(element);
-							this.allAuthors.push(author);
-						});
-					});
-			});*/
 	}
 
 	editBookDetails(bookDetails: BookDetails) {

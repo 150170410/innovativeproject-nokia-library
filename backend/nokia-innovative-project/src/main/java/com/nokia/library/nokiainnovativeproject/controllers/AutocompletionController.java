@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 
@@ -22,10 +24,10 @@ public class AutocompletionController {
 
     @GetMapping(Mappings.GET_ALL)
     public MessageInfo getBookDetails(@RequestParam String isbn) throws ParseException {
-        BookDetailsDTO bookDetailsDTO = autocompletionService.getBookDetailsFromApiItBookStore(isbn);
-        if(bookDetailsDTO == null)
-            bookDetailsDTO = autocompletionService.getBookDetailsFromApiGoogle(isbn);
-        return MessageInfo.success(bookDetailsDTO, Arrays.asList("bookDetails"));
+        List<BookDetailsDTO> list = new ArrayList<>();
+        list.add(autocompletionService.getBookDetailsFromApiItBookStore(isbn));
+        list.add(autocompletionService.getBookDetailsFromApiGoogle(isbn));
+        return MessageInfo.success(list, Arrays.asList("bookDetails"));
     }
 
 }

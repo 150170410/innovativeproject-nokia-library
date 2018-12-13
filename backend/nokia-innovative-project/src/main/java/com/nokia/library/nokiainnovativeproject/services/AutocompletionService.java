@@ -3,18 +3,13 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Author;
 import lombok.RequiredArgsConstructor;
-import org.cloudinary.json.JSONArray;
 import org.cloudinary.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +30,10 @@ public class AutocompletionService {
 
         if(bookJSON.has("title")) {
             bookDetailsDTO = new BookDetailsDTO();
-            bookDetailsDTO.setIsbn(bookJSON.getString("isbn13"));
             bookDetailsDTO.setTitle(bookJSON.getString("title"));
+            if(bookJSON.has("image"))
             bookDetailsDTO.setCoverPictureUrl(bookJSON.getString("image"));
+            if(bookJSON.has("desc"))
             bookDetailsDTO.setDescription(bookJSON.getString("desc"));
             String[] authors = bookJSON.getString("authors").split(", ");
             List<Author> authorList = new ArrayList<>();
@@ -46,10 +42,14 @@ public class AutocompletionService {
                 author.setAuthorFullName(name);
                 authorList.add(author);
             }
-            bookDetailsDTO.setAuthors(authorList);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
-            Date date = formatter.parse(bookJSON.getString("year"));
-            bookDetailsDTO.setPublicationDate(date);
+            if(bookJSON.has("year")) {
+                bookDetailsDTO.setAuthors(authorList);
+                Calendar calendar = Calendar.getInstance();
+                calendar.clear();
+                calendar.set(Calendar.YEAR, Integer.parseInt(bookJSON.getString("year").substring(0, 4)) + 1);
+                Date date = calendar.getTime();
+                bookDetailsDTO.setPublicationDate(date);
+            }
         }
         return bookDetailsDTO;
     }
@@ -69,13 +69,10 @@ public class AutocompletionService {
         if(responseJSON.getInt("totalItems") > 0) {
             bookDetailsDTO = new BookDetailsDTO();
             JSONObject volumeInfo = responseJSON.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo");
-            JSONArray identifiers = volumeInfo.getJSONArray("industryIdentifiers");
-            for(int i = 0; i < identifiers.length(); i++){
-                if(identifiers.getJSONObject(i).get("type").equals("ISBN_13") || identifiers.getJSONObject(i).get("type").equals("ISBN_10"))
-                    bookDetailsDTO.setIsbn(identifiers.getJSONObject(i).getString("identifier"));
-            }
             bookDetailsDTO.setTitle(volumeInfo.getString("title"));
+            if(volumeInfo.has("imageLinks"))
             bookDetailsDTO.setCoverPictureUrl(volumeInfo.getJSONObject("imageLinks").getString("thumbnail"));
+            if(volumeInfo.has("description"))
             bookDetailsDTO.setDescription(volumeInfo.getString("description"));
             List<Author> authorList = new ArrayList<>();
             String[] authors = volumeInfo.getJSONArray("authors").toString()
@@ -89,9 +86,13 @@ public class AutocompletionService {
                 authorList.add(author);
             }
             bookDetailsDTO.setAuthors(authorList);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = formatter.parse(volumeInfo.getString("publishedDate"));
-            bookDetailsDTO.setPublicationDate(date);
+            if(volumeInfo.has("publishedDate")) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.clear();
+                calendar.set(Calendar.YEAR, Integer.parseInt(volumeInfo.getString("publishedDate").substring(0, 4)) + 1);
+                Date date = calendar.getTime();
+                bookDetailsDTO.setPublicationDate(date);
+            }
         }
         return bookDetailsDTO;
     }

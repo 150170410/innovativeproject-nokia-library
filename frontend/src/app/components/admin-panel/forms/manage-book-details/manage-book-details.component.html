@@ -21,11 +21,17 @@
 			<mat-form-field>
 				<input formControlName="title"
 					   placeholder="Title"
-					   matInput required>
+					   matInput required
+					   [matAutocomplete]="autoTitle">
 				<mat-error *ngIf="bookDetailsParams.controls.title.hasError">
 					<div *ngIf="bookDetailsParams.controls.title.errors?.required">Title is required</div>
 					<div *ngIf="bookDetailsParams.controls.title.errors?.maxlength">The maximum length is 100 characters</div>
 				</mat-error>
+				<mat-autocomplete #autoTitle="matAutocomplete" [autoActiveFirstOption]="true" (optionSelected)="selectedTitle($event)">
+					<mat-option *ngFor="let title of availableTitles" [value]="title">
+						{{(title)}}
+					</mat-option>
+				</mat-autocomplete>
 			</mat-form-field>
 
 			<mat-form-field>
