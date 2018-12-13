@@ -9,9 +9,8 @@ import { Author } from '../../../../models/database/entites/Author';
 import { BookDetails } from '../../../../models/database/entites/BookDetails';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatTableDataSource } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
-import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
 import { API_URL } from '../../../../config';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 
@@ -184,7 +183,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	getInfoFromAPI() {
 			this.httpClient.get<any>('https://api.itbook.store/1.0/books/' + this.bookDetailsParams.get('isbn').value)
-			.subscribe(data => {
+			.subscribe((data) => {
 				if (data['title']) {
 					this.bookDetailsParams.patchValue({
 						'coverPictureUrl': data['image'],
@@ -193,11 +192,9 @@ export class ManageBookDetailsComponent implements OnInit {
 					});
 					const authors = data['authors'].toString().trim().split(", ");
 					authors.forEach(element => {
-						const authorDTO = new AuthorDTO(element);
 						const author = new Author(null, element);
 						this.selectedAuthors.push(element);
 						this.allAuthors.push(author);
-
 					});
 				} else
 					this.httpClient.get<any>('https://www.googleapis.com/books/v1/volumes?q=' + this.bookDetailsParams.get('isbn').value)
@@ -209,12 +206,13 @@ export class ManageBookDetailsComponent implements OnInit {
 						});
 						const authors = data['items'][0].volumeInfo.authors;
 						authors.forEach(element => {
-							const authorDTO = new AuthorDTO(element);
 							const author = new Author(null, element);
 							this.selectedAuthors.push(element);
 							this.allAuthors.push(author);
 						});
 					});
+			}, (error) =>{
+				this.snackbar.snackError('Unexpected error :(', 'OK');
 			});
 	}
 
