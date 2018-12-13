@@ -1,0 +1,69 @@
+table {
+	width: 100%;
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+th {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+th, tr, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+.input-button {
+	width: 60%;
+}
+
+mat-form-field {
+	width: 500px;
+}
+
+.isbn-field {
+	width: 400px;
+}
+.cover-picture-field{
+	width: 280px;
+}
+
+.form-wrapper {
+	width: 500px;
+	margin: auto;
+}
+
+.button-spacer {
+	margin-left: 10px;
+}
+
+.buttons-row{
+	margin-top: 10px;
+}
+
+.filter-paginator-wrapper {
+	display: flex;
+	justify-content: space-between;
+}
+
+.paginator {
+
+}
+
+.filter mat-form-field{
+	width: 150px;
+}
+
+.thumbnail{
+	max-height: 80px;
+}
+
+.upload-button{
+	display: inline-block;
+	width: 200px;
+}
+
+mat-spinner {
+	display: inline-block;
+}

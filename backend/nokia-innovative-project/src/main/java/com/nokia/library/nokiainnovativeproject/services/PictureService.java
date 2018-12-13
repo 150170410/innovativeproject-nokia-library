@@ -1,7 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.Singleton;
 import com.cloudinary.utils.ObjectUtils;
 import com.nokia.library.nokiainnovativeproject.exceptions.TypeNotSupportedException;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;

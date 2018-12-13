@@ -7,6 +7,7 @@ import { HomepageComponent } from './utils/components/homepage/homepage.componen
 import { NavbarComponent } from './utils/components/navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
+	MAT_SNACK_BAR_DEFAULT_OPTIONS,
 	MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatNativeDateModule,
 	MatPaginatorModule, MatProgressBarModule, MatProgressSpinnerModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule, MatStepperModule, MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule
 } from '@angular/material';
@@ -130,7 +131,8 @@ import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
 		MatPaginatorModule,
 		MatNativeDateModule
 	],
-	providers: [BookService, RestService, SidenavService],
+	providers: [BookService, RestService, SidenavService,
+		{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}],
 	bootstrap: [AppComponent]
 })
 export class AppModule {

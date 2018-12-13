@@ -1,5 +1,9 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -17,6 +21,9 @@ import java.util.List;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
 public class BookDetails implements Serializable {
 
 	@Id
@@ -41,7 +48,7 @@ public class BookDetails implements Serializable {
 	@Past(message = "Publication date should be a past date")
 	private Date publicationDate;
 
-	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
+	@Size(max = 1000, message = "Table of contents URL can't exceed 1000 characters")
 	private String tableOfContents;
 
 	@ManyToMany(cascade = {

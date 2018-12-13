@@ -1,9 +1,11 @@
+import { Book } from './Book';
+
 export class BookDetails {
 	authors: [{
 		authorFullName: string;
 		id: number
 	}];
-	books: []
+	books: Book[]
 	categories: [{
 		bookCategoryName: string;
 		id: number

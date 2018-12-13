@@ -4,17 +4,18 @@ import { MessageInfo } from '../../../../models/MessageInfo';
 import { BookCategory } from '../../../../models/database/entites/BookCategory';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookCategoryDTO } from '../../../../models/database/DTOs/BookCategoryDTO';
-import { MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 
 @Component({
 	selector: 'app-manage-categories',
 	templateUrl: './manage-categories.component.html',
-	styleUrls: ['./manage-categories.component.css']
+	styleUrls: ['./manage-categories.component.css', '../../admin-panel.component.css']
 })
 export class ManageCategoriesComponent implements OnInit {
 
 	categoryParams: FormGroup;
-
+	formMode: string = 'Add';
 	toUpdate: BookCategory = null;
 
 	//table
@@ -24,7 +25,7 @@ export class ManageCategoriesComponent implements OnInit {
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
-				public snackBar: MatSnackBar) {
+				public snackbar: SnackbarService) {
 	}
 
 	ngOnInit() {
@@ -42,19 +43,29 @@ export class ManageCategoriesComponent implements OnInit {
 		const body = new BookCategoryDTO(params.value.categoryName);
 		if (!this.toUpdate) {
 			this.http.save('bookCategory', body).subscribe((response) => {
-				this.getCategories();
-				if(response.success){
-					this.openSnackBar('Category added successfully!', 'OK');
+				if (response.success) {
+					this.clearForm();
+					this.getCategories();
+					this.snackbar.snackSuccess('Category added successfully!', 'OK');
+				} else {
+					this.snackbar.snackError('Error', 'OK');
 				}
+			}, (error) => {
+				this.snackbar.snackError('Unexpected error :(', 'OK');
 			});
 		} else {
 			this.http.update('bookCategory', this.toUpdate.id, body).subscribe((response) => {
-				if(response.success){
-					this.openSnackBar('Category edited successfully!', 'OK');
+				if (response.success) {
+					this.toUpdate = null;
+					this.clearForm();
+					this.getCategories();
+					this.formMode = 'Add';
+					this.snackbar.snackSuccess('Category edited successfully!', 'OK');
+				} else {
+					this.snackbar.snackError('Error', 'OK');
 				}
-				this.getCategories();
-				this.toUpdate = null;
-				this.clearForm();
+			}, (error) => {
+				this.snackbar.snackError('Unexpected error :(', 'OK');
 			});
 		}
 	}
@@ -69,35 +80,30 @@ export class ManageCategoriesComponent implements OnInit {
 		this.categoryParams.patchValue({
 			'categoryName': category.bookCategoryName
 		});
-
+		this.formMode = 'Update';
 		this.toUpdate = category;
 	}
 
 	async removeCategory(id: number) {
 		await this.http.remove('bookCategory', id).subscribe((response) => {
-			if(response.success){
-				this.openSnackBar('Category removed successfully!', 'OK');
+			if (response.success) {
+				this.snackbar.snackSuccess('Category removed successfully!', 'OK');
+				this.getCategories();
+			} else {
+				this.snackbar.snackError('Error', 'OK');
 			}
-			this.getCategories();
+		}, (error) => {
+			this.snackbar.snackError('Unexpected error :(', 'OK');
 		});
 	}
 
 	clearForm() {
 		this.categoryParams.reset();
+		this.categoryParams.markAsPristine();
 		this.categoryParams.markAsUntouched();
 	}
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
-	}
-
-	autoFillCategoryForm() {
-		this.categoryParams.patchValue({ 'categoryName': 'cat' + Math.floor(Math.random() * 100) });
-	}
-
-	openSnackBar(message: string, action: string) {
-		this.snackBar.open(message, action, {
-			duration: 3000,
-		});
 	}
 }

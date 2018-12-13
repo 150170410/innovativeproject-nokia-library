@@ -6,69 +6,69 @@
 @include mat-core();
 
 $nokia-main-color: (
-  50 : #e3e8f2,
-  100 : #b8c6de,
-  200 : #89a0c8,
-  300 : #597ab2,
-  400 : #365ea2,
-  500 : #124191,
-  600 : #103b89,
-  700 : #0d327e,
-  800 : #0a2a74,
-  900 : #051c62,
-  A100 : #93a7ff,
-  A200 : #607dff,
-  A400 : #2d54ff,
-  A700 : #143fff,
-  contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #ffffff,
-    400 : #ffffff,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #ffffff,
-    A700 : #ffffff,
-  )
+		50 : #e3e8f2,
+		100 : #b8c6de,
+		200 : #89a0c8,
+		300 : #597ab2,
+		400 : #365ea2,
+		500 : #124191,
+		600 : #103b89,
+		700 : #0d327e,
+		800 : #0a2a74,
+		900 : #051c62,
+		A100 : #93a7ff,
+		A200 : #607dff,
+		A400 : #2d54ff,
+		A700 : #143fff,
+		contrast: (
+				50 : #000000,
+				100 : #000000,
+				200 : #000000,
+				300 : #ffffff,
+				400 : #ffffff,
+				500 : #ffffff,
+				600 : #ffffff,
+				700 : #ffffff,
+				800 : #ffffff,
+				900 : #ffffff,
+				A100 : #000000,
+				A200 : #000000,
+				A400 : #ffffff,
+				A700 : #ffffff,
+		)
 );
 
 $nokia-warn-color: (
-    50 : #f3e3e9,
-    100 : #e1b8c8,
-    200 : #cd89a4,
-    300 : #b95980,
-    400 : #aa3664,
-    500 : #9b1249,
-    600 : #931042,
-    700 : #890d39,
-    800 : #7f0a31,
-    900 : #6d0521,
-    A100 : #ff9db1,
-    A200 : #ff6a89,
-    A400 : #ff3760,
-    A700 : #ff1e4c,
-    contrast: (
-        50 : #000000,
-        100 : #000000,
-        200 : #000000,
-        300 : #ffffff,
-        400 : #ffffff,
-        500 : #ffffff,
-        600 : #ffffff,
-        700 : #ffffff,
-        800 : #ffffff,
-        900 : #ffffff,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #ffffff,
-        A700 : #ffffff,
-    )
+		50 : #f3e3e9,
+		100 : #e1b8c8,
+		200 : #cd89a4,
+		300 : #b95980,
+		400 : #aa3664,
+		500 : #9b1249,
+		600 : #931042,
+		700 : #890d39,
+		800 : #7f0a31,
+		900 : #6d0521,
+		A100 : #ff9db1,
+		A200 : #ff6a89,
+		A400 : #ff3760,
+		A700 : #ff1e4c,
+		contrast: (
+				50 : #000000,
+				100 : #000000,
+				200 : #000000,
+				300 : #ffffff,
+				400 : #ffffff,
+				500 : #ffffff,
+				600 : #ffffff,
+				700 : #ffffff,
+				800 : #ffffff,
+				900 : #ffffff,
+				A100 : #000000,
+				A200 : #000000,
+				A400 : #ffffff,
+				A700 : #ffffff,
+		)
 );
 
 $nokia-accent-color: (
@@ -103,15 +103,6 @@ $nokia-accent-color: (
 				A700 : #000000,
 		)
 );
-
-
-
-
-
-
-
-
-
 
 $nokia-theme-primary: mat-palette($nokia-main-color);
 $nokia-theme-accent: mat-palette($nokia-accent-color);

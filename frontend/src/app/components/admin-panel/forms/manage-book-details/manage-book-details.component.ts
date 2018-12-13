@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { RestService } from '../../../../services/rest/rest.service';
@@ -9,18 +9,20 @@ import { Author } from '../../../../models/database/entites/Author';
 import { BookDetails } from '../../../../models/database/entites/BookDetails';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatTableDataSource } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
-import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
+import { API_URL } from '../../../../config';
+import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 
 @Component({
 	selector: 'app-manage-book-details',
 	templateUrl: './manage-book-details.component.html',
-	styleUrls: ['./manage-book-details.component.css']
+	styleUrls: ['./manage-book-details.component.css', '../../admin-panel.component.css']
 })
 export class ManageBookDetailsComponent implements OnInit {
 
 	bookDetailsParams: FormGroup;
+	formMode: string = 'Add';
 	authorsFormControl = new FormControl('');
 	categoriesFormControl = new FormControl('');
 
@@ -58,7 +60,8 @@ export class ManageBookDetailsComponent implements OnInit {
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
 				private httpClient: HttpClient,
-				public snackBar: MatSnackBar) {
+				public snackbar: SnackbarService,
+				private cd: ChangeDetectorRef) {
 		this.filteredAuthors = this.authorsFormControl.valueChanges.pipe(
 			startWith(null),
 			map((author: string | null) => author ? this.filterAth(author) : this.availableAuthors.slice()));
@@ -78,12 +81,11 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	initBookDetailsForm() {
 		this.bookDetailsParams = this.formBuilder.group({
-			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13)]],
+			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13), Validators.pattern('^[0-9]+')]], // TODO: fix regex for ISBN
 			title: ['', [Validators.required, Validators.maxLength(100)]],
 			authors: this.authorsFormControl,
 			categories: this.categoriesFormControl,
-			publicationDate: ['', [Validators.required]],
-			tableOfContents: ['', Validators.maxLength(100)],
+			publicationDate: ['', Validators.required],
 			description: ['', Validators.maxLength(1000)],
 			coverPictureUrl: ['', Validators.maxLength(1000)],
 		});
@@ -103,18 +105,28 @@ export class ManageBookDetailsComponent implements OnInit {
 		if (!this.toUpdate) {
 			this.http.save('bookDetails', body).subscribe((response) => {
 				if (response.success) {
-					this.openSnackBar('Book details added successfully!', 'OK');
+					this.clearForm();
+					this.getBookDetails();
+					this.snackbar.snackSuccess('Book details added successfully!', 'OK');
+				} else {
+					this.snackbar.snackError('Error', 'OK');
 				}
-				this.getBookDetails();
+			}, (error) => {
+				this.snackbar.snackError('Unexpected error :(', 'OK');
 			});
 		} else {
 			this.http.update('bookDetails', this.toUpdate.id, body).subscribe((response) => {
 				if (response.success) {
-					this.openSnackBar('Book details edited successfully!', 'OK');
+					this.toUpdate = null;
+					this.clearForm();
+					this.getBookDetails();
+					this.formMode = 'Add';
+					this.snackbar.snackSuccess('Book details edited successfully!', 'OK');
+				} else {
+					this.snackbar.snackError('Error', 'OK');
 				}
-				this.getBookDetails();
-				this.toUpdate = null;
-				this.clearForm();
+			}, (error) => {
+				this.snackbar.snackError('Unexpected error :(', 'OK');
 			});
 		}
 	}
@@ -122,7 +134,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	async getCategories() {
 		const response: MessageInfo = await this.http.getAll('bookCategory/getAll');
 		this.allCategories = response.object;
-		this.availableCategories = this.categoriesToString(this.allCategories);
+		this.availableCategories = this.categoriesToString(this.allCategories).sort();
 		this.bookDetailsParams.patchValue({ 'categories': '' });
 	}
 
@@ -146,34 +158,43 @@ export class ManageBookDetailsComponent implements OnInit {
 	uploadFile(event) {
 		this.uploadingFile = true;
 		this.fileToUpload = <File>event.target.files[0];
-		const fd = new FormData();
-		fd.append('picture', this.fileToUpload);
-		this.httpClient.post('http://localhost:8081/api/v1/pictures/upload', fd).subscribe((response: MessageInfo) => {
-			if (response.success) {
-				this.bookDetailsParams
-				.patchValue({ 'coverPictureUrl': response.object });
+		if (this.fileToUpload.size <= 5000000) {
+			const fd = new FormData();
+			fd.append('picture', this.fileToUpload);
+			this.httpClient.post(API_URL + '/api/v1/pictures/upload', fd).subscribe((response: MessageInfo) => {
+				if (response.success) {
+					this.bookDetailsParams
+					.patchValue({ 'coverPictureUrl': response.object });
+				} else {
+					this.snackbar.snackError('Error', 'OK');
+				}
 				this.uploadingFile = false;
-			}
-		})
+			}, (error) => {
+				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.uploadingFile = false;
+			})
+		} else {
+			this.snackbar.snackError('File is too big!', 'OK');
+			this.uploadingFile = false;
+		}
+
+
 	}
 
 	getInfoFromAPI() {
 			this.httpClient.get<any>('https://api.itbook.store/1.0/books/' + this.bookDetailsParams.get('isbn').value)
-			.subscribe(data => {
+			.subscribe((data) => {
 				if (data['title']) {
 					this.bookDetailsParams.patchValue({
 						'coverPictureUrl': data['image'],
 						'description': data['desc'],
-						'tableOfContents': 'string',
 						'title': data['title'],
 					});
 					const authors = data['authors'].toString().trim().split(", ");
 					authors.forEach(element => {
-						const authorDTO = new AuthorDTO(element);
 						const author = new Author(null, element);
 						this.selectedAuthors.push(element);
 						this.allAuthors.push(author);
-
 					});
 				} else
 					this.httpClient.get<any>('https://www.googleapis.com/books/v1/volumes?q=' + this.bookDetailsParams.get('isbn').value)
@@ -181,17 +202,17 @@ export class ManageBookDetailsComponent implements OnInit {
 						this.bookDetailsParams.patchValue({
 							'coverPictureUrl': data['items'][0].volumeInfo.imageLinks.thumbnail,
 							'description': data['items'][0].volumeInfo.description,
-							'tableOfContents': 'string',
 							'title': data['items'][0].volumeInfo.title,
 						});
 						const authors = data['items'][0].volumeInfo.authors;
 						authors.forEach(element => {
-							const authorDTO = new AuthorDTO(element);
 							const author = new Author(null, element);
 							this.selectedAuthors.push(element);
 							this.allAuthors.push(author);
 						});
 					});
+			}, (error) =>{
+				this.snackbar.snackError('Unexpected error :(', 'OK');
 			});
 	}
 
@@ -219,39 +240,36 @@ export class ManageBookDetailsComponent implements OnInit {
 		});
 		this.bookDetailsParams.patchValue({ 'categories': '' });
 		this.bookDetailsParams.patchValue({ 'authors': '' });
+		this.formMode = 'Update';
 	}
 
 	async removeBookDetails(id: number) {
 		await this.http.remove('bookDetails', id).subscribe((response) => {
 			if (response.success) {
-				this.openSnackBar('Book details removed successfully!', 'OK');
+				this.snackbar.snackSuccess('Book details removed successfully!', 'OK');
+			} else {
+				this.snackbar.snackError('Error', 'OK');
 			}
 			this.getBookDetails();
+		}, (error) => {
+			this.snackbar.snackError('Unexpected error :(', 'OK');
 		});
 	}
 
 	clearForm() {
 		this.bookDetailsParams.reset();
+		this.bookDetailsParams.markAsPristine();
+		this.bookDetailsParams.markAsUntouched();
+
+		this.availableAuthors.push(...this.selectedAuthors);
+		this.availableCategories.push(...this.selectedCategories);
 		this.selectedCategories = [];
 		this.selectedAuthors = [];
-		this.bookDetailsParams.markAsUntouched();
+		this.cd.markForCheck();
 	}
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
-	}
-
-	autoFillBookDetailsForm() {
-		this.bookDetailsParams.patchValue({
-			'coverPictureUrl': 'https://itbook.store/img/books/9781491985571.png',
-			'publicationDate': new Date(2016, 6, 1),
-			'description': 'desc',
-			'isbn': '9781484206485',
-			'tableOfContents': 'string',
-			'title': 'Book ' + Math.floor(Math.random() * 100)
-		});
-		this.selectedAuthors = [this.availableAuthors[0]];
-		this.selectedCategories = [this.availableCategories[0]];
 	}
 
 	// authors chips
@@ -294,18 +312,18 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	private filterAth(value: string): string[] {
-		return this.availableAuthors.filter(author => author.toLowerCase().indexOf(value.toLowerCase()) === 0);
+		return this.availableAuthors.filter(author => author.toLowerCase().indexOf(value.toLowerCase()) === 0).sort();
 	}
 
-	authorsToString(authors: Author[]) {
+	authorsToString(authors: Author[]): string[] {
 		const arr = [];
 		authors.forEach((val) => {
 			arr.push(val.authorFullName);
 		});
-		return arr;
+		return arr.sort();
 	}
 
-	authorsToAuthor(authors: string[]) {
+	authorsToAuthor(authors: string[]): Author[] {
 		const arr: Author[] = [];
 		authors.forEach((val) => {
 			arr.push(this.allAuthors.filter(e => e.authorFullName === val)[0]);
@@ -353,10 +371,10 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	private filterCat(value: string): string[] {
-		return this.availableCategories.filter(category => category.toLowerCase().indexOf(value.toLowerCase()) === 0);
+		return this.availableCategories.filter(category => category.toLowerCase().indexOf(value.toLowerCase()) === 0).sort();
 	}
 
-	categoriesToString(categories: BookCategory[]) {
+	categoriesToString(categories: BookCategory[]): string[] {
 		const arr = [];
 		categories.forEach((val) => {
 			arr.push(val.bookCategoryName);
@@ -372,10 +390,4 @@ export class ManageBookDetailsComponent implements OnInit {
 		return arr;
 	}
 
-	// snackbar
-	openSnackBar(message: string, action: string) {
-		this.snackBar.open(message, action, {
-			duration: 3000,
-		});
-	}
 }

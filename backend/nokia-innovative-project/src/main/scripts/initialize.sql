@@ -13,7 +13,8 @@ INSERT INTO book_details (cover_picture_url, publication_date, description, isbn
 INSERT INTO book_details (cover_picture_url, publication_date, description, isbn, title) VALUES
   ('https://cdn-images-1.medium.com/max/1200/1*cNAPNAIDIHH0G-toMJhjxg.png'
     , '1996-01-05'
-    , 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit elit ut venenatis feugiat. Suspendisse maximus dui ac risus ultricies, a accumsan risus semper. Etiam eu fringilla amet. '
+    , 'There''s nothing that hard-core Unix and Linux users are more fanatical about than their text editor. Editors are the subject of adoration and worship, or of scorn and ridicule, depending upon whether the topic of discussion is your editor or someone else''s.
+vi has been the standard editor for close to 30 years. Popular on Unix and Linux, it has a growing following on Windows systems, too. Most experienced system administrators cite vi as their tool of choice. And since 1986, this book has been the guide for vi. '
     , '456347569012'
     , 'Learning The vi');
 INSERT INTO book_details (cover_picture_url, publication_date, description, isbn, title) VALUES
@@ -50,6 +51,12 @@ INSERT INTO book_details (cover_picture_url, publication_date, description, isbn
 INSERT INTO book_category (book_category_name) VALUES ('Guide');
 INSERT INTO book_category (book_category_name) VALUES ('Programming');
 INSERT INTO book_category (book_category_name) VALUES ('Novel');
+INSERT INTO book_category (book_category_name) VALUES ('Cooking');
+INSERT INTO book_category (book_category_name) VALUES ('Autobiography');
+INSERT INTO book_category (book_category_name) VALUES ('Politics');
+INSERT INTO book_category (book_category_name) VALUES ('Sci-fi');
+INSERT INTO book_category (book_category_name) VALUES ('Religion');
+INSERT INTO book_category (book_category_name) VALUES ('Education');
 
 INSERT INTO book_details_categories VALUES (1, 1);
 INSERT INTO book_details_categories VALUES (2, 3);
@@ -67,6 +74,7 @@ INSERT INTO author (author_full_name) VALUES ('Lucas Newell');
 INSERT INTO author (author_full_name) VALUES ('Robbie Torok');
 INSERT INTO author (author_full_name) VALUES ('Raymond Kertis');
 INSERT INTO author (author_full_name) VALUES ('Emmet Brenig');
+INSERT INTO author (author_full_name) VALUES ('Andrzej Sapkowski');
 
 INSERT INTO book_details_authors VALUES (1, 1);
 INSERT INTO book_details_authors VALUES (2, 1);
@@ -78,6 +86,12 @@ INSERT INTO book_details_authors VALUES (7, 4);
 INSERT INTO book_details_authors VALUES (7, 5);
 
 
+INSERT INTO book (book_details_id, comments) VALUES (1, 'dirty');
+INSERT INTO book (book_details_id, comments) VALUES (2, 'missing pages');
+INSERT INTO book (book_details_id, comments) VALUES (3, 'bad');
+INSERT INTO book (book_details_id, comments) VALUES (4, 'cool');
+INSERT INTO book (book_details_id, comments) VALUES (5, 'stupid');
+INSERT INTO book (book_details_id, comments) VALUES (6, 'lame');
 
 
 

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmailMessage } from '../../models/EmailMessage';
-import { MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { RestService } from '../../services/rest/rest.service';
+import { SnackbarService } from '../../services/snackbar/snackbar.service';
 
 @Component({
 	selector: 'app-contact-us',
@@ -19,7 +20,7 @@ export class ContactUsComponent implements OnInit {
 	constructor(private formBuilder: FormBuilder,
 				public dialogRef: MatDialogRef<ContactUsComponent>,
 				private http: RestService,
-				public snackBar: MatSnackBar) {
+				public snackbar: SnackbarService) {
 	}
 
 	ngOnInit() {
@@ -36,20 +37,14 @@ export class ContactUsComponent implements OnInit {
 
 	sendEmail(contactParams: FormGroup) {
 		const email = new EmailMessage(contactParams.value.category + ': ' + contactParams.value.subject, contactParams.value.message);
-
-		this.http.save('email', email).subscribe((response) => {
-		});
-		this.emailSent();
-	}
-
-	emailSent(): void {
 		this.dialogRef.close();
-		this.openSnackBar('Message sent!', 'OK');
+		this.http.save('email', email).subscribe((response) => {
+			this.snackbar.snackSuccess('Message sent. Thank you!', 'OK');
+		}, (error) => {
+			this.snackbar.snackError('Something went wrong, but we still got the message.', 'OK');
+		});
+
 	}
 
-	openSnackBar(message: string, action: string) {
-		this.snackBar.open(message, action, {
-			duration: 3000,
-		});
-	}
+
 }

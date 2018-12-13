@@ -1,22 +1,29 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
 public class Book implements Serializable {
 
 	@Id
 	@Setter(AccessLevel.NONE)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long catalogNumber;
+	private Long id;
 
 	@Size(max = 5000, message = "Comments can't exceed 5000 characters")
 	private String comments;
