@@ -21,7 +21,7 @@ spring:
     open-in-view: true
   servlet:
    multipart:
-     max-file-size: 200KB
-     max-request-size: 200KB
+     max-file-size: -1
+     max-request-size: -1
 server:
   port: 8081
