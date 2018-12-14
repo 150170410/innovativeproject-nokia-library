@@ -87,6 +87,7 @@ INSERT INTO book_details_authors VALUES (7, 5);
 
 
 INSERT INTO book (signature, book_details_id, comments) VALUES ('booka', 1, 'dirty');
+INSERT INTO book (signature, book_details_id, comments) VALUES ('bookaAA', 1, 'putti');
 INSERT INTO book (signature,book_details_id, comments) VALUES ('bookB',2, 'missing pages');
 INSERT INTO book (signature,book_details_id, comments) VALUES ('YHNANK',3, 'bad');
 INSERT INTO book (signature,book_details_id, comments) VALUES ('ALMNUM',4, 'cool');

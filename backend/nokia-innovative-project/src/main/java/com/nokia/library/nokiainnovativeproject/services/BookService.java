@@ -5,9 +5,11 @@ import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,12 +19,23 @@ public class BookService {
 	private final BookRepository bookRepository;
 
 	public List<Book> getAllBooks() {
-		return bookRepository.findAll();
+		List<Book> list = bookRepository.findAll();
+		for(Book book : list) {
+			Hibernate.initialize(book.getBookDetails().getAuthors());
+			Hibernate.initialize(book.getBookDetails().getReviews());
+			Hibernate.initialize(book.getBookDetails().getCategories());
+			Hibernate.initialize(book.getBookDetails().getBooks());
+			book.getBookDetails().setBooks(new ArrayList<>());
+		}
+		return list;
+
 	}
 
 	public Book getBookById(Long id) {
-		return bookRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("book"));
+		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
+		Hibernate.initialize(book.getBookDetails());
+		book.getBookDetails().setBooks(new ArrayList<>());
+		return book;
 	}
 
 	public Book createBook(BookDTO bookDTO) {
