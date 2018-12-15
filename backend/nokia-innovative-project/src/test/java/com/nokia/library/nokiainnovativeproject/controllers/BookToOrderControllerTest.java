@@ -126,9 +126,7 @@ public class BookToOrderControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.containsInAnyOrder(
-                        "Title is required", "ISBN is required", "ISBN must be 10-13 numbers long")));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -141,8 +139,6 @@ public class BookToOrderControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.containsInAnyOrder(
-                        "Title is required", "ISBN is required", "ISBN must be 10-13 numbers long")));
+                .andExpect(status().isBadRequest());
     }
 }
