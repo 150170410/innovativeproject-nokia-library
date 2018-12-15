@@ -15,8 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,33 +56,7 @@ public class BookDetailsService {
 	public BookDetails createBookDetails(BookDetailsDTO bookDetailsDTO) {
 		ModelMapper mapper = new ModelMapper();
 		BookDetails bookDetails = mapper.map(bookDetailsDTO, BookDetails.class);
-
-		List<Author> authorsToRemove = new ArrayList<>();
-		List<Author> existingAuthors = new ArrayList<>();
-		List<Author> authors = bookDetailsDTO.getAuthors();
-		for(Author author : authors) {
-			if(author.getId() != null){
-				authorsToRemove.add(author);
-				existingAuthors.add(authorRepository.findById(author.getId()).orElseThrow(()-> new ResourceNotFoundException("author")));
-			}
-		}
-		List<BookCategory> categoriesToRemove = new ArrayList<>();
-		List<BookCategory> existingCategories = new ArrayList<>();
-		List<BookCategory> categories = bookDetailsDTO.getCategories();
-		for(BookCategory bookCategory : categories) {
-			if(bookCategory.getId() != null){
-				categoriesToRemove.add(bookCategory);
-				existingCategories.add(bookCategoryRepository.findById(bookCategory.getId()).orElseThrow(()-> new ResourceNotFoundException("category")));
-			}
-		}
-		categories.removeAll(categoriesToRemove);
-		categories.addAll(existingCategories);
-		bookDetails.setCategories(categories);
-
-		authors.removeAll(authorsToRemove);
-		authors.addAll(existingAuthors);
-		bookDetails.setAuthors(authors);
-		return bookDetailsRepository.save(bookDetails);
+		return bookDetailsRepository.save(persistingRequiredEntities(bookDetails, bookDetailsDTO));
 	}
 
 	public BookDetails updateBookDetails(Long id, BookDetailsDTO bookDetailsDTO) {
@@ -92,38 +66,41 @@ public class BookDetailsService {
 		bookDetails.setDescription(bookDetailsDTO.getDescription());
 		bookDetails.setCoverPictureUrl(bookDetailsDTO.getCoverPictureUrl());
 		bookDetails.setPublicationDate(bookDetailsDTO.getPublicationDate());
-
-		List<Author> authorsToRemove = new ArrayList<>();
-		List<Author> existingAuthors = new ArrayList<>();
-		List<Author> authors = bookDetailsDTO.getAuthors();
-		for(Author author : authors) {
-			if(author.getId() != null){
-				authorsToRemove.add(author);
-				existingAuthors.add(authorRepository.findById(author.getId()).orElseThrow(()-> new ResourceNotFoundException("author")));
-			}
-		}
-		List<BookCategory> categoriesToRemove = new ArrayList<>();
-		List<BookCategory> existingCategories = new ArrayList<>();
-		List<BookCategory> categories = bookDetailsDTO.getCategories();
-		for(BookCategory bookCategory : categories) {
-			if(bookCategory.getId() != null){
-				categoriesToRemove.add(bookCategory);
-				existingCategories.add(bookCategoryRepository.findById(bookCategory.getId()).orElseThrow(()-> new ResourceNotFoundException("category")));
-			}
-		}
-		categories.removeAll(categoriesToRemove);
-		categories.addAll(existingCategories);
-		bookDetails.setCategories(categories);
-
-		authors.removeAll(authorsToRemove);
-		authors.addAll(existingAuthors);
-		bookDetails.setAuthors(authors);
-
-		return bookDetailsRepository.save(bookDetails);
+		return bookDetailsRepository.save(persistingRequiredEntities(bookDetails, bookDetailsDTO));
 	}
 
 	public void deleteBookDetails(Long id) {
 		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
 		bookDetailsRepository.delete(bookDetails);
+	}
+
+	private BookDetails persistingRequiredEntities(BookDetails bookDetails, BookDetailsDTO bookDetailsDTO) {
+
+		List<Author> authors = bookDetailsDTO.getAuthors();
+		List<Author> authorsToRemove = authors.stream().filter(author -> author.getId() != null).collect(Collectors.toList());
+		Iterable<Long> iterable = authorsToRemove.stream().map(Author::getId).collect(Collectors.toList());
+		List<Author> existingAuthors = authorRepository.findAllById(iterable);
+
+		List<BookCategory> categories = bookDetailsDTO.getCategories();
+		List<BookCategory> categoriesToRemove = categories.stream().filter(
+				bookCategory -> bookCategory.getId() != null).collect(Collectors.toList());
+		iterable = categoriesToRemove.stream().map(BookCategory::getId).collect(Collectors.toList());
+		List<BookCategory> existingCategories = bookCategoryRepository.findAllById(iterable);
+
+		int size = categories.size();
+		categories.removeAll(categoriesToRemove);
+		categories.addAll(existingCategories);
+		bookDetails.setCategories(categories);
+		if(categories.size() != size)
+			throw new ResourceNotFoundException("category");
+
+		size = authors.size();
+		authors.removeAll(authorsToRemove);
+		authors.addAll(existingAuthors);
+		bookDetails.setAuthors(authors);
+		if(authors.size() != size)
+			throw new ResourceNotFoundException("author");
+
+		return bookDetails;
 	}
 }

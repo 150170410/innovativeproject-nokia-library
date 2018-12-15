@@ -3,6 +3,7 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
+import com.nokia.library.nokiainnovativeproject.entities.Author;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.services.BookService;
@@ -32,121 +33,144 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("autotests")
 class BookControllerTest {
 
-	private static Book book;
-	private static BookDTO bookDTO;
-	private static ObjectMapper mapper;
-	private MockMvc mockMvc;
-	private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.BOOKS;
+    private static Book book;
+    private static BookDTO bookDTO;
+    private static ObjectMapper mapper;
+    private MockMvc mockMvc;
+    private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.BOOKS;
 
-	public BookDetails generateBookDetails() {
-		Date date = new Date();
-		BookDetails bookDetails = new BookDetails();
-		bookDetails.setTitle("test title");
-		bookDetails.setDescription("test description");
-		bookDetails.setIsbn("test isbn123");
-		bookDetails.setCoverPictureUrl("test cover picture url");
-		bookDetails.setPublicationDate(date);
-		bookDetails.setAuthors(new ArrayList<>());
-		bookDetails.setCategories(new ArrayList<>());
-		return bookDetails;
-	}
+    public static BookDetails genereteBookDetails() {
+        Date date = new Date();
+        BookDetails bookDetails = new BookDetails();
+        bookDetails.setTitle("test title");
+        bookDetails.setDescription("test description");
+        bookDetails.setIsbn("test isbn123");
+        bookDetails.setCoverPictureUrl("test cover picture url");
+        bookDetails.setPublicationDate(date);
+        Author author = new Author();
+        author.setAuthorFullName("Wojtek");
+        bookDetails.setAuthors(Arrays.asList(author));
+        bookDetails.setCategories(new ArrayList<>());
+        return bookDetails;
+    }
 
-	@Mock
-	private BookService service;
+    @Mock
+    private BookService service;
 
-	@InjectMocks
-	private BookController controller;
+    @InjectMocks
+    private BookController controller;
 
-	@BeforeAll
-	public static void init() {
-		mapper = new ObjectMapper();
-		BookDetails bookDetails = new BookDetails();
-		bookDetails.setTitle("test title");
-		book = new Book();
-		book.setSignature("test signature");
-		book.setComments("test comments");
-		book.setBookDetails(bookDetails);
-		bookDTO = new BookDTO("test signature", "test comments", bookDetails);
-	}
+    @BeforeAll
+    public static void init() {
+        mapper = new ObjectMapper();
+        book = new Book();
+        book.setComments("test comments");
+        book.setBookDetails(genereteBookDetails());
+    }
 
-	@BeforeEach
-	public void setUp() {
-		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-	}
+    @BeforeEach
+    public void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        bookDTO = new BookDTO("test signature", "test comments", genereteBookDetails());
+    }
 
-	@Test
-	public void getBooksTest() throws Exception {
-		when(service.getAllBooks()).thenReturn(Arrays.asList(book));
-		mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object[0].signature", Matchers.is("test signature")))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object[0].comments", Matchers.is("test comments")))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object[0].bookDetails.title", Matchers.is("test title")));
-	}
+    @Test
+    public void getBooksTest() throws Exception {
+        when(service.getAllBooks()).thenReturn(Arrays.asList(book));
+        mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].comments", Matchers.is("test comments")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].bookDetails.description", Matchers.is("test description")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].bookDetails.isbn", Matchers.is("test isbn123")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].bookDetails.coverPictureUrl", Matchers.is("test cover picture url")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].bookDetails.title", Matchers.is("test title")));
+    }
+    @Test
+    public void getBookByIdTest() throws Exception {
+        when(service.getBookById(1L)).thenReturn(book);
+        mockMvc.perform(get(BASE_URL + Mappings.GET_ONE, 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("test comments")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.description", Matchers.is("test description")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.isbn", Matchers.is("test isbn123")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.coverPictureUrl", Matchers.is("test cover picture url")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.title", Matchers.is("test title")));
+    }
 
-	@Test
-	public void getBookByIdTest() throws Exception {
-		when(service.getBookById(1L)).thenReturn(book);
-		mockMvc.perform(get(BASE_URL + Mappings.GET_ONE, 1L)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object.signature", Matchers.is("test signature")))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("test comments")))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.title", Matchers.is("test title")));
-	}
+    @Test
+    public void createBookTest() throws Exception {
+        String jsonRequest = mapper.writeValueAsString(bookDTO);
+        when(service.createBook(bookDTO)).thenReturn(book);
+        mockMvc.perform(post(BASE_URL + Mappings.CREATE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("test comments")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.description", Matchers.is("test description")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.isbn", Matchers.is("test isbn123")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.coverPictureUrl", Matchers.is("test cover picture url")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.title", Matchers.is("test title")));
+    }
 
-	@Test
-	public void createBookTest() throws Exception {
-		String jsonRequest = mapper.writeValueAsString(bookDTO);
-		when(service.createBook(bookDTO)).thenReturn(book);
-		mockMvc.perform(post(BASE_URL + Mappings.CREATE)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsonRequest))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object.signature", Matchers.is("test signature")))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("test comments")))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.title", Matchers.is("test title")));
-	}
+    @Test
+    public void updateBookTest() throws Exception {
+        BookDTO updatedDTO = new BookDTO();
+        updatedDTO.setComments("updated comments");
+        updatedDTO.setBookDetails(genereteBookDetails());
+        updatedDTO.setSignature("test signature");
 
-	@Test
-	public void updateBookTest() throws Exception {
-		BookDTO updatedDTO = new BookDTO();
-		updatedDTO.setSignature("updated signature");
-		updatedDTO.setComments("updated comments");
-		updatedDTO.setBookDetails(generateBookDetails());
+        Book updatedBook = new Book();
+        updatedBook.setComments("updated comments");
+        updatedBook.setBookDetails(genereteBookDetails());
+        updatedBook.setSignature("test signature");
 
-		Book updatedBook = new Book();
-		updatedBook.setSignature("updated signature");
-		updatedBook.setComments("updated comments");
-		updatedBook.setBookDetails(generateBookDetails());
+        String jsonRequest = mapper.writeValueAsString(updatedDTO);
 
-		String jsonRequest = mapper.writeValueAsString(updatedDTO);
+        when(service.updateBook(1L, updatedDTO)).thenReturn(updatedBook);
+        mockMvc.perform(post(BASE_URL + Mappings.UPDATE, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("updated comments")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.description", Matchers.is("test description")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.isbn", Matchers.is("test isbn123")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.coverPictureUrl", Matchers.is("test cover picture url")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.title", Matchers.is("test title")));
+    }
 
-		when(service.updateBook(1L, updatedDTO)).thenReturn(updatedBook);
-		mockMvc.perform(post(BASE_URL + Mappings.UPDATE, 1L)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsonRequest))
-				.andDo(print())
-				.andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.object.signature", Matchers.is("updated signature")))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("updated comments")));
-	}
+    @Test
+    public void deleteBookTest() throws Exception {
+        mockMvc.perform(delete(BASE_URL + Mappings.REMOVE, 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+        verify(service).deleteBook(1L);
+    }
 
-	@Test
-	public void deleteBookTest() throws Exception {
-		mockMvc.perform(delete(BASE_URL + Mappings.REMOVE, 1L)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andDo(print())
-				.andExpect(status().isOk());
-		verify(service).deleteBook(1L);
-	}
-
+    @Test
+    public void createBookWithMistakesTest() throws Exception {
+        BookDetails bookDetails = genereteBookDetails();
+        bookDetails.setIsbn("");
+        bookDetails.setTitle("");
+        bookDTO.setBookDetails(bookDetails);
+        String jsonRequest = mapper.writeValueAsString(bookDTO);
+        when(service.createBook(bookDTO)).thenReturn(book);
+        mockMvc.perform(post(BASE_URL + Mappings.CREATE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 }

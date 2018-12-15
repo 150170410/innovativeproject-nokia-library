@@ -6,6 +6,7 @@ import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,29 +23,29 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping(Mappings.GET_ALL)
-    public MessageInfo getAllAuthors(){
+    public ResponseEntity getAllAuthors(){
         return MessageInfo.success(authorService.getAllAuthors(), Arrays.asList("list of authors"));
     }
 
     @GetMapping(Mappings.GET_ONE)
-    public MessageInfo getAuthorById(@PathVariable Long id){
+    public ResponseEntity getAuthorById(@PathVariable Long id){
         return MessageInfo.success(authorService.getAuthorById(id), Arrays.asList("Author of ID = " + id.toString()));
     }
 
     @PostMapping(Mappings.CREATE)
-    public MessageInfo createAuthor(@RequestBody @Valid AuthorDTO authorDTO, BindingResult bindingResult){
-        MessageInfo errors = MessageInfo.getErrors(bindingResult);
-        return errors != null ? errors : MessageInfo.success(authorService.createAuthor(authorDTO), Arrays.asList("Author created successfully"));
+    public ResponseEntity createAuthor(@RequestBody @Valid AuthorDTO authorDTO, BindingResult bindingResult){
+        MessageInfo.validateBindingResults(bindingResult);
+        return MessageInfo.success(authorService.createAuthor(authorDTO), Arrays.asList("Author created successfully"));
     }
 
     @PostMapping(Mappings.UPDATE)
-    public MessageInfo updateAuthor(@PathVariable Long id, @RequestBody  @Valid AuthorDTO authorDTO, BindingResult bindingResult){
-        MessageInfo errors = MessageInfo.getErrors(bindingResult);
-        return errors != null ? errors : MessageInfo.success(authorService.updateAuthor(id, authorDTO), Arrays.asList("Author updated successfully"));
+    public ResponseEntity updateAuthor(@PathVariable Long id, @RequestBody  @Valid AuthorDTO authorDTO, BindingResult bindingResult){
+        MessageInfo.validateBindingResults(bindingResult);
+        return MessageInfo.success(authorService.updateAuthor(id, authorDTO), Arrays.asList("Author updated successfully"));
     }
 
     @DeleteMapping(Mappings.REMOVE)
-    public MessageInfo deleteAuthor(@PathVariable Long id){
+    public ResponseEntity deleteAuthor(@PathVariable Long id){
         authorService.deleteAuthor(id);
         return MessageInfo.success(null, Arrays.asList("Author with ID = " + id.toString() + " removed successfully"));
     }

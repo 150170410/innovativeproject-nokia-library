@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -25,7 +26,7 @@ public class BookDetailsDTO {
 	@NotBlank(message = "ISBN is required")
 	private String isbn;
 
-	@Length(max = 100, message = "Title can't exceed 100 characters")
+	@Size(max = 100, message = "Title can't exceed 100 characters")
 	@NotBlank(message = "Title is required")
 	private String title;
 
@@ -37,10 +38,12 @@ public class BookDetailsDTO {
 
 	@Past(message = "The publication date of the book should be a past date")
 	private Date publicationDate;
-	
+
+	@Valid
 	@NotNull(message = "At least one book author is required.")
 	private List<Author> authors;
 
+	@Valid
 	@NotNull(message = "At least one book category is required.")
 	private List<BookCategory> categories;
 }

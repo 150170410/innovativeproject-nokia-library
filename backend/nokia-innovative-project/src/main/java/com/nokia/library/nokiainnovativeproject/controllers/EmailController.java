@@ -24,14 +24,12 @@ public class EmailController {
 
     @PostMapping(Mappings.CREATE)
     public ResponseEntity sendEmail(@RequestBody @Valid Email email, BindingResult bindingResult) {
-        MessageInfo errors = MessageInfo.getErrors(bindingResult);
-        if (errors != null) return ResponseEntity.badRequest().body(errors);
+        MessageInfo.validateBindingResults(bindingResult);
         try{
             emailService.sendSimpleMessage(email);
         }
         catch(MailException e){
-            return ResponseEntity.ok().body(new MessageInfo(false, e.toString(), Arrays.asList("Failed to send messages")));
         }
-        return ResponseEntity.ok().body(new MessageInfo(true, "success", Arrays.asList("Email sent successfully")));
+        return MessageInfo.success(null, Arrays.asList("Email sent successfully"));
     }
 }

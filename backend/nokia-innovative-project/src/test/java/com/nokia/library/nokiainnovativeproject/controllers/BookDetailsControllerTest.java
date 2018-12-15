@@ -65,13 +65,12 @@ public class BookDetailsControllerTest {
 		bookDetails.setPublicationDate(date);
 		bookDetails.setAuthors(new ArrayList<>());
 		bookDetails.setCategories(new ArrayList<>());
-
-		bookDetailsDTO = new BookDetailsDTO("test isbn123", "test title", "test description", "test cover picture url", date, new ArrayList<>(), new ArrayList<>());
 	}
 
 	@BeforeEach
 	public void setUp() {
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+		bookDetailsDTO = new BookDetailsDTO("test isbn123", "test title", "test description", "test cover picture url", date, new ArrayList<>(), new ArrayList<>());
 	}
 
 	@Test
@@ -149,5 +148,20 @@ public class BookDetailsControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 		verify(service).deleteBookDetails(1L);
+	}
+
+	@Test
+	public void createBookDetailsWithMistakesTest() throws Exception {
+		bookDetailsDTO.setIsbn("13");
+		bookDetailsDTO.setTitle("");
+		Author author = new Author();
+		author.setAuthorFullName("");
+		bookDetailsDTO.setAuthors(Arrays.asList(author));
+		String jsonRequest = mapper.writeValueAsString(bookDetailsDTO);
+		mockMvc.perform(post(BASE_URL + Mappings.CREATE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonRequest))
+				.andDo(print())
+				.andExpect(status().isBadRequest());
 	}
 }

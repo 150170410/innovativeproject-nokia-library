@@ -12,5 +12,4 @@ public class TypeNotSupportedException extends RuntimeException {
     public TypeNotSupportedException( List<String> supportedTypes) {
         super(String.format("Invalid file type. Supported file types: %s",String.join(", ",supportedTypes)));
     }
-
 }

@@ -2,7 +2,7 @@ package com.nokia.library.nokiainnovativeproject.DTOs;
 
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class BookCategoryDTO {
 
-	@NotNull(message = "Book category name is required")
-	@Size(min = 1, max = 50, message = "Book category name must be 1-50 characters long")
+	@NotBlank(message = "Book category name is required")
+	@Size(max = 50, message = "Book category name can't exceed 50 characters")
 	private String bookCategoryName;
 }
