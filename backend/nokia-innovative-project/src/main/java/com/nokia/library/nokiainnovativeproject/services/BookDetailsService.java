@@ -2,6 +2,7 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Author;
+import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
@@ -32,6 +33,9 @@ public class BookDetailsService {
 			Hibernate.initialize(bookDetails.getCategories());
 			Hibernate.initialize(bookDetails.getReviews());
 			Hibernate.initialize(bookDetails.getBooks());
+			for (Book book : bookDetails.getBooks()){
+				book.setBookDetails(null);
+			}
 		}
 		return list;
 	}
@@ -42,6 +46,9 @@ public class BookDetailsService {
 		Hibernate.initialize(bookDetails.getCategories());
 		Hibernate.initialize(bookDetails.getReviews());
 		Hibernate.initialize(bookDetails.getBooks());
+		for (Book book : bookDetails.getBooks()){
+			book.setBookDetails(null);
+		}
 		return bookDetails;
 	}
 

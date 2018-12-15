@@ -21,10 +21,6 @@ public class BookService {
 	public List<Book> getAllBooks() {
 		List<Book> list = bookRepository.findAll();
 		for(Book book : list) {
-			Hibernate.initialize(book.getBookDetails().getAuthors());
-			Hibernate.initialize(book.getBookDetails().getReviews());
-			Hibernate.initialize(book.getBookDetails().getCategories());
-			Hibernate.initialize(book.getBookDetails().getBooks());
 			book.getBookDetails().setBooks(new ArrayList<>());
 		}
 		return list;
@@ -33,7 +29,6 @@ public class BookService {
 
 	public Book getBookById(Long id) {
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
-		Hibernate.initialize(book.getBookDetails());
 		book.getBookDetails().setBooks(new ArrayList<>());
 		return book;
 	}
