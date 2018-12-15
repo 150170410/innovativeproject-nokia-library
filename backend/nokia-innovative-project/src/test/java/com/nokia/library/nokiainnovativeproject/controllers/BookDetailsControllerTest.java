@@ -164,8 +164,6 @@ public class BookDetailsControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andDo(print())
-				.andExpect(status().isBadRequest())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.containsInAnyOrder(
-						"Title is required", "ISBN must be 10-13 numbers long", "Author's name is required")));
+				.andExpect(status().isBadRequest());
 	}
 }
