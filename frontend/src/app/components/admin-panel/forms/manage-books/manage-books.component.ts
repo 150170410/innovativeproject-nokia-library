@@ -15,7 +15,7 @@ import { SnackbarService } from '../../../../services/snackbar/snackbar.service'
 	styleUrls: ['./manage-books.component.css', '../../admin-panel.component.css']
 })
 export class ManageBooksComponent implements OnInit {
-	private bookCopyParams: FormGroup;
+	bookCopyParams: FormGroup;
 	formMode: string = 'Add';
 	selectedBookDetails: BookDetails = null;
 
@@ -143,5 +143,9 @@ export class ManageBooksComponent implements OnInit {
 
 	applyFilterBooks(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
+
+	createBookDetails(bookCopyParams: FormGroup){
+
 	}
 }

@@ -52,6 +52,12 @@ export class ManageBookDetailsComponent implements OnInit {
 	selectedAuthors: string[] = [];
 	filteredAuthors: Observable<string[]>;
 
+	availableBookDetails: BookDetails[] = [];
+	mapBookDetails = new Map();
+
+	availableTitles: string[] = [];
+
+
 	// table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookDetails>();
@@ -181,39 +187,42 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	}
 
+	selectedTitle(event: MatAutocompleteSelectedEvent): void {
+		const selectedBookDetails = this.mapBookDetails.get(this.bookDetailsParams.get('title').value);
+		this.allCategories = [];
+		this.selectedCategories = [];
+		this.allAuthors = [];
+		this.selectedAuthors = [];
+		this.bookDetailsParams.patchValue({
+			'title': selectedBookDetails['title'],
+			'coverPictureUrl': selectedBookDetails['coverPictureUrl'],
+			'description': selectedBookDetails['description'],
+			'publicationDate': new Date(selectedBookDetails['publicationDate'])
+		});
+		selectedBookDetails['authors'].forEach(element => {
+			const author = new Author(null, element.authorFullName);
+			this.selectedAuthors.push(element.authorFullName);
+			this.allAuthors.push(author);
+		});
+	}
+
 	getInfoFromAPI() {
-			this.httpClient.get<any>('https://api.itbook.store/1.0/books/' + this.bookDetailsParams.get('isbn').value)
-			.subscribe((data) => {
-				if (data['title']) {
-					this.bookDetailsParams.patchValue({
-						'coverPictureUrl': data['image'],
-						'description': data['desc'],
-						'title': data['title'],
-					});
-					const authors = data['authors'].toString().trim().split(", ");
-					authors.forEach(element => {
-						const author = new Author(null, element);
-						this.selectedAuthors.push(element);
-						this.allAuthors.push(author);
-					});
-				} else
-					this.httpClient.get<any>('https://www.googleapis.com/books/v1/volumes?q=' + this.bookDetailsParams.get('isbn').value)
-					.subscribe(data => {
-						this.bookDetailsParams.patchValue({
-							'coverPictureUrl': data['items'][0].volumeInfo.imageLinks.thumbnail,
-							'description': data['items'][0].volumeInfo.description,
-							'title': data['items'][0].volumeInfo.title,
-						});
-						const authors = data['items'][0].volumeInfo.authors;
-						authors.forEach(element => {
-							const author = new Author(null, element);
-							this.selectedAuthors.push(element);
-							this.allAuthors.push(author);
-						});
-					});
-			}, (error) =>{
-				this.snackbar.snackError('Unexpected error :(', 'OK');
-			});
+		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value)
+		.subscribe((response: MessageInfo)=>{
+			if (response.success) {
+				console.log(response.object)
+				this.availableTitles = [];
+				this.availableBookDetails = response.object;
+				response.object.forEach(element => {
+					this.mapBookDetails.set(element.title, element);
+					this.availableTitles.push(element.title);
+				});
+				this.snackbar.snackSuccess('I have found something. Check title', 'OK');
+			} else {
+				this.snackbar.snackError('Nothing found', 'OK');
+			}
+		}, (error) =>{
+				this.snackbar.snackError('Unexpected error :(', 'OK');});	
 	}
 
 	editBookDetails(bookDetails: BookDetails) {
