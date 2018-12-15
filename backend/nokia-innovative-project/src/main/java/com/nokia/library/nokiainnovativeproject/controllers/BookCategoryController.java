@@ -35,14 +35,14 @@ public class BookCategoryController {
 	public ResponseEntity createBookCategory(@RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult) {
 		// TODO: If I understood correctly you decided to create a book category with book details. Why did you decide to create this endpoint?
 		// https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26#discussion_r232785455
-		ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-		return errors != null ? errors : MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO), Arrays.asList("BookCategory created successfully"));
+		MessageInfo.validateBindingResults(bindingResult);
+		return MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO), Arrays.asList("BookCategory created successfully"));
 	}
 
 	@PostMapping(Mappings.UPDATE)
 	public ResponseEntity updateBookCategory(@PathVariable Long id, @RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult){
-		ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-		return errors != null ? errors : MessageInfo.success(bookCategoryService.updateBookCategory(id, bookCategoryDTO), Arrays.asList("BookCategory updated successfully"));
+		MessageInfo.validateBindingResults(bindingResult);
+		return MessageInfo.success(bookCategoryService.updateBookCategory(id, bookCategoryDTO), Arrays.asList("BookCategory updated successfully"));
 	}
 
 	@DeleteMapping(Mappings.REMOVE)

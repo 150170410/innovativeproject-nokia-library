@@ -34,14 +34,14 @@ public class AuthorController {
 
     @PostMapping(Mappings.CREATE)
     public ResponseEntity createAuthor(@RequestBody @Valid AuthorDTO authorDTO, BindingResult bindingResult){
-        ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-        return errors != null ? errors : MessageInfo.success(authorService.createAuthor(authorDTO), Arrays.asList("Author created successfully"));
+        MessageInfo.validateBindingResults(bindingResult);
+        return MessageInfo.success(authorService.createAuthor(authorDTO), Arrays.asList("Author created successfully"));
     }
 
     @PostMapping(Mappings.UPDATE)
     public ResponseEntity updateAuthor(@PathVariable Long id, @RequestBody  @Valid AuthorDTO authorDTO, BindingResult bindingResult){
-        ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-        return errors != null ? errors : MessageInfo.success(authorService.updateAuthor(id, authorDTO), Arrays.asList("Author updated successfully"));
+        MessageInfo.validateBindingResults(bindingResult);
+        return MessageInfo.success(authorService.updateAuthor(id, authorDTO), Arrays.asList("Author updated successfully"));
     }
 
     @DeleteMapping(Mappings.REMOVE)
