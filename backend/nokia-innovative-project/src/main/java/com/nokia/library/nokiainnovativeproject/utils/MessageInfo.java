@@ -2,6 +2,7 @@ package com.nokia.library.nokiainnovativeproject.utils;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
+import com.nokia.library.nokiainnovativeproject.exceptions.BindingResultsValidationException;
 import lombok.*;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,17 +37,10 @@ public class MessageInfo {
 		if(bindingResult.hasErrors()){
 			List<String> errorsList = bindingResult.getAllErrors().stream()
 					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-			return MessageInfo.failure(errorsList);
+
+			throw new BindingResultsValidationException(errorsList.stream().collect(Collectors.joining(". \n")));
+			//return MessageInfo.failure(errorsList);
 		}
 		return null;
-	}
-
-	public static MessageInfo getErrors(ConstraintViolationException exc){
-		List<String> errors = new ArrayList<>();
-		Set<ConstraintViolation<?>> violationSet = exc.getConstraintViolations();
-		for(ConstraintViolation constraintViolation : violationSet){
-			errors.add(constraintViolation.getMessageTemplate());
-		}
-		return new MessageInfo(false, null, errors);
 	}
 }
