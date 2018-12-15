@@ -26,7 +26,7 @@ export class ManageBooksComponent implements OnInit {
 	dataSource = new MatTableDataSource<Book>();
 	dataSourceBookDetails = new MatTableDataSource<BookDetails>();
 
-	displayedBookCopiesColumns: string[] = ['bookDetails', 'comment', 'actions'];
+	displayedBookCopiesColumns: string[] = ['signature', 'bookDetails', 'comments', 'actions'];
 	displayedBookDetailsColumns: string[] = ['isbn', 'title', 'authors', 'actions'];
 
 	constructor(private formBuilder: FormBuilder,
@@ -38,14 +38,14 @@ export class ManageBooksComponent implements OnInit {
 
 	ngOnInit() {
 		this.initBookCopyForm();
-		// this.getBookCopies();
+		this.getBookCopies();
 		this.getBookDetails();
 	}
 
 	initBookCopyForm() {
 		this.bookCopyParams = this.formBuilder.group({
 			signature: ['', [Validators.required, Validators.maxLength(100)]],
-			comment: ''
+			comments: ''
 		});
 	}
 
@@ -103,8 +103,10 @@ export class ManageBooksComponent implements OnInit {
 
 	editBookCopy(bookCopy: Book) {
 		this.bookCopyParams.patchValue({
-			'comment': ''
+			'signature': bookCopy.signature,
+			'comments': bookCopy.comments
 		});
+		this.selectedBookDetails = bookCopy.bookDetails;
 		this.toUpdate = bookCopy;
 		this.formMode = 'Update';
 	}
