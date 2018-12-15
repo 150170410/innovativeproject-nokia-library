@@ -72,9 +72,7 @@ public class EmailControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.success", Matchers.is(false)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.contains("The message can't be empty")));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -85,8 +83,6 @@ public class EmailControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.success", Matchers.is(false)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.contains("The subject of the message is required")));
+                .andExpect(status().isBadRequest());
     }
 }

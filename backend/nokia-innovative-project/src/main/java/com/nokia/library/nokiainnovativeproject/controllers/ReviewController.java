@@ -32,14 +32,14 @@ public class ReviewController {
 
     @PostMapping(Mappings.CREATE)
     public ResponseEntity createReview(@RequestBody @Valid ReviewDTO reviewDTO, BindingResult bindingResult){
-        ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-        return errors != null ? errors : MessageInfo.success(reviewService.createReview(reviewDTO), Arrays.asList("Review created successfully"));
+        MessageInfo.validateBindingResults(bindingResult);
+        return MessageInfo.success(reviewService.createReview(reviewDTO), Arrays.asList("Review created successfully"));
     }
 
     @PostMapping(Mappings.UPDATE)
     public ResponseEntity updateReview(@PathVariable Long id, @RequestBody @Valid ReviewDTO reviewDTO, BindingResult bindingResult){
-        ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-        return errors != null ? errors : MessageInfo.success(reviewService.updateReview(id, reviewDTO), Arrays.asList("Review updated successfully"));
+        MessageInfo.validateBindingResults(bindingResult);
+        return MessageInfo.success(reviewService.updateReview(id, reviewDTO), Arrays.asList("Review updated successfully"));
     }
 
     @DeleteMapping(Mappings.REMOVE)

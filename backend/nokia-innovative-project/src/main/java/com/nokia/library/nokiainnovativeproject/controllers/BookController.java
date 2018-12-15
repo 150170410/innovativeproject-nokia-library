@@ -33,17 +33,13 @@ public class BookController {
 
 	@PostMapping(Mappings.CREATE)
 	public ResponseEntity createBook(@RequestBody @Valid  BookDTO bookDTO, BindingResult bindingResult){
-		ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-		if(errors != null)
-			return errors;
+		MessageInfo.validateBindingResults(bindingResult);
 		return MessageInfo.success(bookService.createBook(bookDTO), Arrays.asList("Book created successfully"));
 	}
 
 	@PostMapping(Mappings.UPDATE)
 	public ResponseEntity updateBook(@PathVariable Long id, @RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult){
-		ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-		if(errors != null)
-			return errors;
+		MessageInfo.validateBindingResults(bindingResult);
 		return MessageInfo.success(bookService.updateBook(id, bookDTO), Arrays.asList("Book updated successfully"));
 	}
 

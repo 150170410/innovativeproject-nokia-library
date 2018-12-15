@@ -25,8 +25,7 @@ public class EmailController {
 
     @PostMapping(Mappings.CREATE)
     public ResponseEntity sendEmail(@RequestBody @Valid Email email, BindingResult bindingResult) {
-        ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-        if (errors != null) return errors;
+        MessageInfo.validateBindingResults(bindingResult);
         emailService.sendSimpleMessage(email, EmailRecipients.recipients);
         return MessageInfo.success(null, Arrays.asList("Email sent successfully"));
     }

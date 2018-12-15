@@ -1,5 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.utils;
 
+import com.nokia.library.nokiainnovativeproject.exceptions.BindingResultsValidationException;
 import lombok.*;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +25,11 @@ public class MessageInfo {
 		return ResponseEntity.badRequest().body(new MessageInfo(false, null, message));
 	}
 
-	public static ResponseEntity getErrors(BindingResult bindingResult) {
+	public static void validateBindingResults(BindingResult bindingResult) {
 		if(bindingResult.hasErrors()){
 			List<String> errorsList = bindingResult.getAllErrors().stream()
 					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-			return MessageInfo.failure(errorsList);
+			throw new BindingResultsValidationException(errorsList.stream().collect(Collectors.joining(". \n")));
 		}
-		return null;
 	}
 }

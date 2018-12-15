@@ -35,17 +35,13 @@ public class BookDetailsController {
 
 	@PostMapping(Mappings.CREATE)
 	public ResponseEntity createBookDetails(@RequestBody @Valid BookDetailsDTO bookDetailsDTO, BindingResult bindingResult) {
-		ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-		if(errors != null)
-			return errors;
+		MessageInfo.validateBindingResults(bindingResult);
 		return MessageInfo.success(bookDetailsService.createBookDetails(bookDetailsDTO),Arrays.asList("bookDetails created successfully"));
 	}
 
 	@PostMapping(Mappings.UPDATE)
 	public ResponseEntity updateBookDetails(@PathVariable Long id, @RequestBody @Valid BookDetailsDTO bookDetailsDTO, BindingResult bindingResult){
-		ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-		if(errors != null)
-			return errors;
+		MessageInfo.validateBindingResults(bindingResult);
 		return MessageInfo.success(bookDetailsService.updateBookDetails(id, bookDetailsDTO),Arrays.asList("bookDetails updated successfully"));
 	}
 

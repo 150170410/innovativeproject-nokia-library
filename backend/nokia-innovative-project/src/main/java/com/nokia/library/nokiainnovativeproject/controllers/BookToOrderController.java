@@ -32,16 +32,16 @@ public class BookToOrderController {
 
     @PostMapping(Mappings.CREATE)
     public ResponseEntity createBookToOrder(@RequestBody @Valid BookToOrderDTO bookToOrderDTO, BindingResult bindingResult) {
-        ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-        return errors != null ? errors : MessageInfo.success(bookToOrderService.createBookToOrder(bookToOrderDTO),
+        MessageInfo.validateBindingResults(bindingResult);
+        return MessageInfo.success(bookToOrderService.createBookToOrder(bookToOrderDTO),
                 Arrays.asList("BookToOrder created successfully"));
     }
 
     @PostMapping(Mappings.UPDATE)
     public ResponseEntity updateBookToOrder(@PathVariable Long id, @RequestBody @Valid BookToOrderDTO bookToOrderDTO,
                                          BindingResult bindingResult) {
-        ResponseEntity errors = MessageInfo.getErrors(bindingResult);
-        return errors != null ? errors : MessageInfo.success(bookToOrderService.updateBookToOrder(id, bookToOrderDTO),
+        MessageInfo.validateBindingResults(bindingResult);
+        return MessageInfo.success(bookToOrderService.updateBookToOrder(id, bookToOrderDTO),
                 Arrays.asList("BookToOrder updated successfully"));
     }
 
