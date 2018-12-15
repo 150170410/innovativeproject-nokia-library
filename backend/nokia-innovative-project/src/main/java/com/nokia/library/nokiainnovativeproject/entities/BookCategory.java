@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -17,6 +18,7 @@ public class BookCategory implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(max = 20, message = "Book category name can't exceed 20 characters")
+	@NotBlank(message = "Book category name is required")
+	@Size(max = 50, message = "Book category name can't exceed 50 characters")
 	private String bookCategoryName;
 }

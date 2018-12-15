@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -21,8 +22,8 @@ public class Review implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Comment is required")
-    @Size(max = 300, message = "Comment can exceed 300 characters")
+    @NotBlank(message = "Comment is required")
+    @Size(max = 300, message = "Comment can't exceed  300 characters long")
     private String comment;
 
     @Setter(AccessLevel.NONE)

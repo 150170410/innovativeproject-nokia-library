@@ -7,6 +7,7 @@ import com.nokia.library.nokiainnovativeproject.services.PictureService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +23,7 @@ public class PictureUploadController {
     private final PictureService pictureService;
 
     @PostMapping(value = "/upload")
-    public MessageInfo uploadPicture(MultipartFile picture) throws IOException {
+    public ResponseEntity uploadPicture(MultipartFile picture) throws IOException {
         Map uploadResult = pictureService.uploadPicture(picture);
         return  MessageInfo.success(uploadResult.get("secure_url"), Arrays.asList("Picture uploaded."));
     }
