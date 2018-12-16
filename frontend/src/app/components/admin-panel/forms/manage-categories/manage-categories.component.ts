@@ -51,7 +51,7 @@ export class ManageCategoriesComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		} else {
 			this.http.update('bookCategory', this.toUpdate.id, body).subscribe((response) => {
@@ -65,7 +65,7 @@ export class ManageCategoriesComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		}
 	}
@@ -93,7 +93,7 @@ export class ManageCategoriesComponent implements OnInit {
 				this.snackbar.snackError('Error', 'OK');
 			}
 		}, (error) => {
-			this.snackbar.snackError('Unexpected error :(', 'OK');
+			this.snackbar.snackError(error.error.message, 'OK');
 		});
 	}
 

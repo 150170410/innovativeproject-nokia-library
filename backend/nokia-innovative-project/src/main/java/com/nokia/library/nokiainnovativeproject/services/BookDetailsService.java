@@ -6,12 +6,14 @@ import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
+import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookCategoryRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,14 +73,21 @@ public class BookDetailsService {
 
 	public void deleteBookDetails(Long id) {
 		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
-		bookDetailsRepository.delete(bookDetails);
+		try {
+			bookDetailsRepository.delete(bookDetails);
+		}catch(DataIntegrityViolationException e) {
+			throw new ValidationException("The book details you are trying to delete is assigned to a book. You can't delete it.");
+		}
 	}
 
 	private BookDetails persistingRequiredEntities(BookDetails bookDetails, BookDetailsDTO bookDetailsDTO) {
 
 		List<Author> authors = bookDetailsDTO.getAuthors();
+
 		List<Author> authorsToRemove = authors.stream().filter(author -> author.getId() != null).collect(Collectors.toList());
+
 		Iterable<Long> iterable = authorsToRemove.stream().map(Author::getId).collect(Collectors.toList());
+
 		List<Author> existingAuthors = authorRepository.findAllById(iterable);
 
 		List<BookCategory> categories = bookDetailsDTO.getCategories();

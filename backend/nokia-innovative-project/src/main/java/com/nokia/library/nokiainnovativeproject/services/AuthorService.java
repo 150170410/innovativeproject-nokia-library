@@ -3,9 +3,11 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.AuthorDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Author;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
+import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +40,10 @@ public class AuthorService {
 
     public void deleteAuthor(Long id) {
 		Author author = authorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("author"));
-        authorRepository.delete(author);
+        try {
+            authorRepository.delete(author);
+        }catch(DataIntegrityViolationException e){
+            throw new ValidationException("The author you are trying to delete is assigned to a book. You can't delete it.");
+        }
     }
 }

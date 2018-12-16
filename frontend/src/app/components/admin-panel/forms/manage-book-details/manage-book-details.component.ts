@@ -46,13 +46,15 @@ export class ManageBookDetailsComponent implements OnInit {
 	availableCategories: string[] = [];
 	selectedCategories: string[] = [];
 	filteredCategories: Observable<string[]>;
+  listOfBookCategories: BookCategory[] = [];
 
 	allAuthors: Author[] = [];
 	availableAuthors: string[] = [];
 	selectedAuthors: string[] = [];
 	filteredAuthors: Observable<string[]>;
+  listOfAuthors: Author[] = [];
 
-	availableBookDetails: BookDetails[] = [];
+    availableBookDetails: BookDetails[] = [];
 	mapBookDetails = new Map();
 
 	availableTitles: string[] = [];
@@ -189,9 +191,11 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	selectedTitle(event: MatAutocompleteSelectedEvent): void {
 		const selectedBookDetails = this.mapBookDetails.get(this.bookDetailsParams.get('title').value);
+		this.listOfBookCategories = this.allCategories;
 		this.allCategories = [];
 		this.selectedCategories = [];
-		this.allAuthors = [];
+    this.listOfAuthors = this.allAuthors;
+    this.allAuthors = [];
 		this.selectedAuthors = [];
 		this.bookDetailsParams.patchValue({
 			'title': selectedBookDetails['title'],
@@ -208,7 +212,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	getInfoFromAPI() {
 		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value)
-		.subscribe((response: MessageInfo)=>{
+		.subscribe((response: MessageInfo) => {
 			if (response.success) {
 				console.log(response.object)
 				this.availableTitles = [];
@@ -335,7 +339,13 @@ export class ManageBookDetailsComponent implements OnInit {
 	authorsToAuthor(authors: string[]): Author[] {
 		const arr: Author[] = [];
 		authors.forEach((val) => {
-			arr.push(this.allAuthors.filter(e => e.authorFullName === val)[0]);
+		  const aut: Author[] = this.listOfAuthors.filter(e => (e.authorFullName === val));
+		  if (aut.length > 0) {
+        arr.push(aut[0]);
+      }
+      else {
+        arr.push(new Author(null, val));
+      }
 		});
 		return arr;
 	}
@@ -394,9 +404,14 @@ export class ManageBookDetailsComponent implements OnInit {
 	categoriesToBookCategory(categories: string[]) {
 		const arr: BookCategory[] = [];
 		categories.forEach((val) => {
-			arr.push(this.allCategories.filter(e => e.bookCategoryName == val)[0]);
+		  const cat: BookCategory[] = this.allCategories.filter(e => e.bookCategoryName === val);
+			if (cat.length > 0) {
+			  arr.push(cat[0]);
+      }
+			else {
+			  arr.push(new BookCategory(null, val));
+      }
 		});
 		return arr;
 	}
-
 }

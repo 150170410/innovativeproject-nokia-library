@@ -4,9 +4,11 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookCategoryDTO;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
+import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +41,10 @@ public class BookCategoryService  {
 
 	public void deleteBookCategory(Long id) {
 		BookCategory bookCategory = bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book category"));
-		bookCategoryRepository.delete(bookCategory);
+		try {
+			bookCategoryRepository.delete(bookCategory);
+		}catch (DataIntegrityViolationException e) {
+			throw new ValidationException("The category you are trying to delete is assigned to a book. You can't delete it.");
+		}
 	}
 }

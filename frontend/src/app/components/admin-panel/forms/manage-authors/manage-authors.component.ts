@@ -53,7 +53,7 @@ export class ManageAuthorsComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		} else {
 			this.http.update('author', this.toUpdate.id, body).subscribe((response) => {
@@ -67,7 +67,7 @@ export class ManageAuthorsComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		}
 	}
@@ -95,7 +95,7 @@ export class ManageAuthorsComponent implements OnInit {
 			}
 			this.getAuthors();
 		}, (error) => {
-			this.snackbar.snackError('Unexpected error :(', 'OK');
+			this.snackbar.snackError(error.error.message, 'OK');
 		});
 	}
 
@@ -108,5 +108,4 @@ export class ManageAuthorsComponent implements OnInit {
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
-
 }
