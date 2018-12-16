@@ -4,15 +4,10 @@
 	</div>
 
 	<div>
-		<div style="display: flex;">
-			Find and select book:
-		</div>
-		<div style="display: flex;">
-			<mat-form-field >
-				<input matInput (keyup)="applyFilterBookDetails($event.target.value)" placeholder="Find a book...">
-			</mat-form-field>
-		</div>
-
+		Find and select book:
+		<mat-form-field>
+			<input matInput (keyup)="applyFilterBookDetails($event.target.value)" placeholder="Find a book...">
+		</mat-form-field>
 	</div>
 	<form name="bookCopyParams" (ngSubmit)="createBookCopy(bookCopyParams)" [formGroup]="bookCopyParams">
 
