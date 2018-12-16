@@ -5,12 +5,15 @@ import com.nokia.library.nokiainnovativeproject.entities.Author;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
+import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import sun.plugin2.message.Message;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,8 @@ public class AuthorService {
     }
 
     public Author createAuthor(AuthorDTO authorDTO) {
+        MessageInfo.isThisEntityUnique(authorRepository.countAuthorByAuthorFullName(
+                authorDTO.getAuthorFullName()), "author");
         ModelMapper mapper = new ModelMapper();
         Author author = mapper.map(authorDTO, Author.class);
         return authorRepository.save(author);

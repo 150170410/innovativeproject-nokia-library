@@ -6,6 +6,7 @@ import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookCategoryRepository;
+import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,6 +29,9 @@ public class BookCategoryService  {
 	}
 
 	public BookCategory createBookCategory(BookCategoryDTO bookCategoryDTO) {
+		MessageInfo.isThisEntityUnique(bookCategoryRepository.countBookCategoriesByBookCategoryName(
+				bookCategoryDTO.getBookCategoryName()), "book category");
+
 		ModelMapper mapper = new ModelMapper();
 		BookCategory bookCategory = mapper.map(bookCategoryDTO, BookCategory.class);
 		return bookCategoryRepository.save(bookCategory);
