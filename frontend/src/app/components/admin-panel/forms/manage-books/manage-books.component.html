@@ -4,7 +4,7 @@
 	</div>
 
 	<div>
-		Find and select book:
+		<h3>Find and select book:</h3>
 		<mat-form-field>
 			<input matInput (keyup)="applyFilterBookDetails($event.target.value)" placeholder="Find a book...">
 		</mat-form-field>
@@ -53,6 +53,7 @@
 			</table>
 
 		</div>
+
 		<div>
 			<h3>Selected book details: </h3>
 			<div *ngIf="selectedBookDetails !== null">
@@ -60,6 +61,8 @@
 			</div>
 			<div *ngIf="selectedBookDetails === null">none</div>
 		</div>
+
+		<mat-divider></mat-divider>
 
 		<div class="form-container">
 

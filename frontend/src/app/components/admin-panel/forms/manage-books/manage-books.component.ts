@@ -62,7 +62,7 @@ export class ManageBooksComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		} else {
 			this.http.update('books', this.toUpdate.id, body).subscribe((response) => {
@@ -76,7 +76,7 @@ export class ManageBooksComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		}
 	}
@@ -120,7 +120,7 @@ export class ManageBooksComponent implements OnInit {
 			}
 			this.getBookCopies();
 		}, (error) => {
-			this.snackbar.snackError('Unexpected error :(', 'OK');
+			this.snackbar.snackError(error.error.message, 'OK');
 		});
 	}
 
@@ -145,7 +145,4 @@ export class ManageBooksComponent implements OnInit {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	createBookDetails(bookCopyParams: FormGroup){
-
-	}
 }

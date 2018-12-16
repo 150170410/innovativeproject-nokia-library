@@ -46,15 +46,15 @@ export class ManageBookDetailsComponent implements OnInit {
 	availableCategories: string[] = [];
 	selectedCategories: string[] = [];
 	filteredCategories: Observable<string[]>;
-  listOfBookCategories: BookCategory[] = [];
+	listOfBookCategories: BookCategory[] = [];
 
 	allAuthors: Author[] = [];
 	availableAuthors: string[] = [];
 	selectedAuthors: string[] = [];
 	filteredAuthors: Observable<string[]>;
-  listOfAuthors: Author[] = [];
+	listOfAuthors: Author[] = [];
 
-    availableBookDetails: BookDetails[] = [];
+	availableBookDetails: BookDetails[] = [];
 	mapBookDetails = new Map();
 
 	availableTitles: string[] = [];
@@ -106,7 +106,6 @@ export class ManageBookDetailsComponent implements OnInit {
 			this.categoriesToBookCategory(this.selectedCategories),
 			params.value.publicationDate,
 			params.value.description,
-			params.value.tableOfContents,
 			params.value.coverPictureUrl
 		);
 		console.log(body);
@@ -120,7 +119,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		} else {
 			this.http.update('bookDetails', this.toUpdate.id, body).subscribe((response) => {
@@ -134,7 +133,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		}
 	}
@@ -178,15 +177,13 @@ export class ManageBookDetailsComponent implements OnInit {
 				}
 				this.uploadingFile = false;
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 				this.uploadingFile = false;
 			})
 		} else {
 			this.snackbar.snackError('File is too big!', 'OK');
 			this.uploadingFile = false;
 		}
-
-
 	}
 
 	selectedTitle(event: MatAutocompleteSelectedEvent): void {
@@ -194,8 +191,8 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.listOfBookCategories = this.allCategories;
 		this.allCategories = [];
 		this.selectedCategories = [];
-    this.listOfAuthors = this.allAuthors;
-    this.allAuthors = [];
+		this.listOfAuthors = this.allAuthors;
+		this.allAuthors = [];
 		this.selectedAuthors = [];
 		this.bookDetailsParams.patchValue({
 			'title': selectedBookDetails['title'],
@@ -225,8 +222,9 @@ export class ManageBookDetailsComponent implements OnInit {
 			} else {
 				this.snackbar.snackError('Nothing found', 'OK');
 			}
-		}, (error) =>{
-				this.snackbar.snackError('Unexpected error :(', 'OK');});	
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
 	}
 
 	editBookDetails(bookDetails: BookDetails) {
@@ -235,7 +233,6 @@ export class ManageBookDetailsComponent implements OnInit {
 			'publicationDate': new Date(bookDetails.publicationDate),
 			'description': bookDetails.description,
 			'isbn': bookDetails.isbn,
-			'tableOfContents': bookDetails.tableOfContents,
 			'title': bookDetails.title
 		});
 		this.toUpdate = bookDetails;
@@ -265,7 +262,7 @@ export class ManageBookDetailsComponent implements OnInit {
 			}
 			this.getBookDetails();
 		}, (error) => {
-			this.snackbar.snackError('Unexpected error :(', 'OK');
+			this.snackbar.snackError(error.error.message, 'OK');
 		});
 	}
 
@@ -339,13 +336,13 @@ export class ManageBookDetailsComponent implements OnInit {
 	authorsToAuthor(authors: string[]): Author[] {
 		const arr: Author[] = [];
 		authors.forEach((val) => {
-		  const aut: Author[] = this.listOfAuthors.filter(e => (e.authorFullName === val));
-		  if (aut.length > 0) {
-        arr.push(aut[0]);
-      }
-      else {
-        arr.push(new Author(null, val));
-      }
+			const aut: Author[] = this.listOfAuthors.filter(e => (e.authorFullName === val));
+			if (aut.length > 0) {
+				arr.push(aut[0]);
+			}
+			else {
+				arr.push(new Author(null, val));
+			}
 		});
 		return arr;
 	}
@@ -404,13 +401,13 @@ export class ManageBookDetailsComponent implements OnInit {
 	categoriesToBookCategory(categories: string[]) {
 		const arr: BookCategory[] = [];
 		categories.forEach((val) => {
-		  const cat: BookCategory[] = this.allCategories.filter(e => e.bookCategoryName === val);
+			const cat: BookCategory[] = this.allCategories.filter(e => e.bookCategoryName === val);
 			if (cat.length > 0) {
-			  arr.push(cat[0]);
-      }
+				arr.push(cat[0]);
+			}
 			else {
-			  arr.push(new BookCategory(null, val));
-      }
+				arr.push(new BookCategory(null, val));
+			}
 		});
 		return arr;
 	}

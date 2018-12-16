@@ -36,6 +36,6 @@ public class MessageInfo {
 
 	public static void isThisEntityUnique(Long count, String entityName) {
 		if (count > 0) throw new ValidationException("This " + entityName +
-					" already exist in database. It doesn't make sense to create it.");
+					" already exist in database.");
 	}
 }
