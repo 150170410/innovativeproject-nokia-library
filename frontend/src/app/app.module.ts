@@ -32,6 +32,9 @@ import { ManageAuthorsComponent } from './components/admin-panel/forms/manage-au
 import { ManageCategoriesComponent } from './components/admin-panel/forms/manage-categories/manage-categories.component';
 import { ManageBooksComponent } from './components/admin-panel/forms/manage-books/manage-books.component';
 import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
+import { ManageBorrowingsComponent } from './components/user-panel/manage-borrowings/manage-borrowings.component';
+import { ManageReservationsComponent } from './components/user-panel/manage-reservations/manage-reservations.component';
+import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 
 @NgModule({
 	declarations: [
@@ -51,7 +54,9 @@ import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
 		UserPanelComponent,
 		ManageBooksComponent,
 		AdminPanelComponent,
-		LimitToPipe
+		LimitToPipe,
+		ManageBorrowingsComponent,
+		ManageReservationsComponent
 	],
 	imports: [
 		BrowserModule,
@@ -92,7 +97,8 @@ import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
 		MatTableModule,
 		MatSortModule,
 		MatPaginatorModule,
-		MatNativeDateModule
+		MatNativeDateModule,
+		ScrollDispatchModule
 	], exports: [
 		BrowserAnimationsModule,
 		ReactiveFormsModule,
@@ -129,7 +135,8 @@ import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
 		MatTableModule,
 		MatSortModule,
 		MatPaginatorModule,
-		MatNativeDateModule
+		MatNativeDateModule,
+		ScrollDispatchModule
 	],
 	providers: [BookService, RestService, SidenavService,
 		{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}],

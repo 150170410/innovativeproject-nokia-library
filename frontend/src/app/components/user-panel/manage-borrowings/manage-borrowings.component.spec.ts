@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserPanelComponent } from './user-panel.component';
+import { ManageBorrowingsComponent } from './manage-borrowings.component';
 
-describe('UserPanelComponent', () => {
-	let component: UserPanelComponent;
-	let fixture: ComponentFixture<UserPanelComponent>;
+describe('ManageBorrowingsComponent', () => {
+	let component: ManageBorrowingsComponent;
+	let fixture: ComponentFixture<ManageBorrowingsComponent>;
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [UserPanelComponent]
+			declarations: [ManageBorrowingsComponent]
 		})
 		.compileComponents();
 	}));
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(UserPanelComponent);
+		fixture = TestBed.createComponent(ManageBorrowingsComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

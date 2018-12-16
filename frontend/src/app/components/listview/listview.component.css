@@ -38,3 +38,7 @@ img {
 table {
 	width: 100%;
 }
+
+.list-container{
+	height: 500px;
+}

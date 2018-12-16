@@ -1,11 +1,13 @@
-<h1>Your books history and comments</h1>
+<h1>User dashboard</h1>
 
-<mat-tab-group mat-stretch-tabs>
-	<mat-tab label="Reservations and wishlist">
-		<div>here will be list of borrowed and reserved books</div>
-	</mat-tab>
-	<mat-tab label="Comments">
-		<div>here will be list of comments posted by user</div>
-	</mat-tab>
 
-</mat-tab-group>
+<div class="forms-container">
+	<div class="half-div">
+		<app-manage-borrowings></app-manage-borrowings>
+	</div>
+	<div class="half-div">
+		<app-manage-reservations></app-manage-reservations>
+	</div>
+</div>
+
+
