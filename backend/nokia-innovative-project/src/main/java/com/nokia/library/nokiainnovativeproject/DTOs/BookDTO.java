@@ -22,7 +22,6 @@ public class BookDTO {
 	@Size(max = 5000, message = "Comments can't exceed 5000 characters")
 	private String comments;
 
-	@Valid
-	@NotNull(message = "Book details are required.")
-	private BookDetails bookDetails;
+	@NotNull(message = "Book details id is required.")
+	private Long bookDetailsId;
 }

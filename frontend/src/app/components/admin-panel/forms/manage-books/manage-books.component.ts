@@ -50,7 +50,7 @@ export class ManageBooksComponent implements OnInit {
 	}
 
 	createBookCopy(params: any) {
-		const body = new BookDTO(params.value.signature, this.selectedBookDetails, params.value.comment);
+		const body = new BookDTO(params.value.signature, this.selectedBookDetails.id, params.value.comments);
 		console.log(body);
 		if (!this.toUpdate) {
 			this.http.save('books', body).subscribe((response) => {
@@ -95,7 +95,6 @@ export class ManageBooksComponent implements OnInit {
 		const response: MessageInfo = await this.http.getAll('books/getAll');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
-
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
@@ -112,7 +111,7 @@ export class ManageBooksComponent implements OnInit {
 	}
 
 	async removeBookCopy(id: number) {
-		await this.http.remove('book', id).subscribe((response) => {
+		await this.http.remove('books', id).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Book copy removed successfully!', 'OK');
 			} else {

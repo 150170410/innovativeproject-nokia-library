@@ -21,30 +21,26 @@ public class BookService {
 	private final BookDetailsRepository bookDetailsRepository;
 
 	public List<Book> getAllBooks() {
-		List<Book> list = bookRepository.findAll();
-		for(Book book : list) {
-			book.getBookDetails().setBooks(new ArrayList<>());
-		}
-		return list;
+		return bookRepository.findAll();
 
 	}
 
 	public Book getBookById(Long id) {
-		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
-		book.getBookDetails().setBooks(new ArrayList<>());
-		return book;
+		return bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 	}
 
 	public Book createBook(BookDTO bookDTO) {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
-		return bookRepository.save(persistingRequiredEntities(book, bookDTO));
+		book.setBookDetails(bookDetailsRepository.getOne(bookDTO.getBookDetailsId()));
+		return bookRepository.save(book);
 	}
 
 	public Book updateBook(Long id, BookDTO bookDTO) {
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 		book.setComments(bookDTO.getComments());
-		return bookRepository.save(persistingRequiredEntities(book, bookDTO));
+		book.setSignature(bookDTO.getSignature());
+		return bookRepository.save(book);
 	}
 
 	public void deleteBook(Long id)
@@ -52,15 +48,5 @@ public class BookService {
 		Book book = bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("book"));
 		bookRepository.delete(book);
-	}
-
-	private Book persistingRequiredEntities(Book book, BookDTO bookDTO) {
-
-		BookDetails bookDetails = bookDTO.getBookDetails();
-		if(bookDetails.getId() != null){
-			bookDetails = bookDetailsRepository.findById(bookDetails.getId()).orElseThrow(()-> new ResourceNotFoundException("book details"));
-			book.setBookDetails(bookDetails);
-		}
-		return book;
 	}
 }

@@ -1,10 +1,8 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -19,7 +17,6 @@ import java.util.List;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BookDetails implements Serializable {
 
 	@Id
@@ -71,9 +68,4 @@ public class BookDetails implements Serializable {
 	@JoinColumn(name = "book_details_id")
 	private List<Review> reviews;
 
-	@OneToMany(mappedBy = "bookDetails",
-			cascade = {CascadeType.MERGE,
-                    CascadeType.PERSIST},
-			fetch = FetchType.LAZY)
-	private List<Book> books;
 }

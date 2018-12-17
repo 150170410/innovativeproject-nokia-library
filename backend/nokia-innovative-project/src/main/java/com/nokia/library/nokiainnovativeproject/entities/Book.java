@@ -1,6 +1,5 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -14,7 +13,6 @@ import java.io.Serializable;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Book implements Serializable {
 
 	@Id
@@ -29,9 +27,9 @@ public class Book implements Serializable {
 	@Size(max = 5000, message = "Comments can't exceed 5000 characters")
 	private String comments;
 
-	@ManyToOne(cascade = { CascadeType.MERGE,
-			CascadeType.PERSIST},
-			fetch = FetchType.LAZY)
+	@ManyToOne(cascade = {
+			CascadeType.MERGE,
+			CascadeType.PERSIST})
 	@JoinColumn(name = "book_details_id")
 	private BookDetails bookDetails;
 }

@@ -1,13 +1,11 @@
-import { BookDetails } from '../entites/BookDetails';
-
 export class BookDTO {
 	signature: string;
-	bookDetails: BookDetails;
-	comment: string;
+	bookDetailsId: number;
+	comments: string;
 
-	constructor(signature: string, bookDetails: BookDetails, comment: string) {
+	constructor(signature: string, bookDetailsId: number, comments: string) {
 		this.signature = signature;
-		this.bookDetails = bookDetails;
-		this.comment = comment;
+		this.bookDetailsId = bookDetailsId;
+		this.comments = comments;
 	}
 }

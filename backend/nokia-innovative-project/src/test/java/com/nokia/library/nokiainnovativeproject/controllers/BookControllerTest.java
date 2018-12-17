@@ -72,13 +72,17 @@ class BookControllerTest {
         mapper = new ObjectMapper();
         book = new Book();
         book.setComments("test comments");
+        book.setSignature("test signature");
         book.setBookDetails(genereteBookDetails());
     }
 
     @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        bookDTO = new BookDTO("test signature", "test comments", genereteBookDetails());
+        bookDTO = new BookDTO();
+        bookDTO.setComments("test comments");
+        bookDTO.setSignature("test signature");
+        bookDTO.setBookDetailsId(1L);
     }
 
     @Test
@@ -127,8 +131,8 @@ class BookControllerTest {
     public void updateBookTest() throws Exception {
         BookDTO updatedDTO = new BookDTO();
         updatedDTO.setComments("updated comments");
-        updatedDTO.setBookDetails(genereteBookDetails());
         updatedDTO.setSignature("test signature");
+        updatedDTO.setBookDetailsId(1L);
 
         Book updatedBook = new Book();
         updatedBook.setComments("updated comments");
@@ -159,18 +163,5 @@ class BookControllerTest {
         verify(service).deleteBook(1L);
     }
 
-    @Test
-    public void createBookWithMistakesTest() throws Exception {
-        BookDetails bookDetails = genereteBookDetails();
-        bookDetails.setIsbn("");
-        bookDetails.setTitle("");
-        bookDTO.setBookDetails(bookDetails);
-        String jsonRequest = mapper.writeValueAsString(bookDTO);
-        when(service.createBook(bookDTO)).thenReturn(book);
-        mockMvc.perform(post(BASE_URL + Mappings.CREATE)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonRequest))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
-    }
+
 }

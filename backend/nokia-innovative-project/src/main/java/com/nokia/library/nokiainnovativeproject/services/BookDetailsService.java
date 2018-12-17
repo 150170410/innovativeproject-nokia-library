@@ -36,10 +36,6 @@ public class BookDetailsService {
 			Hibernate.initialize(bookDetails.getAuthors());
 			Hibernate.initialize(bookDetails.getCategories());
 			Hibernate.initialize(bookDetails.getReviews());
-			Hibernate.initialize(bookDetails.getBooks());
-			for (Book book : bookDetails.getBooks()){
-				book.setBookDetails(null);
-			}
 		}
 		return list;
 	}
@@ -49,10 +45,6 @@ public class BookDetailsService {
 		Hibernate.initialize(bookDetails.getAuthors());
 		Hibernate.initialize(bookDetails.getCategories());
 		Hibernate.initialize(bookDetails.getReviews());
-		Hibernate.initialize(bookDetails.getBooks());
-		for (Book book : bookDetails.getBooks()){
-			book.setBookDetails(null);
-		}
 		return bookDetails;
 	}
 
