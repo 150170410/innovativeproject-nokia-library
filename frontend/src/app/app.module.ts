@@ -32,6 +32,7 @@ import { ManageAuthorsComponent } from './components/admin-panel/forms/manage-au
 import { ManageCategoriesComponent } from './components/admin-panel/forms/manage-categories/manage-categories.component';
 import { ManageBooksComponent } from './components/admin-panel/forms/manage-books/manage-books.component';
 import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
+import { BookStatusesPipe } from './pipes/book-statuses/book-statuses.pipe';
 
 @NgModule({
 	declarations: [
@@ -51,7 +52,8 @@ import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
 		UserPanelComponent,
 		ManageBooksComponent,
 		AdminPanelComponent,
-		LimitToPipe
+		LimitToPipe,
+		BookStatusesPipe
 	],
 	imports: [
 		BrowserModule,

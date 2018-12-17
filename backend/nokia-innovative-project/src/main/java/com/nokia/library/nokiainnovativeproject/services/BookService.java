@@ -7,6 +7,7 @@ import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundExcep
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class BookService {
 		List<Book> list = bookRepository.findAll();
 		for(Book book : list) {
 			book.getBookDetails().setBooks(new ArrayList<>());
+			Hibernate.initialize(book.getStatus());
 		}
 		return list;
 
@@ -31,6 +33,7 @@ public class BookService {
 
 	public Book getBookById(Long id) {
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
+		Hibernate.initialize(book.getStatus());
 		book.getBookDetails().setBooks(new ArrayList<>());
 		return book;
 	}

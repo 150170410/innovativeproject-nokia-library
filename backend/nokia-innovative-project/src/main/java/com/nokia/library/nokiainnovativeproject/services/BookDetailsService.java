@@ -39,6 +39,7 @@ public class BookDetailsService {
 			Hibernate.initialize(bookDetails.getBooks());
 			for (Book book : bookDetails.getBooks()){
 				book.setBookDetails(null);
+				Hibernate.initialize(book.getStatus());
 			}
 		}
 		return list;
@@ -52,6 +53,7 @@ public class BookDetailsService {
 		Hibernate.initialize(bookDetails.getBooks());
 		for (Book book : bookDetails.getBooks()){
 			book.setBookDetails(null);
+			Hibernate.initialize(book.getStatus());
 		}
 		return bookDetails;
 	}
