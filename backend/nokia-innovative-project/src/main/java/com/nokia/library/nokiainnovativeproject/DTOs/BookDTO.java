@@ -24,4 +24,7 @@ public class BookDTO {
 
 	@NotNull(message = "Book details id is required.")
 	private Long bookDetailsId;
+
+    @NotNull(message = "Book status id is required.")
+	private Long bookStatusId;
 }

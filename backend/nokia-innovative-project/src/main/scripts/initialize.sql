@@ -1,7 +1,7 @@
-INSERT INTO book_status (id, status_name) VALUES (0, 'AVAILABLE');
-INSERT INTO book_status (id, status_name) VALUES (1, 'BORROWED');
-INSERT INTO book_status (id, status_name) VALUES (2, 'RESERVED');
-INSERT INTO book_status (id, status_name) VALUES (3, 'UNKNOWN');
+INSERT INTO book_status (id, status_name) VALUES (1, 'AVAILABLE');
+INSERT INTO book_status (id, status_name) VALUES (2, 'BORROWED');
+INSERT INTO book_status (id, status_name) VALUES (3, 'RESERVED');
+INSERT INTO book_status (id, status_name) VALUES (4, 'UNKNOWN');
 
 
 INSERT INTO book_details (cover_picture_url, publication_date, description, isbn, title) VALUES

@@ -6,13 +6,17 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Book implements Serializable {
 
 	@Id
@@ -27,7 +31,6 @@ public class Book implements Serializable {
 	@Size(max = 5000, message = "Comments can't exceed 5000 characters")
 	private String comments;
 
-	@NotBlank
 	@ManyToOne(cascade = {CascadeType.MERGE,
 			CascadeType.PERSIST})
 	@JoinColumn(name = "book_status_id")

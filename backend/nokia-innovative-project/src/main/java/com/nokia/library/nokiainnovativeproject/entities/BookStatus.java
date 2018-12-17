@@ -15,10 +15,10 @@ import javax.validation.constraints.NotBlank;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BookStatus {
-	private static Integer AVAILABLE = 0;
-	private static Integer BORROWED = 1;
-	private static Integer RESERVED = 2;
-	private static Integer UNKNOWN = 2;
+	// private static Integer AVAILABLE = 0;
+	// private static Integer BORROWED = 1;
+	// private static Integer RESERVED = 2;
+	// private static Integer UNKNOWN = 2;
 
 	@Id
 	@Setter(AccessLevel.NONE)
