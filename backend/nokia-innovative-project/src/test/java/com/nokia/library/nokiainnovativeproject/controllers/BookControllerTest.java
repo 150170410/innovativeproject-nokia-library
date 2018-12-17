@@ -83,6 +83,7 @@ class BookControllerTest {
         bookDTO.setComments("test comments");
         bookDTO.setSignature("test signature");
         bookDTO.setBookDetailsId(1L);
+        bookDTO.setBookStatusId(1L);
     }
 
     @Test
@@ -133,6 +134,7 @@ class BookControllerTest {
         updatedDTO.setComments("updated comments");
         updatedDTO.setSignature("test signature");
         updatedDTO.setBookDetailsId(1L);
+        updatedDTO.setBookStatusId(1L);
 
         Book updatedBook = new Book();
         updatedBook.setComments("updated comments");
