@@ -1,3 +1,9 @@
+INSERT INTO book_status (id, status) VALUES (0, 'AVAILABLE');
+INSERT INTO book_status (id, status) VALUES (1, 'BORROWED');
+INSERT INTO book_status (id, status) VALUES (2, 'RESERVED');
+INSERT INTO book_status (id, status) VALUES (3, 'UNKNOWN');
+
+
 INSERT INTO book_details (cover_picture_url, publication_date, description, isbn, title) VALUES
   ('https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png'
     , '2018-02-02'
@@ -86,13 +92,13 @@ INSERT INTO book_details_authors VALUES (7, 4);
 INSERT INTO book_details_authors VALUES (7, 5);
 
 
-INSERT INTO book (signature, book_details_id, comments) VALUES ('booka', 1, 'dirty');
-INSERT INTO book (signature, book_details_id, comments) VALUES ('bookaAA', 1, 'putti');
-INSERT INTO book (signature,book_details_id, comments) VALUES ('bookB',2, 'missing pages');
-INSERT INTO book (signature,book_details_id, comments) VALUES ('YHNANK',3, 'bad');
-INSERT INTO book (signature,book_details_id, comments) VALUES ('ALMNUM',4, 'cool');
-INSERT INTO book (signature,book_details_id, comments) VALUES ('SIG123',5, 'stupid');
-INSERT INTO book (signature,book_details_id, comments) VALUES ('OUF',6, 'lame');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('booka', 1, 0, 'dirty');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookaAA', 1, 1, 'putti');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookB', 2, 0, 'missing pages');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('YHNANK', 3, 0, 'bad');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('ALMNUM', 4, 0, 'cool');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('SIG123', 5, 0, 'stupid');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('OUF', 6, 0, 'lame');
 
 
 
