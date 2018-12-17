@@ -29,7 +29,6 @@ public class MessageInfo {
 		if(bindingResult.hasErrors()){
 			List<String> errorsList = bindingResult.getAllErrors().stream()
 					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-
 			throw new BindingResultsValidationException(errorsList.stream().collect(Collectors.joining(". \n")));
 		}
 	}

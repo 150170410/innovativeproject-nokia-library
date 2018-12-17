@@ -85,7 +85,6 @@ INSERT INTO book_details_authors VALUES (6, 3);
 INSERT INTO book_details_authors VALUES (7, 4);
 INSERT INTO book_details_authors VALUES (7, 5);
 
-
 INSERT INTO book (book_details_id, comments) VALUES (1, 'dirty');
 INSERT INTO book (book_details_id, comments) VALUES (2, 'missing pages');
 INSERT INTO book (book_details_id, comments) VALUES (3, 'bad');
@@ -94,4 +93,8 @@ INSERT INTO book (book_details_id, comments) VALUES (5, 'stupid');
 INSERT INTO book (book_details_id, comments) VALUES (6, 'lame');
 
 
+INSERT INTO "user" (id, email, first_name, last_name) VALUES (1, 'wojtekspoton@gmail.com', 'Wojtek', 'Wojtek');
+INSERT INTO "role" (id, role) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO "role" (id, role) VALUES (2, 'ROLE_USER');
+INSERT INTO "user_roles" (user_id, roles_id) VALUES (1, 1);
 

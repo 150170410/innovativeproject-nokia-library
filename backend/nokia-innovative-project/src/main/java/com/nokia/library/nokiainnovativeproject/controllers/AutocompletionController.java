@@ -6,6 +6,7 @@ import com.nokia.library.nokiainnovativeproject.services.AutocompletionService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -23,7 +24,7 @@ public class AutocompletionController {
     private final AutocompletionService autocompletionService;
 
     @GetMapping(Mappings.GET_ALL)
-    public MessageInfo getBookDetails(@RequestParam String isbn) {
+    public ResponseEntity getBookDetails(@RequestParam String isbn) {
         List<BookDetailsDTO> list = new ArrayList<>();
         BookDetailsDTO bookDetailsItBookStore = autocompletionService.getBookDetailsFromApiItBookStore(isbn);
         if(bookDetailsItBookStore != null)
