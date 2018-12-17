@@ -44,7 +44,7 @@ public class BookDetails implements Serializable {
 	@NotNull(message = "At least one book author is required.")
 	@ManyToMany(cascade = {
 			CascadeType.MERGE,
-            CascadeType.PERSIST},
+			CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
 	@JoinTable(name = "book_details_authors",
 			joinColumns = @JoinColumn(name = "book_details_id"),
@@ -54,7 +54,7 @@ public class BookDetails implements Serializable {
 	@NotNull(message = "At least one book category is required.")
 	@ManyToMany(cascade = {
 			CascadeType.MERGE,
-            CascadeType.PERSIST},
+			CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
 	@JoinTable(name = "book_details_categories",
 			joinColumns = @JoinColumn(name = "book_details_id"),
@@ -63,7 +63,7 @@ public class BookDetails implements Serializable {
 
 	@OneToMany(cascade = {
 			CascadeType.MERGE,
-            CascadeType.PERSIST},
+			CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_details_id")
 	private List<Review> reviews;

@@ -9,7 +9,7 @@ import { MessageInfo } from '../../models/MessageInfo';
 	templateUrl: './listview.component.html',
 	styleUrls: ['./listview.component.css']
 })
-export class ListviewComponent implements OnInit, AfterViewInit {
+export class ListviewComponent implements OnInit {
 
 	books: any;
 	allBooks: BookDetails[] = [];
@@ -19,21 +19,10 @@ export class ListviewComponent implements OnInit, AfterViewInit {
 	}
 
 	ngOnInit() {
-
+		this.getBooksDetails();
 	}
 
-	ngAfterViewInit(): void {
-		this.getBooks();
-	}
-
-
-	async getBooks(id?: number) {
-		this.books = await this.bookDetailsService.getBooks(id)
-		.catch((err) => {
-			console.log(err.message);
-			this.errorMessage = err;
-		});
-
+	async getBooksDetails() {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
 		this.allBooks = response.object.sort().reverse();
 	}

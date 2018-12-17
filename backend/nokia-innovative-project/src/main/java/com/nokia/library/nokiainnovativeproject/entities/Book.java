@@ -27,6 +27,12 @@ public class Book implements Serializable {
 	@Size(max = 5000, message = "Comments can't exceed 5000 characters")
 	private String comments;
 
+	@NotBlank
+	@ManyToOne(cascade = {CascadeType.MERGE,
+			CascadeType.PERSIST})
+	@JoinColumn(name = "book_status_id")
+	private BookStatus status;
+
 	@ManyToOne(cascade = {
 			CascadeType.MERGE,
 			CascadeType.PERSIST})

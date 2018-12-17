@@ -2,7 +2,6 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
-import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
@@ -10,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Service
@@ -22,7 +21,6 @@ public class BookService {
 
 	public List<Book> getAllBooks() {
 		return bookRepository.findAll();
-
 	}
 
 	public Book getBookById(Long id) {
