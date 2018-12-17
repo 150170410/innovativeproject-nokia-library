@@ -1,9 +1,12 @@
 <h2>List of newly added books</h2>
+
 <cdk-virtual-scroll-viewport itemSize="20" class="list-container">
-	<div *cdkVirtualFor="let item of items">
-	{{item}}	<!--<app-listview-item [bookDetails]="book"></app-listview-item>-->
+	<div *cdkVirtualFor="let book of allBooks">
+		<app-listview-item [bookDetails]="book"></app-listview-item>
 	</div>
 </cdk-virtual-scroll-viewport>
+
+
 <!--<div *ngFor="let book of allBooks">-->
-	<!--<app-listview-item [bookDetails]="book"></app-listview-item>-->
+<!--<app-listview-item [bookDetails]="book"></app-listview-item>-->
 <!--</div>-->

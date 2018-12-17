@@ -40,5 +40,5 @@ table {
 }
 
 .list-container{
-	height: 500px;
+	min-height: 90%;
 }
