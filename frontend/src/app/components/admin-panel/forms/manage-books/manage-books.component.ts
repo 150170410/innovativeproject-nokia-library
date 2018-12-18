@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { BookDTO } from '../../../../models/database/DTOs/BookDTO';
 import { Book } from '../../../../models/database/entites/Book';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
+import { ConfirmationDialogService } from '../../../../services/confirmation-dialog/confirmation-dialog.service';
 
 @Component({
 	selector: 'app-manage-books',
@@ -33,7 +34,8 @@ export class ManageBooksComponent implements OnInit {
 				private http: RestService,
 				private httpClient: HttpClient,
 				private snackbar: SnackbarService,
-				private cd: ChangeDetectorRef) {
+				private cd: ChangeDetectorRef,
+				public confirmService: ConfirmationDialogService) {
 	}
 
 	ngOnInit() {
@@ -111,16 +113,20 @@ export class ManageBooksComponent implements OnInit {
 	}
 
 	async removeBookCopy(id: number) {
-		await this.http.remove('books', id).subscribe((response) => {
-			if (response.success) {
-				this.snackbar.snackSuccess('Book copy removed successfully!', 'OK');
-			} else {
-				this.snackbar.snackError('Error', 'OK');
+		await this.confirmService.openDialog().subscribe((result) => {
+			if (result) {
+				this.http.remove('books', id).subscribe((response) => {
+					if (response.success) {
+						this.snackbar.snackSuccess('Book copy removed successfully!', 'OK');
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+					this.getBookCopies();
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
 			}
-			this.getBookCopies();
-		}, (error) => {
-			this.snackbar.snackError(error.error.message, 'OK');
-		});
+		})
 	}
 
 	clearForm() {

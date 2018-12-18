@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookCategoryDTO } from '../../../../models/database/DTOs/BookCategoryDTO';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
+import { ConfirmationDialogService } from '../../../../services/confirmation-dialog/confirmation-dialog.service';
 
 @Component({
 	selector: 'app-manage-categories',
@@ -25,7 +26,8 @@ export class ManageCategoriesComponent implements OnInit {
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
-				public snackbar: SnackbarService) {
+				public snackbar: SnackbarService,
+				public confirmService: ConfirmationDialogService) {
 	}
 
 	ngOnInit() {
@@ -85,16 +87,20 @@ export class ManageCategoriesComponent implements OnInit {
 	}
 
 	async removeCategory(id: number) {
-		await this.http.remove('bookCategory', id).subscribe((response) => {
-			if (response.success) {
-				this.snackbar.snackSuccess('Category removed successfully!', 'OK');
-				this.getCategories();
-			} else {
-				this.snackbar.snackError('Error', 'OK');
+		await this.confirmService.openDialog().subscribe((result) => {
+			if (result) {
+				this.http.remove('bookCategory', id).subscribe((response) => {
+					if (response.success) {
+						this.snackbar.snackSuccess('Category removed successfully!', 'OK');
+						this.getCategories();
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
 			}
-		}, (error) => {
-			this.snackbar.snackError(error.error.message, 'OK');
-		});
+		})
 	}
 
 	clearForm() {

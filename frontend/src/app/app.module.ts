@@ -33,6 +33,7 @@ import { ManageCategoriesComponent } from './components/admin-panel/forms/manage
 import { ManageBooksComponent } from './components/admin-panel/forms/manage-books/manage-books.component';
 import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
 import { BookStatusesPipe } from './pipes/book-statuses/book-statuses.pipe';
+import { ConfirmationDialogComponent } from './utils/components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
 	declarations: [
@@ -53,7 +54,8 @@ import { BookStatusesPipe } from './pipes/book-statuses/book-statuses.pipe';
 		ManageBooksComponent,
 		AdminPanelComponent,
 		LimitToPipe,
-		BookStatusesPipe
+		BookStatusesPipe,
+		ConfirmationDialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -135,7 +137,8 @@ import { BookStatusesPipe } from './pipes/book-statuses/book-statuses.pipe';
 	],
 	providers: [BookService, RestService, SidenavService,
 		{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}],
-	bootstrap: [AppComponent]
+	bootstrap: [AppComponent],
+	entryComponents: [ConfirmationDialogComponent]
 })
 export class AppModule {
 }

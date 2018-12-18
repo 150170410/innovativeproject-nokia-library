@@ -34,7 +34,7 @@ public class BookDetails implements Serializable {
 	@NotBlank(message = "Title is required")
 	protected String title;
 
-	@Size(max = 1000, message = "Description can't exceed 1000 characters")
+	@Size(max = 2000, message = "Description can't exceed 2000 characters")
 	protected String description;
 
 	@Size(max = 1000, message = "Cover picture URL can't exceed 1000 characters")

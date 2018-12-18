@@ -8,7 +8,7 @@ export class BookStatusesPipe implements PipeTransform {
 
 	transform(books: Book[], status?: any): any {
 		if (books.length < 1) {
-			return null;
+			return 0;
 		}
 
 		let count = 0;

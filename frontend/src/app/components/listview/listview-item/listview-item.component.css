@@ -19,3 +19,7 @@ mat-card{
 	width: 160px;
 	display: inline-block;
 }
+.not-available{
+	color: #9b1249;
+	font-size: 20px;
+}

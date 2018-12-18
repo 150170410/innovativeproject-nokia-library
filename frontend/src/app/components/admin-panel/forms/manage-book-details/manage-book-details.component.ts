@@ -13,6 +13,7 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPa
 import { map, startWith } from 'rxjs/operators';
 import { API_URL } from '../../../../config';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
+import { ConfirmationDialogService } from '../../../../services/confirmation-dialog/confirmation-dialog.service';
 
 @Component({
 	selector: 'app-manage-book-details',
@@ -59,7 +60,6 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	availableTitles: string[] = [];
 
-
 	// table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookDetails>();
@@ -69,7 +69,8 @@ export class ManageBookDetailsComponent implements OnInit {
 				private http: RestService,
 				private httpClient: HttpClient,
 				public snackbar: SnackbarService,
-				private cd: ChangeDetectorRef) {
+				private cd: ChangeDetectorRef,
+				public confirmService: ConfirmationDialogService) {
 		this.filteredAuthors = this.authorsFormControl.valueChanges.pipe(
 			startWith(null),
 			map((author: string | null) => author ? this.filterAth(author) : this.availableAuthors.slice()));
@@ -94,7 +95,7 @@ export class ManageBookDetailsComponent implements OnInit {
 			authors: this.authorsFormControl,
 			categories: this.categoriesFormControl,
 			publicationDate: ['', Validators.required],
-			description: ['', Validators.maxLength(1000)],
+			description: ['', Validators.maxLength(2000)],
 			coverPictureUrl: ['', Validators.maxLength(1000)],
 		});
 	}
@@ -254,16 +255,22 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	async removeBookDetails(id: number) {
-		await this.http.remove('bookDetails', id).subscribe((response) => {
-			if (response.success) {
-				this.snackbar.snackSuccess('Book details removed successfully!', 'OK');
-			} else {
-				this.snackbar.snackError('Error', 'OK');
+		await this.confirmService.openDialog().subscribe((result) => {
+			console.log('The dialog was closed');
+			console.log(result);
+			if (result) {
+				this.http.remove('bookDetails', id).subscribe((response) => {
+					if (response.success) {
+						this.snackbar.snackSuccess('Book details removed successfully!', 'OK');
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+					this.getBookDetails();
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
 			}
-			this.getBookDetails();
-		}, (error) => {
-			this.snackbar.snackError(error.error.message, 'OK');
-		});
+		})
 	}
 
 	clearForm() {
