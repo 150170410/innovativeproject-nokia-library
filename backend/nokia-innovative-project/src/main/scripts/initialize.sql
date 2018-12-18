@@ -48,6 +48,13 @@ INSERT INTO book_details (cover_picture_url, publication_date, description, isbn
     , '23523523525'
     , 'The Lives Inside Your Head');
 
+INSERT INTO book_status (id, status_name) VALUES (1, 'AVAILABLE');
+INSERT INTO book_status (id, status_name) VALUES (2, 'BORROWED');
+INSERT INTO book_status (id, status_name) VALUES (3, 'RESERVED');
+INSERT INTO book_status (id, status_name) VALUES (4, 'UNKNOWN');
+
+
+
 INSERT INTO book_category (book_category_name) VALUES ('Guide');
 INSERT INTO book_category (book_category_name) VALUES ('Programming');
 INSERT INTO book_category (book_category_name) VALUES ('Novel');
