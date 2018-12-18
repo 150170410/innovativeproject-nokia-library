@@ -50,6 +50,10 @@ public class BookService {
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 		book.setComments(bookDTO.getComments());
 		book.setSignature(bookDTO.getSignature());
+		book.setBookDetails(bookDetailsRepository.findById(bookDTO.getBookDetailsId()).orElseThrow(
+				() -> new ResourceNotFoundException("book details")));
+		book.setStatus(bookStatusRepository.findById(bookDTO.getBookStatusId()).orElseThrow(
+				() -> new ResourceNotFoundException("status")));
 		return bookRepository.save(book);
 	}
 
