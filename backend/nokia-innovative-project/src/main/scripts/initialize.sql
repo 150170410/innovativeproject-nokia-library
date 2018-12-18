@@ -1,3 +1,8 @@
+INSERT INTO book_status (id, status_name) VALUES (1, 'AVAILABLE');
+INSERT INTO book_status (id, status_name) VALUES (2, 'BORROWED');
+INSERT INTO book_status (id, status_name) VALUES (3, 'RESERVED');
+INSERT INTO book_status (id, status_name) VALUES (4, 'UNKNOWN');
+
 INSERT INTO book_details (cover_picture_url, publication_date, description, isbn, title) VALUES
   ('https://about.canva.com/wp-content/uploads/sites/3/2015/01/art_bookcover.png'
     , '2018-02-02'
@@ -86,10 +91,10 @@ INSERT INTO book_details_authors VALUES (7, 4);
 INSERT INTO book_details_authors VALUES (7, 5);
 
 
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('booka', 1, 1, 'dirty');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookaAA', 1, 2, 'putti');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookB', 2, 2, 'missing pages');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('YHNANK', 3, 3, 'bad');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('ALMNUM', 4, 3, 'cool');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('SIG123', 5, 1, 'stupid');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('OUF', 6, 1, 'lame');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('23243', 1, 1, 'no disc');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('43544', 1, 2, 'ok');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('32434', 2, 2, 'missing pages');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('23453', 3, 3, 'ok');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('12312', 4, 3, 'missing pages');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('12311', 5, 1, 'ok');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('23451', 6, 1, 'ok');
