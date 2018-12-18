@@ -29,6 +29,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	toUpdate: BookDetails = null;
 	uploadingFile = false;
+	fetchingDetails = false;
 	today = new Date();
 	maxDate;
 	fileToUpload: File = null;
@@ -90,7 +91,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	initBookDetailsForm() {
 		this.bookDetailsParams = this.formBuilder.group({
-			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13), Validators.pattern('^[0-9]+')]], // TODO: fix regex for ISBN
+			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13), Validators.pattern('^(97(8|9))?\\d{9}(\\d|X)$')]], // TODO: fix regex for ISBN
 			title: ['', [Validators.required, Validators.maxLength(100)]],
 			authors: this.authorsFormControl,
 			categories: this.categoriesFormControl,
@@ -209,6 +210,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	getInfoFromAPI() {
+		this.fetchingDetails = true;
 		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value)
 		.subscribe((response: MessageInfo) => {
 			if (response.success) {
@@ -223,8 +225,10 @@ export class ManageBookDetailsComponent implements OnInit {
 			} else {
 				this.snackbar.snackError('Nothing found', 'OK');
 			}
+			this.fetchingDetails = false;
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
+			this.fetchingDetails = false;
 		});
 	}
 

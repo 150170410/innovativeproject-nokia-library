@@ -15,16 +15,19 @@
 					</div>
 					<div *ngIf="bookDetailsParams.controls['isbn'].errors?.maxlength">The maximum length is 13 characters</div>
 					<div *ngIf="bookDetailsParams.controls['isbn'].errors?.minlength">The minimum length is 10 characters</div>
+					<div *ngIf="bookDetailsParams.controls['isbn'].errors?.pattern">This is not real ISBN number</div>
 				</mat-error>
 			</mat-form-field>
-			<button mat-raised-button color="accent" type="button" (click)="getInfoFromAPI()" [disabled]="!bookDetailsParams.controls['isbn'].valid">Get details</button>
+			<button class="isbn-button" mat-raised-button color="accent" type="button" (click)="getInfoFromAPI()" [disabled]="!bookDetailsParams.controls['isbn'].valid">Get details
+				<mat-spinner *ngIf="fetchingDetails" [diameter]="20"></mat-spinner>
+			</button>
 
 			<mat-form-field>
 				<input formControlName="title"
 					   placeholder="Title"
 					   matInput required
 					   [matAutocomplete]="autoTitle">
-        <mat-hint>Title is required</mat-hint>
+				<mat-hint>Title is required</mat-hint>
 				<mat-error *ngIf="bookDetailsParams.controls['title'].hasError">
 					<div *ngIf="bookDetailsParams.controls['title'].errors?.required">Title is required</div>
 					<div *ngIf="bookDetailsParams.controls['title'].errors?.maxlength">The maximum length is 100 characters</div>
