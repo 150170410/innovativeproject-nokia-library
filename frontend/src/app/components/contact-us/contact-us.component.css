@@ -10,7 +10,3 @@ form {
 .form-container > * {
 	width: 100%;
 }
-
-.spinner-placement {
-	float: right;
-}

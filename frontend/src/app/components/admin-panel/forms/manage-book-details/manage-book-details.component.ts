@@ -13,6 +13,7 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPa
 import { map, startWith } from 'rxjs/operators';
 import { API_URL } from '../../../../config';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
+import { ConfirmationDialogService } from '../../../../services/confirmation-dialog/confirmation-dialog.service';
 
 @Component({
 	selector: 'app-manage-book-details',
@@ -28,6 +29,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	toUpdate: BookDetails = null;
 	uploadingFile = false;
+	fetchingDetails = false;
 	today = new Date();
 	maxDate;
 	fileToUpload: File = null;
@@ -46,17 +48,18 @@ export class ManageBookDetailsComponent implements OnInit {
 	availableCategories: string[] = [];
 	selectedCategories: string[] = [];
 	filteredCategories: Observable<string[]>;
+	listOfBookCategories: BookCategory[] = [];
 
 	allAuthors: Author[] = [];
 	availableAuthors: string[] = [];
 	selectedAuthors: string[] = [];
 	filteredAuthors: Observable<string[]>;
+	listOfAuthors: Author[] = [];
 
 	availableBookDetails: BookDetails[] = [];
 	mapBookDetails = new Map();
 
 	availableTitles: string[] = [];
-
 
 	// table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -67,7 +70,8 @@ export class ManageBookDetailsComponent implements OnInit {
 				private http: RestService,
 				private httpClient: HttpClient,
 				public snackbar: SnackbarService,
-				private cd: ChangeDetectorRef) {
+				private cd: ChangeDetectorRef,
+				public confirmService: ConfirmationDialogService) {
 		this.filteredAuthors = this.authorsFormControl.valueChanges.pipe(
 			startWith(null),
 			map((author: string | null) => author ? this.filterAth(author) : this.availableAuthors.slice()));
@@ -87,12 +91,12 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	initBookDetailsForm() {
 		this.bookDetailsParams = this.formBuilder.group({
-			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13), Validators.pattern('^[0-9]+')]], // TODO: fix regex for ISBN
+			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13), Validators.pattern('^(97(8|9))?\\d{9}(\\d|X)$')]], // TODO: fix regex for ISBN
 			title: ['', [Validators.required, Validators.maxLength(100)]],
 			authors: this.authorsFormControl,
 			categories: this.categoriesFormControl,
 			publicationDate: ['', Validators.required],
-			description: ['', Validators.maxLength(1000)],
+			description: ['', Validators.maxLength(2000)],
 			coverPictureUrl: ['', Validators.maxLength(1000)],
 		});
 	}
@@ -104,7 +108,6 @@ export class ManageBookDetailsComponent implements OnInit {
 			this.categoriesToBookCategory(this.selectedCategories),
 			params.value.publicationDate,
 			params.value.description,
-			params.value.tableOfContents,
 			params.value.coverPictureUrl
 		);
 		console.log(body);
@@ -118,7 +121,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		} else {
 			this.http.update('bookDetails', this.toUpdate.id, body).subscribe((response) => {
@@ -132,7 +135,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		}
 	}
@@ -176,21 +179,21 @@ export class ManageBookDetailsComponent implements OnInit {
 				}
 				this.uploadingFile = false;
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 				this.uploadingFile = false;
 			})
 		} else {
 			this.snackbar.snackError('File is too big!', 'OK');
 			this.uploadingFile = false;
 		}
-
-
 	}
 
 	selectedTitle(event: MatAutocompleteSelectedEvent): void {
 		const selectedBookDetails = this.mapBookDetails.get(this.bookDetailsParams.get('title').value);
+		this.listOfBookCategories = this.allCategories;
 		this.allCategories = [];
 		this.selectedCategories = [];
+		this.listOfAuthors = this.allAuthors;
 		this.allAuthors = [];
 		this.selectedAuthors = [];
 		this.bookDetailsParams.patchValue({
@@ -207,8 +210,9 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	getInfoFromAPI() {
+		this.fetchingDetails = true;
 		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value)
-		.subscribe((response: MessageInfo)=>{
+		.subscribe((response: MessageInfo) => {
 			if (response.success) {
 				console.log(response.object)
 				this.availableTitles = [];
@@ -221,8 +225,11 @@ export class ManageBookDetailsComponent implements OnInit {
 			} else {
 				this.snackbar.snackError('Nothing found', 'OK');
 			}
-		}, (error) =>{
-				this.snackbar.snackError('Unexpected error :(', 'OK');});	
+			this.fetchingDetails = false;
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+			this.fetchingDetails = false;
+		});
 	}
 
 	editBookDetails(bookDetails: BookDetails) {
@@ -231,7 +238,6 @@ export class ManageBookDetailsComponent implements OnInit {
 			'publicationDate': new Date(bookDetails.publicationDate),
 			'description': bookDetails.description,
 			'isbn': bookDetails.isbn,
-			'tableOfContents': bookDetails.tableOfContents,
 			'title': bookDetails.title
 		});
 		this.toUpdate = bookDetails;
@@ -253,16 +259,22 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	async removeBookDetails(id: number) {
-		await this.http.remove('bookDetails', id).subscribe((response) => {
-			if (response.success) {
-				this.snackbar.snackSuccess('Book details removed successfully!', 'OK');
-			} else {
-				this.snackbar.snackError('Error', 'OK');
+		await this.confirmService.openDialog().subscribe((result) => {
+			console.log('The dialog was closed');
+			console.log(result);
+			if (result) {
+				this.http.remove('bookDetails', id).subscribe((response) => {
+					if (response.success) {
+						this.snackbar.snackSuccess('Book details removed successfully!', 'OK');
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+					this.getBookDetails();
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
 			}
-			this.getBookDetails();
-		}, (error) => {
-			this.snackbar.snackError('Unexpected error :(', 'OK');
-		});
+		})
 	}
 
 	clearForm() {
@@ -335,7 +347,13 @@ export class ManageBookDetailsComponent implements OnInit {
 	authorsToAuthor(authors: string[]): Author[] {
 		const arr: Author[] = [];
 		authors.forEach((val) => {
-			arr.push(this.allAuthors.filter(e => e.authorFullName === val)[0]);
+			const aut: Author[] = this.listOfAuthors.filter(e => (e.authorFullName === val));
+			if (aut.length > 0) {
+				arr.push(aut[0]);
+			}
+			else {
+				arr.push(new Author(null, val));
+			}
 		});
 		return arr;
 	}
@@ -394,9 +412,14 @@ export class ManageBookDetailsComponent implements OnInit {
 	categoriesToBookCategory(categories: string[]) {
 		const arr: BookCategory[] = [];
 		categories.forEach((val) => {
-			arr.push(this.allCategories.filter(e => e.bookCategoryName == val)[0]);
+			const cat: BookCategory[] = this.allCategories.filter(e => e.bookCategoryName === val);
+			if (cat.length > 0) {
+				arr.push(cat[0]);
+			}
+			else {
+				arr.push(new BookCategory(null, val));
+			}
 		});
 		return arr;
 	}
-
 }

@@ -32,9 +32,8 @@ import { ManageAuthorsComponent } from './components/admin-panel/forms/manage-au
 import { ManageCategoriesComponent } from './components/admin-panel/forms/manage-categories/manage-categories.component';
 import { ManageBooksComponent } from './components/admin-panel/forms/manage-books/manage-books.component';
 import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
-import { ManageBorrowingsComponent } from './components/user-panel/manage-borrowings/manage-borrowings.component';
-import { ManageReservationsComponent } from './components/user-panel/manage-reservations/manage-reservations.component';
-import {ScrollDispatchModule} from '@angular/cdk/scrolling';
+import { BookStatusesPipe } from './pipes/book-statuses/book-statuses.pipe';
+import { ConfirmationDialogComponent } from './utils/components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
 	declarations: [
@@ -55,8 +54,8 @@ import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 		ManageBooksComponent,
 		AdminPanelComponent,
 		LimitToPipe,
-		ManageBorrowingsComponent,
-		ManageReservationsComponent
+		BookStatusesPipe,
+		ConfirmationDialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -140,7 +139,8 @@ import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 	],
 	providers: [BookService, RestService, SidenavService,
 		{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}],
-	bootstrap: [AppComponent]
+	bootstrap: [AppComponent],
+	entryComponents: [ConfirmationDialogComponent]
 })
 export class AppModule {
 }

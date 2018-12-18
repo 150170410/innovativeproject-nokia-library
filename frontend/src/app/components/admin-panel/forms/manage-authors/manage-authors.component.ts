@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
+import { ConfirmationDialogService } from '../../../../services/confirmation-dialog/confirmation-dialog.service';
 
 @Component({
 	selector: 'app-manage-authors',
@@ -26,7 +27,8 @@ export class ManageAuthorsComponent implements OnInit {
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
-				public snackbar: SnackbarService) {
+				public snackbar: SnackbarService,
+				public confirmService: ConfirmationDialogService) {
 	}
 
 	ngOnInit() {
@@ -53,7 +55,7 @@ export class ManageAuthorsComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error :(', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		} else {
 			this.http.update('author', this.toUpdate.id, body).subscribe((response) => {
@@ -67,7 +69,7 @@ export class ManageAuthorsComponent implements OnInit {
 					this.snackbar.snackError('Error', 'OK');
 				}
 			}, (error) => {
-				this.snackbar.snackError('Unexpected error', 'OK');
+				this.snackbar.snackError(error.error.message, 'OK');
 			});
 		}
 	}
@@ -87,16 +89,20 @@ export class ManageAuthorsComponent implements OnInit {
 	}
 
 	async removeAuthor(id: number) {
-		await this.http.remove('author', id).subscribe((response) => {
-			if (response.success) {
-				this.snackbar.snackSuccess('Author removed successfully!', 'OK');
-			} else {
-				this.snackbar.snackError('Error', 'OK');
+		await this.confirmService.openDialog().subscribe((result) => {
+			if (result) {
+				 this.http.remove('author', id).subscribe((response) => {
+					if (response.success) {
+						this.snackbar.snackSuccess('Author removed successfully!', 'OK');
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+					this.getAuthors();
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
 			}
-			this.getAuthors();
-		}, (error) => {
-			this.snackbar.snackError('Unexpected error :(', 'OK');
-		});
+		})
 	}
 
 	clearForm() {
@@ -108,5 +114,4 @@ export class ManageAuthorsComponent implements OnInit {
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
-
 }

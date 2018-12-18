@@ -2,19 +2,17 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
-import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
-import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
+import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.validation.ConstraintViolationException;
-import java.util.Arrays;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,26 +20,41 @@ public class BookService {
 
 	private final BookRepository bookRepository;
 	private final BookDetailsRepository bookDetailsRepository;
+	private final BookStatusRepository bookStatusRepository;
 
 	public List<Book> getAllBooks() {
 		return bookRepository.findAll();
 	}
 
 	public Book getBookById(Long id) {
-		return bookRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("book"));
+		return bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 	}
 
+	public List<Book> getAllBooksByBookDetailsId(Long id) {
+		return bookRepository.getBooksByBookDetailsId(id);
+	}
+    
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	public Book createBook(BookDTO bookDTO) {
+		System.out.println(bookDTO);
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
-		return bookRepository.save(persistingRequiredEntities(book, bookDTO));
+		book.setBookDetails(bookDetailsRepository.findById(bookDTO.getBookDetailsId()).orElseThrow(
+				() -> new ResourceNotFoundException("book details")));
+		book.setStatus(bookStatusRepository.findById(bookDTO.getBookStatusId()).orElseThrow(
+				() -> new ResourceNotFoundException("status")));
+		return bookRepository.save(book);
 	}
 
 	public Book updateBook(Long id, BookDTO bookDTO) {
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 		book.setComments(bookDTO.getComments());
-		return bookRepository.save(persistingRequiredEntities(book, bookDTO));
+		book.setSignature(bookDTO.getSignature());
+		book.setBookDetails(bookDetailsRepository.findById(bookDTO.getBookDetailsId()).orElseThrow(
+				() -> new ResourceNotFoundException("book details")));
+		book.setStatus(bookStatusRepository.findById(bookDTO.getBookStatusId()).orElseThrow(
+				() -> new ResourceNotFoundException("status")));
+		return bookRepository.save(book);
 	}
 
 	public void deleteBook(Long id)
@@ -49,15 +62,5 @@ public class BookService {
 		Book book = bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("book"));
 		bookRepository.delete(book);
-	}
-
-	private Book persistingRequiredEntities(Book book, BookDTO bookDTO) {
-
-		BookDetails bookDetails = bookDTO.getBookDetails();
-		if(bookDetails.getId() != null){
-			bookDetails = bookDetailsRepository.findById(bookDetails.getId()).orElseThrow(()-> new ResourceNotFoundException("book details"));
-			book.setBookDetails(bookDetails);
-		}
-		return book;
 	}
 }
