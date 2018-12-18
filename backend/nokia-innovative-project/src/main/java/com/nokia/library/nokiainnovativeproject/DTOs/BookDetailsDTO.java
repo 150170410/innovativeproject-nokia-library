@@ -30,7 +30,7 @@ public class BookDetailsDTO {
 	@NotBlank(message = "Title is required")
 	private String title;
 
-	@Size(max = 1000, message = "Description can't exceed 1000 characters")
+	@Size(max = 2000, message = "Description can't exceed 2000 characters")
 	private String description;
 
 	@Size(max = 1000, message = "Cover picture URL can't exceed 1000 characters")
@@ -38,9 +38,6 @@ public class BookDetailsDTO {
 
 	@Past(message = "The publication date of the book should be a past date")
 	private Date publicationDate;
-
-	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
-	private String tableOfContents;
 
 	@Valid
 	@NotNull(message = "At least one book author is required.")

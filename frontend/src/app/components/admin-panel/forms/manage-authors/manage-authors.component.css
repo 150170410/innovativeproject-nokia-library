@@ -27,21 +27,3 @@ mat-form-field {
 .filter mat-form-field {
 	width: 100px;
 }
-
-::ng-deep .snackbar-success {
-	background: #c3d707;
-	color: black;
-}
-
-::ng-deep .snackbar-success .mat-simple-snackbar-action {
-	color: black !important;
-}
-
-::ng-deep .snackbar-error {
-	background: #9b1249;
-	color: white;
-}
-
-::ng-deep .snackbar-error .mat-simple-snackbar-action {
-	color: white !important;
-}

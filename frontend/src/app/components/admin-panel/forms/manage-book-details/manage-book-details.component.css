@@ -7,7 +7,11 @@ mat-form-field {
 }
 
 .isbn-field {
-	width: 400px;
+	width: 375px;
+}
+
+.isbn-button {
+	width: 125px;
 }
 
 .cover-picture-field {

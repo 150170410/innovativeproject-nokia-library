@@ -2,33 +2,42 @@
 	<mat-card-header routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" class="cursor-pointer">
 		<img *ngIf="bookDetails.coverPictureUrl" mat-card-avatar src="{{bookDetails.coverPictureUrl}}">
 		<img *ngIf="!bookDetails.coverPictureUrl" mat-card-avatar src="../../../../assets/images/default-cover.png">
-		<mat-card-title> {{bookDetails.title}}</mat-card-title>
+		<mat-card-title><b> {{bookDetails.title}}</b> by {{bookDetails.authors | arrToStr:'author'}}</mat-card-title>
 		<mat-card-subtitle>
-			<h5>
-				{{bookDetails.authors | arrToStr:'author'}}
-			</h5>
+			<h4>
+				{{bookDetails.categories| arrToStr:'category'}}
+			</h4>
 		</mat-card-subtitle>
 	</mat-card-header>
 	<mat-card-content>
-		<div><b>Categories:</b> {{bookDetails.categories| arrToStr:'category'}}</div>
-
-		<h5>About:</h5>
-		<p>
-			{{bookDetails.description}}
-		</p>
+		<b>About:</b> {{bookDetails.description}}
 	</mat-card-content>
-	<mat-card-actions>
-		<button mat-raised-button color="accent" disabled>
-			<mat-icon>done</mat-icon>
-			Borrow book
-		</button>
-		<button mat-raised-button disabled>
-			<mat-icon>star</mat-icon>
-			Reserve book
-		</button>
-		<button routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" mat-raised-button color="primary">
-			<mat-icon>info</mat-icon>
-			More info
-		</button>
-	</mat-card-actions>
+	<mat-accordion *ngIf="bookDetails.books.length > 0">
+		<mat-expansion-panel>
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					Available books: {{bookDetails.books | bookStatuses:1}}/{{bookDetails.books | bookStatuses:2}}/{{bookDetails.books.length}}
+				</mat-panel-title>
+
+			</mat-expansion-panel-header>
+
+			<ol>
+				<li *ngFor="let bookCopy of bookDetails.books" class="book-item">
+					<div class="signature"> {{bookCopy.signature}}</div>
+					<button mat-raised-button color="accent" class="button-spacer" [disabled]="bookCopy.status.id !== 1">
+						<mat-icon>done</mat-icon>
+						Borrow book
+					</button>
+					<div class="available-on button-spacer"> available on: 01.07.2019</div>
+					<button mat-raised-button disabled class="button-spacer" [disabled]="bookCopy.status.id !== 2">
+						<mat-icon>star</mat-icon>
+						Reserve book
+					</button>
+				</li>
+			</ol>
+		</mat-expansion-panel>
+	</mat-accordion>
+	<div class="not-available" *ngIf="(bookDetails.books.length < 1)">
+		<b>Sorry, but this book is not available.</b>
+	</div>
 </mat-card>

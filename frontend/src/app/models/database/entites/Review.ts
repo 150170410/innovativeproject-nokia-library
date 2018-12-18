@@ -1,4 +1,9 @@
+import { User } from './User';
+
 export class Review {
-  comment: string;
   id: number;
+  comment: string;
+  creationDate: Date;
+  lastEditionDate: Date;
+  user: User;
 }

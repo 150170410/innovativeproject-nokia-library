@@ -2,10 +2,14 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.nokia.library.nokiainnovativeproject.exceptions.MaxFileSizeException;
 import com.nokia.library.nokiainnovativeproject.exceptions.TypeNotSupportedException;
+import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
+import com.nokia.library.nokiainnovativeproject.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
@@ -31,10 +35,11 @@ public class PictureService {
         return uploadResult;
     }
 
-    private void validateFile(MultipartFile file) throws FileNotFoundException {
+    private void validateFile(MultipartFile file) {
         if(file == null || file.isEmpty()){
-            throw new FileNotFoundException("File is either null or empty");
+            throw new ValidationException("File is either null or empty");
         }
+        if(file.getSize() > Constants.MAX_FILE_SIZE ) { throw new MaxFileSizeException(file.getSize()); }
         if (!supportedTypes.contains(file.getContentType()))
             throw new TypeNotSupportedException(supportedTypes);
     }

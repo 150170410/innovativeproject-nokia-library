@@ -1,6 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.utils;
 
-import com.nokia.library.nokiainnovativeproject.exceptions.BindingResultsValidationException;
+import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import lombok.*;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,13 @@ public class MessageInfo {
 		if(bindingResult.hasErrors()){
 			List<String> errorsList = bindingResult.getAllErrors().stream()
 					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-			throw new BindingResultsValidationException(errorsList.stream().collect(Collectors.joining(". \n")));
+
+			throw new ValidationException(errorsList.stream().collect(Collectors.joining(". \n")));
 		}
+	}
+
+	public static void isThisEntityUnique(Long count, String entityName) {
+		if (count > 0) throw new ValidationException("This " + entityName +
+					" already exist in database.");
 	}
 }
