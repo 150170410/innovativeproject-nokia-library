@@ -29,6 +29,10 @@ public class BookService {
 	public Book getBookById(Long id) {
 		return bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 	}
+
+	public List<Book> getAllBooksByBookDetailsId(Long id) {
+		return bookRepository.getBooksByBookDetailsId(id);
+	}
     
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	public Book createBook(BookDTO bookDTO) {

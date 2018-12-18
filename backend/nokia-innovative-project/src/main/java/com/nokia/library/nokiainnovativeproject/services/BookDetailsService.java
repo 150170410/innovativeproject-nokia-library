@@ -1,10 +1,8 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
-import com.nokia.library.nokiainnovativeproject.entities.Author;
-import com.nokia.library.nokiainnovativeproject.entities.Book;
-import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
-import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
+import com.nokia.library.nokiainnovativeproject.entities.*;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
@@ -18,6 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -29,23 +28,48 @@ public class BookDetailsService {
 	private final BookDetailsRepository bookDetailsRepository;
 	private final AuthorRepository authorRepository;
 	private final BookCategoryRepository bookCategoryRepository;
+	private final BookService bookService;
 
-	public List<BookDetails> getAllBookDetails() {
+	public List<BookDetailsWithBooks> getAllBookDetails() {
 		List<BookDetails> list = bookDetailsRepository.findAll();
+
+		List<BookDetailsWithBooks> bookDetailsWithBooks = new ArrayList<>();
 		for(BookDetails bookDetails : list) {
 			Hibernate.initialize(bookDetails.getAuthors());
 			Hibernate.initialize(bookDetails.getCategories());
 			Hibernate.initialize(bookDetails.getReviews());
+
+			ModelMapper mapper = new ModelMapper();
+
+			List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
+			List<BookWithoutBookDetails> bookWithoutBookDetails = new ArrayList<>();
+			for(Book book : books) {
+				bookWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
+			}
+
+			BookDetailsWithBooks withBooks = mapper.map(bookDetails, BookDetailsWithBooks.class);
+			withBooks.setBooks(bookWithoutBookDetails);
+			bookDetailsWithBooks.add(withBooks);
 		}
-		return list;
+		return bookDetailsWithBooks;
 	}
 
-	public BookDetails getBookDetailsById(Long id) {
+	public BookDetailsWithBooks getBookDetailsById(Long id) {
 		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
 		Hibernate.initialize(bookDetails.getAuthors());
 		Hibernate.initialize(bookDetails.getCategories());
 		Hibernate.initialize(bookDetails.getReviews());
-		return bookDetails;
+
+		ModelMapper mapper = new ModelMapper();
+
+		List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
+		List<BookWithoutBookDetails> bookWithoutBookDetails = new ArrayList<>();
+		for(Book book : books) {
+			bookWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
+		}
+		BookDetailsWithBooks withBooks = mapper.map(bookDetails, BookDetailsWithBooks.class);
+		withBooks.setBooks(bookWithoutBookDetails);
+		return withBooks;
 	}
 
     @Transactional
@@ -80,11 +104,8 @@ public class BookDetailsService {
 	private BookDetails persistingRequiredEntities(BookDetails bookDetails, BookDetailsDTO bookDetailsDTO) {
 
 		List<Author> authors = bookDetailsDTO.getAuthors();
-
 		List<Author> authorsToRemove = authors.stream().filter(author -> author.getId() != null).collect(Collectors.toList());
-
 		Iterable<Long> iterable = authorsToRemove.stream().map(Author::getId).collect(Collectors.toList());
-
 		List<Author> existingAuthors = authorRepository.findAllById(iterable);
 
 		List<BookCategory> categories = bookDetailsDTO.getCategories();

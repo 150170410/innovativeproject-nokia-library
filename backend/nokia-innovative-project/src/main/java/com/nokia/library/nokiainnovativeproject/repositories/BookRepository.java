@@ -13,7 +13,7 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
    @Query(value="SELECT * FROM BOOK B " +
-           "LEFT JOIN BOOK_DETAILS BD ON BD.ID = B.ID " +
+           "INNER JOIN BOOK_DETAILS BD ON BD.ID = B.book_details_id " +
            "WHERE BD.ID = ?1",
    nativeQuery = true)
     List<Book> getBooksByBookDetailsId(Long id);

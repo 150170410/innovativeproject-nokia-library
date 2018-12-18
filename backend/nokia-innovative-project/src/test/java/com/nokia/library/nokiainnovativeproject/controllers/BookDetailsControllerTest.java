@@ -75,7 +75,7 @@ public class BookDetailsControllerTest {
 
 	@Test
 	public void getBookDetailsListTest() throws Exception {
-		when(service.getAllBookDetails()).thenReturn(Arrays.asList(bookDetails));
+		//when(service.getAllBookDetails()).thenReturn(Arrays.asList(bookDetails));
 		mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -86,7 +86,7 @@ public class BookDetailsControllerTest {
 
 	@Test
 	public void getBookDetailsByIdTest() throws Exception {
-		when(service.getBookDetailsById(1L)).thenReturn(bookDetails);
+		//when(service.getBookDetailsById(1L)).thenReturn(bookDetails);
 		mockMvc.perform(get(BASE_URL + Mappings.GET_ONE, 1L)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())

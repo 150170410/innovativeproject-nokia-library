@@ -28,20 +28,20 @@ public class BookDetails implements Serializable {
 
 	@Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers long")
 	@NotBlank(message = "ISBN is required")
-	private String isbn;
+	protected String isbn;
 
 	@Size(max = 100, message = "Title can't exceed 100 characters")
 	@NotBlank(message = "Title is required")
-	private String title;
+	protected String title;
 
 	@Size(max = 1000, message = "Description can't exceed 1000 characters")
-	private String description;
+	protected String description;
 
 	@Size(max = 1000, message = "Cover picture URL can't exceed 1000 characters")
-	private String coverPictureUrl;
+	protected String coverPictureUrl;
 
 	@Past(message = "Publication date should be a past date")
-	private Date publicationDate;
+	protected Date publicationDate;
 
 	@NotNull(message = "At least one book author is required.")
 	@ManyToMany(cascade = {
@@ -51,7 +51,7 @@ public class BookDetails implements Serializable {
 	@JoinTable(name = "book_details_authors",
 			joinColumns = @JoinColumn(name = "book_details_id"),
 			inverseJoinColumns = @JoinColumn(name = "author_id"))
-	private List<Author> authors;
+	protected List<Author> authors;
 
 	@NotNull(message = "At least one book category is required.")
 	@ManyToMany(cascade = {
@@ -61,13 +61,13 @@ public class BookDetails implements Serializable {
 	@JoinTable(name = "book_details_categories",
 			joinColumns = @JoinColumn(name = "book_details_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
-	private List<BookCategory> categories;
+	protected List<BookCategory> categories;
 
 	@OneToMany(cascade = {
 			CascadeType.MERGE,
 			CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_details_id")
-	private List<Review> reviews;
+	protected List<Review> reviews;
 
 }
