@@ -7,6 +7,7 @@ import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Author;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
+import com.nokia.library.nokiainnovativeproject.entities.BookDetailsWithBooks;
 import com.nokia.library.nokiainnovativeproject.services.BookDetailsService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import org.hamcrest.Matchers;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -75,7 +77,9 @@ public class BookDetailsControllerTest {
 
 	@Test
 	public void getBookDetailsListTest() throws Exception {
-		//when(service.getAllBookDetails()).thenReturn(Arrays.asList(bookDetails));
+		ModelMapper modelMapper = new ModelMapper();
+		BookDetailsWithBooks bookDetailsWithBooks = modelMapper.map(bookDetails, BookDetailsWithBooks.class);
+		when(service.getAllBookDetails()).thenReturn(Arrays.asList(bookDetailsWithBooks));
 		mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -86,7 +90,9 @@ public class BookDetailsControllerTest {
 
 	@Test
 	public void getBookDetailsByIdTest() throws Exception {
-		//when(service.getBookDetailsById(1L)).thenReturn(bookDetails);
+		ModelMapper modelMapper = new ModelMapper();
+		BookDetailsWithBooks bookDetailsWithBooks = modelMapper.map(bookDetails, BookDetailsWithBooks.class);
+		when(service.getBookDetailsById(1L)).thenReturn(bookDetailsWithBooks);
 		mockMvc.perform(get(BASE_URL + Mappings.GET_ONE, 1L)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
