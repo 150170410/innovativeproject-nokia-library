@@ -35,10 +35,10 @@ public class BookService {
 		System.out.println(bookDTO);
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
-		System.out.println(book);
-		book.setBookDetails(bookDetailsRepository.getOne(bookDTO.getBookDetailsId()));
-		book.setStatus(bookStatusRepository.getOne(bookDTO.getBookStatusId()));
-        System.out.println(book);
+		book.setBookDetails(bookDetailsRepository.findById(bookDTO.getBookDetailsId()).orElseThrow(
+				() -> new ResourceNotFoundException("book details")));
+		book.setStatus(bookStatusRepository.findById(bookDTO.getBookStatusId()).orElseThrow(
+				() -> new ResourceNotFoundException("status")));
 		return bookRepository.save(book);
 	}
 

@@ -92,13 +92,13 @@ INSERT INTO book_details_authors VALUES (7, 4);
 INSERT INTO book_details_authors VALUES (7, 5);
 
 
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('booka', 1, 0, 'dirty');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookaAA', 1, 1, 'putti');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookB', 2, 0, 'missing pages');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('YHNANK', 3, 0, 'bad');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('ALMNUM', 4, 0, 'cool');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('SIG123', 5, 0, 'stupid');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('OUF', 6, 0, 'lame');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('booka', 1, 1, 'dirty');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookaAA', 1, 2, 'putti');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookB', 2, 2, 'missing pages');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('YHNANK', 3, 3, 'bad');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('ALMNUM', 4, 3, 'cool');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('SIG123', 5, 1, 'stupid');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('OUF', 6, 1, 'lame');
 
 
 
