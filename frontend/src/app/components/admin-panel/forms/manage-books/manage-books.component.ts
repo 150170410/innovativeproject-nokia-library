@@ -22,8 +22,9 @@ export class ManageBooksComponent implements OnInit {
 
 	toUpdate: Book = null;
 
-	// table
-	@ViewChild(MatPaginator) paginator: MatPaginator;
+	// tables
+	@ViewChild('paginatorDetails') paginatorDetails: MatPaginator;
+	@ViewChild('paginatorCopies') paginatorCopies: MatPaginator;
 	dataSource = new MatTableDataSource<Book>();
 	dataSourceBookDetails = new MatTableDataSource<BookDetails>();
 
@@ -86,7 +87,7 @@ export class ManageBooksComponent implements OnInit {
 	async getBookDetails() {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
 		this.dataSourceBookDetails = new MatTableDataSource(response.object.reverse());
-		this.dataSourceBookDetails.paginator = this.paginator;
+		this.dataSourceBookDetails.paginator = this.paginatorDetails;
 
 		this.dataSourceBookDetails.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
@@ -96,7 +97,7 @@ export class ManageBooksComponent implements OnInit {
 	async getBookCopies() {
 		const response: MessageInfo = await this.http.getAll('books/getAll');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
-		this.dataSource.paginator = this.paginator;
+		this.dataSource.paginator = this.paginatorCopies;
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
