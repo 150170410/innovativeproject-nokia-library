@@ -347,7 +347,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	authorsToAuthor(authors: string[]): Author[] {
 		const arr: Author[] = [];
 		authors.forEach((val) => {
-			const aut: Author[] = this.listOfAuthors.filter(e => (e.authorFullName === val));
+			const aut: Author[] = this.allAuthors.filter(e => (e.authorFullName === val));
 			if (aut.length > 0) {
 				arr.push(aut[0]);
 			}
