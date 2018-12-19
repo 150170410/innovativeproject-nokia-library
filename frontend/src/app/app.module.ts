@@ -34,6 +34,8 @@ import { ManageBooksComponent } from './components/admin-panel/forms/manage-book
 import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
 import { BookStatusesPipe } from './pipes/book-statuses/book-statuses.pipe';
 import { ConfirmationDialogComponent } from './utils/components/confirmation-dialog/confirmation-dialog.component';
+import { ManageBorrowingsComponent } from './components/user-panel/manage-borrowings/manage-borrowings.component';
+import { ManageReservationsComponent } from './components/user-panel/manage-reservations/manage-reservations.component';
 
 @NgModule({
 	declarations: [
@@ -55,7 +57,9 @@ import { ConfirmationDialogComponent } from './utils/components/confirmation-dia
 		AdminPanelComponent,
 		LimitToPipe,
 		BookStatusesPipe,
-		ConfirmationDialogComponent
+		ConfirmationDialogComponent,
+		ManageBorrowingsComponent,
+		ManageReservationsComponent
 	],
 	imports: [
 		BrowserModule,
@@ -96,8 +100,7 @@ import { ConfirmationDialogComponent } from './utils/components/confirmation-dia
 		MatTableModule,
 		MatSortModule,
 		MatPaginatorModule,
-		MatNativeDateModule,
-		ScrollDispatchModule
+		MatNativeDateModule
 	], exports: [
 		BrowserAnimationsModule,
 		ReactiveFormsModule,
@@ -134,8 +137,7 @@ import { ConfirmationDialogComponent } from './utils/components/confirmation-dia
 		MatTableModule,
 		MatSortModule,
 		MatPaginatorModule,
-		MatNativeDateModule,
-		ScrollDispatchModule
+		MatNativeDateModule
 	],
 	providers: [BookService, RestService, SidenavService,
 		{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}],
