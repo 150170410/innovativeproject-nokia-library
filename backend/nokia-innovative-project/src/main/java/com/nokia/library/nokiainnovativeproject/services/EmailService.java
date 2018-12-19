@@ -18,7 +18,7 @@ public class EmailService {
 	@Async
 	public void sendSimpleMessage(Email email, List<String> recipients) {
 
-		if(recipients.size()  > 0) return;
+		if(recipients.size()  < 0) return;
 
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setTo(recipients.toArray(new String[0]));
