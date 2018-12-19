@@ -3,7 +3,6 @@ package com.nokia.library.nokiainnovativeproject.DTOs;
 import com.nokia.library.nokiainnovativeproject.entities.Author;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
-import com.nokia.library.nokiainnovativeproject.entities.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,8 +45,6 @@ public class BookDetailsDTO {
 
 	@NotNull(message = "At least one book category is required.")
 	private List<BookCategory> categories;
-
-	private List<Review> reviews;
 
 	private List<Book> books;
 }

@@ -56,12 +56,6 @@ public class BookDetails implements Serializable {
 	@JoinColumn(name = "book_category_id")
 	private List<BookCategory> categories;
 
-	@OneToMany(cascade = {CascadeType.MERGE,
-			CascadeType.PERSIST},
-			fetch = FetchType.LAZY)
-	@JoinColumn(name = "book_details_id")
-	private List<Review> reviews;
-
 	@OneToMany(mappedBy = "bookDetails",
 			cascade = {CascadeType.MERGE,
 			CascadeType.PERSIST},

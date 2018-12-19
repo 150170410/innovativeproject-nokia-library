@@ -40,14 +40,6 @@ public class User implements Serializable {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany( mappedBy = "user",
-                cascade = { CascadeType.DETACH,
-                            CascadeType.MERGE,
-                            CascadeType.PERSIST,
-                            CascadeType.REFRESH },
-                fetch = FetchType.LAZY)
-    private List<Review> reviews = new ArrayList<>();
-
     @ManyToMany(cascade ={  CascadeType.DETACH,
                             CascadeType.MERGE,
                             CascadeType.PERSIST,
