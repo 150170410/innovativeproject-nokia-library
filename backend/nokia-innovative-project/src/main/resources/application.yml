@@ -13,3 +13,17 @@ spring:
           auth: true
           starttls.enable: true
     debug: true
+  main:
+    allow-bean-definition-overriding: true
+security:
+  oauth2:
+    client:
+      clientId: 417943781937-qpbdod19lu7qo5aibrtftbc5c07mm3um.apps.googleusercontent.com
+      clientSecret: J0Xv9RD6PpD4IelVjVN9hcvU
+      accessTokenUri: https://accounts.google.com/o/oauth2/token
+      userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
+      clientAuthenticationScheme: form
+      scoped: true
+      scope: profile, email
+    resource:
+      userInfoUri:  https://www.googleapis.com/oauth2/v3/userinfo
