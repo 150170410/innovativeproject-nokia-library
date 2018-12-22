@@ -115,4 +115,9 @@ export class ManageAuthorsComponent implements OnInit {
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
+
+	cancelUpdate() {
+		this.toUpdate = null;
+		this.clearForm();
+	}
 }

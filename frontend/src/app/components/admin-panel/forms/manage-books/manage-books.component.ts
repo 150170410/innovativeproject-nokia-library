@@ -152,4 +152,8 @@ export class ManageBooksComponent implements OnInit {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
+	cancelUpdate() {
+		this.toUpdate = null;
+		this.clearForm();
+	}
 }

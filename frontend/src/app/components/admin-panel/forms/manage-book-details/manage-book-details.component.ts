@@ -423,4 +423,9 @@ export class ManageBookDetailsComponent implements OnInit {
 		});
 		return arr;
 	}
+
+	cancelUpdate() {
+		this.toUpdate = null;
+		this.clearForm();
+	}
 }
