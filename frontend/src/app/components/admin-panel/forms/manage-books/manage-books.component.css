@@ -25,7 +25,8 @@ mat-form-field {
 .isbn-field {
 	width: 400px;
 }
-.cover-picture-field{
+
+.cover-picture-field {
 	width: 280px;
 }
 
@@ -38,7 +39,7 @@ mat-form-field {
 	margin-left: 10px;
 }
 
-.buttons-row{
+.buttons-row {
 	margin-top: 10px;
 }
 
@@ -51,19 +52,35 @@ mat-form-field {
 
 }
 
-.filter mat-form-field{
+.filter mat-form-field {
 	width: 150px;
 }
 
-.thumbnail{
+.thumbnail {
 	max-height: 80px;
 }
 
-.upload-button{
+.upload-button {
 	display: inline-block;
 	width: 200px;
 }
 
 mat-spinner {
 	display: inline-block;
+}
+
+.st-available {
+	background-color: rgba(40, 167, 69, 0.7);
+}
+
+.st-borrowed {
+	background-color: rgba(255, 193, 7, 0.7);
+}
+
+.st-reserved {
+	background-color: rgba(220, 53, 69, 0.7);
+}
+
+.st-unknown {
+	background-color: rgba(108, 117, 125, 0.7);
 }

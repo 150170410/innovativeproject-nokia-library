@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
 	selector: 'app-manage-borrowings',
 	templateUrl: './manage-borrowings.component.html',
-	styleUrls: ['./manage-borrowings.component.css']
+	styleUrls: ['./manage-borrowings.component.css', '../user-panel.component.css']
 })
 export class ManageBorrowingsComponent implements OnInit {
 

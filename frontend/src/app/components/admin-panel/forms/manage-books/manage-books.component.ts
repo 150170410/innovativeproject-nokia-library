@@ -28,7 +28,7 @@ export class ManageBooksComponent implements OnInit {
 	dataSource = new MatTableDataSource<Book>();
 	dataSourceBookDetails = new MatTableDataSource<BookDetails>();
 
-	displayedBookCopiesColumns: string[] = ['signature', 'bookDetails', 'comments', 'actions'];
+	displayedBookCopiesColumns: string[] = ['signature', 'status', 'bookDetails', 'comments', 'actions'];
 	displayedBookDetailsColumns: string[] = ['isbn', 'title', 'authors', 'actions'];
 
 	constructor(private formBuilder: FormBuilder,
@@ -88,7 +88,6 @@ export class ManageBooksComponent implements OnInit {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
 		this.dataSourceBookDetails = new MatTableDataSource(response.object.reverse());
 		this.dataSourceBookDetails.paginator = this.paginatorDetails;
-
 		this.dataSourceBookDetails.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};

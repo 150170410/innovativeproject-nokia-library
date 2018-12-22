@@ -1,42 +1,15 @@
 import { Book } from './Book';
+import { Author } from './Author';
+import { BookCategory } from './BookCategory';
 
 export class BookDetails {
-	authors: [{
-		authorFullName: string;
-		id: number
-	}];
-	books: Book[]
-	categories: [{
-		bookCategoryName: string;
-		id: number
-	}];
+	id: number;
+	isbn: string;
+	title: string;
+	authors: Author [];
+	books: Book[];
+	categories: BookCategory [];
 	coverPictureUrl: string;
 	publicationDate: Date;
 	description: string;
-	id: number;
-	isbn: string;
-	reviews: [{
-		addDate: Date;
-		comment: string;
-		id: 0;
-		user: {
-			address: {
-				build: string;
-				city: string;
-				id: number
-			};
-			email: string;
-			firstName: string;
-			id: number;
-			lastName: string;
-			reservations: [
-				null
-				];
-			reviews: [
-				null
-				]
-		}
-	}];
-	tableOfContents: string;
-	title: string;
 }
