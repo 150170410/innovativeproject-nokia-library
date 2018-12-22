@@ -84,6 +84,7 @@ export class ManageCategoriesComponent implements OnInit {
 		});
 		this.formMode = 'Update';
 		this.toUpdate = category;
+		document.getElementById('admin-panel-tabs').scrollIntoView();
 	}
 
 	async removeCategory(id: number) {
@@ -111,5 +112,10 @@ export class ManageCategoriesComponent implements OnInit {
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
+
+	cancelUpdate() {
+		this.toUpdate = null;
+		this.clearForm();
 	}
 }

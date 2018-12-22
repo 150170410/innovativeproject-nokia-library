@@ -2,7 +2,7 @@
 <mat-spinner *ngIf="pageLoading"></mat-spinner>
 <div *ngIf="!pageLoading">
 	<h1>{{bookDetails.title}}</h1>
-	<h5>by: {{bookDetails.authors | arrToStr:'author'}}</h5>
+	<h3>by: {{bookDetails.authors | arrToStr:'author'}}</h3>
 	<div class="wrapper">
 		<div class="cover-wrapper">
 			<img *ngIf="bookDetails.coverPictureUrl" src="{{bookDetails.coverPictureUrl}}">
@@ -13,18 +13,30 @@
 			<div><b>About book: </b>{{bookDetails.description}}</div>
 		</div>
 	</div>
+
+
 	<div>
-		<button mat-raised-button color="accent" disabled>
-			<mat-icon>done</mat-icon>
-			Borrow book
-		</button>
-		<button mat-raised-button class="reserve-button" disabled>
-			<mat-icon>star</mat-icon>
-			Reserve book
-		</button>
+		<h3>
+			Available books: {{bookDetails.books | bookStatuses:1}}/{{bookDetails.books | bookStatuses:2}}/{{bookDetails.books.length}}
+		</h3>
+		<ol>
+			<li *ngFor="let bookCopy of bookDetails.books;" class="book-item">
+				<div class="signature">{{bookCopy.signature}}</div>
+				<button mat-raised-button color="accent" class="button-spacer" [disabled]="bookCopy.status.id !== 1">
+					<mat-icon>done</mat-icon>
+					Borrow book
+				</button>
+				<div class="available-on button-spacer"> available on: 01.07.2019</div>
+				<button mat-raised-button disabled class="button-spacer" [disabled]="bookCopy.status.id !== 2">
+					<mat-icon>star</mat-icon>
+					Reserve book
+				</button>
+			</li>
+		</ol>
 	</div>
 
-	<h5>Book details:</h5>
+
+	<h3>More details:</h3>
 	<ul>
 		<li>
 			<b>ISBN:</b> {{bookDetails.isbn}}
@@ -33,13 +45,6 @@
 			<b>Date of publication:</b> {{bookDetails.publicationDate | date: 'dd.MM.yyyy'}}
 		</li>
 	</ul>
-
-	<h5>Comments:</h5>
-	<div *ngFor="let review of bookDetails.reviews">{{review.comment}}</div>
-
-
-	<h5>Available copies:</h5>
-	<div *ngFor="let book of bookDetails.books">{{book.id}}</div>
 
 </div>
 

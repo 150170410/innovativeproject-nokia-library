@@ -1,4 +1,4 @@
-mat-card{
+mat-card {
 	margin-bottom: 1px;
 }
 
@@ -6,20 +6,21 @@ mat-card{
 	margin-left: 10px;
 }
 
-.book-item{
+.book-item {
 	margin-top: 10px;
 }
 
-.signature{
+.signature {
 	width: 80px;
 	display: inline-block;
 }
 
-.available-on{
-	width: 160px;
+.available-on {
+	width: 180px;
 	display: inline-block;
 }
-.not-available{
+
+.not-available {
 	color: #9b1249;
 	font-size: 20px;
 }
