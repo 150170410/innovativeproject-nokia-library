@@ -84,6 +84,7 @@ export class ManageCategoriesComponent implements OnInit {
 		});
 		this.formMode = 'Update';
 		this.toUpdate = category;
+		document.getElementById('admin-panel-tabs').scrollIntoView();
 	}
 
 	async removeCategory(id: number) {

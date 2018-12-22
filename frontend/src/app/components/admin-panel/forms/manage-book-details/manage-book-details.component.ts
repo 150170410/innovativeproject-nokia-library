@@ -256,6 +256,7 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.bookDetailsParams.patchValue({ 'categories': '' });
 		this.bookDetailsParams.patchValue({ 'authors': '' });
 		this.formMode = 'Update';
+		document.getElementById('admin-panel-tabs').scrollIntoView();
 	}
 
 	async removeBookDetails(id: number) {

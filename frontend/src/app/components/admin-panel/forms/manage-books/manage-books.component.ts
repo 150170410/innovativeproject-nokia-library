@@ -111,6 +111,7 @@ export class ManageBooksComponent implements OnInit {
 		this.selectedBookDetails = bookCopy.bookDetails;
 		this.toUpdate = bookCopy;
 		this.formMode = 'Update';
+		document.getElementById('admin-panel-tabs').scrollIntoView();
 	}
 
 	async removeBookCopy(id: number) {

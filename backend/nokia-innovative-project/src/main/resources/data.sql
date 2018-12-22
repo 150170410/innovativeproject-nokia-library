@@ -1,5 +1,5 @@
 INSERT INTO book_status (status_name) VALUES ('AVAILABLE');
-INSERT INTO book_status (status_name) VALUES 'BORROWED');
+INSERT INTO book_status (status_name) VALUES ('BORROWED');
 INSERT INTO book_status (status_name) VALUES ('RESERVED');
 INSERT INTO book_status (status_name) VALUES ('UNKNOWN');
 
