@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "INNER JOIN role r ON ur.roles_id = r.id WHERE r.role = 'ROLE_ADMIN'",
             nativeQuery = true)
     List<String> getAdminsEmail();
+
+    User findUserByEmail(String email);
 }

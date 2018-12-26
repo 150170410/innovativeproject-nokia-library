@@ -3,6 +3,9 @@ INSERT INTO book_status (status_name) VALUES ('BORROWED');
 INSERT INTO book_status (status_name) VALUES ('RESERVED');
 INSERT INTO book_status (status_name) VALUES ('UNKNOWN');
 
+INSERT INTO role (role) VALUES ('ROLE_EMPLOYEE');
+INSERT INTO role (role) VALUES ('ROLE_ADMIN');
+
 INSERT INTO book_category (book_category_name) VALUES ('Guide');
 INSERT INTO book_category (book_category_name) VALUES ('Programming');
 INSERT INTO book_category (book_category_name) VALUES ('Novel');

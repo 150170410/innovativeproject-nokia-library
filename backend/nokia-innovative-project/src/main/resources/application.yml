@@ -13,8 +13,6 @@ spring:
           auth: true
           starttls.enable: true
     debug: true
-  main:
-    allow-bean-definition-overriding: true
 security:
   oauth2:
     client:

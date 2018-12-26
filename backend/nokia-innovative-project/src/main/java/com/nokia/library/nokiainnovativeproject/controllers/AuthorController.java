@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Arrays;
 
-
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(API_VERSION + BOOK_AUTHOR)

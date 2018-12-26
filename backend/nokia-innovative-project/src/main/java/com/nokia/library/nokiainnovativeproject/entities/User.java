@@ -54,14 +54,14 @@ public class User implements Serializable {
                 fetch = FetchType.LAZY)
     private List<Review> reviews;
 
-    @ManyToMany(cascade ={  CascadeType.MERGE,
-                            CascadeType.PERSIST},
+    @ManyToMany(cascade ={CascadeType.MERGE,
+                        CascadeType.PERSIST},
                 fetch = FetchType.LAZY)
     private List<Book> books;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = { CascadeType.DETACH,
-                        CascadeType.MERGE   })
+    @ManyToMany(cascade = {CascadeType.MERGE,
+                        CascadeType.PERSIST},
+                fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
