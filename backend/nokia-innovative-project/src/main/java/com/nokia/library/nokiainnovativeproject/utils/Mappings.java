@@ -13,6 +13,8 @@ public class Mappings {
 	public static final String CREATE = "/create";
 	public static final String UPDATE = "/update/{id}";
 	public static final String REMOVE = "/remove/{id}";
+	public static final String UPLOAD = "/upload";
+	public static final String GET = "/get";
 
 	// controller mappings
 	public static final String BOOK_DETAILS = "/bookDetails";
@@ -31,4 +33,7 @@ public class Mappings {
 
 	public static final String AUTOCOMPLETION = "/autocompletion";
 
+	public static final String USER = "/user";
+    public static final String TAKE_ADMIN = "/takeAdmin/{id}";
+    public static final String ASSIGN_ADMIN = "/assignAdmin/{id}";
 }

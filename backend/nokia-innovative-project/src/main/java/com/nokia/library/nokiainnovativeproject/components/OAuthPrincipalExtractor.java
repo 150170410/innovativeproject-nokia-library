@@ -28,11 +28,11 @@ public class OAuthPrincipalExtractor implements PrincipalExtractor {
             user.setFirstName("null");
             user.setLastName("null");
             String userName = (String)map.get("name");
-            String[] splitingResult = userName.split(" ");
-            if(splitingResult != null && splitingResult.length > 0) {
-                user.setFirstName(splitingResult[0]);
-                if(splitingResult.length > 1) {
-                    user.setLastName(splitingResult[1]);
+            String[] splitResult = userName.split(" ");
+            if(splitResult != null && splitResult.length > 0) {
+                user.setFirstName(splitResult[0]);
+                if(splitResult.length > 1) {
+                    user.setLastName(splitResult[1]);
                 }
             }
 
