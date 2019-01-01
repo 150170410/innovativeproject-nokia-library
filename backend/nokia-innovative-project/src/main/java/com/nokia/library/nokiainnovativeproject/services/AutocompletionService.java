@@ -18,11 +18,11 @@ public class AutocompletionService {
     public BookDetailsDTO getBookDetailsFromApiItBookStore(String isbn) {
         BookDetailsDTO bookDetailsDTO = null;
         if(isbn.length() == 13) {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
-        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+            headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+            HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 
             String uri = "https://api.itbook.store/1.0/books/";
             ResponseEntity<String> result = restTemplate.exchange(uri + isbn, HttpMethod.GET, entity, String.class);
@@ -96,6 +96,46 @@ public class AutocompletionService {
                     bookDetailsDTO.setPublicationDate(date);
                 }
             }
+        }
+        return bookDetailsDTO;
+    }
+
+    public BookDetailsDTO getBookDetailsFromApiBN(String isbn) {
+        BookDetailsDTO bookDetailsDTO = null;
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+
+        String uri = "http://data.bn.org.pl/api/bibs.json?isbnIssn=";
+        ResponseEntity<String> result = restTemplate.exchange(uri + isbn, HttpMethod.GET, entity, String.class);
+
+        if(result.getStatusCode().is2xxSuccessful()) {
+            JSONObject responseJSON = new JSONObject(result.toString().replace("<200,", ""));
+            JSONObject bibs = responseJSON.getJSONArray("bibs").getJSONObject(0);
+            bookDetailsDTO = new BookDetailsDTO();
+            bookDetailsDTO.setTitle(bibs.getString("title").replace(" /", ""));
+            if (bibs.has("publicationYear")) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.clear();
+                calendar.set(Calendar.YEAR, Integer.parseInt(bibs.getString("publicationYear")));
+                Date date = calendar.getTime();
+                bookDetailsDTO.setPublicationDate(date);
+            }
+            bookDetailsDTO.setDescription("");
+            bookDetailsDTO.setCoverPictureUrl("");
+            List<Author> authorList = new ArrayList<>();
+            String[] authors = bibs.getString("author").split("\\.");
+            for (String name : authors) {
+                if(name.contains("(")) {
+                    Author author = new Author();
+                    author.setAuthorFullName(name.replaceAll("\\([0-9]*-( )?[0-9]*\\)", "")
+                            .replace(",", ""));
+                    authorList.add(author);
+                }
+            }
+            bookDetailsDTO.setAuthors(authorList);
         }
         return bookDetailsDTO;
     }
