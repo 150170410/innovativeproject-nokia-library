@@ -5,10 +5,12 @@
 		</a>
 		<img class="nav-link white" src="../../../../assets/images/nokia-logo.png">
 
-		<a class="nav-link white" routerLink="/user-panel" routerLinkActive="active">
-			<mat-icon>library_books</mat-icon>
-			User panel
-		</a>
+    <div [hidden]="!isAuth">
+      <a class="nav-link white" routerLink="/user-panel" routerLinkActive="active">
+        <mat-icon>library_books</mat-icon>
+        User panel
+      </a>
+    </div>
 
 		<a class="nav-link white" routerLink="/admin-panel" routerLinkActive="active">
 			<mat-icon>ballot</mat-icon>
@@ -42,32 +44,41 @@
 			Request feature/report bug
 		</button>
 
-		<div>Not logged in</div>
-		<button mat-icon-button [matMenuTriggerFor]="menuOptions">
-			<mat-icon>more_vert</mat-icon>
-		</button>
-		<mat-menu #menuOptions="matMenu">
-			<button mat-menu-item>
-				<mat-icon>account_circle</mat-icon>
-				<span>Your account</span>
-			</button>
-			<button mat-menu-item [matMenuTriggerFor]="menuSomeOptions">
-				<mat-icon>settings</mat-icon>
-				<span>Settings</span>
-			</button>
-			<button mat-menu-item>
-				<mat-icon>exit_to_app</mat-icon>
-				<span>Logout</span>
-			</button>
-		</mat-menu>
-		<mat-menu #menuSomeOptions="matMenu">
-			<button mat-menu-item>Option 1</button>
-			<button mat-menu-item>Option 2</button>
-			<button mat-menu-item>Option 3</button>
-			<div mat-menu-item>
-				<div style="height: 100px; widows: 100px;">test</div>
-			</div>
-		</mat-menu>
+    <div [hidden]="!isAuth">
+      <a href="http://localhost:8081/login" class="btn btn-primary">
+        Sign in
+      </a>
+    </div>
+    <div [hidden]="isAuth">
+      <button (click)="logout()">
+        Sign out
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="menuOptions">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menuOptions="matMenu">
+        <button mat-menu-item>
+          <mat-icon>account_circle</mat-icon>
+          <span>Your account</span>
+        </button>
+        <button mat-menu-item [matMenuTriggerFor]="menuSomeOptions">
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+      <mat-menu #menuSomeOptions="matMenu">
+        <button mat-menu-item>Option 1</button>
+        <button mat-menu-item>Option 2</button>
+        <button mat-menu-item>Option 3</button>
+        <div mat-menu-item>
+          <div style="height: 100px; widows: 100px;">test</div>
+        </div>
+      </mat-menu>
+    </div>
 
 	</mat-toolbar-row>
 </mat-toolbar>
