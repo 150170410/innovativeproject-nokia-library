@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material';
 import { ContactUsComponent } from '../../../components/contact-us/contact-us.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SidenavService } from '../../../services/sidenav/sidenav.service';
-import {AuthService} from '../../../services/auth/auth.service';
-import {Router} from '@angular/router';
+import { AuthService } from '../../../services/auth/auth.service';
+import { API_URL } from '../../../config';
 
 @Component({
 	selector: 'app-navbar',
@@ -19,10 +19,11 @@ export class NavbarComponent implements OnInit {
 	roles: any = null;
 	isAuth = false;
 
+
 	constructor(public dialog: MatDialog,
-				      private sidenavService: SidenavService,
-				      private formBuilder: FormBuilder,
-              private authService: AuthService) {
+				private sidenavService: SidenavService,
+				private formBuilder: FormBuilder,
+				private authService: AuthService) {
 	}
 
 	ngOnInit() {
@@ -37,20 +38,21 @@ export class NavbarComponent implements OnInit {
 	}
 
 	isAuthenticated() {
-	  this.roles = this.authService.getRoles();
-	  if (this.roles != null) {
-	    this.isAuth = true;
-    }
-  }
+		this.roles = this.authService.getRoles();
+		if (this.roles != null) {
+			this.isAuth = true;
+		}
+	}
 
-  login() {
-	  this.isAuthenticated();
-  }
+	login() {
+		this.isAuthenticated();
+		window.location.href = API_URL + '/login';
+	}
 
-  logout() {
+	logout() {
 
-	  this.isAuthenticated();
-  }
+		this.isAuthenticated();
+	}
 
 	search(searchParams: any) {
 		console.log(searchParams.value.searchValue);

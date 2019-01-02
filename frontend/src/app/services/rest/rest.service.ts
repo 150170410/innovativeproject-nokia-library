@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpXsrfTokenExtractor} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpXsrfTokenExtractor } from '@angular/common/http';
 import { catchError } from 'rxjs/internal/operators';
 import { API_URL } from '../../config';
 import { Observable, throwError } from 'rxjs/index';
@@ -11,43 +11,46 @@ import { MessageInfo } from '../../models/MessageInfo';
 export class RestService {
 	URL = API_URL + '/api/v1/';
 
-  constructor(private http: HttpClient, private tokenExtractor: HttpXsrfTokenExtractor) {
-  }
+	constructor(private http: HttpClient, private tokenExtractor: HttpXsrfTokenExtractor) {
+	}
 
-  setHeaders() {
-    if (!this.isTokenActive()) {
-      return this.setSimpleHeader();
-    } else {
-      return {
-        headers: new HttpHeaders({
-          'X-XSRF-TOKEN': this.tokenExtractor.getToken() as string,
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        })
-      };
-    }
-  }
-  setSimpleHeader() {
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-  }
-  async isTokenActive() {
-    const response = await this.getProperties('user/get');
-    if (response.object === null) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-  async getProperties(url: string) {
-    return await this.http.get<MessageInfo>(this.URL + url, this.setSimpleHeader())
-      .pipe(
-        catchError(this.handleError)
-      ).toPromise();
-  }
+	setHeaders() {
+		if (!this.isTokenActive()) {
+			return this.setSimpleHeader();
+		} else {
+			return {
+				headers: new HttpHeaders({
+					'X-XSRF-TOKEN': this.tokenExtractor.getToken() as string,
+					'Content-Type': 'application/json',
+					'X-Requested-With': 'XMLHttpRequest'
+				})
+			};
+		}
+	}
+
+	setSimpleHeader() {
+		return {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json'
+			})
+		};
+	}
+
+	async isTokenActive() {
+		const response = await this.getProperties('user/get');
+		if (response.object === null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	async getProperties(url: string) {
+		return await this.http.get<MessageInfo>(this.URL + url, this.setSimpleHeader())
+		.pipe(
+			catchError(this.handleError)
+		).toPromise();
+	}
 
 	async getAll(url: string) {
 		return await this.http.get<MessageInfo>(this.URL + url, this.setHeaders())

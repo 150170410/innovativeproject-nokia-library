@@ -12,7 +12,7 @@ export class AuthService {
 
   async getRoles() {
     const response = await this.http.getProperties('user/get');
-    if (response.object === null) {
+	  if (response.object === null) {
       return null;
     } else {
       return response.object.authorities;
