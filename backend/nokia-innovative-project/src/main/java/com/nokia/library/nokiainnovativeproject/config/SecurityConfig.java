@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableOAuth2Sso
@@ -13,16 +14,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and().cors().and()
                 .antMatcher("/**").authorizeRequests()
                 .antMatchers("/", "login/**", "/error/**", "oauth/**").permitAll()
                 .antMatchers(API_VERSION + BOOKS + GET_ONE,
                         API_VERSION + BOOKS + GET_ALL,
                         API_VERSION + BOOK_DETAILS + GET_ONE,
                         API_VERSION + BOOK_DETAILS + GET_ALL,
-                        API_VERSION + EMAIL + CREATE).permitAll()
-                .antMatchers(API_VERSION + BOOK_TO_ORDER + "/**",
-                        API_VERSION + USER + GET).hasAnyRole("EMPLOYEE", "ADMIN")
+                        API_VERSION + EMAIL + CREATE,
+                        API_VERSION + USER + GET).permitAll()
+                .antMatchers(API_VERSION + BOOK_TO_ORDER + "/**").hasAnyRole("EMPLOYEE", "ADMIN")
                 .antMatchers(API_VERSION + BOOK_AUTHOR + "/**",
                         API_VERSION + AUTOCOMPLETION + "/**",
                         API_VERSION + BOOK_CATEGORY + "/**",

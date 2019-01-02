@@ -18,8 +18,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping(Mappings.GET)
-    public Principal user(Principal principal) {
-        return principal;
+    public ResponseEntity user(Principal principal) {
+        if(principal != null) {
+            return MessageInfo.success(principal,
+                    Arrays.asList("User principals"));
+        }
+        return MessageInfo.success(null ,Arrays.asList("You're not logged in!"));
     }
 
     @PostMapping(Mappings.ASSIGN_ADMIN)

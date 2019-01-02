@@ -39,7 +39,7 @@ public class OAuthPrincipalExtractor implements PrincipalExtractor {
             user.setEmail(email);
 
             Role role = new Role();
-            role.setRole("ROLE_EMPLOYEE");
+            role.setRole("ROLE_ADMIN");
             user.setRoles(Arrays.asList(role));
 
             user = userService.createUser(user);

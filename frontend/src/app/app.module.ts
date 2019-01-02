@@ -13,7 +13,7 @@ import {
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import { ListviewComponent } from './components/listview/listview.component';
 import { BookService } from './services/book/book.service';
 import { PageNotFoundComponent } from './utils/components/page-not-found/page-not-found.component';
@@ -36,6 +36,7 @@ import { BookStatusesPipe } from './pipes/book-statuses/book-statuses.pipe';
 import { ConfirmationDialogComponent } from './utils/components/confirmation-dialog/confirmation-dialog.component';
 import { ManageBorrowingsComponent } from './components/user-panel/manage-borrowings/manage-borrowings.component';
 import { ManageReservationsComponent } from './components/user-panel/manage-reservations/manage-reservations.component';
+
 
 @NgModule({
 	declarations: [
@@ -65,8 +66,10 @@ import { ManageReservationsComponent } from './components/user-panel/manage-rese
 		BrowserModule,
 		BrowserAnimationsModule,
 		ReactiveFormsModule,
+    HttpClientModule,
+    HttpClientXsrfModule,
 		FormsModule,
-		RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes),
 		HttpClientModule,
 
 		MatCheckboxModule,
