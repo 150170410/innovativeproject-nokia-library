@@ -6,17 +6,14 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Book implements Serializable {
 
 	@Id
@@ -32,13 +29,15 @@ public class Book implements Serializable {
 	private String comments;
 
 	@ManyToOne(cascade = {CascadeType.MERGE,
-			CascadeType.PERSIST})
+			CascadeType.PERSIST},
+			fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_status_id")
 	private BookStatus status;
 
 	@ManyToOne(cascade = {
 			CascadeType.MERGE,
-			CascadeType.PERSIST})
+			CascadeType.PERSIST},
+			fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_details_id")
 	private BookDetails bookDetails;
 }
