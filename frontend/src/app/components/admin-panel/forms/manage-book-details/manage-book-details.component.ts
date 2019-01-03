@@ -190,11 +190,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	selectedTitle(event: MatAutocompleteSelectedEvent): void {
 		const selectedBookDetails = this.mapBookDetails.get(this.bookDetailsParams.get('title').value);
-		this.listOfBookCategories = this.allCategories;
-		this.allCategories = [];
 		this.selectedCategories = [];
-		this.listOfAuthors = this.allAuthors;
-		this.allAuthors = [];
 		this.selectedAuthors = [];
 		this.bookDetailsParams.patchValue({
 			'title': selectedBookDetails['title'],
@@ -203,9 +199,9 @@ export class ManageBookDetailsComponent implements OnInit {
 			'publicationDate': new Date(selectedBookDetails['publicationDate'])
 		});
 		selectedBookDetails['authors'].forEach(element => {
-			const author = new Author(null, element.authorFullName);
+			// const author = new Author(null, element.authorFullName);
 			this.selectedAuthors.push(element.authorFullName);
-			this.allAuthors.push(author);
+			// this.allAuthors.push(author);
 		});
 	}
 
@@ -214,7 +210,6 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value)
 		.subscribe((response: MessageInfo) => {
 			if (response.success) {
-				console.log(response.object)
 				this.availableTitles = [];
 				this.availableBookDetails = response.object;
 				response.object.forEach(element => {
@@ -261,8 +256,6 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	async removeBookDetails(id: number) {
 		await this.confirmService.openDialog().subscribe((result) => {
-			console.log('The dialog was closed');
-			console.log(result);
 			if (result) {
 				this.http.remove('bookDetails', id).subscribe((response) => {
 					if (response.success) {
@@ -414,6 +407,9 @@ export class ManageBookDetailsComponent implements OnInit {
 		const arr: BookCategory[] = [];
 		categories.forEach((val) => {
 			const cat: BookCategory[] = this.allCategories.filter(e => e.bookCategoryName === val);
+			console.log(this.allCategories);
+			console.log(val);
+			console.log(cat);
 			if (cat.length > 0) {
 				arr.push(cat[0]);
 			}
