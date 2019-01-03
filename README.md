@@ -9,7 +9,10 @@
 # 1. Project overview
 The goal of the project is to create a library web application.
 
-Demo available at: https://nokia-library-client.herokuapp.com
+Demo app available at: https://nokia-library-client.herokuapp.com
+
+Demo video no YouTube: https://youtu.be/f9H7dZBYAxw
+
 # 2. Functionality
 For all users:
 * Borrowing and reserving books,
@@ -17,8 +20,7 @@ For all users:
 * requesting new book,
 * reminder about returning a book,
 * notification about book availability,
-* contact with developers (report a bug, request new feature),
-* reviewing a book,
+* contact with developers (report a bug, request new feature, etc.),
 * user accounts.
 
 For admins only:

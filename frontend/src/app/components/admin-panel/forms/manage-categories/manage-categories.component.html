@@ -24,6 +24,9 @@
 			<button mat-raised-button color="primary" type="submit" [disabled]="!categoryParams.valid">
 				{{formMode}}
 			</button>
+			<button class="button-spacer" *ngIf="toUpdate !== null" mat-button color="warn" type="submit" (click)="cancelUpdate()">
+				Cancel
+			</button>
 			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()">
 				Clear
 			</button>
@@ -35,7 +38,7 @@
 
 <div class="form-table-spacer">
 	<div class="filter-paginator-wrapper">
-		<div  class="filter">
+		<div class="filter">
 			<mat-form-field>
 				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 			</mat-form-field>

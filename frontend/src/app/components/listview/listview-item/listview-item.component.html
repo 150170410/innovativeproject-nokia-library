@@ -1,8 +1,8 @@
 <mat-card>
-	<mat-card-header routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" class="cursor-pointer">
+	<mat-card-header>
 		<img *ngIf="bookDetails.coverPictureUrl" mat-card-avatar src="{{bookDetails.coverPictureUrl}}">
 		<img *ngIf="!bookDetails.coverPictureUrl" mat-card-avatar src="../../../../assets/images/default-cover.png">
-		<mat-card-title><b> {{bookDetails.title}}</b> by {{bookDetails.authors | arrToStr:'author'}}</mat-card-title>
+		<mat-card-title routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" class="cursor-pointer"><b> {{bookDetails.title}}</b> by {{bookDetails.authors | arrToStr:'author'}}</mat-card-title>
 		<mat-card-subtitle>
 			<h4>
 				{{bookDetails.categories| arrToStr:'category'}}
@@ -18,12 +18,11 @@
 				<mat-panel-title>
 					Available books: {{bookDetails.books | bookStatuses:1}}/{{bookDetails.books | bookStatuses:2}}/{{bookDetails.books.length}}
 				</mat-panel-title>
-
 			</mat-expansion-panel-header>
 
 			<ol>
-				<li *ngFor="let bookCopy of bookDetails.books" class="book-item">
-					<div class="signature"> {{bookCopy.signature}}</div>
+				<li *ngFor="let bookCopy of bookDetails.books;" class="book-item">
+					<div class="signature">{{bookCopy.signature}}</div>
 					<button mat-raised-button color="accent" class="button-spacer" [disabled]="bookCopy.status.id !== 1">
 						<mat-icon>done</mat-icon>
 						Borrow book

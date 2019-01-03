@@ -28,7 +28,7 @@ export class ManageBooksComponent implements OnInit {
 	dataSource = new MatTableDataSource<Book>();
 	dataSourceBookDetails = new MatTableDataSource<BookDetails>();
 
-	displayedBookCopiesColumns: string[] = ['signature', 'bookDetails', 'comments', 'actions'];
+	displayedBookCopiesColumns: string[] = ['signature', 'status', 'bookDetails', 'comments', 'actions'];
 	displayedBookDetailsColumns: string[] = ['isbn', 'title', 'authors', 'actions'];
 
 	constructor(private formBuilder: FormBuilder,
@@ -88,7 +88,6 @@ export class ManageBooksComponent implements OnInit {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
 		this.dataSourceBookDetails = new MatTableDataSource(response.object.reverse());
 		this.dataSourceBookDetails.paginator = this.paginatorDetails;
-
 		this.dataSourceBookDetails.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
@@ -111,6 +110,7 @@ export class ManageBooksComponent implements OnInit {
 		this.selectedBookDetails = bookCopy.bookDetails;
 		this.toUpdate = bookCopy;
 		this.formMode = 'Update';
+		document.getElementById('admin-panel-tabs').scrollIntoView();
 	}
 
 	async removeBookCopy(id: number) {
@@ -151,4 +151,8 @@ export class ManageBooksComponent implements OnInit {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
+	cancelUpdate() {
+		this.toUpdate = null;
+		this.clearForm();
+	}
 }

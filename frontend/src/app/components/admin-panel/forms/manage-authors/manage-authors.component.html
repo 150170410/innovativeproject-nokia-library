@@ -24,6 +24,9 @@
 			<button mat-raised-button color="primary" type="submit" [disabled]="!authorParams.valid">
 				{{formMode}}
 			</button>
+			<button class="button-spacer" *ngIf="toUpdate !== null" mat-button color="warn" type="submit" (click)="cancelUpdate()">
+				Cancel
+			</button>
 			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()">
 				Clear
 			</button>

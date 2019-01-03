@@ -86,12 +86,13 @@ export class ManageAuthorsComponent implements OnInit {
 		});
 		this.formMode = 'Update';
 		this.toUpdate = author;
+		document.getElementById('admin-panel-tabs').scrollIntoView();
 	}
 
 	async removeAuthor(id: number) {
 		await this.confirmService.openDialog().subscribe((result) => {
 			if (result) {
-				 this.http.remove('author', id).subscribe((response) => {
+				this.http.remove('author', id).subscribe((response) => {
 					if (response.success) {
 						this.snackbar.snackSuccess('Author removed successfully!', 'OK');
 					} else {
@@ -113,5 +114,10 @@ export class ManageAuthorsComponent implements OnInit {
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
+
+	cancelUpdate() {
+		this.toUpdate = null;
+		this.clearForm();
 	}
 }

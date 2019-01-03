@@ -1,5 +1,7 @@
 <h2>List of newly added books</h2>
-
+<div *ngIf="listIsLoading">
+	<mat-spinner></mat-spinner>
+</div>
 <div *ngFor="let book of allBooks">
 	<app-listview-item [bookDetails]="book"></app-listview-item>
 </div>

@@ -38,3 +38,7 @@ img {
 table {
 	width: 100%;
 }
+
+.list-container{
+	min-height: 90%;
+}
