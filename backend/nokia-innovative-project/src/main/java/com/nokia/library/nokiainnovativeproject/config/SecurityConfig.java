@@ -26,10 +26,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.httpBasic()
+                .and().csrf().disable()
                 .exceptionHandling()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/error**", "/", "/login**").permitAll()
                 .antMatchers(API_VERSION + BOOKS + GET_ONE,
                         API_VERSION + BOOKS + GET_ALL,
                         API_VERSION + BOOK_DETAILS + GET_ONE,
@@ -52,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .and()
-                .logout();
+                .logout().logoutSuccessUrl("/").deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true) ;
     }
 }

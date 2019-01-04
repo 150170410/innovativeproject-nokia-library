@@ -29,8 +29,8 @@ public class BookDetailsService {
 	private final BookService bookService;
 
 	public List<BookDetailsWithBooks> getAllBookDetails() {
-		List<BookDetails> list = bookDetailsRepository.findAll();
 
+		List<BookDetails> list = bookDetailsRepository.findAll();
 		List<BookDetailsWithBooks> bookDetailsWithBooks = new ArrayList<>();
 		for(BookDetails bookDetails : list) {
 			Hibernate.initialize(bookDetails.getAuthors());

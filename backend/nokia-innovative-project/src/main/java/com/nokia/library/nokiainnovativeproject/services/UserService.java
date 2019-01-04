@@ -13,6 +13,8 @@ import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +57,18 @@ public class UserService implements UserDetailsService {
         }
         return new ArrayList<>(authorities);
     }
+
+    public User getLoggedInUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(principal instanceof org.springframework.security.core.userdetails.User) {
+            org.springframework.security.core.userdetails.User loggedInUser =
+                    (org.springframework.security.core.userdetails.User) principal;
+            return userRepository.findUserByEmail(loggedInUser.getUsername());
+        }
+        return null;
+    }
+
 
     public User getUserbyId(Long id) {
         return userRepository.findById(id)
