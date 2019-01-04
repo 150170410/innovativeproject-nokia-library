@@ -107,3 +107,15 @@ INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES (
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('miu miau', 7, 2, 'missing cover');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('nubu', 7, 3, 'juj');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('pook', 7, 3, 'is fine');
+
+
+INSERT INTO "user" (email, first_name, last_name, password, address_id)
+VALUES ('user@user.com', 'User', 'User', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
+INSERT INTO address (building, city) VALUES ('West Link', 'Wrocław');
+INSERT INTO "user" (email, first_name, last_name, password, address_id)
+VALUES ('admin@admin.com', 'Admin', 'Admin', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
+INSERT INTO role (role) VALUES ('ROLE_EMPLOYEE');
+INSERT INTO role (role) VALUES ('ROLE_ADMIN');
+INSERT INTO user_roles (user_id, roles_id) VALUES (1, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (2, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (2, 2);

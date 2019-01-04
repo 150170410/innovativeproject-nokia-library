@@ -27,8 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .antMatcher("/**").authorizeRequests()
-                .antMatchers("/", "login/**", "/error/**", "oauth/**").permitAll()
+                .exceptionHandling()
+                .and()
+                .authorizeRequests()
                 .antMatchers(API_VERSION + BOOKS + GET_ONE,
                         API_VERSION + BOOKS + GET_ALL,
                         API_VERSION + BOOK_DETAILS + GET_ONE,
@@ -44,11 +45,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + BOOK_DETAILS + CREATE,
                         API_VERSION + BOOK_DETAILS + UPDATE,
                         API_VERSION + BOOK_DETAILS + REMOVE,
-                        API_VERSION + PICTURES + UPLOAD,
-                        API_VERSION + USER + TAKE_ADMIN,
-                        API_VERSION + USER + ASSIGN_ADMIN).hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and().logout().logoutSuccessUrl("/").permitAll();
+                        API_VERSION + PICTURES + UPLOAD
+                        //API_VERSION + USER + TAKE_ADMIN,
+                        //API_VERSION + USER + ASSIGN_ADMIN
+                        ).hasRole("ADMIN")
+                .and()
+                .formLogin()
+                .and()
+                .logout();
     }
-
 }

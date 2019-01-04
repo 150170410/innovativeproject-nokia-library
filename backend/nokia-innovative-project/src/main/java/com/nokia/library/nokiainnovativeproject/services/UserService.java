@@ -3,33 +3,56 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.UserDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Address;
+import com.nokia.library.nokiainnovativeproject.entities.Role;
 import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.AddressRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        User user = userRepository.findUserByEmail(email);
+        if(user == null) {
+            throw new UsernameNotFoundException("Sorry we can't find user with email: " + email);
+        }
+        Hibernate.initialize(user.getRoles());
+        return buildUserForAuthentication(user, buildUserAuthority(user.getRoles()));
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return null;
+    private org.springframework.security.core.userdetails.User buildUserForAuthentication(User user, List<GrantedAuthority> authorities){
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    }
+
+    private List<GrantedAuthority> buildUserAuthority(List<Role> roles) {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for(Role role: roles){
+            authorities.add( new SimpleGrantedAuthority(role.getRole()));
+        }
+        return new ArrayList<>(authorities);
     }
 
     public User getUserbyId(Long id) {
