@@ -61,8 +61,12 @@ public class BookService {
 	private Book persistRequiredEntities(Book book, BookDTO bookDTO) {
 		Hibernate.initialize(book.getBookDetails());
 		Hibernate.initialize(book.getStatus());
-		book.setBookDetails(bookDetailsRepository.findById(bookDTO.getBookDetailsId()).orElseThrow(
-				() -> new ResourceNotFoundException("book details")));
+		BookDetails bookDetails = bookDetailsRepository.findById(bookDTO.getBookDetailsId()).orElseThrow(
+				() -> new ResourceNotFoundException("book details"));
+		Hibernate.initialize(bookDetails.getAuthors());
+		Hibernate.initialize(bookDetails.getReviews());
+		Hibernate.initialize(bookDetails.getCategories());
+		book.setBookDetails(bookDetails);
 		book.setStatus(bookStatusRepository.findById(bookDTO.getBookStatusId()).orElseThrow(
 				() -> new ResourceNotFoundException("status")));
 		return book;
