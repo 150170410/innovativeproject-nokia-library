@@ -34,6 +34,9 @@ public class User implements Serializable {
     @Size(min = 10, max = 40, message = "User email must be 10-40 characters long")
     private String email;
 
+    @NotBlank
+    private String password;
+
     @OneToOne(  cascade = {
             CascadeType.MERGE,
             CascadeType.PERSIST,
@@ -60,7 +63,7 @@ public class User implements Serializable {
     private List<Book> books;
 
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = { CascadeType.DETACH,
+            cascade = { CascadeType.PERSIST,
                         CascadeType.MERGE   })
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

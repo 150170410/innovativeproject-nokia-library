@@ -26,6 +26,7 @@ public class Mappings {
 	public static final String BOOKS = "/books";
 
 	public static final String PICTURES = "/pictures";
+	public static final String UPLOAD = "/upload";
 
 	public static final String EMAIL = "/email";
 

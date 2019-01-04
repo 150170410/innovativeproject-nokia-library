@@ -1,8 +1,5 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
-
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.nokia.library.nokiainnovativeproject.services.PictureService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
@@ -22,7 +19,7 @@ public class PictureUploadController {
 
     private final PictureService pictureService;
 
-    @PostMapping(value = "/upload")
+    @PostMapping(value = Mappings.UPLOAD)
     public ResponseEntity uploadPicture(MultipartFile picture) throws IOException {
         Map uploadResult = pictureService.uploadPicture(picture);
         return  MessageInfo.success(uploadResult.get("secure_url"), Arrays.asList("Picture uploaded."));
