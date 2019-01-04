@@ -25,9 +25,7 @@ public class BookService {
 	private final BookRepository bookRepository;
 	private final BookDetailsRepository bookDetailsRepository;
 	private final BookStatusRepository bookStatusRepository;
-	private final BookCategoryRepository bookCategoryRepository;
-	private final AuthorRepository authorRepository;
-	private final ReviewRepository reviewRepository;
+
 
 	public List<Book> getAllBooks() {
 		List<Book> books = bookRepository.findAll();
@@ -66,18 +64,8 @@ public class BookService {
 	private Book persistRequiredEntities(Book book, BookDTO bookDTO) {
 		Hibernate.initialize(book.getBookDetails());
 		Hibernate.initialize(book.getStatus());
-		BookDetails bookDetails = bookDetailsRepository.findById(bookDTO.getBookDetailsId()).orElseThrow(
-				() -> new ResourceNotFoundException("book details"));
-		Hibernate.initialize(bookDetails.getAuthors());
-		Hibernate.initialize(bookDetails.getReviews());
-		Hibernate.initialize(bookDetails.getCategories());
-		Iterable<Long> authorsIterable = bookDetails.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
-		Iterable<Long> reviewIterable = bookDetails.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
-		Iterable<Long> categoriesIterable = bookDetails.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
-		bookDetails.setAuthors(authorRepository.findAllById(authorsIterable));
-		bookDetails.setReviews(reviewRepository.findAllById(reviewIterable));
-		bookDetails.setCategories(bookCategoryRepository.findAllById(categoriesIterable));
-		book.setBookDetails(bookDetails);
+		book.setBookDetails(bookDetailsRepository.findById(bookDTO.getBookDetailsId()).orElseThrow(
+				() -> new ResourceNotFoundException("book details")));
 		book.setStatus(bookStatusRepository.findById(bookDTO.getBookStatusId()).orElseThrow(
 				() -> new ResourceNotFoundException("status")));
 		return book;
