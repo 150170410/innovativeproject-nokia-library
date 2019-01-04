@@ -16,8 +16,8 @@ export class ManageReturnsComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Book>();
-
 	displayedColumns: string[] = ['signature', 'current_user', 'status', 'bookDetails', 'comments', 'actions'];
+
 	constructor(private http: RestService) {
 	}
 
@@ -32,7 +32,6 @@ export class ManageReturnsComponent implements OnInit {
 	async getBookCopies() {
 		const response: MessageInfo = await this.http.getAll('books/getAll');
 		let borrowedBooks = [];
-		console.log(response);
 		for(let i = 0; i < response.object.length; i++){
 			if(response.object[i].status.id === 2 || response.object[i].status.id === 3){
 				borrowedBooks.push(response.object[i])
