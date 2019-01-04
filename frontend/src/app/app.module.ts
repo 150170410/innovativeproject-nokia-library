@@ -7,9 +7,9 @@ import { HomepageComponent } from './utils/components/homepage/homepage.componen
 import { NavbarComponent } from './utils/components/navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-	MAT_SNACK_BAR_DEFAULT_OPTIONS,
-	MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatNativeDateModule,
-	MatPaginatorModule, MatProgressBarModule, MatProgressSpinnerModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule, MatStepperModule, MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule
+	MAT_SNACK_BAR_DEFAULT_OPTIONS, MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule,
+	MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatProgressBarModule, MatProgressSpinnerModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSliderModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule, MatStepperModule, MatTableModule, MatTabsModule, MatToolbarModule,
+	MatTooltipModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -34,8 +34,9 @@ import { ManageBooksComponent } from './components/admin-panel/forms/manage-book
 import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
 import { BookStatusesPipe } from './pipes/book-statuses/book-statuses.pipe';
 import { ConfirmationDialogComponent } from './utils/components/confirmation-dialog/confirmation-dialog.component';
-import { ManageBorrowingsComponent } from './components/user-panel/manage-borrowings/manage-borrowings.component';
-import { ManageReservationsComponent } from './components/user-panel/manage-reservations/manage-reservations.component';
+import { BooksHistoryComponent } from './components/user-panel/user-panel-sections/books-history/books-history.component';
+import { BooksBorrowedComponent } from './components/user-panel/user-panel-sections/books-borrowed/books-borrowed.component';
+import { BooksReservedComponent } from './components/user-panel/user-panel-sections/books-reserved/books-reserved.component';
 
 @NgModule({
 	declarations: [
@@ -58,8 +59,9 @@ import { ManageReservationsComponent } from './components/user-panel/manage-rese
 		LimitToPipe,
 		BookStatusesPipe,
 		ConfirmationDialogComponent,
-		ManageBorrowingsComponent,
-		ManageReservationsComponent
+		BooksHistoryComponent,
+		BooksBorrowedComponent,
+		BooksReservedComponent
 	],
 	imports: [
 		BrowserModule,
