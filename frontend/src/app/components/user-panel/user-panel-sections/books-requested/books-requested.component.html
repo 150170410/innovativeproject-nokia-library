@@ -1,3 +1,46 @@
-<p>
-  Books that you have requested.
-</p>
+<div class="form-title">
+	<h1>Book requests</h1>
+</div>
+
+<div>
+	<div class="filter-paginator-wrapper">
+		<div class="filter">
+			<mat-form-field>
+				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+			</mat-form-field>
+		</div>
+		<div class="paginator">
+			<mat-paginator #paginatorCopies [pageSizeOptions]="[10, 20, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+		</div>
+	</div>
+	<table mat-table [dataSource]="dataSource">
+
+		<ng-container matColumnDef="isbn">
+			<th mat-header-cell *matHeaderCellDef>Isbn</th>
+			<td mat-cell *matCellDef="let request">{{request.isbn}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="title">
+			<th mat-header-cell *matHeaderCellDef>Title</th>
+			<td mat-cell *matCellDef="let request">{{request.title}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef>Actions</th>
+			<td mat-cell *matCellDef="let request">
+				<p>
+					<button color="warn" mat-button (click)="cancelRequest(request)">
+						<mat-icon>clear</mat-icon>
+						Cancel
+					</button>
+				</p>
+
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+	</table>
+
+</div>

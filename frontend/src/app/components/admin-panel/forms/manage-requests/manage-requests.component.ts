@@ -17,7 +17,7 @@ export class ManageRequestsComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookToOrder>();
-	displayedColumns: string[] = ['id', 'isbn', 'title', 'actions'];
+	displayedColumns: string[] = ['isbn', 'title', 'user', 'actions'];
 
 	constructor(private http: RestService,
 				private confirmService: ConfirmationDialogService,
