@@ -39,6 +39,7 @@ import { BooksBorrowedComponent } from './components/user-panel/user-panel-secti
 import { BooksReservedComponent } from './components/user-panel/user-panel-sections/books-reserved/books-reserved.component';
 import { BooksRequestedComponent } from './components/user-panel/user-panel-sections/books-requested/books-requested.component';
 import { ManageReturnsComponent } from './components/admin-panel/forms/manage-returns/manage-returns.component';
+import { ManageRequestsComponent } from './components/admin-panel/forms/manage-requests/manage-requests.component';
 
 @NgModule({
 	declarations: [
@@ -65,7 +66,8 @@ import { ManageReturnsComponent } from './components/admin-panel/forms/manage-re
 		BooksBorrowedComponent,
 		BooksReservedComponent,
 		BooksRequestedComponent,
-		ManageReturnsComponent
+		ManageReturnsComponent,
+		ManageRequestsComponent
 	],
 	imports: [
 		BrowserModule,

@@ -17,7 +17,7 @@ export class ManageReturnsComponent implements OnInit {
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Book>();
 
-	displayedColumns: string[] = ['signature', 'status', 'bookDetails', 'comments', 'actions'];
+	displayedColumns: string[] = ['signature', 'current_user', 'status', 'bookDetails', 'comments', 'actions'];
 	constructor(private http: RestService) {
 	}
 

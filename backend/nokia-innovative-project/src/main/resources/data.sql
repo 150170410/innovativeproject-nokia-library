@@ -107,3 +107,9 @@ INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES (
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('miu miau', 7, 2, 'missing cover');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('nubu', 7, 3, 'juj');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('pook', 7, 3, 'is fine');
+
+INSERT INTO book_to_order (isbn, title) VALUES ('9781451673319', 'Fahrenheit 451');
+INSERT INTO book_to_order (isbn, title) VALUES ('0439708184', 'Harry Potter and the Sorcerer''s Stone');
+INSERT INTO book_to_order (isbn, title) VALUES ('9780679745587', 'In Cold Blood');
+INSERT INTO book_to_order (isbn, title) VALUES ('9780679732761', 'Invisible Man');
+INSERT INTO book_to_order (isbn, title) VALUES ('0061958271', 'Little House on the Prairie');
