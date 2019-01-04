@@ -1,12 +1,11 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
+import com.nokia.library.nokiainnovativeproject.entities.Author;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
-import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
@@ -15,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +23,9 @@ public class BookService {
 	private final BookRepository bookRepository;
 	private final BookDetailsRepository bookDetailsRepository;
 	private final BookStatusRepository bookStatusRepository;
+	private final BookCategoryRepository bookCategoryRepository;
+	private final AuthorRepository authorRepository;
+	private final ReviewRepository reviewRepository;
 
 	public List<Book> getAllBooks() {
 		List<Book> books = bookRepository.findAll();
@@ -66,6 +69,12 @@ public class BookService {
 		Hibernate.initialize(bookDetails.getAuthors());
 		Hibernate.initialize(bookDetails.getReviews());
 		Hibernate.initialize(bookDetails.getCategories());
+		Iterable<Long> authorsIterable = bookDetails.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
+		Iterable<Long> reviewIterable = bookDetails.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
+		Iterable<Long> categoriesIterable = bookDetails.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
+		bookDetails.setAuthors(authorRepository.findAllById(authorsIterable));
+		bookDetails.setReviews(reviewRepository.findAllById(reviewIterable));
+		bookDetails.setCategories(bookCategoryRepository.findAllById(categoriesIterable));
 		book.setBookDetails(bookDetails);
 		book.setStatus(bookStatusRepository.findById(bookDTO.getBookStatusId()).orElseThrow(
 				() -> new ResourceNotFoundException("status")));
