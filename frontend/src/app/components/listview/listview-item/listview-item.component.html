@@ -16,7 +16,7 @@
 		<mat-expansion-panel>
 			<mat-expansion-panel-header>
 				<mat-panel-title>
-					Available books: {{bookDetails.books | bookStatuses:1}}/{{bookDetails.books | bookStatuses:2}}/{{bookDetails.books.length}}
+					Available books: {{bookDetails.books | bookStatuses:1}}/{{bookDetails.books.length}}
 				</mat-panel-title>
 			</mat-expansion-panel-header>
 
@@ -27,8 +27,11 @@
 						<mat-icon>done</mat-icon>
 						Borrow book
 					</button>
-					<div class="available-on button-spacer"> available on: 01.07.2019</div>
-					<button mat-raised-button disabled class="button-spacer" [disabled]="bookCopy.status.id !== 2">
+
+
+					<div *ngIf="bookCopy.status.id !== 1" class="available-on button-spacer"> available on: 01.07.2019</div>
+
+					<button *ngIf="bookCopy.status.id !== 1" mat-raised-button class="button-spacer" [disabled]="bookCopy.status.id == 1">
 						<mat-icon>star</mat-icon>
 						Reserve book
 					</button>

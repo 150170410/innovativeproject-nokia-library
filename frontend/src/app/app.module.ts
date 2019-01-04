@@ -37,6 +37,8 @@ import { ConfirmationDialogComponent } from './utils/components/confirmation-dia
 import { BooksHistoryComponent } from './components/user-panel/user-panel-sections/books-history/books-history.component';
 import { BooksBorrowedComponent } from './components/user-panel/user-panel-sections/books-borrowed/books-borrowed.component';
 import { BooksReservedComponent } from './components/user-panel/user-panel-sections/books-reserved/books-reserved.component';
+import { BooksRequestedComponent } from './components/user-panel/user-panel-sections/books-requested/books-requested.component';
+import { ManageReturnsComponent } from './components/admin-panel/forms/manage-returns/manage-returns.component';
 
 @NgModule({
 	declarations: [
@@ -61,7 +63,9 @@ import { BooksReservedComponent } from './components/user-panel/user-panel-secti
 		ConfirmationDialogComponent,
 		BooksHistoryComponent,
 		BooksBorrowedComponent,
-		BooksReservedComponent
+		BooksReservedComponent,
+		BooksRequestedComponent,
+		ManageReturnsComponent
 	],
 	imports: [
 		BrowserModule,
