@@ -1,13 +1,18 @@
-<h1>User dashboard</h1>
+<div *ngIf="role_employee">
+  <h1>User dashboard</h1>
 
-
-<div class="forms-container">
-	<div class="half-div">
-		<app-manage-borrowings></app-manage-borrowings>
-	</div>
-	<div class="half-div">
-		<app-manage-reservations></app-manage-reservations>
-	</div>
+  <div class="forms-container">
+    <div class="half-div">
+      <app-manage-borrowings></app-manage-borrowings>
+    </div>
+    <div class="half-div">
+      <app-manage-reservations></app-manage-reservations>
+    </div>
+  </div>
 </div>
+<div *ngIf="!role_employee">
+  <app-page-not-found></app-page-not-found>
+</div>
+
 
 

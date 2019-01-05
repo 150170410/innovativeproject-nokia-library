@@ -36,6 +36,7 @@ import { BookStatusesPipe } from './pipes/book-statuses/book-statuses.pipe';
 import { ConfirmationDialogComponent } from './utils/components/confirmation-dialog/confirmation-dialog.component';
 import { ManageBorrowingsComponent } from './components/user-panel/manage-borrowings/manage-borrowings.component';
 import { ManageReservationsComponent } from './components/user-panel/manage-reservations/manage-reservations.component';
+import { LoginComponent } from './components/auth/login/login.component';
 
 @NgModule({
 	declarations: [
@@ -59,7 +60,8 @@ import { ManageReservationsComponent } from './components/user-panel/manage-rese
 		BookStatusesPipe,
 		ConfirmationDialogComponent,
 		ManageBorrowingsComponent,
-		ManageReservationsComponent
+		ManageReservationsComponent,
+		LoginComponent
 	],
 	imports: [
 		BrowserModule,

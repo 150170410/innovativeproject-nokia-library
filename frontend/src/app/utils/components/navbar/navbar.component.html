@@ -1,19 +1,24 @@
 <mat-toolbar color="primary">
 	<mat-toolbar-row>
+
 		<a class="nav-link white" routerLink="/homepage" routerLinkActive="active">
 			<mat-icon>home</mat-icon>
 		</a>
 		<img class="nav-link white" src="../../../../assets/images/nokia-logo.png">
 
-		<a class="nav-link white" routerLink="/user-panel" routerLinkActive="active">
-			<mat-icon>library_books</mat-icon>
-			User panel
-		</a>
+    <div *ngIf="role_employee">
+      <a class="nav-link white" routerLink="/user-panel" routerLinkActive="active">
+        <mat-icon>library_books</mat-icon>
+        User panel
+      </a>
+    </div>
 
-		<a class="nav-link white" routerLink="/admin-panel" routerLinkActive="active">
-			<mat-icon>ballot</mat-icon>
-			Admin panel
-		</a>
+    <div *ngIf="role_admin">
+      <a class="nav-link white" routerLink="/admin-panel" routerLinkActive="active">
+        <mat-icon>ballot</mat-icon>
+        Admin panel
+      </a>
+    </div>
 
 		<!--<div class="search-bar-wrapper">-->
 		<!--<form [formGroup]="searchParams" class="search-bar" (ngSubmit)="search(searchParams)">-->
@@ -66,5 +71,22 @@
 		<!--<button mat-menu-item>Option 3</button>-->
 		<!--</mat-menu>-->
 
-	</mat-toolbar-row>
+    <div [hidden]="isAuth">Not logged in</div>
+    <div [hidden]="!isAuth">Logged in</div>
+    <button mat-icon-button [matMenuTriggerFor]="menuOptions">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menuOptions="matMenu">
+      <button mat-menu-item *ngIf="!isAuth" (click)="login()">
+        <mat-icon>account_circle</mat-icon>
+        <span>Login</span>
+      </button>
+      <button mat-menu-item *ngIf="isAuth" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+
+
+  </mat-toolbar-row>
 </mat-toolbar>

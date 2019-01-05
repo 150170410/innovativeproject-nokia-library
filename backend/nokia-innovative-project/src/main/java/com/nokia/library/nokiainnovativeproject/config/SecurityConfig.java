@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -27,16 +28,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic()
-                .and().csrf().disable()
-                .exceptionHandling()
-                .and()
+                .and().csrf().disable().cors().and()
                 .authorizeRequests()
                 .antMatchers("/error**", "/", "/login**").permitAll()
                 .antMatchers(API_VERSION + BOOKS + GET_ONE,
                         API_VERSION + BOOKS + GET_ALL,
                         API_VERSION + BOOK_DETAILS + GET_ONE,
                         API_VERSION + BOOK_DETAILS + GET_ALL,
-                        API_VERSION + EMAIL + CREATE).permitAll()
+                        API_VERSION + EMAIL + CREATE,
+                        API_VERSION + USER ).permitAll()
                 .antMatchers(API_VERSION + BOOK_TO_ORDER + "/**").hasAnyRole("EMPLOYEE", "ADMIN")
                 .antMatchers(API_VERSION + BOOK_AUTHOR + "/**",
                         API_VERSION + AUTOCOMPLETION + "/**",

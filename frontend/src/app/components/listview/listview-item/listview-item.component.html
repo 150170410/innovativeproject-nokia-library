@@ -23,12 +23,12 @@
 			<ol>
 				<li *ngFor="let bookCopy of bookDetails.books;" class="book-item">
 					<div class="signature">{{bookCopy.signature}}</div>
-					<button mat-raised-button color="accent" class="button-spacer" [disabled]="bookCopy.status.id !== 1">
+					<button mat-raised-button color="accent" class="button-spacer" [disabled]="bookCopy.status.id !== 1 || !isAuth">
 						<mat-icon>done</mat-icon>
 						Borrow book
 					</button>
 					<div class="available-on button-spacer"> available on: 01.07.2019</div>
-					<button mat-raised-button disabled class="button-spacer" [disabled]="bookCopy.status.id !== 2">
+					<button mat-raised-button disabled class="button-spacer" [disabled]="bookCopy.status.id !== 2 || !isAuth">
 						<mat-icon>star</mat-icon>
 						Reserve book
 					</button>

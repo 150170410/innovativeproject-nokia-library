@@ -1,0 +1,9 @@
+.background {
+  background-color: aliceblue;
+}
+
+.container {
+  positon:fixed;
+  min-height: 100%;
+  min-width: 100%;
+}
