@@ -107,3 +107,8 @@ INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES (
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('miu miau', 7, 2, 'missing cover');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('nubu', 7, 3, 'juj');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('pook', 7, 3, 'is fine');
+
+INSERT INTO "user" (first_name, last_name, email) VALUES ('user1', 'user1', 'user1email');
+INSERT INTO "user" (first_name, last_name, email) VALUES ('user2', 'user2', 'user1emai2');
+
+INSERT INTO rental (book_catalog_number, user_id, return_date) VALUES (1, 1, '2019-01-05 04:05:06');

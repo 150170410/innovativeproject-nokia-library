@@ -63,11 +63,4 @@ public class BookDetails implements Serializable {
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
 	protected List<BookCategory> categories;
 
-	@OneToMany(cascade = {
-			CascadeType.MERGE,
-			CascadeType.PERSIST},
-			fetch = FetchType.LAZY)
-	@JoinColumn(name = "book_details_id")
-	protected List<Review> reviews;
-
 }
