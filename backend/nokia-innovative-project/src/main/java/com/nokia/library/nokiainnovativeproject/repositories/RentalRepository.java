@@ -10,7 +10,7 @@ import java.awt.print.Pageable;
 import java.util.List;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findByUserId(Long userId);
-    List<Reservation> findByBookId(Long bookId);
+public interface RentalRepository extends JpaRepository<Rental, Long> {
+    List<Rental> findByUserId(Long userId);
+    List<Rental> findByBookId(Long bookId);
 }

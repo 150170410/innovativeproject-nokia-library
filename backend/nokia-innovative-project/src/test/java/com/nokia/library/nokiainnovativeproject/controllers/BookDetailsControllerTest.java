@@ -1,8 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nokia.library.nokiainnovativeproject.DTOs.AuthorDTO;
-import com.nokia.library.nokiainnovativeproject.DTOs.BookCategoryDTO;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Author;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
@@ -28,7 +26,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

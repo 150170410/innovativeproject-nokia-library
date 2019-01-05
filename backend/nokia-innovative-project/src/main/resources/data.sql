@@ -113,3 +113,8 @@ INSERT INTO book_to_order (isbn, title) VALUES ('0439708184', 'Harry Potter and 
 INSERT INTO book_to_order (isbn, title) VALUES ('9780679745587', 'In Cold Blood');
 INSERT INTO book_to_order (isbn, title) VALUES ('9780679732761', 'Invisible Man');
 INSERT INTO book_to_order (isbn, title) VALUES ('0061958271', 'Little House on the Prairie');
+
+INSERT INTO "user" (first_name, last_name, email) VALUES ('user1', 'user1', 'user1email');
+INSERT INTO "user" (first_name, last_name, email) VALUES ('user2', 'user2', 'user1emai2');
+
+INSERT INTO rental (book_catalog_number, user_id, return_date) VALUES (1, 1, '2019-01-05 04:05:06');
