@@ -40,7 +40,7 @@ export class BooksBorrowedComponent implements OnInit {
 		};
 	}
 
-	moreInfo(borrowing) {
+	bookInfo(borrowing) {
 		const id = borrowing.book.bookDetails.id;
 		this.router.navigateByUrl('/single-book-view/' + id);
 	}
