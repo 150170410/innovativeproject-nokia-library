@@ -29,20 +29,18 @@ export class ManageRequestsComponent implements OnInit {
 	}
 
 	async resolveRequest(request: BookToOrder) {
-		await this.confirmService.openDialog().subscribe((result) => {
-			if (result) {
-				this.http.remove('bookToOrder', request.id).subscribe((response) => {
-					if (response.success) {
-						this.snackbar.snackSuccess('Thank you for fulfilling the request!', 'OK');
-						this.getRequestedBooks();
-					} else {
-						this.snackbar.snackError('Error', 'OK');
-					}
-				}, (error) => {
-					this.snackbar.snackError(error.error.message, 'OK');
-				});
+
+		await this.http.remove('bookToOrder', request.id).subscribe((response) => {
+			if (response.success) {
+				this.snackbar.snackSuccess('Thank you for fulfilling the request!', 'OK');
+				this.getRequestedBooks();
+			} else {
+				this.snackbar.snackError('Error', 'OK');
 			}
-		})
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
+
 	}
 
 	async getRequestedBooks() {

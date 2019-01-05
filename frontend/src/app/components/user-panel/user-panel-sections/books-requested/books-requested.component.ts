@@ -38,11 +38,11 @@ export class BooksRequestedComponent implements OnInit {
 	}
 
 	async cancelRequest(request: BookToOrder) {
-		await this.confirmService.openDialog().subscribe((result) => {
+		await this.confirmService.openDialog('Are you sure you want to cancel this request?').subscribe((result) => {
 			if (result) {
 				this.http.remove('bookToOrder', request.id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Request cancelled successfully!', 'OK');
+						this.snackbar.snackSuccess('Request was cancelled successfully!', 'OK');
 						this.getRequestedBooks();
 					} else {
 						this.snackbar.snackError('Error', 'OK');
