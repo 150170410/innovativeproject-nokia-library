@@ -1,5 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,6 +21,7 @@ import java.util.Date;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Rental implements Serializable {
 
 	public Rental(){

@@ -1,9 +1,11 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.RentalDTO;
+import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.Rental;
 import com.nokia.library.nokiainnovativeproject.entities.Reservation;
 import com.nokia.library.nokiainnovativeproject.entities.Review;
+import com.nokia.library.nokiainnovativeproject.exceptions.BookRentedException;
 import com.nokia.library.nokiainnovativeproject.exceptions.BookReservedException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
@@ -42,6 +44,10 @@ public class RentalService {
     public Rental createRental(RentalDTO rentalDTO) {
         ModelMapper mapper = new ModelMapper();
         Rental rental = mapper.map(rentalDTO, Rental.class);
+        List<Rental> rentals = getRentalsByBookId(rentalDTO.getBookId());
+        if(rentals != null && !rentals.isEmpty() ){
+            throw new BookRentedException(rentalDTO.getBookId());
+        }
         rental.setUser(userService.getUserById(rentalDTO.getUserId()));
         rental.setBook(bookService.getBookById(rentalDTO.getBookId()));
         return rentalRepository.save(rental);

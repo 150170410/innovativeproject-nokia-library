@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-
+@ResponseStatus(HttpStatus.CONFLICT)
 public class BookReservedException extends RuntimeException {
 
 	public BookReservedException(Long bookId) {

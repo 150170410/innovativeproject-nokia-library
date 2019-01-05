@@ -30,13 +30,13 @@ public class RentalController {
     }
 
     @GetMapping(USERS + GET_ONE + RENTALS)
-    public MessageInfo getRentalsByUserId(@PathVariable Long userId){
-        return MessageInfo.success(rentalService.getRentalsByUserId(userId), Arrays.asList("Rentals with UserID = " + userId.toString()));
+    public MessageInfo getRentalsByUserId(@PathVariable Long id){
+        return MessageInfo.success(rentalService.getRentalsByUserId(id), Arrays.asList("Rentals with UserID = " + id.toString()));
     }
 
     @GetMapping(BOOKS + GET_ONE + RENTALS)
-    public MessageInfo getRentalsByBookId(@PathVariable Long bookId){
-        return MessageInfo.success(rentalService.getRentalsByBookId(bookId), Arrays.asList("Rentals with BookID = " + bookId.toString()));
+    public MessageInfo getRentalsByBookId(@PathVariable Long id){
+        return MessageInfo.success(rentalService.getRentalsByBookId(id), Arrays.asList("Rentals with BookID = " + id.toString()));
     }
     
     @PostMapping(RENTALS + CREATE)

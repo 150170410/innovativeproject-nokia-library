@@ -77,6 +77,13 @@ insert into book_details_authors values (6,3);
 insert into book_details_authors values (7,4);
 insert into book_details_authors values (7,5);
 
+insert into "user" (first_name, last_name, email) values ('Jan', 'Kowalski', 'JanKowalski@gmail.com');
+insert into "user" (first_name, last_name, email) values ('Adam', 'Kowalski', 'AdamKowalski@gmail.com');
+
+insert into book (book_details_id) values (1);
+insert into book (book_details_id) values (2);
+insert into book (book_details_id) values (3);
+
 
 
 
