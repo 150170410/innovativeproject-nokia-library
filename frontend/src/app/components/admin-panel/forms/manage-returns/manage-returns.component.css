@@ -2,18 +2,6 @@
 	width: 60%;
 }
 
-mat-form-field {
-	width: 500px;
-}
-
-.isbn-field {
-	width: 400px;
-}
-
-.cover-picture-field {
-	width: 280px;
-}
-
 .form-wrapper {
 	width: 500px;
 	margin: auto;
@@ -40,15 +28,6 @@ mat-form-field {
 	width: 150px;
 }
 
-.thumbnail {
-	max-height: 80px;
-}
-
-.upload-button {
-	display: inline-block;
-	width: 200px;
-}
-
 mat-spinner {
 	display: inline-block;
 }
@@ -68,3 +47,4 @@ mat-spinner {
 .st-unknown {
 	background-color: rgba(108, 117, 125, 0.7);
 }
+
