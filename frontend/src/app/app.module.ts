@@ -21,8 +21,6 @@ import { RestService } from './services/rest/rest.service';
 import { GridViewComponent } from './components/grid-view/grid-view.component';
 import { SingleBookViewComponent } from './components/single-book-view/single-book-view';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
-
-import { SidenavService } from './services/sidenav/sidenav.service';
 import { ListviewItemComponent } from './components/listview/listview-item/listview-item.component';
 import { ArrToStrPipe } from './pipes/arr-to-str/arr-to-str.pipe';
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
@@ -36,7 +34,7 @@ import { BookStatusesPipe } from './pipes/book-statuses/book-statuses.pipe';
 import { ConfirmationDialogComponent } from './utils/components/confirmation-dialog/confirmation-dialog.component';
 import { ManageBorrowingsComponent } from './components/user-panel/manage-borrowings/manage-borrowings.component';
 import { ManageReservationsComponent } from './components/user-panel/manage-reservations/manage-reservations.component';
-import { LoginComponent } from './components/auth/login/login.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
 	declarations: [
@@ -141,8 +139,8 @@ import { LoginComponent } from './components/auth/login/login.component';
 		MatPaginatorModule,
 		MatNativeDateModule
 	],
-	providers: [BookService, RestService, SidenavService,
-		{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}],
+	providers: [BookService, RestService,
+		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } }],
 	bootstrap: [AppComponent],
 	entryComponents: [ConfirmationDialogComponent]
 })

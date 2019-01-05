@@ -7,7 +7,7 @@ import { SingleBookViewComponent } from './components/single-book-view/single-bo
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
-import {LoginComponent} from './components/auth/login/login.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
 	{ path: '', redirectTo: 'homepage', pathMatch: 'full' },
@@ -16,7 +16,7 @@ export const routes: Routes = [
 	{ path: 'gridView', component: GridViewComponent },
 	{ path: 'admin-panel', component: AdminPanelComponent },
 	{ path: 'user-panel', component: UserPanelComponent },
-  { path: 'login', component: LoginComponent},
+	{ path: 'login', component: LoginComponent },
 	{ path: 'single-book-view/:id', component: SingleBookViewComponent, data: { id: 'id' } },
 	{ path: 'contact', component: ContactUsComponent },
 
