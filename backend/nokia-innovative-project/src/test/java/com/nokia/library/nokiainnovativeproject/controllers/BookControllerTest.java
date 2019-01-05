@@ -2,7 +2,7 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
-import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
+import com.nokia.library.nokiainnovativeproject.entities.Author;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.services.BookService;
@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -43,16 +43,17 @@ class BookControllerTest {
     private MockMvc mockMvc;
     private static final String BASE_URL = Mappings.PORT_AUTOTESTS + Mappings.API_VERSION + Mappings.BOOKS;
 
-    public BookDetails genereteBookDetails() {
+    public static BookDetails genereteBookDetails() {
         Date date = new Date();
         BookDetails bookDetails = new BookDetails();
         bookDetails.setTitle("test title");
         bookDetails.setDescription("test description");
         bookDetails.setIsbn("test isbn123");
-        bookDetails.setTableOfContents("test table of contents");
         bookDetails.setCoverPictureUrl("test cover picture url");
-        bookDetails.setDateOfPublication(date);
-        bookDetails.setAuthors(new ArrayList<>());
+        bookDetails.setPublicationDate(date);
+        Author author = new Author();
+        author.setAuthorFullName("Wojtek");
+        bookDetails.setAuthors(Arrays.asList(author));
         bookDetails.setCategories(new ArrayList<>());
         return bookDetails;
     }
@@ -66,17 +67,20 @@ class BookControllerTest {
     @BeforeAll
     public static void init() {
         mapper = new ObjectMapper();
-        BookDetails bookDetails = new BookDetails();
-        bookDetails.setTitle("test title");
         book = new Book();
         book.setComments("test comments");
-        book.setBookDetails(bookDetails);
-        bookDTO = new BookDTO("test comments", bookDetails);
+        book.setSignature("test signature");
+        book.setBookDetails(genereteBookDetails());
     }
 
     @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        bookDTO = new BookDTO();
+        bookDTO.setComments("test comments");
+        bookDTO.setSignature("test signature");
+        bookDTO.setBookDetailsId(1L);
+        bookDTO.setBookStatusId(1L);
     }
 
     @Test
@@ -87,6 +91,9 @@ class BookControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].comments", Matchers.is("test comments")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].bookDetails.description", Matchers.is("test description")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].bookDetails.isbn", Matchers.is("test isbn123")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].bookDetails.coverPictureUrl", Matchers.is("test cover picture url")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].bookDetails.title", Matchers.is("test title")));
     }
     @Test
@@ -96,6 +103,9 @@ class BookControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("test comments")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.description", Matchers.is("test description")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.isbn", Matchers.is("test isbn123")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.coverPictureUrl", Matchers.is("test cover picture url")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.title", Matchers.is("test title")));
     }
 
@@ -109,6 +119,9 @@ class BookControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("test comments")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.description", Matchers.is("test description")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.isbn", Matchers.is("test isbn123")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.coverPictureUrl", Matchers.is("test cover picture url")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.title", Matchers.is("test title")));
     }
 
@@ -116,11 +129,14 @@ class BookControllerTest {
     public void updateBookTest() throws Exception {
         BookDTO updatedDTO = new BookDTO();
         updatedDTO.setComments("updated comments");
-        updatedDTO.setBookDetails(genereteBookDetails());
+        updatedDTO.setSignature("test signature");
+        updatedDTO.setBookDetailsId(1L);
+        updatedDTO.setBookStatusId(1L);
 
         Book updatedBook = new Book();
         updatedBook.setComments("updated comments");
         updatedBook.setBookDetails(genereteBookDetails());
+        updatedBook.setSignature("test signature");
 
         String jsonRequest = mapper.writeValueAsString(updatedDTO);
 
@@ -130,7 +146,11 @@ class BookControllerTest {
                 .content(jsonRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("updated comments")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.comments", Matchers.is("updated comments")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.description", Matchers.is("test description")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.isbn", Matchers.is("test isbn123")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.coverPictureUrl", Matchers.is("test cover picture url")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.bookDetails.title", Matchers.is("test title")));
     }
 
     @Test
@@ -141,5 +161,6 @@ class BookControllerTest {
                 .andExpect(status().isOk());
         verify(service).deleteBook(1L);
     }
+
 
 }

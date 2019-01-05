@@ -1,1 +1,3 @@
-export const API_URL = 'http://localhost:8081';
+import { environment } from '../environments/environment';
+export const API_URL = environment.API;
+

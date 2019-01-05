@@ -1,2 +1,51 @@
-<a routerLink="/listView" routerLinkActive="active">< Go back to listview</a>
-<h1>Book id: {{id}}</h1>
+<button mat-raised-button color="primary" routerLink="/listView" routerLinkActive="active">< Go back</button>
+<mat-spinner *ngIf="pageLoading"></mat-spinner>
+<div *ngIf="!pageLoading">
+	<h1>{{bookDetails.title}}</h1>
+	<h3>by: {{bookDetails.authors | arrToStr:'author'}}</h3>
+	<div class="wrapper">
+		<div class="cover-wrapper">
+			<img *ngIf="bookDetails.coverPictureUrl" src="{{bookDetails.coverPictureUrl}}">
+			<img *ngIf="!bookDetails.coverPictureUrl" src="../../../assets/images/default-cover.png">
+		</div>
+		<div class="info-box-wrapper">
+			<div><b>Categories:</b> {{bookDetails.categories| arrToStr:'category'}}</div>
+			<div><b>About book: </b>{{bookDetails.description}}</div>
+		</div>
+	</div>
+
+
+	<div>
+		<h3>
+			Available books: {{bookDetails.books | bookStatuses:1}}/{{bookDetails.books | bookStatuses:2}}/{{bookDetails.books.length}}
+		</h3>
+		<ol>
+			<li *ngFor="let bookCopy of bookDetails.books;" class="book-item">
+				<div class="signature">{{bookCopy.signature}}</div>
+				<button mat-raised-button color="accent" class="button-spacer" [disabled]="bookCopy.status.id !== 1">
+					<mat-icon>done</mat-icon>
+					Borrow book
+				</button>
+				<div class="available-on button-spacer"> available on: 01.07.2019</div>
+				<button mat-raised-button disabled class="button-spacer" [disabled]="bookCopy.status.id !== 2">
+					<mat-icon>star</mat-icon>
+					Reserve book
+				</button>
+			</li>
+		</ol>
+	</div>
+
+
+	<h3>More details:</h3>
+	<ul>
+		<li>
+			<b>ISBN:</b> {{bookDetails.isbn}}
+		</li>
+		<li>
+			<b>Date of publication:</b> {{bookDetails.publicationDate | date: 'dd.MM.yyyy'}}
+		</li>
+	</ul>
+
+</div>
+
+

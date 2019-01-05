@@ -1,48 +1,21 @@
 <app-navbar class="navbar"></app-navbar>
-<mat-sidenav-container class="center-content">
-	<mat-sidenav #sidenav mode="side" opened class="sidenav-menu">
-		<mat-list>
-			<h3>List of components</h3>
-			<mat-list-item>
-				1.
-				<button color="primary" mat-raised-button routerLink="/homepage" routerLinkActive="active">Homepage</button>
-			</mat-list-item>
-			<mat-list-item>
-				2.
-				<button color="primary" mat-raised-button routerLink="/listView" routerLinkActive="active">List view</button>
-			</mat-list-item>
-			<mat-list-item>
-				3.
-				<button color="primary" mat-raised-button routerLink="/gridView" routerLinkActive="active">Grid view</button>
-			</mat-list-item>
-			<mat-list-item>
-				4.
-				<button color="primary" mat-raised-button routerLink="/single-book-view/1" routerLinkActive="active">Single book view</button>
-			</mat-list-item>
-			<mat-list-item>
-				5.
-				<button color="primary" mat-raised-button routerLink="/manage-book-details" routerLinkActive="active">Manage entities</button>
-			</mat-list-item>
-			<mat-list-item>
-				6.
-				<button color="primary" mat-raised-button routerLink="/not_such_page" routerLinkActive="active">Error page</button>
-			</mat-list-item>
-			<mat-divider></mat-divider>
-			<h3>Not working (yet)</h3>
-			<mat-list-item>
-				7.
-				<button color="warn" mat-raised-button routerLink="/not_such_page" routerLinkActive="active">Your reservations</button>
-			</mat-list-item>
-			<mat-list-item>
-				8.
-				<button color="warn" mat-raised-button routerLink="/not_such_page" routerLinkActive="active">Request a book</button>
-			</mat-list-item>
-		</mat-list>
+<mat-sidenav-container class="content-all">
+	<mat-sidenav class="sidenav-menu" #sidenav (keydown.escape)="sidenav.close()">
+
 	</mat-sidenav>
 
+
 	<mat-sidenav-content>
-		<div class="main-content">
-			<router-outlet></router-outlet>
+		<div class="main-content site">
+			<mat-card class="content">
+				<router-outlet></router-outlet>
+			</mat-card>
+			<div class="footer">
+				<div>Nokia Library v0.2.2</div>
+				<div>2018-2019</div>
+			</div>
 		</div>
+
+		<img src="../assets/images/innovative_logo.png" class="innovative-projects" >
 	</mat-sidenav-content>
 </mat-sidenav-container>

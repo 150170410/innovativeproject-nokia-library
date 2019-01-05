@@ -4,6 +4,7 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+    initialization-mode: always
   jpa:
     properties:
       hibernate:
@@ -19,5 +20,9 @@ spring:
           temp:
             use_jdbc_metadata_defaults: false
     open-in-view: true
+  servlet:
+   multipart:
+     max-file-size: -1
+     max-request-size: -1
 server:
   port: 8081

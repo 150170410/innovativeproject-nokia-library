@@ -1,46 +1,7 @@
-<h3>list view</h3>
-<button mat-raised-button color="primary" (click)="getBooks()">Get books</button>
-<h2>List of books</h2>
-
-<mat-paginator [length]="length"
-			   [pageSize]="pageSize"
-			   [pageSizeOptions]="pageSizeOptions"
-			   (page)="pageEvent = $event; onPaginateEvent($event)">
-</mat-paginator>
-
-<div *ngIf="pageEvent">
-	<h5>Page Change Event Properties</h5>
-	<div>List length: {{pageEvent.length}}</div>
+<h2>List of newly added books</h2>
+<div *ngIf="listIsLoading">
+	<mat-spinner></mat-spinner>
 </div>
-<ol>
-	<li class="cursor-pointer" *ngFor="let bookDetails of books | slice: paginationFrom(pageEvent) : paginationTo(pageEvent)">
-		<div routerLink="/book-details/{{bookDetails.id}}" routerLinkActive="active" class="wrapper clearfix">
-			<div class="book-cover box-borders">
-				<img class="image-look" src="https://books.goalkicker.com/JavaBook/JavaGrow.png"/>
-			</div>
-			<div class="text-area box-borders cursor-pointer">
-				<table>
-					<tr>
-						<th>Id</th>
-						<th>Title</th>
-						<th>ISBN</th>
-						<th>Description</th>
-						<th>Date of publication</th>
-					</tr>
-					<tr>
-						<td>{{bookDetails.id}}</td>
-						<td>{{bookDetails.title}}</td>
-						<td>{{bookDetails.isbn}}</td>
-						<td>{{bookDetails.description}}</td>
-						<td>{{bookDetails.dateOfPublication}}</td>
-					</tr>
-
-				</table>
-			</div>
-		</div>
-		<mat-divider></mat-divider>
-	</li>
-</ol>
-
-
-<div *ngIf="errorMessage">{{errorMessage.message}}</div>
+<div *ngFor="let book of allBooks">
+	<app-listview-item [bookDetails]="book"></app-listview-item>
+</div>

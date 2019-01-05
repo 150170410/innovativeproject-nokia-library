@@ -1,0 +1,164 @@
+<mat-card class="form-wrapper">
+	<div class="form-title">
+		<h1>Book copy</h1>
+	</div>
+
+	<div>
+		<h3>Find and select book:</h3>
+		<mat-form-field>
+			<input matInput (keyup)="applyFilterBookDetails($event.target.value)" placeholder="Find a book...">
+		</mat-form-field>
+	</div>
+	<form name="bookCopyParams" (ngSubmit)="createBookCopy(bookCopyParams)" [formGroup]="bookCopyParams">
+
+		<div>
+			<div class="filter-paginator-wrapper">
+
+				<div class="paginator">
+					<mat-paginator #paginatorDetails [pageSizeOptions]="[5, 10, 15]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+				</div>
+			</div>
+			<table mat-table [dataSource]="dataSourceBookDetails">
+
+				<ng-container matColumnDef="isbn">
+					<th mat-header-cell *matHeaderCellDef>ISBN</th>
+					<td mat-cell *matCellDef="let bookDetails">{{bookDetails.isbn}}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="title">
+					<th mat-header-cell *matHeaderCellDef>Title</th>
+					<td mat-cell *matCellDef="let bookDetails">{{bookDetails.title}}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="authors">
+					<th mat-header-cell *matHeaderCellDef>Authors</th>
+					<td mat-cell *matCellDef="let bookDetails">{{bookDetails.authors | arrToStr:'author'}}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="actions">
+					<th mat-header-cell *matHeaderCellDef>Actions</th>
+					<td mat-cell *matCellDef="let bookDetails">
+						<p>
+							<button color="primary" type="button" mat-button (click)="selectBookDetails(bookDetails)">
+								<mat-icon>done</mat-icon>
+								Select
+							</button>
+						</p>
+					</td>
+				</ng-container>
+
+				<tr mat-header-row *matHeaderRowDef="displayedBookDetailsColumns"></tr>
+				<tr mat-row *matRowDef="let row; columns: displayedBookDetailsColumns"></tr>
+
+			</table>
+
+		</div>
+
+		<div>
+			<h3>Selected book details: </h3>
+			<div *ngIf="selectedBookDetails !== null">
+				{{selectedBookDetails.isbn}}, <b>{{selectedBookDetails.title}}</b> by: {{selectedBookDetails.authors | arrToStr:'author'}}
+			</div>
+			<div *ngIf="selectedBookDetails === null">none</div>
+		</div>
+
+		<mat-divider></mat-divider>
+
+		<div class="form-container">
+
+			<mat-form-field>
+				<input formControlName="signature"
+					   placeholder="Signature"
+					   matInput requred>
+
+				<mat-hint>Signature is required</mat-hint>
+				<mat-error *ngIf="bookCopyParams.controls['signature'].hasError">
+					<div *ngIf="bookCopyParams.controls['signature'].errors?.required">Signature is required</div>
+					<div *ngIf="bookCopyParams.controls['signature'].errors?.maxlength">The maximum length is 100 characters</div>
+				</mat-error>
+			</mat-form-field>
+
+			<mat-form-field>
+              <textarea formControlName="comments"
+						placeholder="Comments"
+						matInput>
+              </textarea>
+				<mat-error *ngIf="bookCopyParams.controls['comments'].hasError">
+					<div *ngIf="bookCopyParams.controls['comments'].errors?.maxlength">The maximum length is 1000 characters</div>
+				</mat-error>
+			</mat-form-field>
+
+		</div>
+
+		<div class="buttons-row form-title">
+			<button mat-raised-button color="primary" type="submit" [disabled]="!bookCopyParams.valid || !selectedBookDetails">
+				{{formMode}}
+			</button>
+			<button class="button-spacer" *ngIf="toUpdate !== null" mat-button color="warn" type="submit" (click)="cancelUpdate()">
+				Cancel
+			</button>
+			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()">
+				Clear
+			</button>
+		</div>
+	</form>
+
+
+</mat-card>
+
+
+<div>
+	<div class="filter-paginator-wrapper">
+		<div class="filter">
+			<mat-form-field>
+				<input matInput (keyup)="applyFilterBooks($event.target.value)" placeholder="Filter">
+			</mat-form-field>
+		</div>
+		<div class="paginator">
+			<mat-paginator #paginatorCopies [pageSizeOptions]="[10, 20, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+		</div>
+	</div>
+	<table mat-table [dataSource]="dataSource">
+
+		<ng-container matColumnDef="signature">
+			<th mat-header-cell *matHeaderCellDef>Signature</th>
+			<td mat-cell *matCellDef="let bookCopy">{{bookCopy.signature}}</td>
+		</ng-container>
+		<ng-container matColumnDef="status">
+			<th mat-header-cell *matHeaderCellDef>Status</th>
+			<td mat-cell *matCellDef="let bookCopy" [ngClass]="{'st-available': bookCopy.status.id === 1, 'st-borrowed':bookCopy.status.id === 2,'st-reserved':bookCopy.status.id === 3,'st-unknown':bookCopy.status.id === 4   }">{{bookCopy.status.statusName}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="bookDetails">
+			<th mat-header-cell *matHeaderCellDef>Book details</th>
+			<td mat-cell *matCellDef="let bookCopy"><b>{{bookCopy.bookDetails.title}}</b> by <i>{{bookCopy.bookDetails.authors | arrToStr:'author'}}</i></td>
+		</ng-container>
+
+		<ng-container matColumnDef="comments">
+			<th mat-header-cell *matHeaderCellDef>Comment</th>
+			<td mat-cell *matCellDef="let bookCopy">{{bookCopy.comments}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef>Actions</th>
+			<td mat-cell *matCellDef="let bookDetails">
+				<p>
+					<button color="primary" mat-button (click)="editBookCopy(bookDetails)">
+						<mat-icon>edit</mat-icon>
+						Edit
+					</button>
+					<button color="warn" mat-button (click)="removeBookCopy(bookDetails.id)">
+						<mat-icon>cancel</mat-icon>
+						Remove
+					</button>
+				</p>
+
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedBookCopiesColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedBookCopiesColumns"></tr>
+
+	</table>
+
+</div>

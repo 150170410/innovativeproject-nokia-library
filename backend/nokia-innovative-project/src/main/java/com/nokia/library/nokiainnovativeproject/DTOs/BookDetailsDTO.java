@@ -1,13 +1,12 @@
 package com.nokia.library.nokiainnovativeproject.DTOs;
 
 import com.nokia.library.nokiainnovativeproject.entities.Author;
-import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -24,27 +23,24 @@ public class BookDetailsDTO {
 	@NotBlank(message = "ISBN is required")
 	private String isbn;
 
-	@Length(max = 100, message = "Title can't exceed 100 characters")
+	@Size(max = 100, message = "Title can't exceed 100 characters")
 	@NotBlank(message = "Title is required")
 	private String title;
 
-	@Size(max = 1000, message = "Description can't exceed 1000 characters")
+	@Size(max = 2000, message = "Description can't exceed 2000 characters")
 	private String description;
 
 	@Size(max = 1000, message = "Cover picture URL can't exceed 1000 characters")
 	private String coverPictureUrl;
 
 	@Past(message = "The publication date of the book should be a past date")
-	private Date dateOfPublication;
+	private Date publicationDate;
 
-	@Size(max = 100, message = "Table of contents URL can't exceed 100 characters")
-	private String tableOfContents;
-
+	@Valid
 	@NotNull(message = "At least one book author is required.")
 	private List<Author> authors;
 
+	@Valid
 	@NotNull(message = "At least one book category is required.")
 	private List<BookCategory> categories;
-
-	private List<Book> books;
 }

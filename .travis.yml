@@ -3,38 +3,62 @@ jdk:
   - oraclejdk8
 install: true
 env:
- -TO_BUILD=FRONTEND
- -TO_BUILD=BACKEND
+ -HEROKU_API_KEY=$HEROKU_TOKEN
  -TAG=test
 services:
   - docker
 before_install:
   - npm install -g @angular/cli
+stages:
+  - name: test
+  - name: build
+  - name: docker_build
+    if: branch = develop OR branch = develop
+  - name: deploy
+    if: branch = master
 jobs:
   include:
       - stage: test
         script:
-         - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm test; fi
-         - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; chmod +x mvnw; mvn test; fi
+         - cd backend/nokia-innovative-project
+         - chmod +x mvnw
+         - mvn test
       - stage: build
         script:
-         - if [ "$TO_BUILD" = FRONTEND ]; then cd frontend; npm i; fi
-         - if [ "$TO_BUILD" = BACKEND ]; then cd backend/nokia-innovative-project; mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V; fi
+         - cd frontend
+         - npm i
+         - ng build --prod
+         - cd ../backend/nokia-innovative-project
+         - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       - stage: docker_build
-        if: (branch = master OR branch = develop) AND type in (push)
-        env: TAG=$TRAVIS_COMMIT_MESSAGE
-        if: branch = develop
         script:
           - cd backend/nokia-innovative-project
-          - mvn package -DskipTests=true
+          - mvn package
           - docker build -t $DOCKER_USERNAME/nokia.inno.lib.be:$TAG .
           - cd ../../frontend
           - npm install
+          - npm install @types/node --save-dev
           - npm run build
           - docker build -t $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG .
           - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           - docker push $DOCKER_USERNAME/nokia.inno.lib.be:$TAG
           - docker push $DOCKER_USERNAME/nokia.inno.lib.fe:$TAG
+      - stage: deploy
+        script:
+          - curl https://cli-assets.heroku.com/install-standalone.sh | sh
+          - docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com
+          - cd backend/nokia-innovative-project
+          - mvn package -DskipTests
+          - docker build -t registry.heroku.com/nokia-library-api/web -f Dockerfile.prod .
+          - cd ../../frontend
+          - npm install
+          - npm install @types/node --save-dev
+          - ng build --prod
+          - docker build -t registry.heroku.com/nokia-library-client/web -f Dockerfile.prod .
+          - docker push registry.heroku.com/nokia-library-api/web
+          - docker push registry.heroku.com/nokia-library-client/web
+          - /usr/local/bin/heroku container:release web -a nokia-library-api
+          - /usr/local/bin/heroku container:release web -a nokia-library-client
 cache:
    directories:
     - $HOME/.m2

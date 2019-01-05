@@ -1,0 +1,48 @@
+img {
+	max-height: 300px;
+	border: 1px solid #124191;
+}
+
+.wrapper {
+	display: flex;
+}
+
+.cover-wrapper {
+	margin-bottom: 10px;
+}
+
+.info-box-wrapper {
+	max-width: 600px;
+	margin-left: 10px;
+}
+
+.reserve-button {
+	margin-left: 10px;
+}
+
+mat-card {
+	margin-bottom: 1px;
+}
+
+.button-spacer {
+	margin-left: 10px;
+}
+
+.book-item {
+	margin-top: 10px;
+}
+
+.signature {
+	width: 80px;
+	display: inline-block;
+}
+
+.available-on {
+	width: 180px;
+	display: inline-block;
+}
+
+.not-available {
+	color: #9b1249;
+	font-size: 20px;
+}

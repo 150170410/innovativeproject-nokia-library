@@ -39,12 +39,16 @@ public class Rental implements Serializable {
 
 	private LocalDate returnDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	private LocalDate handOverDate;
+
+	@ManyToOne(cascade = {CascadeType.MERGE,
+			CascadeType.PERSIST})
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade = {CascadeType.MERGE,
+			CascadeType.PERSIST})
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "book_catalog_number")
 	private Book book;
