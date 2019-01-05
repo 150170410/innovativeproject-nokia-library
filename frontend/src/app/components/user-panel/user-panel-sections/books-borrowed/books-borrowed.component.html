@@ -1,3 +1,55 @@
+<div class="form-title">
+	<h1>Borrowed books</h1>
+</div>
 <p>
 	Books that you currently have.
 </p>
+<div>
+	<div class="filter-paginator-wrapper">
+		<div class="filter">
+			<mat-form-field>
+				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+			</mat-form-field>
+		</div>
+		<div class="paginator">
+			<mat-paginator #paginatorCopies [pageSizeOptions]="[10, 20, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+		</div>
+	</div>
+	<table mat-table [dataSource]="dataSource">
+
+		<ng-container matColumnDef="bookTitle">
+			<th mat-header-cell *matHeaderCellDef>Title</th>
+			<td mat-cell *matCellDef="let borrowing">{{borrowing.book.bookDetails.title}}</td>
+		</ng-container>
+		<ng-container matColumnDef="rentalDate">
+			<th mat-header-cell *matHeaderCellDef>Rental date</th>
+			<td mat-cell *matCellDef="let borrowing">{{borrowing.rentalDate}}</td>
+		</ng-container>
+		<ng-container matColumnDef="returnDate">
+			<th mat-header-cell *matHeaderCellDef>Return date</th>
+			<td mat-cell *matCellDef="let borrowing">{{borrowing.returnDate}}</td>
+		</ng-container>
+		<ng-container matColumnDef="handOverDate">
+			<th mat-header-cell *matHeaderCellDef>Handover date</th>
+			<td mat-cell *matCellDef="let borrowing">{{borrowing.handOverDate}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef>Actions</th>
+			<td mat-cell *matCellDef="let borrowing">
+				<p>
+					<button color="primary" mat-button (click)="moreInfo(borrowing)">
+						<mat-icon>info</mat-icon>
+						More info
+					</button>
+				</p>
+
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+	</table>
+
+</div>
