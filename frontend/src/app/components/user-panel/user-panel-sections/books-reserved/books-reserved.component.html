@@ -20,8 +20,7 @@
 
 		<ng-container matColumnDef="bookTitle">
 			<th mat-header-cell *matHeaderCellDef>Title</th>
-			<td mat-cell *matCellDef="let reservation">Sample title</td>
-			<!--<td mat-cell *matCellDef="let reservation">{{borrowing.book.bookDetails.title}}</td>-->
+			<td mat-cell *matCellDef="let reservation">{{reservation.book.bookDetails.title}}</td>
 		</ng-container>
 		<ng-container matColumnDef="reservationDate">
 			<th mat-header-cell *matHeaderCellDef>Rental date</th>
@@ -32,7 +31,7 @@
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
 			<td mat-cell *matCellDef="let reservation">
 				<p>
-					<button disabled color="primary" mat-button (click)="bookInfo(reservation)">
+					<button color="primary" mat-button (click)="bookInfo(reservation)">
 						<mat-icon>info</mat-icon>
 						More info
 					</button>

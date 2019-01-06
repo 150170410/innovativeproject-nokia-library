@@ -20,24 +20,8 @@
 				</mat-panel-title>
 			</mat-expansion-panel-header>
 
-			<ol>
-				<li *ngFor="let bookCopy of bookDetails.books;" class="book-item">
-					<div class="signature">{{bookCopy.signature}}</div>
+			<app-book-actions [books]="bookDetails.books"></app-book-actions>
 
-					<button *ngIf="bookCopy.status.id === 1" mat-raised-button color="accent" class="button-spacer">
-						<mat-icon>done</mat-icon>
-						Borrow book
-					</button>
-
-					<button *ngIf="bookCopy.status.id !== 1" mat-raised-button class="button-spacer">
-						<mat-icon>star</mat-icon>
-						Reserve book
-					</button>
-
-					<div *ngIf="bookCopy.status.id !== 1" class="available-on button-spacer"> available on: 01.07.2019</div>
-
-				</li>
-			</ol>
 		</mat-expansion-panel>
 	</mat-accordion>
 	<div class="not-available" *ngIf="(bookDetails.books.length < 1)">

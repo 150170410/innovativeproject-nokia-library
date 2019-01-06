@@ -31,7 +31,7 @@ export class BooksReservedComponent implements OnInit {
 	}
 
 	async getReservations() {
-		const response = await this.http.getAll('rentals/getAll');
+		const response = await this.http.getAll('reservations/getAll');
 		this.reservations = response.object;
 		this.dataSource = new MatTableDataSource(response.object);
 		this.dataSource.paginator = this.paginator;

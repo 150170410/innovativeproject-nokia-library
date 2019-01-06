@@ -27,10 +27,10 @@ import { ListviewItemComponent } from './components/listview/listview-item/listv
 import { ArrToStrPipe } from './pipes/arr-to-str/arr-to-str.pipe';
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
-import { ManageBookDetailsComponent } from './components/admin-panel/forms/manage-book-details/manage-book-details.component';
-import { ManageAuthorsComponent } from './components/admin-panel/forms/manage-authors/manage-authors.component';
-import { ManageCategoriesComponent } from './components/admin-panel/forms/manage-categories/manage-categories.component';
-import { ManageBooksComponent } from './components/admin-panel/forms/manage-books/manage-books.component';
+import { ManageBookDetailsComponent } from './components/admin-panel/admin-panel-sections/manage-book-details/manage-book-details.component';
+import { ManageAuthorsComponent } from './components/admin-panel/admin-panel-sections/manage-authors/manage-authors.component';
+import { ManageCategoriesComponent } from './components/admin-panel/admin-panel-sections/manage-categories/manage-categories.component';
+import { ManageBooksComponent } from './components/admin-panel/admin-panel-sections/manage-books/manage-books.component';
 import { LimitToPipe } from './pipes/limit-to/limit-to.pipe';
 import { BookStatusesPipe } from './pipes/book-statuses/book-statuses.pipe';
 import { ConfirmationDialogComponent } from './utils/components/confirmation-dialog/confirmation-dialog.component';
@@ -38,9 +38,10 @@ import { BooksHistoryComponent } from './components/user-panel/user-panel-sectio
 import { BooksBorrowedComponent } from './components/user-panel/user-panel-sections/books-borrowed/books-borrowed.component';
 import { BooksReservedComponent } from './components/user-panel/user-panel-sections/books-reserved/books-reserved.component';
 import { BooksRequestedComponent } from './components/user-panel/user-panel-sections/books-requested/books-requested.component';
-import { ManageReturnsComponent } from './components/admin-panel/forms/manage-returns/manage-returns.component';
-import { ManageRequestsComponent } from './components/admin-panel/forms/manage-requests/manage-requests.component';
-import { ManageUsersComponent } from './components/admin-panel/forms/manage-users/manage-users.component';
+import { ManageReturnsComponent } from './components/admin-panel/admin-panel-sections/manage-returns/manage-returns.component';
+import { ManageRequestsComponent } from './components/admin-panel/admin-panel-sections/manage-requests/manage-requests.component';
+import { ManageUsersComponent } from './components/admin-panel/admin-panel-sections/manage-users/manage-users.component';
+import { BookActionsComponent } from './components/book-actions/book-actions.component';
 
 @NgModule({
 	declarations: [
@@ -69,7 +70,8 @@ import { ManageUsersComponent } from './components/admin-panel/forms/manage-user
 		BooksRequestedComponent,
 		ManageReturnsComponent,
 		ManageRequestsComponent,
-		ManageUsersComponent
+		ManageUsersComponent,
+		BookActionsComponent
 	],
 	imports: [
 		BrowserModule,
