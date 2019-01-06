@@ -35,7 +35,6 @@ public class BookDetailsService {
 		for(BookDetails bookDetails : list) {
 			Hibernate.initialize(bookDetails.getAuthors());
 			Hibernate.initialize(bookDetails.getCategories());
-			Hibernate.initialize(bookDetails.getReviews());
 
 			ModelMapper mapper = new ModelMapper();
 
@@ -56,7 +55,6 @@ public class BookDetailsService {
 		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
 		Hibernate.initialize(bookDetails.getAuthors());
 		Hibernate.initialize(bookDetails.getCategories());
-		Hibernate.initialize(bookDetails.getReviews());
 
 		ModelMapper mapper = new ModelMapper();
 

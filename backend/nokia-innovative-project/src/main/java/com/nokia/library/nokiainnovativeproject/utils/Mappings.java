@@ -22,8 +22,11 @@ public class Mappings {
 	public static final String BOOK_COPY = "/bookCopy";
 	public static final String BOOK_TO_ORDER = "/bookToOrder";
 
+	public static final String USERS = "/users";
 	public static final String LIBRARY = "/library";
 	public static final String BOOKS = "/books";
+    public static final String RESERVATIONS = "/reservations" ;
+	public static final String RENTALS = "/rentals";
 
 	public static final String PICTURES = "/pictures";
 	public static final String UPLOAD = "/upload";
@@ -34,4 +37,5 @@ public class Mappings {
 
 	public static final String USER = "/user";
 
+    public static final String HANDOVER = "/handover/{id}" ;
 }

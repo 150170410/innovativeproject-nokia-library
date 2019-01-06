@@ -45,20 +45,10 @@ public class User implements Serializable {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(mappedBy = "user",
-                fetch = FetchType.LAZY,
-                cascade = {CascadeType.MERGE,
-                        CascadeType.PERSIST})
-    private List<Reservation> reservations;
-
-    @OneToMany( mappedBy = "user",
-                cascade = { CascadeType.MERGE,
-                            CascadeType.PERSIST},
-                fetch = FetchType.LAZY)
-    private List<Review> reviews;
-
-    @ManyToMany(cascade ={  CascadeType.MERGE,
-                            CascadeType.PERSIST},
+    @ManyToMany(cascade ={  CascadeType.DETACH,
+                            CascadeType.MERGE,
+                            CascadeType.PERSIST,
+                            CascadeType.REFRESH},
                 fetch = FetchType.LAZY)
     private List<Book> books;
 

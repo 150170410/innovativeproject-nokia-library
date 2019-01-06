@@ -1,13 +1,10 @@
 package com.nokia.library.nokiainnovativeproject.DTOs;
 
 import com.nokia.library.nokiainnovativeproject.entities.Author;
-import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
-import com.nokia.library.nokiainnovativeproject.entities.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
