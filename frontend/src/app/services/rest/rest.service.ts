@@ -58,7 +58,7 @@ export class RestService {
 
 	private handleError(error: HttpErrorResponse) {
 
-    console.log('jestem e error')
+    console.log('ja 2');
 
 		if (error.error instanceof ErrorEvent) {
 			console.error('An error occurred:', error.error.message);

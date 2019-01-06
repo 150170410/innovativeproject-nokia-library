@@ -9,8 +9,14 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class LoginComponent implements OnInit {
 
+  error: boolean;
+
 	constructor(private formBuilder: FormBuilder,
 				private authService: AuthService) {
+    this.error = (sessionStorage.getItem('isSignedCorrectly') === 'true') ||
+            (sessionStorage.getItem('isSignedCorrectly') === null);
+
+    console.log(sessionStorage.getItem('isSignedCorrectly'));
 	}
 
 	loginParams: FormGroup;
@@ -27,9 +33,11 @@ export class LoginComponent implements OnInit {
 	}
 
 	loginButtonClick(params: any) {
-		console.log(params);
 		sessionStorage.setItem('username', params.value.email);
 		sessionStorage.setItem('password', params.value.password);
-		this.authService.loginUser();
+		this.loginParams.reset();
+		this.authService.loginUser().then(
+      () => this.error = (sessionStorage.getItem('isSignedCorrectly') === 'true')
+    );
 	}
 }

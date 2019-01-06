@@ -30,12 +30,12 @@ public class ReservationController {
         return MessageInfo.success(reservationService.getReservationById(id), Arrays.asList("Reservation with ID = " + id.toString()));
     }
 
-    @GetMapping(USERS + GET_ONE + RESERVATIONS)
+    @GetMapping(USERS + RESERVATIONS + GET_ONE )
     public ResponseEntity getReservationsByUserId(@PathVariable Long id){
         return MessageInfo.success(reservationService.getReservationsByUserId(id), Arrays.asList("Reservations with UserID = " + id.toString()));
     }
 
-    @GetMapping(BOOKS + GET_ONE + RESERVATIONS)
+    @GetMapping(BOOKS + RESERVATIONS + GET_ONE)
     public ResponseEntity getReservationsByBookId(@PathVariable Long id){
         return MessageInfo.success(reservationService.getReservationsByBookId(id), Arrays.asList("Reservations with BookID = " + id.toString()));
     }

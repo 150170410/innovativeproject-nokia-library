@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -37,7 +36,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + BOOK_DETAILS + GET_ALL,
                         API_VERSION + EMAIL + CREATE,
                         API_VERSION + USER ).permitAll()
-                .antMatchers(API_VERSION + BOOK_TO_ORDER + "/**").hasAnyRole("EMPLOYEE", "ADMIN")
+                .antMatchers(API_VERSION + BOOK_TO_ORDER + "/**",
+                        API_VERSION + RENTALS + CREATE,
+                        API_VERSION + RENTALS + GET_ALL,
+                        API_VERSION + RENTALS + GET_ONE,
+                        API_VERSION + RENTALS + HANDOVER,
+                        API_VERSION + RENTALS + UPDATE,
+                        API_VERSION + USERS + RENTALS + GET_ONE,
+                        API_VERSION + BOOKS + RENTALS + GET_ONE,
+                        API_VERSION + BOOKS + RESERVATIONS + GET_ONE,
+                        API_VERSION + USERS + RESERVATIONS + GET_ONE,
+                        API_VERSION + RESERVATIONS + CREATE,
+                        API_VERSION + RESERVATIONS + GET_ALL,
+                        API_VERSION + RESERVATIONS + GET_ONE).hasAnyRole("EMPLOYEE", "ADMIN")
                 .antMatchers(API_VERSION + BOOK_AUTHOR + "/**",
                         API_VERSION + AUTOCOMPLETION + "/**",
                         API_VERSION + BOOK_CATEGORY + "/**",
@@ -47,14 +58,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + BOOK_DETAILS + CREATE,
                         API_VERSION + BOOK_DETAILS + UPDATE,
                         API_VERSION + BOOK_DETAILS + REMOVE,
-                        API_VERSION + PICTURES + UPLOAD
-                        //API_VERSION + USER + TAKE_ADMIN,
-                        //API_VERSION + USER + ASSIGN_ADMIN
-                        ).hasRole("ADMIN")
+                        API_VERSION + PICTURES + UPLOAD,
+                        API_VERSION + RENTALS + REMOVE,
+                        API_VERSION + RESERVATIONS + REMOVE).hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .and()
                 .logout().logoutSuccessUrl("/").deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true) ;
+                .invalidateHttpSession(true);
     }
 }

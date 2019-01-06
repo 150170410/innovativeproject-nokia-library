@@ -30,12 +30,12 @@ public class RentalController {
         return MessageInfo.success(rentalService.getRentalById(id), Arrays.asList("Rental with ID = " + id.toString()));
     }
 
-    @GetMapping(USERS + GET_ONE + RENTALS)
+    @GetMapping(USERS + RENTALS + GET_ONE)
     public ResponseEntity getRentalsByUserId(@PathVariable Long id){
         return MessageInfo.success(rentalService.getRentalsByUserId(id), Arrays.asList("Rentals with UserID = " + id.toString()));
     }
 
-    @GetMapping(BOOKS + GET_ONE + RENTALS)
+    @GetMapping(BOOKS + RENTALS + GET_ONE)
     public ResponseEntity getRentalsByBookId(@PathVariable Long id){
         return MessageInfo.success(rentalService.getRentalsByBookId(id), Arrays.asList("Rentals with BookID = " + id.toString()));
     }
