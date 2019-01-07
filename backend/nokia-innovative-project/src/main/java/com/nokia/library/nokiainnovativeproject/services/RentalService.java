@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -73,6 +74,7 @@ public class RentalService {
 		Book borrowedBook = bookService.getBookById(bookId);
 		BookStatus statusBorrowed = bookStatusService.getBookStatusById(2L);
 		borrowedBook.setStatus(statusBorrowed);
+		borrowedBook.setAvailableDate(LocalDate.now().plusMonths(1));
 		rental.setBook(borrowedBook);
 
 		rental.setUser(userService.getUserById(rentalDTO.getUserId()));
@@ -90,6 +92,7 @@ public class RentalService {
 		List<Reservation> reservations = reservationRepository.findByBookId(rental.getBook().getId());
 		if (reservations == null || reservations.isEmpty()) {
 			rental.setReturnDate(rental.getReturnDate().plusMonths(1));
+			rental.getBook().setAvailableDate(rental.getReturnDate());
 			return rentalRepository.save(rental);
 		} else {
 			throw new BookReservedException(rental.getBook().getId());
@@ -98,6 +101,7 @@ public class RentalService {
 
 	public void deleteRental(Long id) {
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+		rental.getBook().setAvailableDate(null);
 		rentalRepository.delete(rental);
 	}
 
@@ -108,6 +112,7 @@ public class RentalService {
 			throw new AlreadyHandedOverException(id);
 		}
 		rental.setHandOverDate(LocalDate.now());
+		rental.getBook().setAvailableDate(null);
 		return rentalRepository.save(rental);
 	}
 }
