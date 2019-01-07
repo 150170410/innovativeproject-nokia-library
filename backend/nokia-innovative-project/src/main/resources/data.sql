@@ -119,6 +119,19 @@ INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0061958271', '
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('user@user.com', 'User', 'User', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
+
+INSERT INTO "user" (email, first_name, last_name, password, address_id)
+VALUES ('wojtek@wojtek.com', 'Wojtek', 'Wojtek', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
+
+INSERT INTO "user" (email, first_name, last_name, password, address_id)
+VALUES ('jacek@jacek.com', 'Jacek', 'Jacek', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
+
+INSERT INTO "user" (email, first_name, last_name, password, address_id)
+VALUES ('alex@alex.com', 'Alex', 'Alex', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
+
+INSERT INTO "user" (email, first_name, last_name, password, address_id)
+VALUES ('mikolaj@mikolaj.com', 'Mikolaj', 'Mikolaj', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
+
 INSERT INTO address (building, city) VALUES ('West Link', 'Wrocław');
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('admin@admin.com', 'Admin', 'Admin', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
@@ -126,5 +139,9 @@ INSERT INTO role (role) VALUES ('ROLE_EMPLOYEE');
 INSERT INTO role (role) VALUES ('ROLE_ADMIN');
 INSERT INTO user_roles (user_id, roles_id) VALUES (1, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (2, 1);
-INSERT INTO user_roles (user_id, roles_id) VALUES (2, 2);
+INSERT INTO user_roles (user_id, roles_id) VALUES (3, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (4, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (5, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (6, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (6, 2);
 

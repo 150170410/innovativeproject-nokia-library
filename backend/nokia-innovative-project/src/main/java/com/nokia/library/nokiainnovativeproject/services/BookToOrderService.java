@@ -34,6 +34,7 @@ public class BookToOrderService {
             // it's bad idea to send user roles if we need only user name
             bookToOrder.getUser().setRoles(new ArrayList<>());
             bookToOrder.getUser().setBooks(new ArrayList<>());
+            bookToOrder.getUser().setPassword("");
         }
         return booksToOrder;
     }
@@ -46,6 +47,7 @@ public class BookToOrderService {
         // it's bad idea to send user roles if we need only user name
         bookToOrder.getUser().setRoles(new ArrayList<>());
         bookToOrder.getUser().setBooks(new ArrayList<>());
+        bookToOrder.getUser().setPassword("");
 
         return bookToOrder;
     }
