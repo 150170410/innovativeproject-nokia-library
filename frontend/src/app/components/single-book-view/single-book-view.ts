@@ -30,4 +30,8 @@ export class SingleBookViewComponent implements OnInit {
 		this.bookDetails = response.object;
 		this.pageLoading = false;
 	}
+
+	actionTaken(val: any){
+		this.getBookDetails();
+	}
 }

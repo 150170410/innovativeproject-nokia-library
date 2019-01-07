@@ -1,0 +1,18 @@
+<ol>
+	<li *ngFor="let bookCopy of books;" class="book-item">
+		<div class="signature">{{bookCopy.signature}}</div>
+
+		<button *ngIf="bookCopy.status.id === 1" mat-raised-button color="accent" class="button-spacer" (click)="borrowBook(bookCopy)">
+			<mat-icon>done</mat-icon>
+			Borrow book
+		</button>
+
+		<button *ngIf="bookCopy.status.id !== 1" mat-raised-button class="button-spacer" (click)="reserveBook(bookCopy)">
+			<mat-icon>star</mat-icon>
+			Reserve book
+		</button>
+
+		<div *ngIf="bookCopy.status.id !== 1" class="available-on button-spacer"> available on: {{bookCopy.availableDate}}</div>
+
+	</li>
+</ol>

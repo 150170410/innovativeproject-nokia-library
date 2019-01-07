@@ -43,14 +43,14 @@ export class RestService {
 	}
 
 	update(url: string, id: number, item: any) {
-		return this.http.post<any>(this.URL + url + '/update/' + `${id}`, item, this.setHeaders())
+		return this.http.post<any>(this.URL + url + '/update/' + id, item, this.httpOptions)
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
 	remove(url: string, id: number) {
-		return this.http.delete<any>(this.URL + url + '/remove/' + `${id}`, this.setHeaders())
+		return this.http.delete<any>(this.URL + url + '/remove/' + id)
 		.pipe(
 			catchError(this.handleError)
 		);

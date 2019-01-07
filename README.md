@@ -25,7 +25,9 @@ For all users:
 
 For admins only:
 * Books management (add, edit, remove),
-* semi-automated book details completion.
+* semi-automated book details completion,
+* returning books,
+* list of requested books.
 
 # 3. Technologies
 * Backend

@@ -1,0 +1,66 @@
+<h1 style="color: red;">WORK IN PROGRESS</h1>
+<!--<div class="form-title">-->
+	<!--<h1>Manage admins and users</h1>-->
+<!--</div>-->
+<p>Here you can promote users to admins or demote admins to regular users.</p>
+<div>
+	<div class="filter-paginator-wrapper">
+		<div class="filter">
+			<mat-form-field>
+				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+			</mat-form-field>
+		</div>
+		<div class="paginator">
+			<mat-paginator #paginatorCopies [pageSizeOptions]="[10, 20, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+		</div>
+	</div>
+	<table mat-table [dataSource]="dataSource">
+
+		<ng-container matColumnDef="id">
+			<th mat-header-cell *matHeaderCellDef>Id</th>
+			<td mat-cell *matCellDef="let user">{{user.id}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="email">
+			<th mat-header-cell *matHeaderCellDef>Email</th>
+			<td mat-cell *matCellDef="let user">{{user.email}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="fullName">
+			<th mat-header-cell *matHeaderCellDef>Full name</th>
+			<td mat-cell *matCellDef="let user">{{user.firstName}} {{user.lastName}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="role">
+			<th mat-header-cell *matHeaderCellDef>Role</th>
+			<td mat-cell *matCellDef="let user" [ngClass]="{'role-user': user.roles == 'user','role-admin': user.roles == 'admin' }">{{user.roles}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="address">
+			<th mat-header-cell *matHeaderCellDef>Address</th>
+			<td mat-cell *matCellDef="let user">{{user.address}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef>Actions</th>
+			<td mat-cell *matCellDef="let user">
+				<p>
+					<button disabled *ngIf="user.roles == 'user'" color="primary" mat-button (click)="promoteUser(user)">
+						<mat-icon>arrow_upward</mat-icon>
+						Promote to admin
+					</button>
+					<button disabled *ngIf="user.roles == 'admin'" color="warn" mat-button (click)="demoteUser(user)">
+						<mat-icon>arrow_downward</mat-icon>
+						Demote to user
+					</button>
+				</p>
+
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+	</table>
+
+</div>

@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 
 @Entity
@@ -42,4 +43,6 @@ public class Book implements Serializable {
 			fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_details_id")
 	private BookDetails bookDetails;
+
+	private LocalDate availableDate;
 }
