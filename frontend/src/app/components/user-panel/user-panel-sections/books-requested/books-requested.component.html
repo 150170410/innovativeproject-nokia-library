@@ -3,8 +3,51 @@
 	<!--<h1>Book requests</h1>-->
 <!--</div>-->
 <p>
-	Books that you have requested.
+	Here you can request new books and view your previous pending requests.
 </p>
+
+<mat-card class="form-wrapper">
+	<form name="requestParams" (ngSubmit)="requestBook(requestParams)" [formGroup]="requestParams">
+		<div class="form-container">
+
+			<mat-form-field>
+				<input formControlName="isbn"
+					   placeholder="ISBN"
+					   matInput required>
+				<mat-error *ngIf="requestParams.controls.isbn.hasError">
+					<div *ngIf="requestParams.controls.isbn.errors?.required">ISBN is required</div>
+					<div *ngIf="requestParams.controls['isbn'].errors?.maxlength">The maximum length is 13 characters</div>
+					<div *ngIf="requestParams.controls['isbn'].errors?.minlength">The minimum length is 10 characters</div>
+					<div *ngIf="requestParams.controls['isbn'].errors?.pattern">This is not real ISBN number</div>
+				</mat-error>
+			</mat-form-field>
+			<mat-form-field>
+				<input formControlName="title"
+					   placeholder="Title"
+					   matInput required>
+				<mat-error *ngIf="requestParams.controls['isbn'].hasError">
+					<div *ngIf="requestParams.controls['isbn'].errors?.required">
+						Title is required
+					</div>
+
+					<div *ngIf="requestParams.controls['isbn'].errors?.maxlength">
+						The maximum length is 100 characters
+					</div>
+				</mat-error>
+			</mat-form-field>
+		</div>
+
+		<div class="buttons-row">
+			<button mat-raised-button color="primary" type="submit" [disabled]="!requestParams.valid">
+				Request
+			</button>
+			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()">
+				Clear
+			</button>
+		</div>
+
+	</form>
+</mat-card>
 <div>
 	<div class="filter-paginator-wrapper">
 		<div class="filter">

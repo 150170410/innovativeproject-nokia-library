@@ -1,3 +1,20 @@
+mat-form-field {
+	width: 300px;
+}
+
+.form-wrapper {
+	width: 300px;
+	margin: auto;
+}
+
+.button-spacer {
+	margin-left: 10px;
+}
+
+.buttons-row {
+	margin-top: 10px;
+}
+
 .filter-paginator-wrapper {
 	display: flex;
 	justify-content: space-between;

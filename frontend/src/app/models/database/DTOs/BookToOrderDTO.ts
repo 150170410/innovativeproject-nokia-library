@@ -1,4 +1,9 @@
 export class BookToOrderDTO {
-	isgn: string;
+	isbn: string;
 	title: string;
+
+	constructor(isbn: string, title: string) {
+		this.isbn = isbn;
+		this.title = title;
+	}
 }
