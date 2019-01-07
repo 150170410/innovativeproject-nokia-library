@@ -37,4 +37,8 @@ export class ManageUsersComponent implements OnInit {
 	demoteUser(user: User) {
 
 	}
+
+	applyFilter(filterValue: string) {
+		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
 }

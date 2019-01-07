@@ -19,7 +19,9 @@
 		<h3>
 			Available books: {{bookDetails.books | bookStatuses:1}}/{{bookDetails.books.length}}
 		</h3>
-		<app-book-actions [books]="bookDetails.books"></app-book-actions>
+		<app-book-actions [books]="bookDetails.books"
+						  (actionTaken)="actionTaken($event)"
+		></app-book-actions>
 	</div>
 
 

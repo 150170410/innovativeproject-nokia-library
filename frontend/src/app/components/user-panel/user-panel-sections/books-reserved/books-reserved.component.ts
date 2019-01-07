@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Rental } from '../../../../models/database/entites/Rental';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 import { RestService } from '../../../../services/rest/rest.service';
@@ -13,7 +12,7 @@ import { Reservation } from '../../../../models/database/entites/Reservation';
 	styleUrls: ['./books-reserved.component.css', '../../user-panel.component.css']
 })
 export class BooksReservedComponent implements OnInit {
-	reservations: Rental[] = [];
+	reservations: Reservation[] = [];
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
@@ -43,5 +42,9 @@ export class BooksReservedComponent implements OnInit {
 	bookInfo(reservation) {
 		const id = reservation.book.bookDetails.id;
 		this.router.navigateByUrl('/single-book-view/' + id);
+	}
+
+	applyFilter(filterValue: string) {
+		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 }

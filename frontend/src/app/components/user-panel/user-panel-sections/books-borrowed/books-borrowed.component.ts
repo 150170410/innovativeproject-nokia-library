@@ -44,4 +44,8 @@ export class BooksBorrowedComponent implements OnInit {
 		const id = borrowing.book.bookDetails.id;
 		this.router.navigateByUrl('/single-book-view/' + id);
 	}
+
+	applyFilter(filterValue: string) {
+		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
 }

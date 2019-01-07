@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Book } from '../../models/database/entites/Book';
 import { RestService } from '../../services/rest/rest.service';
 import { RentalDTO } from '../../models/database/DTOs/RentalDTO';
@@ -13,10 +13,10 @@ import { ReservationDTO } from '../../models/database/DTOs/ReservationDTO';
 export class BookActionsComponent implements OnInit {
 
 	@Input() books: Book[];
+	@Output() actionTaken = new EventEmitter<boolean>();
 
 	constructor(private http: RestService,
-				private snackbar: SnackbarService,
-				private cd: ChangeDetectorRef) {
+				private snackbar: SnackbarService) {
 	}
 
 	ngOnInit() {
@@ -28,10 +28,10 @@ export class BookActionsComponent implements OnInit {
 		this.http.save('rentals', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Book borrowed successfully!', 'OK');
-				this.cd.markForCheck();
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}
+
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
@@ -45,7 +45,6 @@ export class BookActionsComponent implements OnInit {
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}
-			this.cd.markForCheck();
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
