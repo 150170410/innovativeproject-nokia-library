@@ -1,5 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -8,12 +9,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BookToOrder implements Serializable {
 
     @Id
@@ -28,4 +31,11 @@ public class BookToOrder implements Serializable {
     @Length(max = 100, message = "Title can't exceed 100 characters")
     @NotBlank(message = "Title is required")
     private String title;
+
+    @OneToOne(cascade = {CascadeType.MERGE,
+                         CascadeType.PERSIST},
+                fetch = FetchType.LAZY)
+    @JoinColumn(name = "requested_user")
+    @NotNull(message = "User is required")
+    private User user;
 }

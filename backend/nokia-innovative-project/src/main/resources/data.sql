@@ -108,12 +108,13 @@ INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES (
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('nubu', 7, 1, 'juj');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('pook', 7, 1, 'is fine');
 
-INSERT INTO book_to_order (isbn, title) VALUES ('9781451673319', 'Fahrenheit 451');
-INSERT INTO book_to_order (isbn, title) VALUES ('0439708184', 'Harry Potter and the Sorcerer''s Stone');
-INSERT INTO book_to_order (isbn, title) VALUES ('9780679745587', 'In Cold Blood');
-INSERT INTO book_to_order (isbn, title) VALUES ('9780679732761', 'Invisible Man');
-INSERT INTO book_to_order (isbn, title) VALUES ('0061958271', 'Little House on the Prairie');
+INSERT INTO "user" (first_name, last_name, email) VALUES ('user1', 'user1', 'user1email@gmail.com');
+INSERT INTO "user" (first_name, last_name, email) VALUES ('user2', 'user2', 'user1emai2@gmail.com');
 
-INSERT INTO "user" (first_name, last_name, email) VALUES ('user1', 'user1', 'user1email');
-INSERT INTO "user" (first_name, last_name, email) VALUES ('user2', 'user2', 'user1emai2');
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0439708184', 'Harry Potter and the Sorcerer''s Stone', 1);
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('9780679745587', 'In Cold Blood', 2);
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES('9780679732761', 'Invisible Man', 1);
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0061958271', 'Little House on the Prairie', 1);
+
+
 

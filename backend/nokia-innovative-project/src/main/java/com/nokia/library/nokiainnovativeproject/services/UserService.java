@@ -29,6 +29,10 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("user"));
     }
 
+    public User getLoggedInUser() {
+        return userRepository.findById(1L).orElseThrow( ()-> new ResourceNotFoundException("user"));
+    }
+
     public User createUser(UserDTO userDTO) {
         ModelMapper mapper = new ModelMapper();
         User user = mapper.map(userDTO, User.class);

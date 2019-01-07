@@ -1,5 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Table(name="\"User\"")
 @Data
 @EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements Serializable {
 
     @Id
