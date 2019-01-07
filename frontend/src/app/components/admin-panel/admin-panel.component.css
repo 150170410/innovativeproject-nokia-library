@@ -50,24 +50,28 @@ th, tr, td {
 	text-align: center;
 }
 
+.info-text {
+	text-align: left;
+}
+
 /*::ng-deep .snackbar-success {*/
-	/*font-size: 20px;*/
-	/*background: #c3d707;*/
-	/*color: black;*/
+/*font-size: 20px;*/
+/*background: #c3d707;*/
+/*color: black;*/
 /*}*/
 
 /*::ng-deep .snackbar-success .mat-simple-snackbar-action {*/
-	/*font-size: 20px;*/
-	/*color: black !important;*/
+/*font-size: 20px;*/
+/*color: black !important;*/
 /*}*/
 
 /*::ng-deep .snackbar-error {*/
-	/*font-size: 20px;*/
-	/*background: #9b1249;*/
-	/*color: white;*/
+/*font-size: 20px;*/
+/*background: #9b1249;*/
+/*color: white;*/
 /*}*/
 
 /*::ng-deep .snackbar-error .mat-simple-snackbar-action {*/
-	/*font-size: 20px;*/
-	/*color: white !important;*/
+/*font-size: 20px;*/
+/*color: white !important;*/
 /*}*/

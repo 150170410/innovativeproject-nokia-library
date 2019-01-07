@@ -18,7 +18,7 @@ export class BooksBorrowedComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
-	displayedColumns: string[] = ['bookTitle', 'rentalDate', 'returnDate', 'handOverDate', 'actions'];
+	displayedColumns: string[] = ['bookTitle', 'rentalDate', 'returnDate', 'actions'];
 
 	constructor(private http: RestService,
 				private confirmService: ConfirmationDialogService,
@@ -47,5 +47,9 @@ export class BooksBorrowedComponent implements OnInit {
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
+
+	prolong(borrowing) {
+
 	}
 }

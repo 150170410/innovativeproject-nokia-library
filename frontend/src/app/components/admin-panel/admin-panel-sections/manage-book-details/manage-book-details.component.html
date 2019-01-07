@@ -1,7 +1,10 @@
+<!--<div class="form-title">-->
+	<!--<h1>Book details</h1>-->
+<!--</div>	-->
+<p>Here you can add, edit or remove book details. You can't remove book details if there are existing book copies of such book.</p>
 <mat-card class="form-wrapper">
-	<div class="form-title">
-		<h1>Book details</h1>
-	</div>
+
+
 	<form name="bookDetailsParams" (ngSubmit)="createBookDetails(bookDetailsParams)" [formGroup]="bookDetailsParams">
 		<div class="form-container">
 			<mat-form-field class="isbn-field">

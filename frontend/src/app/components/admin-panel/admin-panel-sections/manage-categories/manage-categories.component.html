@@ -1,7 +1,9 @@
+<!--<div class="form-title">-->
+	<!--<h1>Categories</h1>-->
+<!--</div>-->
+<p class="info-text">Here you can add, edit or remove categories. You can't remove category that is attached to any book.</p>
 <mat-card class="form-wrapper">
-	<div class="form-title">
-		<h1>Categories</h1>
-	</div>
+
 	<form name="categoriesParams" (ngSubmit)="createCategory(categoryParams)" [formGroup]="categoryParams">
 		<div class="form-container">
 			<mat-form-field>

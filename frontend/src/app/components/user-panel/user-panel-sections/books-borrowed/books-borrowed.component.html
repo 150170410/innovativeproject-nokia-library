@@ -1,7 +1,7 @@
 <h1 style="color: red;">WORK IN PROGRESS</h1>
-<div class="form-title">
-	<h1>Borrowed books</h1>
-</div>
+<!--<div class="form-title">-->
+	<!--<h1>Borrowed books</h1>-->
+<!--</div>-->
 <p>
 	Books that you currently have.
 </p>
@@ -24,15 +24,11 @@
 		</ng-container>
 		<ng-container matColumnDef="rentalDate">
 			<th mat-header-cell *matHeaderCellDef>Rental date</th>
-			<td mat-cell *matCellDef="let borrowing">{{borrowing.rentalDate}}</td>
+			<td mat-cell *matCellDef="let borrowing">{{borrowing.rentalDate| date:'dd/MM/yyyy'}}</td>
 		</ng-container>
 		<ng-container matColumnDef="returnDate">
 			<th mat-header-cell *matHeaderCellDef>Return date</th>
-			<td mat-cell *matCellDef="let borrowing">{{borrowing.returnDate}}</td>
-		</ng-container>
-		<ng-container matColumnDef="handOverDate">
-			<th mat-header-cell *matHeaderCellDef>Handover date</th>
-			<td mat-cell *matCellDef="let borrowing">{{borrowing.handOverDate}}</td>
+			<td mat-cell *matCellDef="let borrowing">{{borrowing.returnDate | date:'dd/MM/yyyy'}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="actions">
@@ -41,7 +37,11 @@
 				<p>
 					<button color="primary" mat-button (click)="bookInfo(borrowing)">
 						<mat-icon>info</mat-icon>
-						More info
+						Book info
+					</button>
+					<button disabled color="primary" mat-button (click)="prolong(borrowing)">
+						<mat-icon>forward_30</mat-icon>
+						Prolong
 					</button>
 				</p>
 
