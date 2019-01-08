@@ -28,7 +28,6 @@ import java.util.Set;
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Transactional
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
