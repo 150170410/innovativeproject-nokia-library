@@ -26,6 +26,10 @@ public class UserDTO {
     @Size(min = 10, max = 40, message = "User email must be 10-40 characters long")
     private String email;
 
+    @NotBlank(message = "Password can't be null and can't contain whitespace")
+    @Size(min = 7, max = 20, message = "Password must be 7-20 characters long")
+    private String password;
+
     @Valid
     private Address address;
 }

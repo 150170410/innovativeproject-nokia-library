@@ -16,5 +16,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
            "INNER JOIN BOOK_DETAILS BD ON BD.ID = B.book_details_id " +
            "WHERE BD.ID = ?1",
    nativeQuery = true)
-    List<Book> getBooksByBookDetailsId(Long id);
+   List<Book> getBooksByBookDetailsId(Long id);
 }
