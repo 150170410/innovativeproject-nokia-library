@@ -109,15 +109,6 @@ INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES (
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('nubu', 7, 1, 'juj');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('pook', 7, 1, 'is fine');
 
-INSERT INTO "user" (first_name, last_name, email) VALUES ('user1', 'user1', 'user1email@gmail.com');
-INSERT INTO "user" (first_name, last_name, email) VALUES ('user2', 'user2', 'user1emai2@gmail.com');
-
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0439708184', 'Harry Potter and the Sorcerer''s Stone', 1);
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('9780679745587', 'In Cold Blood', 2);
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES('9780679732761', 'Invisible Man', 1);
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0061958271', 'Little House on the Prairie', 1);
-
-
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('user@user.com', 'User', 'User', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
 
@@ -146,3 +137,7 @@ INSERT INTO user_roles (user_id, roles_id) VALUES (5, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (6, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (6, 2);
 
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0439708184', 'Harry Potter and the Sorcerer''s Stone', 1);
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('9780679745587', 'In Cold Blood', 2);
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES('9780679732761', 'Invisible Man', 3);
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0061958271', 'Little House on the Prairie', 4);

@@ -55,7 +55,7 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         List<Rental> rentals = rentalRepository.findByBookId(reservationDTO.getBookId());
         if (rentals == null || rentals.isEmpty()) {
-            CheckUserReservations(reservationDTO.getBookId(), reservationDTO.getUserId());
+            checkUserReservations(reservationDTO.getBookId(), reservationDTO.getUserId());
             reservation.setUser(userService.getUserById(reservationDTO.getUserId()));
             reservation.setBook(bookService.getBookById(reservationDTO.getBookId()));
             return reservationRepository.save(reservation);
@@ -65,7 +65,7 @@ public class ReservationService {
         }
     }
 
-    private void CheckUserReservations(Long bookId, Long userId) {
+    private void checkUserReservations(Long bookId, Long userId) {
         List<Reservation> reservations = getReservationsByUserId(userId);
         for(Reservation reservation : reservations){
             if(reservation.getBook().getId() == bookId){
