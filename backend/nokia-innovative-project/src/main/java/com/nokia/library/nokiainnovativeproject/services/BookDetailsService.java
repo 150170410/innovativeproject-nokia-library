@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BookDetailsService {
 
@@ -68,7 +69,6 @@ public class BookDetailsService {
 		return withBooks;
 	}
 
-    @Transactional
 	public BookDetails createBookDetails(BookDetailsDTO bookDetailsDTO) {
 		MessageInfo.isThisEntityUnique(bookDetailsRepository.countBookDetailsByIsbnAndAndTitle(
 				bookDetailsDTO.getIsbn(), bookDetailsDTO.getTitle()), "book details");

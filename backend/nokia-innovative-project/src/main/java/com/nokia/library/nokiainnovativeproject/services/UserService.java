@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 @Transactional
 public class UserService implements UserDetailsService {
