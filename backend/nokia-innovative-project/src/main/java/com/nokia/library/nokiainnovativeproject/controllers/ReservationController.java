@@ -4,7 +4,6 @@ import com.nokia.library.nokiainnovativeproject.DTOs.ReservationDTO;
 import com.nokia.library.nokiainnovativeproject.services.ReservationService;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
-import com.nokia.library.nokiainnovativeproject.validators.BindingResultsValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -42,7 +41,7 @@ public class ReservationController {
 
     @PostMapping(RESERVATIONS + CREATE)
     public ResponseEntity createReservation(@RequestBody @Valid ReservationDTO reservationDTO, BindingResult bindingResult){
-        BindingResultsValidator.validateBindingResults(bindingResult, reservationDTO.getClass().getSimpleName());
+        MessageInfo.validateBindingResults(bindingResult);
         return MessageInfo.success(reservationService.createReservation(reservationDTO), Arrays.asList("Reservation created successfully"));
     }
 

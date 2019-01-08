@@ -4,7 +4,6 @@ import com.nokia.library.nokiainnovativeproject.DTOs.RentalDTO;
 import com.nokia.library.nokiainnovativeproject.services.RentalService;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
-import com.nokia.library.nokiainnovativeproject.validators.BindingResultsValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -42,7 +41,7 @@ public class RentalController {
     
     @PostMapping(RENTALS + CREATE)
     public ResponseEntity createRental(@RequestBody @Valid RentalDTO rentalDTO, BindingResult bindingResult){
-        BindingResultsValidator.validateBindingResults(bindingResult, rentalDTO.getClass().getSimpleName());
+        MessageInfo.validateBindingResults(bindingResult);
         return MessageInfo.success(rentalService.createRental(rentalDTO), Arrays.asList("Rental created successfully"));
     }
 
