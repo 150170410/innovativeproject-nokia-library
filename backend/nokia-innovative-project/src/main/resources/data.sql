@@ -1,6 +1,7 @@
 INSERT INTO book_status (status_name) VALUES ('AVAILABLE');
 INSERT INTO book_status (status_name) VALUES ('BORROWED');
 INSERT INTO book_status (status_name) VALUES ('RESERVED');
+INSERT INTO book_status (status_name) VALUES ('PENDING');
 INSERT INTO book_status (status_name) VALUES ('UNKNOWN');
 
 INSERT INTO book_category (book_category_name) VALUES ('Guide');

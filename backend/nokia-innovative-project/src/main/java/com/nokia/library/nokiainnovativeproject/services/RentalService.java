@@ -2,7 +2,6 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.RentalDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
-import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
 import com.nokia.library.nokiainnovativeproject.entities.Rental;
 import com.nokia.library.nokiainnovativeproject.entities.Reservation;
 import com.nokia.library.nokiainnovativeproject.exceptions.*;
@@ -71,13 +70,8 @@ public class RentalService {
 			throw new BookRentedException(rentalDTO.getBookId());
 		}
 
-		Long bookId = rentalDTO.getBookId();
-		Book borrowedBook = bookService.getBookById(bookId);
-		BookStatus statusBorrowed = bookStatusService.getBookStatusById(2L);
-		borrowedBook.setStatus(statusBorrowed);
-		borrowedBook.setAvailableDate(LocalDate.now().plusMonths(1));
-		rental.setBook(borrowedBook);
-
+		Book borrowedBook = bookService.getBookById(rentalDTO.getBookId());
+		rental.setBook(bookService.changeStatus(borrowedBook, 2L));
 		rental.setUser(userService.getUserById(rentalDTO.getUserId()));
 
 		return rentalRepository.save(rental);

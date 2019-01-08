@@ -2,6 +2,7 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
+import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
@@ -12,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -22,6 +24,7 @@ public class BookService {
 	private final BookRepository bookRepository;
 	private final BookDetailsRepository bookDetailsRepository;
 	private final BookStatusRepository bookStatusRepository;
+	private final BookStatusService bookStatusService;
 
 
 	public List<Book> getAllBooks() {
@@ -73,5 +76,18 @@ public class BookService {
 		Book book = bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("book"));
 		bookRepository.delete(book);
+	}
+
+	public Book changeStatus(Book book, Long newStatusId){
+		Long oldStatusId = book.getStatus().getId();
+		BookStatus newStatus = bookStatusService.getBookStatusById(newStatusId);
+		book.setStatus(newStatus);
+		if(oldStatusId == 1 && newStatusId == 2){
+			book.setAvailableDate(LocalDate.now().plusMonths(1));
+		} else if(oldStatusId == 2 && newStatusId == 3){
+			book.setAvailableDate(LocalDate.now().plusMonths(1));
+		}
+		// TODO: finish status changes logic here
+		return bookRepository.save(book);
 	}
 }
