@@ -1,0 +1,73 @@
+<mat-card class="form-wrapper">
+  <div class="form-title">
+    <h1>Sign up</h1>
+  </div>
+  <form name="registrationParams" (ngSubmit)="registrationButtonClick(registrationParams)" [formGroup]="registrationParams">
+    <div class="form-container">
+      <mat-form-field>
+        <input formControlName="name"
+               placeholder="Name"
+               matInput required>
+        <mat-error *ngIf="registrationParams.controls['name'].hasError">
+          <div *ngIf="registrationParams.controls['name'].errors?.required">
+            Name is required
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input formControlName="surname"
+               placeholder="Surname"
+               matInput required>
+        <mat-error *ngIf="registrationParams.controls['surname'].hasError">
+          <div *ngIf="registrationParams.controls['surname'].errors?.required">
+            Surname is required
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input formControlName="email"
+               placeholder="Email"
+               matInput required>
+        <mat-error *ngIf="registrationParams.controls['email'].hasError">
+          <div *ngIf="registrationParams.controls['email'].errors?.required">
+            Email is required
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input formControlName="password"
+               placeholder="Password"
+               matInput required
+               type="password">
+        <mat-error *ngIf="registrationParams.controls['password'].hasError">
+          <div *ngIf="registrationParams.controls['password'].errors?.required">
+            Password is required
+          </div>
+          <div *ngIf="!registrationParams.controls['password'].errors?.required">
+            Incorrect length (7 - 20)
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input formControlName="repeatedPassword"
+               placeholder="Confirm password"
+               matInput required
+               type="password"
+               [errorStateMatcher]="matcher">
+        <mat-error *ngIf="registrationParams.hasError('notSame')">
+          Password not match
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-title">
+      <button color="primary" mat-raised-button type="submit" [disabled]="!registrationParams.valid">
+        Sign in
+      </button>
+    </div>
+  </form>
+</mat-card>

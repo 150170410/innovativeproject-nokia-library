@@ -96,6 +96,9 @@ public class UserService implements UserDetailsService {
     }
 
     public User createUser(UserDTO userDTO) {
+        if(userRepository.countUserByEmail(userDTO.getEmail()) > 0){
+            throw new ValidationException("User with this email already exist!");
+        }
         ModelMapper mapper = new ModelMapper();
         User user = mapper.map(userDTO, User.class);
         user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
@@ -108,6 +111,9 @@ public class UserService implements UserDetailsService {
 
     public User updateUser(Long id, UserDTO userDTO) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("user"));
+        if(user.getEmail() != userDTO.getEmail()) {
+            throw new ValidationException("You can't change email!");
+        }
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
@@ -175,12 +181,14 @@ public class UserService implements UserDetailsService {
 
     private User persistingRequiredEntities(User user, UserDTO userDTO) {
         Address address = userDTO.getAddress();
-        if(address.getId() != null) {
-            address = addressRepository.findById(address.getId()).orElseThrow(()-> new ResourceNotFoundException("address"));
-            user.setAddress(address);
-            return user;
-        } else {
-            user.setAddress(userDTO.getAddress());
+        if (address != null) {
+            if(address.getId() != null) {
+                address = addressRepository.findById(address.getId()).orElseThrow(()-> new ResourceNotFoundException("address"));
+                user.setAddress(address);
+                return user;
+            } else {
+                user.setAddress(userDTO.getAddress());
+            }
         }
         return user;
     }

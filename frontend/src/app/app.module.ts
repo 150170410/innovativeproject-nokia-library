@@ -42,6 +42,7 @@ import { ManageUsersComponent } from './components/admin-panel/admin-panel-secti
 import { BookActionsComponent } from './components/book-actions/book-actions.component';
 import { ManageHandoversComponent } from './components/admin-panel/admin-panel-sections/manage-handovers/manage-handovers.component';
 import { LoginComponent } from './components/login/login.component';
+import { RegistrationComponent } from './components/registration/registration.component';
 
 @NgModule({
 	declarations: [
@@ -73,7 +74,8 @@ import { LoginComponent } from './components/login/login.component';
 		ManageUsersComponent,
 		BookActionsComponent,
 		ManageHandoversComponent,
-		LoginComponent
+		LoginComponent,
+		RegistrationComponent
 	],
 	imports: [
 		BrowserModule,

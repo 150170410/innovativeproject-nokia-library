@@ -12,7 +12,6 @@ export class RestService {
 	URL = API_URL + '/api/v1/';
 
 	setHeaders() {
-		console.log(sessionStorage.getItem('username') + ':' + sessionStorage.getItem('password'));
 		if (!sessionStorage.getItem('username')) {
 			return {
 				headers: new HttpHeaders({})

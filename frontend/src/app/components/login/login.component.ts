@@ -15,8 +15,6 @@ export class LoginComponent implements OnInit {
 				private authService: AuthService) {
     this.error = (sessionStorage.getItem('isSignedCorrectly') === 'true') ||
             (sessionStorage.getItem('isSignedCorrectly') === null);
-
-    console.log(sessionStorage.getItem('isSignedCorrectly'));
 	}
 
 	loginParams: FormGroup;

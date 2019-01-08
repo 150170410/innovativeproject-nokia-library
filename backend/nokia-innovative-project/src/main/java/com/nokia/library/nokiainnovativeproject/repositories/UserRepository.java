@@ -21,4 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             " INNER JOIN role r ON ur.roles_id = r.id WHERE role = ?1",
             nativeQuery = true)
     Long countUserByRole(String role);
+
+    Long countUserByEmail(String email);
 }

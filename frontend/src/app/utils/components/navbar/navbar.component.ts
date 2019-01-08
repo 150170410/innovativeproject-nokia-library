@@ -49,6 +49,10 @@ export class NavbarComponent implements OnInit {
 		this.authService.logoutUser();
 	}
 
+	register() {
+	  this.router.navigateByUrl('/register')
+  }
+
 
 	search(searchParams: any) {
 		console.log(searchParams.value.searchValue);

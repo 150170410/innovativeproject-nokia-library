@@ -28,27 +28,26 @@ public class BookToOrderService {
 
     public List<BookToOrder> getAllBookToOrders() {
         List<BookToOrder> booksToOrder = bookToOrderRepository.findAll();
+        List<BookToOrder> securedBooksToOrder = new ArrayList<>();
         for(BookToOrder bookToOrder: booksToOrder) {
             Hibernate.initialize(bookToOrder.getUser());
-
-            // it's bad idea to send user roles if we need only user name
-            bookToOrder.getUser().setRoles(new ArrayList<>());
-            bookToOrder.getUser().setBooks(new ArrayList<>());
-            bookToOrder.getUser().setPassword("");
+            securedBooksToOrder.add(secureData(bookToOrder));
         }
-        return booksToOrder;
+        return securedBooksToOrder;
     }
 
     public BookToOrder getBookToOrderById(Long id) {
         BookToOrder bookToOrder = bookToOrderRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("bookToOrder"));
         Hibernate.initialize(bookToOrder.getUser());
+        return secureData(bookToOrder);
+    }
 
+    private BookToOrder secureData(BookToOrder bookToOrder) {
         // it's bad idea to send user roles if we need only user name
         bookToOrder.getUser().setRoles(new ArrayList<>());
         bookToOrder.getUser().setBooks(new ArrayList<>());
-        bookToOrder.getUser().setPassword("");
-
+        bookToOrder.getUser().setPassword("[UNAUTHORIZED]");
         return bookToOrder;
     }
 

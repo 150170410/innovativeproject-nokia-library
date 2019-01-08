@@ -20,7 +20,7 @@
 	<div class="form-title">
 		<h1>Sign in</h1>
 	</div>
-	<form name="bookDetailsParams" (ngSubmit)="loginButtonClick(loginParams)" [formGroup]="loginParams">
+	<form name="loginParams" (ngSubmit)="loginButtonClick(loginParams)" [formGroup]="loginParams">
 		<div class="form-container">
       <div class="alert alert-danger" [hidden]="error">
         There was a problem logging in. Please try again.
