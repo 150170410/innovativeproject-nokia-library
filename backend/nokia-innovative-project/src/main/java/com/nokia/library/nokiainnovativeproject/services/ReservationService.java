@@ -6,20 +6,17 @@ import com.nokia.library.nokiainnovativeproject.entities.Reservation;
 import com.nokia.library.nokiainnovativeproject.exceptions.AlreadyReservedException;
 import com.nokia.library.nokiainnovativeproject.exceptions.BookNotRentedException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
-import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.ReservationRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ReservationService {
 
