@@ -3,18 +3,12 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.ReservationDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Rental;
 import com.nokia.library.nokiainnovativeproject.entities.Reservation;
-import com.nokia.library.nokiainnovativeproject.exceptions.AlreadyReservedException;
-import com.nokia.library.nokiainnovativeproject.exceptions.BookNotRentedException;
+import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
-import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.ReservationRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,7 +58,7 @@ public class ReservationService {
             return reservationRepository.save(reservation);
 
         } else {
-            throw new BookNotRentedException(reservationDTO.getBookId());
+            throw new InvalidBookStateException(reservationDTO.getBookId(), "It's not rented by anyone.");
         }
     }
 
@@ -72,12 +66,13 @@ public class ReservationService {
         List<Reservation> reservations = getReservationsByUserId(userId);
         for(Reservation reservation : reservations){
             if(reservation.getBook().getId() == bookId){
-                throw new AlreadyReservedException(bookId, userId);
+                throw new InvalidBookStateException(bookId, "It has already been reserved by this user");
             }
         }
     }
 
     public void deleteReservation(Long id) {
+        //TODO: ADD USER AUTHENTICATION
         Reservation reservation = reservationRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException( "id"));
         reservationRepository.delete(reservation);
     }

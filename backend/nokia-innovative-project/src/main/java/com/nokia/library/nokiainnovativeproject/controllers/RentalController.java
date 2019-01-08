@@ -47,7 +47,7 @@ public class RentalController {
 
     @PostMapping(RENTALS + UPDATE)
     public ResponseEntity prolongRental(@PathVariable Long id){
-        return MessageInfo.success(rentalService.updateRental(id), Arrays.asList("Rental updated successfully"));
+        return MessageInfo.success(rentalService.prolongRental(id), Arrays.asList("Rental updated successfully"));
     }
 
     @PostMapping(RENTALS + HANDOVER)
@@ -55,9 +55,9 @@ public class RentalController {
         return MessageInfo.success(rentalService.handOverRental(id), Arrays.asList("Rental updated successfully"));
     }
 
-    @DeleteMapping(RENTALS + REMOVE)
-    public ResponseEntity deleteRental(@PathVariable Long id){
-        rentalService.deleteRental(id);
-        return MessageInfo.success(null, Arrays.asList("Rental with ID = " + id.toString() + " removed successfully"));
+    @PostMapping(RENTALS + RETURN)
+    public ResponseEntity returnRental(@PathVariable Long id){
+        rentalService.returnRental(id);
+        return MessageInfo.success(null, Arrays.asList("Rental with ID = " + id.toString() + " returned successfully"));
     }
 }

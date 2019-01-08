@@ -25,6 +25,7 @@ import java.util.Date;
 public class Rental implements Serializable {
 
 	public Rental(){
+		this.isCurrent = true;
 		this.returnDate = LocalDate.now().plusMonths(1);
 	}
 
@@ -37,8 +38,9 @@ public class Rental implements Serializable {
 	@Setter(AccessLevel.NONE)
 	private Date rentalDate;
 
-	private LocalDate returnDate;
+	private Boolean isCurrent;
 
+	private LocalDate returnDate;
 	private LocalDate handOverDate;
 
 	@ManyToOne(cascade = {CascadeType.MERGE,
