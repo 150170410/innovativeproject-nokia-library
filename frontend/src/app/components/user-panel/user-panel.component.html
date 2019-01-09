@@ -1,13 +1,15 @@
-<h1>User dashboard</h1>
-
-
-<div class="forms-container">
-	<div class="half-div">
-		<app-manage-borrowings></app-manage-borrowings>
-	</div>
-	<div class="half-div">
-		<app-manage-reservations></app-manage-reservations>
-	</div>
-</div>
-
-
+<h1>User panel</h1>
+<mat-tab-group mat-stretch-tabs>
+	<mat-tab label="Borrowed books">
+		<app-books-borrowed></app-books-borrowed>
+	</mat-tab>
+	<mat-tab label="Reserved books">
+		<app-books-reserved></app-books-reserved>
+	</mat-tab>
+	<mat-tab label="Requested books">
+		<app-books-requested></app-books-requested>
+	</mat-tab>
+	<mat-tab label="History of borrowings">
+		<app-books-history></app-books-history>
+	</mat-tab>
+</mat-tab-group>

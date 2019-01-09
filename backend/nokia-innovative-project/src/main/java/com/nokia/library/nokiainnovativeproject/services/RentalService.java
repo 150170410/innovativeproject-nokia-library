@@ -1,6 +1,8 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.RentalDTO;
+import com.nokia.library.nokiainnovativeproject.entities.Book;
+import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
 import com.nokia.library.nokiainnovativeproject.entities.Rental;
 import com.nokia.library.nokiainnovativeproject.entities.Reservation;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
@@ -13,7 +15,7 @@ import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -23,18 +25,19 @@ import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTy
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RentalService {
 
     private final RentalRepository rentalRepository;
+    private final ReservationRepository reservationRepository;
     private final UserService userService;
     private final BookService bookService;
-    private final ReservationRepository reservationRepository;
-
+    private final BookStatusService bookStatusService;
 
     public List<Rental> getAllRentals() {
-        List<Rental> rentals =  rentalRepository.findAll();
-        for ( Rental rental: rentals ){
+        List<Rental> rentals = rentalRepository.findAll();
+        for (Rental rental : rentals) {
             Hibernate.initialize(rental.getBook());
             Hibernate.initialize(rental.getUser());
         }
@@ -42,15 +45,15 @@ public class RentalService {
     }
 
     public Rental getRentalById(Long id) {
-        Rental rental  =  rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException( "id"));
+        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
         Hibernate.initialize(rental.getBook());
         Hibernate.initialize(rental.getUser());
         return rental;
     }
 
     public List<Rental> getRentalsByUserId(Long userId) {
-        List<Rental> rentals =  rentalRepository.findByUserId(userId);
-        for ( Rental rental: rentals ){
+        List<Rental> rentals = rentalRepository.findByUserId(userId);
+        for (Rental rental : rentals) {
             Hibernate.initialize(rental.getBook());
             Hibernate.initialize(rental.getUser());
         }
@@ -58,8 +61,8 @@ public class RentalService {
     }
 
     public List<Rental> getRentalsByBookId(Long bookId) {
-        List<Rental> rentals =  rentalRepository.findByBookId(bookId);
-        for ( Rental rental: rentals ){
+        List<Rental> rentals = rentalRepository.findByBookId(bookId);
+        for (Rental rental : rentals) {
             Hibernate.initialize(rental.getBook());
             Hibernate.initialize(rental.getUser());
         }
@@ -71,46 +74,53 @@ public class RentalService {
         ModelMapper mapper = new ModelMapper();
         Rental rental = mapper.map(rentalDTO, Rental.class);
         List<Rental> rentals = getRentalsByBookId(rentalDTO.getBookId()).stream().filter(Rental::getIsCurrent).collect(Collectors.toList());
-        if(rentals != null && !rentals.isEmpty() ){
+        if (rentals != null && !rentals.isEmpty()) {
             throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_RENTED);
         }
         List<Reservation> reservations = reservationRepository.findByBookId(rentalDTO.getBookId());
-        if(reservations != null && !reservations.isEmpty()){
+        if (reservations != null && !reservations.isEmpty()) {
             Collections.sort(reservations, new ReservationByDateComparator());
-            if(!reservations.get(0).getUser().getId().equals(rentalDTO.getUserId())){
+            if (!reservations.get(0).getUser().getId().equals(rentalDTO.getUserId())) {
                 throw new InvalidBookStateException(MessageTypes.BOOK_RESERVED);
             }
 
         }
-        rental.setUser(userService.getUserById(rentalDTO.getUserId()));
+        Long bookId = rentalDTO.getBookId();
+        Book borrowedBook = bookService.getBookById(bookId);
+        BookStatus statusBorrowed = bookStatusService.getBookStatusById(2L);
+        borrowedBook.setStatus(statusBorrowed);
+        borrowedBook.setAvailableDate(LocalDate.now().plusMonths(1));
+        rental.setBook(borrowedBook);
         rental.setBook(bookService.getBookById(rentalDTO.getBookId()));
+        rental.setUser(userService.getUserById(rentalDTO.getUserId()));
+
         return rentalRepository.save(rental);
     }
 
 
     public Rental prolongRental(Long id) {
         //TODO: ADD USER AUTHENTICATION
-        Rental rental = rentalRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("id"));
-        if(!rental.getIsCurrent()){
+        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+        if (!rental.getIsCurrent()) {
             throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
         }
-        if(rental.getReturnDate().minusWeeks(1).compareTo(LocalDate.now()) > 0) {
+        if (rental.getReturnDate().minusWeeks(1).compareTo(LocalDate.now()) > 0) {
             throw new InvalidBookStateException(MessageTypes.PROLONG_NOT_AVAILABLE);
         }
         List<Reservation> reservations = reservationRepository.findByBookId(rental.getBook().getId());
-        if(reservations == null || reservations.isEmpty()){
+        if (reservations == null || reservations.isEmpty()) {
             rental.setReturnDate(rental.getReturnDate().plusMonths(1));
+            rental.getBook().setAvailableDate(rental.getReturnDate());
             return rentalRepository.save(rental);
-        }
-        else{
+        } else {
             throw new InvalidBookStateException(MessageTypes.PROLONG_NOT_AVAILABLE);
         }
     }
 
     public Rental returnRental(Long id) {
         //TODO: ADD ADMIN AUTHENTICATION
-        Rental rental = rentalRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("id"));
-        if(!rental.getIsCurrent()){
+        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+        if (!rental.getIsCurrent()) {
             throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
         }
         rental.setReturnDate(LocalDate.now());
@@ -118,20 +128,27 @@ public class RentalService {
         return rentalRepository.save(rental);
     }
 
-    public Rental handOverRental(Long id) {
-        //TODO: ADD ADMIN AUTHENTICATION
-        Rental rental = rentalRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("id"));
-        if(rental.getHandOverDate() != null){throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_HANDED_OVER);}
-        rental.setHandOverDate(LocalDate.now());
-        return rentalRepository.save(rental);
-    }
-
     public void deleteRental(Long id) {
         //TODO: ADD USER AUTHENTICATION
-        Rental rental = rentalRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException( "id"));
-        if(rental.getHandOverDate() != null){
+        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+        rental.getBook().setAvailableDate(null);
+        if (rental.getHandOverDate() != null) {
             throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_HANDED_OVER);
         }
         rentalRepository.delete(rental);
     }
+
+
+    public Rental handOverRental(Long id) {
+        //TODO: ADD ADMIN AUTHENTICATION
+        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+        if (rental.getHandOverDate() != null) {
+            throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_HANDED_OVER);
+        }
+        rental.setHandOverDate(LocalDate.now());
+        rental.getBook().setAvailableDate(null);
+        return rentalRepository.save(rental);
+    }
 }
+
+

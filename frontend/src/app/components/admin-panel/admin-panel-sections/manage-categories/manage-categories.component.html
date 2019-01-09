@@ -1,0 +1,81 @@
+<!--<div class="form-title">-->
+	<!--<h1>Categories</h1>-->
+<!--</div>-->
+<p class="info-text">Here you can add, edit or remove categories. You can't remove category that is attached to any book.</p>
+<mat-card class="form-wrapper">
+
+	<form name="categoriesParams" (ngSubmit)="createCategory(categoryParams)" [formGroup]="categoryParams">
+		<div class="form-container">
+			<mat-form-field>
+
+				<input formControlName="categoryName"
+					   placeholder="Category name"
+					   matInput required>
+				<mat-error *ngIf="categoryParams.controls.categoryName.hasError">
+					<div *ngIf="categoryParams.controls.categoryName.errors?.required">
+						Category name is required
+					</div>
+					<div *ngIf="categoryParams.controls.categoryName.errors?.maxlength">
+						The maximum length is 50 characters
+					</div>
+				</mat-error>
+			</mat-form-field>
+
+		</div>
+		<div class="buttons-row">
+			<button mat-raised-button color="primary" type="submit" [disabled]="!categoryParams.valid">
+				{{formMode}}
+			</button>
+			<button class="button-spacer" *ngIf="toUpdate !== null" mat-button color="warn" type="submit" (click)="cancelUpdate()">
+				Cancel
+			</button>
+			<button class="button-spacer" mat-raised-button color="warn" type="button" (click)="clearForm()">
+				Clear
+			</button>
+		</div>
+
+	</form>
+
+</mat-card>
+
+<div>
+	<div class="filter-paginator-wrapper">
+		<div class="filter">
+			<mat-form-field>
+				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+			</mat-form-field>
+		</div>
+		<div class="paginator">
+			<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+		</div>
+	</div>
+
+	<table mat-table [dataSource]="dataSource">
+
+		<ng-container matColumnDef="bookCategoryName">
+			<th mat-header-cell *matHeaderCellDef>Category name</th>
+			<td mat-cell *matCellDef="let category"> {{category.bookCategoryName}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef>Actions</th>
+			<td mat-cell *matCellDef="let category">
+				<p>
+					<button color="primary" mat-button (click)="editCategory(category)">
+						<mat-icon>edit</mat-icon>
+						Edit
+					</button>
+					<button color="warn" mat-button (click)="removeCategory(category.id)">
+						<mat-icon>cancel</mat-icon>
+						Remove
+					</button>
+				</p>
+
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedCategoryColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedCategoryColumns"></tr>
+
+	</table>
+</div>

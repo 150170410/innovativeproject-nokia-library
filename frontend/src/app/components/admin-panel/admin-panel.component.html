@@ -1,4 +1,4 @@
-<h1>Manage books, authors and categories</h1>
+<h1>Admin panel</h1>
 
 <mat-tab-group id="admin-panel-tabs" mat-stretch-tabs class="full-card">
 	<mat-tab label="Book details">
@@ -18,5 +18,18 @@
 			</div>
 		</div>
 	</mat-tab>
+	<mat-tab label="Handover">
+		<app-manage-handovers></app-manage-handovers>
+	</mat-tab>
+	<mat-tab label="Return a book">
+		<app-manage-returns></app-manage-returns>
+	</mat-tab>
+	<mat-tab label="Book requests">
+		<app-manage-requests></app-manage-requests>
+	</mat-tab>
+	<mat-tab label="Admins and users">
+		<app-manage-users></app-manage-users>
+	</mat-tab>
+
 
 </mat-tab-group>

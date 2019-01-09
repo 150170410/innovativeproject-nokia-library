@@ -97,18 +97,26 @@ INSERT INTO book_details_categories VALUES (7, 7);
 
 
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('booka', 1, 1, 'dirty');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookaAA', 1, 2, 'putti');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookB', 2, 2, 'missing pages');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('YHNANK', 3, 3, 'bad');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('ALMNUM', 4, 3, 'cool');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookaAA', 1, 1, 'putti');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('bookB', 2, 1, 'missing pages');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('YHNANK', 3, 1, 'bad');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('ALMNUM', 4, 1, 'cool');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('SIG123', 5, 1, 'stupid');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('OUF', 6, 1, 'chairman');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('ui ui', 7, 1, 'gut');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('miu miau', 7, 2, 'missing cover');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('nubu', 7, 3, 'juj');
-INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('pook', 7, 3, 'is fine');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('miu miau', 7, 1, 'missing cover');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('nubu', 7, 1, 'juj');
+INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('pook', 7, 1, 'is fine');
+
+INSERT INTO "user" (first_name, last_name, email) VALUES ('user1', 'user1', 'user1email@gmail.com');
+INSERT INTO "user" (first_name, last_name, email) VALUES ('user2', 'user2', 'user1emai2@gmail.com');
+
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0439708184', 'Harry Potter and the Sorcerer''s Stone', 1);
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('9780679745587', 'In Cold Blood', 2);
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES('9780679732761', 'Invisible Man', 1);
+INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0061958271', 'Little House on the Prairie', 1);
+
 
 INSERT INTO "user" (first_name, last_name, email) VALUES ('user1', 'user1', 'user1email');
 INSERT INTO "user" (first_name, last_name, email) VALUES ('user2', 'user2', 'user1emai2');
-INSERT INTO "user" (first_name, last_name, email) VALUES ('user3', 'user3', 'user1emai3');
 

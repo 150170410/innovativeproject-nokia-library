@@ -1,0 +1,42 @@
+.input-button {
+	width: 60%;
+}
+
+mat-form-field {
+	width: 500px;
+}
+
+.form-wrapper {
+	width: 500px;
+	margin: auto;
+}
+
+.button-spacer {
+	margin-left: 10px;
+}
+
+.buttons-row {
+	margin-top: 10px;
+}
+
+.filter-paginator-wrapper {
+	display: flex;
+	justify-content: space-between;
+}
+
+.paginator {
+
+}
+
+.filter mat-form-field {
+	width: 150px;
+}
+
+.role-user {
+	background-color: rgba(40, 167, 69, 0.7);
+}
+
+.role-admin {
+	background-color: rgba(0, 123, 255, 0.7);
+}
+

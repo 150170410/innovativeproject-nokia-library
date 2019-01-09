@@ -7,31 +7,54 @@ import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundExcep
 import com.nokia.library.nokiainnovativeproject.repositories.BookToOrderRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookToOrderService {
 
     private final BookToOrderRepository bookToOrderRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final UserService userService;
 
     public List<BookToOrder> getAllBookToOrders() {
-        return bookToOrderRepository.findAll();
+        List<BookToOrder> booksToOrder = bookToOrderRepository.findAll();
+        for(BookToOrder bookToOrder: booksToOrder) {
+            Hibernate.initialize(bookToOrder.getUser());
+
+            // it's bad idea to send user roles if we need only user name
+            bookToOrder.getUser().setRoles(new ArrayList<>());
+            bookToOrder.getUser().setBooks(new ArrayList<>());
+        }
+        return booksToOrder;
     }
 
     public BookToOrder getBookToOrderById(Long id) {
-        return bookToOrderRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("bookToOrder"));
+        BookToOrder bookToOrder = bookToOrderRepository.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("bookToOrder"));
+        Hibernate.initialize(bookToOrder.getUser());
+
+        // it's bad idea to send user roles if we need only user name
+        bookToOrder.getUser().setRoles(new ArrayList<>());
+        bookToOrder.getUser().setBooks(new ArrayList<>());
+
+        return bookToOrder;
     }
 
     public BookToOrder createBookToOrder(BookToOrderDTO bookToOrderDTO) {
         ModelMapper mapper = new ModelMapper();
         BookToOrder bookToOrder = mapper.map(bookToOrderDTO, BookToOrder.class);
+        bookToOrder.setUser(userService.getLoggedInUser());
+
         List<String> adminsEmail = userRepository.getAdminsEmail();
         emailService.sendSimpleMessage(createMessage(bookToOrder), adminsEmail);
         return bookToOrderRepository.save(bookToOrder);
@@ -41,6 +64,8 @@ public class BookToOrderService {
         BookToOrder bookToOrder= bookToOrderRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("bookToOrder"));
         bookToOrder.setIsbn(bookToOrderDTO.getIsbn());
         bookToOrder.setTitle(bookToOrderDTO.getTitle());
+        bookToOrder.setUser(userService.getLoggedInUser());
+
         List<String> adminsEmail = userRepository.getAdminsEmail();
         emailService.sendSimpleMessage(createMessage(bookToOrder), adminsEmail);
         return bookToOrderRepository.save(bookToOrder);

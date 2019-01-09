@@ -5,20 +5,27 @@ import com.nokia.library.nokiainnovativeproject.entities.Author;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.Arrays;
 import java.util.List;
 
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
+    private final BookDetailsRepository bookDetailsRepository;
 
     public List<Author> getAllAuthors() {
         return authorRepository.findAll();
@@ -44,10 +51,9 @@ public class AuthorService {
 
     public void deleteAuthor(Long id) {
 		Author author = authorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("author"));
-        try {
-            authorRepository.delete(author);
-        }catch(DataIntegrityViolationException e){
+        if(bookDetailsRepository.countBookDetailsByAuthors(Arrays.asList(author)) > 0) {
             throw new ValidationException("The author you are trying to delete is assigned to a book. You can't delete it.");
         }
+        authorRepository.delete(author);
     }
 }

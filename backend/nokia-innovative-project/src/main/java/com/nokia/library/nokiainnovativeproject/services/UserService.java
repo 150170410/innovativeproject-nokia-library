@@ -10,10 +10,12 @@ import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
 
@@ -27,6 +29,10 @@ public class UserService {
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("user"));
+    }
+
+    public User getLoggedInUser() {
+        return userRepository.findById(1L).orElseThrow( ()-> new ResourceNotFoundException("user"));
     }
 
     public User createUser(UserDTO userDTO) {

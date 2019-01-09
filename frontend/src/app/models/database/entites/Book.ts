@@ -7,4 +7,5 @@ export class Book {
 	bookDetails: BookDetails;
 	comments: string;
 	status: BookStatus;
+	availableDate: Date;
 }

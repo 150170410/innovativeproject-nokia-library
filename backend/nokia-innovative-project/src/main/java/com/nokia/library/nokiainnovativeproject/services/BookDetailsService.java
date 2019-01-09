@@ -7,6 +7,7 @@ import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookCategoryRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BookDetailsService {
 
@@ -27,6 +29,7 @@ public class BookDetailsService {
 	private final AuthorRepository authorRepository;
 	private final BookCategoryRepository bookCategoryRepository;
 	private final BookService bookService;
+	private final BookRepository bookRepository;
 
 	public List<BookDetailsWithBooks> getAllBookDetails() {
 		List<BookDetails> list = bookDetailsRepository.findAll();
@@ -68,7 +71,6 @@ public class BookDetailsService {
 		return withBooks;
 	}
 
-    @Transactional
 	public BookDetails createBookDetails(BookDetailsDTO bookDetailsDTO) {
 		MessageInfo.isThisEntityUnique(bookDetailsRepository.countBookDetailsByIsbnAndAndTitle(
 				bookDetailsDTO.getIsbn(), bookDetailsDTO.getTitle()), "book details");
@@ -90,9 +92,7 @@ public class BookDetailsService {
 
 	public void deleteBookDetails(Long id) {
 		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
-		try {
-			bookDetailsRepository.delete(bookDetails);
-		}catch(DataIntegrityViolationException e) {
+		if (bookRepository.countBooksByBookDetails(bookDetails) > 0) {
 			throw new ValidationException("The book details you are trying to delete is assigned to a book. You can't delete it.");
 		}
 	}
