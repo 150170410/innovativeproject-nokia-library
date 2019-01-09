@@ -52,5 +52,6 @@ public class BookCategoryService  {
 		if (bookDetailsRepository.countBookDetailsByCategories(Arrays.asList(bookCategory)) > 0) {
 			throw new ValidationException("The category you are trying to delete is assigned to a book. You can't delete it.");
 		}
+		bookCategoryRepository.delete(bookCategory);
 	}
 }
