@@ -60,7 +60,7 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         List<Rental> rentals = rentalRepository.findByBookId(reservationDTO.getBookId());
         if (rentals == null || rentals.isEmpty()) {
-            checkUserReservations(reservationDTO.getBookId(), reservationDTO.getUserId());
+            checkUserReservations(reservationDTO.getBookId(), user.getId());
             reservation.setUser(user);
             reservation.setBook(bookService.getBookById(reservationDTO.getBookId()));
             return reservationRepository.save(reservation);
