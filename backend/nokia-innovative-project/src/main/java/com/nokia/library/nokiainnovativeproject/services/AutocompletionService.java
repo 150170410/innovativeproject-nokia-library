@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.cloudinary.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;

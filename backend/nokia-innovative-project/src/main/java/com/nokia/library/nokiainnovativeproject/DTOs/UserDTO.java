@@ -1,7 +1,9 @@
 package com.nokia.library.nokiainnovativeproject.DTOs;
 
 import com.nokia.library.nokiainnovativeproject.entities.Address;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;

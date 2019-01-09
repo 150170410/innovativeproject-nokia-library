@@ -38,7 +38,10 @@ public class Mappings {
 	public static final String USER = "/user";
 
     public static final String HANDOVER = "/handover/{id}" ;
+    public static final String RETURN = "/return/{id}" ;
 
 	public static final String TAKE_ADMIN = "/takeAdmin/{id}";
 	public static final String ASSIGN_ADMIN = "/assignAdmin/{id}";
+
+
 }
