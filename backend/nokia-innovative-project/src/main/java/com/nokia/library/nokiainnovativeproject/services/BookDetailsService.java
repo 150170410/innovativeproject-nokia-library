@@ -95,6 +95,7 @@ public class BookDetailsService {
 		if (bookRepository.countBooksByBookDetails(bookDetails) > 0) {
 			throw new ValidationException("The book details you are trying to delete is assigned to a book. You can't delete it.");
 		}
+		bookDetailsRepository.delete(bookDetails);
 	}
 
 	private BookDetails persistingRequiredEntities(BookDetails bookDetails, BookDetailsDTO bookDetailsDTO) {

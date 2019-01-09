@@ -12,6 +12,7 @@ import { ReservationDTO } from '../../models/database/DTOs/ReservationDTO';
 })
 export class BookActionsComponent implements OnInit {
 
+  isAuth: boolean;
 	@Input() books: Book[];
 	@Output() actionTaken = new EventEmitter<boolean>();
 
@@ -20,6 +21,7 @@ export class BookActionsComponent implements OnInit {
 	}
 
 	ngOnInit() {
+    this.isAuth = (sessionStorage.getItem('authenticated') === 'true');
 	}
 
 

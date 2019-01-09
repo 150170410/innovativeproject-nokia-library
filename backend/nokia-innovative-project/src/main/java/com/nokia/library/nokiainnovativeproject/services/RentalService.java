@@ -1,9 +1,7 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.RentalDTO;
-import com.nokia.library.nokiainnovativeproject.entities.Book;
-import com.nokia.library.nokiainnovativeproject.entities.Rental;
-import com.nokia.library.nokiainnovativeproject.entities.Reservation;
+import com.nokia.library.nokiainnovativeproject.entities.*;
 import com.nokia.library.nokiainnovativeproject.exceptions.*;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.ReservationRepository;
@@ -61,17 +59,20 @@ public class RentalService {
 	}
 
 	public Rental createRental(RentalDTO rentalDTO) {
-		//TODO: ADD USER AUTHENTICATION
+		User user = userService.getLoggedInUser();
+		if(user == null) {
+			throw new AuthorizationException();
+		}
 		ModelMapper mapper = new ModelMapper();
 		Rental rental = mapper.map(rentalDTO, Rental.class);
+		rental.setUser(user);
 		List<Rental> rentals = getRentalsByBookId(rentalDTO.getBookId());
 		if (rentals != null && !rentals.isEmpty()) {
 			throw new BookRentedException(rentalDTO.getBookId());
 		}
-
 		Book borrowedBook = bookService.getBookById(rentalDTO.getBookId());
 		rental.setBook(bookService.changeStatus(borrowedBook, 2L));
-		rental.setUser(userService.getUserById(rentalDTO.getUserId()));
+		rental.setUser(userService.getLoggedInUser());
 
 		return rentalRepository.save(rental);
 	}
@@ -100,7 +101,19 @@ public class RentalService {
 	}
 
 	public Rental handOverRental(Long id) {
-		//TODO: ADD ADMIN AUTHENTICATION
+		User user = userService.getLoggedInUser();
+		if (user == null){
+			List<Role> userLoggedInRoles = user.getRoles();
+			boolean isAuthorized = false;
+			for(Role role : userLoggedInRoles) {
+				if(role.getRole().equals("ROLE_ADMIN")){
+					isAuthorized = true;
+				}
+			}
+			if(!isAuthorized){
+				throw new AuthorizationException();
+			}
+		}
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
 		if (rental.getHandOverDate() != null) {
 			throw new AlreadyHandedOverException(id);

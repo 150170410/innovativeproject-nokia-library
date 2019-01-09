@@ -3,7 +3,9 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.ReservationDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Rental;
 import com.nokia.library.nokiainnovativeproject.entities.Reservation;
+import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.AlreadyReservedException;
+import com.nokia.library.nokiainnovativeproject.exceptions.AuthorizationException;
 import com.nokia.library.nokiainnovativeproject.exceptions.BookNotRentedException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
@@ -51,12 +53,15 @@ public class ReservationService {
     }
 
     public Reservation createReservation(ReservationDTO reservationDTO) {
-        //TODO: ADD USER AUTHENTICATION
+        User user = userService.getLoggedInUser();
+        if(user == null) {
+            throw new AuthorizationException();
+        }
         Reservation reservation = new Reservation();
         List<Rental> rentals = rentalRepository.findByBookId(reservationDTO.getBookId());
         if (rentals == null || rentals.isEmpty()) {
             checkUserReservations(reservationDTO.getBookId(), reservationDTO.getUserId());
-            reservation.setUser(userService.getUserById(reservationDTO.getUserId()));
+            reservation.setUser(user);
             reservation.setBook(bookService.getBookById(reservationDTO.getBookId()));
             return reservationRepository.save(reservation);
 
