@@ -1,9 +1,7 @@
 export class ReservationDTO {
 	bookId: number;
-	userId: number;
 
-	constructor(bookId: number, userId: number) {
+	constructor(bookId: number) {
 		this.bookId = bookId;
-		this.userId = userId;
 	}
 }

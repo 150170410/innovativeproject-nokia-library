@@ -26,7 +26,7 @@ export class BookActionsComponent implements OnInit {
 
 
 	borrowBook(bookCopy: Book) {
-		const body = new RentalDTO(bookCopy.id, 1);
+		const body = new RentalDTO(bookCopy.id);
 		this.http.save('rentals', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Book borrowed successfully!', 'OK');
@@ -40,7 +40,7 @@ export class BookActionsComponent implements OnInit {
 	}
 
 	reserveBook(bookCopy: Book) {
-		const body = new ReservationDTO(bookCopy.id, 1);
+		const body = new ReservationDTO(bookCopy.id);
 		this.http.save('reservations', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Book reserved successfully!', 'OK');
