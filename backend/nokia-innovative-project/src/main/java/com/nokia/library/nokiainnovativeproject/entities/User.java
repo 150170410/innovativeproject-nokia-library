@@ -12,53 +12,55 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name="\"User\"")
+@Table(name = "\"User\"")
 @Data
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements Serializable {
 
-    @Id
-    @Setter(AccessLevel.NONE)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@Setter(AccessLevel.NONE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Size(min = 3, max = 30, message = "User's name must be 3-30 characters long")
-    @NotBlank(message = "User's name can't be null and can't contain whitespace")
-    private String firstName;
+	@Size(min = 3, max = 30, message = "User's name must be 3-30 characters long")
+	@NotBlank(message = "User's name can't be null and can't contain whitespace")
+	private String firstName;
 
-    @Size(min = 3, max = 30, message = "User's surname must be 3-30 characters long")
-    @NotBlank(message = "User's surname can't be null and can't contain whitespace")
-    private String lastName;
+	@Size(min = 3, max = 30, message = "User's surname must be 3-30 characters long")
+	@NotBlank(message = "User's surname can't be null and can't contain whitespace")
+	private String lastName;
 
-    @Email(message = "Email should be valid")
-    @NotBlank(message = "Email can't be null and can't contain whitespace")
-    @Size(min = 10, max = 40, message = "User email must be 10-40 characters long")
-    private String email;
+	@Email(message = "Email should be valid")
+	@NotBlank(message = "Email can't be empty")
+	@Size(min = 5, max = 255, message = "User email must be 10-255 characters long")
+	private String email;
 
-    @NotBlank
-    private String password;
 
-    @OneToOne(  cascade = {
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REMOVE},
-                fetch = FetchType.LAZY  )
-    @JoinColumn(name = "address_id")
-    private Address address;
+	@NotBlank(message = "Password can't be empty")
+	@Size(min = 7, max = 255, message = "Password must be 7-20 characters long")
+	private String password;
 
-    @ManyToMany(cascade ={  CascadeType.DETACH,
-                            CascadeType.MERGE,
-                            CascadeType.PERSIST,
-                            CascadeType.REFRESH},
-                fetch = FetchType.LAZY)
-    private List<Book> books;
+	@OneToOne(cascade = {
+			CascadeType.MERGE,
+			CascadeType.PERSIST,
+			CascadeType.REMOVE},
+			fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id")
+	private Address address;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = { CascadeType.PERSIST,
-                        CascadeType.MERGE   })
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    private List<Role> roles;
+	@ManyToMany(cascade = {CascadeType.DETACH,
+			CascadeType.MERGE,
+			CascadeType.PERSIST,
+			CascadeType.REFRESH},
+			fetch = FetchType.LAZY)
+	private List<Book> books;
+
+	@ManyToMany(fetch = FetchType.LAZY,
+			cascade = {CascadeType.PERSIST,
+					CascadeType.MERGE})
+	@JoinTable(name = "user_roles",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "roles_id"))
+	private List<Role> roles;
 }
