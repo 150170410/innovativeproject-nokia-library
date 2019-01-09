@@ -50,7 +50,7 @@ export class RestService {
 	}
 
 	remove(url: string, id: number) {
-		return this.http.delete<any>(this.URL + url + '/remove/' + id)
+		return this.http.delete<any>(this.URL + url + '/remove/' + id, this.setHeaders())
 		.pipe(
 			catchError(this.handleError)
 		);
