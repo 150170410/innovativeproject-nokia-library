@@ -2,16 +2,16 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.AuthorDTO;
 import com.nokia.library.nokiainnovativeproject.services.AuthorService;
-import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Arrays;
+
+import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 
 
 

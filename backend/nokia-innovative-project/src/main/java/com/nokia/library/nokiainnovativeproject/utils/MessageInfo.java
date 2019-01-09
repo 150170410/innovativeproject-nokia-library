@@ -1,7 +1,8 @@
 package com.nokia.library.nokiainnovativeproject.utils;
 
 import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

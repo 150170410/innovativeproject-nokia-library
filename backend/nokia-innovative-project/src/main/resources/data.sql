@@ -117,4 +117,6 @@ INSERT INTO book_to_order (isbn, title, requested_user)  VALUES('9780679732761',
 INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0061958271', 'Little House on the Prairie', 1);
 
 
+INSERT INTO "user" (first_name, last_name, email) VALUES ('user1', 'user1', 'user1email');
+INSERT INTO "user" (first_name, last_name, email) VALUES ('user2', 'user2', 'user1emai2');
 

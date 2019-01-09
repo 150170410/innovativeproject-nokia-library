@@ -34,5 +34,6 @@ public class Mappings {
 
 	public static final String AUTOCOMPLETION = "/autocompletion";
 
-    public static final String HANDOVER = "/handover/{id}" ;
+	public static final String HANDOVER = "/handover/{id}" ;
+	public static final String RETURN = "/return/{id}" ;
 }
