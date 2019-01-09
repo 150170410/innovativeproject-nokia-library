@@ -25,7 +25,6 @@ public class RentalService {
 	private final ReservationRepository reservationRepository;
 	private final UserService userService;
 	private final BookService bookService;
-	private final BookStatusService bookStatusService;
 
 	public List<Rental> getAllRentals() {
 		List<Rental> rentals = rentalRepository.findAll();
