@@ -11,7 +11,7 @@ import { MessageInfo } from '../../models/MessageInfo';
 export class RestService {
 	URL = API_URL + '/api/v1/';
 
-	setHeaders() {
+	public setHeaders() {
 		if (!sessionStorage.getItem('username')) {
 			return {
 				headers: new HttpHeaders({})
