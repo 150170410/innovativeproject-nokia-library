@@ -2,7 +2,6 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.RentalDTO;
 import com.nokia.library.nokiainnovativeproject.services.RentalService;
-import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Arrays;
+
+import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -59,5 +60,10 @@ public class RentalController {
     public ResponseEntity returnRental(@PathVariable Long id){
         rentalService.returnRental(id);
         return MessageInfo.success(null, Arrays.asList("Rental with ID = " + id.toString() + " returned successfully"));
+    }
+    @DeleteMapping(RENTALS + REMOVE)
+    public ResponseEntity cancelRental(@PathVariable Long id){
+        rentalService.deleteRental(id);
+        return MessageInfo.success(null, Arrays.asList("Rental with ID = " + id.toString() + " removed successfully"));
     }
 }

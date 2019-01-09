@@ -7,11 +7,13 @@ import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateExcep
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.ReservationRepository;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,24 +52,31 @@ public class ReservationService {
     public Reservation createReservation(ReservationDTO reservationDTO) {
         //TODO: ADD USER AUTHENTICATION
         Reservation reservation = new Reservation();
-        List<Rental> rentals = rentalRepository.findByBookId(reservationDTO.getBookId());
+        List<Rental> rentals = rentalRepository.findByBookId(reservationDTO.getBookId()).stream().filter(Rental::getIsCurrent).collect(Collectors.toList());
         if (rentals == null || rentals.isEmpty()) {
-            checkUserReservations(reservationDTO.getBookId(), reservationDTO.getUserId());
-            reservation.setUser(userService.getUserById(reservationDTO.getUserId()));
-            reservation.setBook(bookService.getBookById(reservationDTO.getBookId()));
-            return reservationRepository.save(reservation);
-
-        } else {
-            throw new InvalidBookStateException(reservationDTO.getBookId(), "It's not rented by anyone.");
+            throw new InvalidBookStateException(MessageTypes.NOT_RENTED);
         }
+        checkUserReservations(reservationDTO.getBookId(), reservationDTO.getUserId());
+        checkUserRentals(reservationDTO.getBookId(), reservationDTO.getUserId());
+        reservation.setUser(userService.getUserById(reservationDTO.getUserId()));
+        reservation.setBook(bookService.getBookById(reservationDTO.getBookId()));
+        return reservationRepository.save(reservation);
     }
 
     private void checkUserReservations(Long bookId, Long userId) {
         List<Reservation> reservations = getReservationsByUserId(userId);
         for(Reservation reservation : reservations){
-            if(reservation.getBook().getId() == bookId){
-                throw new InvalidBookStateException(bookId, "It has already been reserved by this user");
+            if(reservation.getBook().getId().equals(bookId)){
+                throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_RESERVED);
             }
+        }
+    }
+    private void checkUserRentals(Long bookId, Long userId) {
+        List<Rental> rentals = rentalRepository.findByUserId(userId).stream().filter(Rental::getIsCurrent).collect(Collectors.toList());
+        for(Rental rental : rentals){
+            if (rental.getBook().getId().equals(bookId)) {
+                    throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_IN_POSSESSION);
+                }
         }
     }
 

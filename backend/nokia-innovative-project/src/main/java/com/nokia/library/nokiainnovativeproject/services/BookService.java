@@ -1,21 +1,18 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
-import com.nokia.library.nokiainnovativeproject.entities.Author;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
-import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
-import com.nokia.library.nokiainnovativeproject.repositories.*;
+import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

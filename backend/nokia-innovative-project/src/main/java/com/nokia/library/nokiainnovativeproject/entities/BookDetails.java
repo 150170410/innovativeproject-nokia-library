@@ -1,5 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -13,7 +14,6 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Data

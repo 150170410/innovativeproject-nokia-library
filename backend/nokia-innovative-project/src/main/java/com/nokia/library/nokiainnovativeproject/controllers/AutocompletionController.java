@@ -7,14 +7,17 @@ import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
+import static com.nokia.library.nokiainnovativeproject.utils.Mappings.API_VERSION;
+import static com.nokia.library.nokiainnovativeproject.utils.Mappings.AUTOCOMPLETION;
 
 @RestController
 @RequiredArgsConstructor
