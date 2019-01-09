@@ -22,16 +22,16 @@
 	</div>
 	<form name="loginParams" (ngSubmit)="loginButtonClick(loginParams)" [formGroup]="loginParams">
 		<div class="form-container">
-      <div class="alert alert-danger" [hidden]="error">
-        There was a problem logging in. Please try again.
-      </div>
+			<div class="login-error" [hidden]="error">
+				There was a problem logging in. Check login and password or try again.
+			</div>
 			<mat-form-field>
 				<input formControlName="email"
 					   placeholder="Email"
 					   matInput required>
 				<mat-error *ngIf="loginParams.controls['email'].hasError">
 					<div *ngIf="loginParams.controls['email'].errors?.required">
-						Email number is required
+						Email is required
 					</div>
 				</mat-error>
 			</mat-form-field>
@@ -41,9 +41,9 @@
 					   placeholder="Password"
 					   matInput required
 					   type="password">
-				<mat-error *ngIf="loginParams.controls['email'].hasError">
-					<div *ngIf="loginParams.controls['email'].errors?.required">
-						Password number is required
+				<mat-error *ngIf="loginParams.controls['password'].hasError">
+					<div *ngIf="loginParams.controls['password'].errors?.required">
+						Password is required
 					</div>
 				</mat-error>
 			</mat-form-field>

@@ -10,3 +10,7 @@ mat-form-field {
 .form-title {
 	text-align: center;
 }
+
+.login-error{
+	margin-bottom: 10px;
+}

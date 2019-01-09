@@ -28,8 +28,7 @@ export class ManageRequestsComponent implements OnInit {
 		this.getRequestedBooks()
 	}
 
-	async resolveRequest(request: BookToOrder) {
-
+	async fulfillRequest(request: BookToOrder) {
 		await this.http.remove('bookToOrder', request.id).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Thank you for fulfilling the request!', 'OK');
@@ -55,5 +54,9 @@ export class ManageRequestsComponent implements OnInit {
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
+
+	rejectRequest(request) {
+
 	}
 }

@@ -1,11 +1,7 @@
 <h1 style="color: red;">WORK IN PROGRESS</h1>
-<!--<div class="form-title">-->
-	<!--<h1>Book requests</h1>-->
-<!--</div>-->
 <p>
 	Here you can request new books and view your previous pending requests.
 </p>
-
 <mat-card class="form-wrapper">
 	<form name="requestParams" (ngSubmit)="requestBook(requestParams)" [formGroup]="requestParams">
 		<div class="form-container">
@@ -78,6 +74,14 @@
 					<button color="warn" mat-button (click)="cancelRequest(request)">
 						<mat-icon>clear</mat-icon>
 						Cancel
+					</button>
+					<button disabled color="primary" mat-button (click)="subscribeToRequest(request)">
+						<mat-icon>notifications</mat-icon>
+						Subscribe
+					</button>
+					<button disabled color="primary" mat-button (click)="unsubscribeFromRequest(request)">
+						<mat-icon>notifications_off</mat-icon>
+						Unsubscribe
 					</button>
 				</p>
 

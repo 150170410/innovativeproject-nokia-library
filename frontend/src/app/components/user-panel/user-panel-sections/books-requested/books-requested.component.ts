@@ -90,4 +90,12 @@ export class BooksRequestedComponent implements OnInit {
 		this.requestParams.markAsPristine();
 		this.requestParams.markAsUntouched();
 	}
+
+	subscribeToRequest(request) {
+
+	}
+
+	unsubscribeFromRequest(request) {
+
+	}
 }
