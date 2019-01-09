@@ -33,6 +33,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	today = new Date();
 	maxDate;
 	fileToUpload: File = null;
+	foundFromAPI: any[] = [];
 
 	// mat-chips
 	selectable = true;
@@ -117,6 +118,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.clearForm();
 					this.getBookDetails();
 					this.snackbar.snackSuccess('Book details added successfully!', 'OK');
+					this.foundFromAPI = [];
 				} else {
 					this.snackbar.snackError('Error', 'OK');
 				}
@@ -131,6 +133,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.getBookDetails();
 					this.formMode = 'Add';
 					this.snackbar.snackSuccess('Book details edited successfully!', 'OK');
+					this.foundFromAPI = [];
 				} else {
 					this.snackbar.snackError('Error', 'OK');
 				}
@@ -183,13 +186,13 @@ export class ManageBookDetailsComponent implements OnInit {
 				this.uploadingFile = false;
 			})
 		} else {
-			this.snackbar.snackError('File is too big!', 'OK');
+			this.snackbar.snackError('File is too big! Max size: 5MB', 'OK');
 			this.uploadingFile = false;
 		}
 	}
 
-	selectedTitle(event: MatAutocompleteSelectedEvent): void {
-		const selectedBookDetails = this.mapBookDetails.get(this.bookDetailsParams.get('title').value);
+	selectDetails(details: any) {
+		const selectedBookDetails = this.mapBookDetails.get(details.title);
 		this.selectedCategories = [];
 		this.selectedAuthors = [];
 		this.bookDetailsParams.patchValue({
@@ -205,6 +208,23 @@ export class ManageBookDetailsComponent implements OnInit {
 		});
 	}
 
+	// selectedTitle(event: MatAutocompleteSelectedEvent): void {
+	// 	const selectedBookDetails = this.mapBookDetails.get(this.bookDetailsParams.get('title').value);
+	// 	this.selectedCategories = [];
+	// 	this.selectedAuthors = [];
+	// 	this.bookDetailsParams.patchValue({
+	// 		'title': selectedBookDetails['title'],
+	// 		'coverPictureUrl': selectedBookDetails['coverPictureUrl'],
+	// 		'description': selectedBookDetails['description'],
+	// 		'publicationDate': new Date(selectedBookDetails['publicationDate'])
+	// 	});
+	// 	selectedBookDetails['authors'].forEach(element => {
+	// 		// const author = new Author(null, element.authorFullName);
+	// 		this.selectedAuthors.push(element.authorFullName);
+	// 		// this.allAuthors.push(author);
+	// 	});
+	// }
+
 	getInfoFromAPI() {
 		this.fetchingDetails = true;
 		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value, this.http.setHeaders())
@@ -212,9 +232,10 @@ export class ManageBookDetailsComponent implements OnInit {
 			if (response.success) {
 				this.availableTitles = [];
 				this.availableBookDetails = response.object;
+				this.foundFromAPI = response.object;
 				response.object.forEach(element => {
 					this.mapBookDetails.set(element.title, element);
-					this.availableTitles.push(element.title);
+					// this.availableTitles.push(element.title);
 				});
 				this.snackbar.snackSuccess('I have found something. Check title', 'OK');
 			} else {
@@ -224,6 +245,7 @@ export class ManageBookDetailsComponent implements OnInit {
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
 			this.fetchingDetails = false;
+			this.foundFromAPI = [];
 		});
 	}
 
@@ -424,4 +446,5 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.toUpdate = null;
 		this.clearForm();
 	}
+
 }

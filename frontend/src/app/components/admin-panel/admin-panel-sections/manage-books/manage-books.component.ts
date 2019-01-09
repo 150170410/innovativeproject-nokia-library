@@ -155,4 +155,12 @@ export class ManageBooksComponent implements OnInit {
 		this.toUpdate = null;
 		this.clearForm();
 	}
+
+	lockBook(bookCopy) {
+
+	}
+
+	unlockBook(bookCopy) {
+
+	}
 }

@@ -1,4 +1,4 @@
-<p>Here you can add, edit or remove book copies. You can't remove book copy that is currently borrowed or reserved.</p>
+<p>Here you can add, edit or remove book copies. You can't remove book copy that is currently borrowed or reserved. You can hide available books from users.</p>
 <mat-card class="form-wrapper">
 	<div>
 		<h3>Find and select book:</h3>
@@ -7,10 +7,9 @@
 		</mat-form-field>
 	</div>
 	<form name="bookCopyParams" (ngSubmit)="createBookCopy(bookCopyParams)" [formGroup]="bookCopyParams">
-
 		<div>
 			<div class="filter-paginator-wrapper">
-
+				<div></div>
 				<div class="paginator">
 					<mat-paginator #paginatorDetails [pageSizeOptions]="[5, 10, 15]" [pageSize]="5" showFirstLastButtons></mat-paginator>
 				</div>
@@ -51,7 +50,7 @@
 
 		</div>
 
-		<div>
+		<div class="selected-book-wrapper">
 			<h3>Selected book details: </h3>
 			<div *ngIf="selectedBookDetails !== null">
 				{{selectedBookDetails.isbn}}, <b>{{selectedBookDetails.title}}</b> by: {{selectedBookDetails.authors | arrToStr:'author'}}
@@ -59,7 +58,7 @@
 			<div *ngIf="selectedBookDetails === null">none</div>
 		</div>
 
-		<mat-divider></mat-divider>
+
 
 		<div class="form-container">
 
@@ -147,6 +146,14 @@
 					<button color="warn" mat-button (click)="removeBookCopy(bookCopy.id)" [disabled]="bookCopy.status.id !== 1">
 						<mat-icon>cancel</mat-icon>
 						Remove
+					</button>
+					<button disabled *ngIf="bookCopy.status.id == 1"  mat-button (click)="lockBook(bookCopy)">
+						<mat-icon>lock</mat-icon>
+						Lock
+					</button>
+					<button disabled *ngIf="bookCopy.status.id == 5"  mat-button (click)="unlockBook(bookCopy)">
+						<mat-icon>lock_open</mat-icon>
+						Unlock
 					</button>
 				</p>
 

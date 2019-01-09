@@ -22,21 +22,46 @@
 				<mat-spinner *ngIf="fetchingDetails" [diameter]="20"></mat-spinner>
 			</button>
 
+			<table class="found-from-api-wrapper" *ngIf="foundFromAPI.length > 0">
+				<tr>
+					<th>Title</th>
+					<th>Authors</th>
+					<th>Publication</th>
+					<th>Description</th>
+					<th>Actions</th>
+				</tr>
+				<tr *ngFor="let details of foundFromAPI">
+					<td>
+						{{details.title}}
+					</td>
+					<td>
+						{{details.authors.length}}
+					</td>
+					<td>
+						{{details.publicationDate | date:'dd.MM.yyyy'}}
+					</td>
+					<td>
+						{{details.description}}
+					</td>
+					<td>
+						<button color="primary" type="button" mat-button (click)="selectDetails(details)">
+							<mat-icon>add</mat-icon>
+							Select
+						</button>
+					</td>
+				</tr>
+			</table>
+
+
 			<mat-form-field>
 				<input formControlName="title"
 					   placeholder="Title"
-					   matInput required
-					   [matAutocomplete]="autoTitle">
+					   matInput required>
 				<mat-hint>Title is required</mat-hint>
 				<mat-error *ngIf="bookDetailsParams.controls['title'].hasError">
 					<div *ngIf="bookDetailsParams.controls['title'].errors?.required">Title is required</div>
 					<div *ngIf="bookDetailsParams.controls['title'].errors?.maxlength">The maximum length is 100 characters</div>
 				</mat-error>
-				<mat-autocomplete #autoTitle="matAutocomplete" [autoActiveFirstOption]="true" (optionSelected)="selectedTitle($event)">
-					<mat-option *ngFor="let title of availableTitles" [value]="title">
-						{{(title)}}
-					</mat-option>
-				</mat-autocomplete>
 			</mat-form-field>
 
 			<mat-form-field>
@@ -217,7 +242,6 @@
 						Remove
 					</button>
 				</p>
-
 			</td>
 		</ng-container>
 

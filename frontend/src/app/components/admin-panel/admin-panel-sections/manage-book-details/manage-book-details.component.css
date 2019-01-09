@@ -56,3 +56,9 @@ mat-form-field {
 mat-spinner {
 	display: inline-block;
 }
+
+.found-from-api-wrapper{
+	margin-top: 25px;
+	margin-bottom: 10px;
+	text-align: center;
+}
