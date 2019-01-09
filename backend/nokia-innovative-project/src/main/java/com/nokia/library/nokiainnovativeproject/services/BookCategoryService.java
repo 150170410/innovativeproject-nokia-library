@@ -6,13 +6,14 @@ import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookCategoryRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ import java.util.List;
 public class BookCategoryService  {
 
 	private final BookCategoryRepository bookCategoryRepository;
+	private final BookDetailsRepository bookDetailsRepository;
 
 	public List<BookCategory> getAllBookCategories() {
 		return bookCategoryRepository.findAll();
@@ -47,9 +49,7 @@ public class BookCategoryService  {
 
 	public void deleteBookCategory(Long id) {
 		BookCategory bookCategory = bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book category"));
-		try {
-			bookCategoryRepository.delete(bookCategory);
-		}catch (DataIntegrityViolationException e) {
+		if (bookDetailsRepository.countBookDetailsByCategories(Arrays.asList(bookCategory)) > 0) {
 			throw new ValidationException("The category you are trying to delete is assigned to a book. You can't delete it.");
 		}
 	}

@@ -1,6 +1,7 @@
 package com.nokia.library.nokiainnovativeproject.repositories;
 
 import com.nokia.library.nokiainnovativeproject.entities.Book;
+import com.nokia.library.nokiainnovativeproject.entities.BookDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +18,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
            "WHERE BD.ID = ?1",
    nativeQuery = true)
    List<Book> getBooksByBookDetailsId(Long id);
+
+   Long countBooksByBookDetails(BookDetails bookDetails);
 }
