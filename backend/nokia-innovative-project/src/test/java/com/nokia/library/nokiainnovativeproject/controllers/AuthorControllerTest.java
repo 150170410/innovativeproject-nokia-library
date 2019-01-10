@@ -48,7 +48,8 @@ class AuthorControllerTest {
         mapper = new ObjectMapper();
         author = new Author();
         author.setAuthorFullName("test name");
-        authorDTO = new AuthorDTO("test name");
+        authorDTO = new AuthorDTO();
+        authorDTO.setAuthorFullName("test name");
     }
 
     @BeforeEach

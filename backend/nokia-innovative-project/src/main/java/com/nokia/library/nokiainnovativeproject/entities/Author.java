@@ -3,6 +3,7 @@ package com.nokia.library.nokiainnovativeproject.entities;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -23,4 +24,7 @@ public class Author implements Serializable {
 	@NotBlank(message = "Author's name is required")
 	@Size(max = 300, message = "The maximum length of the author's name can't exceed 300 characters")
 	private String authorFullName;
+
+	@ColumnDefault("true")
+	private Boolean isRemovable;
 }

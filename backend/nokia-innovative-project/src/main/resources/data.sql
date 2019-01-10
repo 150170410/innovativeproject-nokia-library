@@ -4,13 +4,13 @@ INSERT INTO book_status (status_name) VALUES ('BORROWED');
 INSERT INTO book_status (status_name) VALUES ('RESERVED');
 INSERT INTO book_status (status_name) VALUES ('UNAVAILABLE');
 
-INSERT INTO book_category (book_category_name) VALUES ('Guide');
+INSERT INTO book_category (book_category_name, is_removable) VALUES ('Guide', false);
 INSERT INTO book_category (book_category_name) VALUES ('Programming');
-INSERT INTO book_category (book_category_name) VALUES ('Novel');
-INSERT INTO book_category (book_category_name) VALUES ('Cooking');
-INSERT INTO book_category (book_category_name) VALUES ('Autobiography');
+INSERT INTO book_category (book_category_name, is_removable) VALUES ('Novel', false);
+INSERT INTO book_category (book_category_name, is_removable) VALUES ('Cooking', false);
+INSERT INTO book_category (book_category_name, is_removable) VALUES ('Autobiography', false);
 INSERT INTO book_category (book_category_name) VALUES ('Politics');
-INSERT INTO book_category (book_category_name) VALUES ('Sci-fi');
+INSERT INTO book_category (book_category_name, is_removable) VALUES ('Sci-fi', false);
 INSERT INTO book_category (book_category_name) VALUES ('Religion');
 INSERT INTO book_category (book_category_name) VALUES ('Education');
 INSERT INTO book_category (book_category_name) VALUES ('Astronomy');
@@ -23,14 +23,14 @@ INSERT INTO author (author_full_name) VALUES ('Robbie Torok');
 INSERT INTO author (author_full_name) VALUES ('Raymond Kertis');
 INSERT INTO author (author_full_name) VALUES ('Emmet Brenig');
 INSERT INTO author (author_full_name) VALUES ('Andrzej Sapkowski');
-INSERT INTO author (author_full_name) VALUES ('Sejal Badani');
-INSERT INTO author (author_full_name) VALUES ('Rhys Bowen');
+INSERT INTO author (author_full_name, is_removable) VALUES ('Sejal Badani', false);
+INSERT INTO author (author_full_name, is_removable) VALUES ('Rhys Bowen', false);
 INSERT INTO author (author_full_name) VALUES ('Melinda Leigh');
-INSERT INTO author (author_full_name) VALUES ('Jeff Kinney');
-INSERT INTO author (author_full_name) VALUES ('Michelle Obama');
-INSERT INTO author (author_full_name) VALUES ('Samin Nosrat');
-INSERT INTO author (author_full_name) VALUES ('Stephen Hawking');
-INSERT INTO author (author_full_name) VALUES ('George Orwell');
+INSERT INTO author (author_full_name, is_removable) VALUES ('Jeff Kinney', false);
+INSERT INTO author (author_full_name, is_removable) VALUES ('Michelle Obama', false);
+INSERT INTO author (author_full_name, is_removable) VALUES ('Samin Nosrat', false);
+INSERT INTO author (author_full_name, is_removable) VALUES ('Stephen Hawking', false);
+INSERT INTO author (author_full_name, is_removable) VALUES ('George Orwell', false);
 
 
 INSERT INTO book_details (isbn, title, description, cover_picture_url, publication_date) VALUES (
