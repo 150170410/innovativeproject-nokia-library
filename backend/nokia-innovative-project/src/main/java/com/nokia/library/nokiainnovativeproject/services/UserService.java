@@ -76,14 +76,12 @@ public class UserService implements UserDetailsService {
 
     public List<User> getAllUsers() {
         List<User> users = userRepository.findAll();
-        List<User> securedUsers = new ArrayList<>();
         for(User user : users) {
             Hibernate.initialize(user.getBooks());
             Hibernate.initialize(user.getAddress());
             Hibernate.initialize(user.getRoles());
-            securedUsers.add(detachAndSecure(user));
         }
-        return securedUsers;
+        return users;
     }
 
     public User getUserById(Long id) {
@@ -92,7 +90,7 @@ public class UserService implements UserDetailsService {
         Hibernate.initialize(user.getBooks());
         Hibernate.initialize(user.getAddress());
         Hibernate.initialize(user.getRoles());
-        return detachAndSecure(user);
+        return user;
     }
 
     public User createUser(UserDTO userDTO) {
@@ -103,9 +101,7 @@ public class UserService implements UserDetailsService {
         User user = mapper.map(userDTO, User.class);
         user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         user.setRoles(Arrays.asList(roleRepository.findByRole("ROLE_EMPLOYEE")));
-        user = userRepository.saveAndFlush(persistingRequiredEntities(user, userDTO));
-        user = detachAndSecure(user);
-        user.setRoles(new ArrayList<>());
+        user = userRepository.save(persistingRequiredEntities(user, userDTO));
         return user;
     }
 
@@ -118,9 +114,7 @@ public class UserService implements UserDetailsService {
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-        user = userRepository.saveAndFlush(persistingRequiredEntities(user, userDTO));
-        user = detachAndSecure(user);
-        user.setRoles(new ArrayList<>());
+        user = userRepository.save(persistingRequiredEntities(user, userDTO));
         return user;
     }
 
