@@ -6,17 +6,21 @@
 		</mat-tab>
 
 		<mat-tab label="Book copies">
-			<app-manage-books></app-manage-books>
+			<!--<ng-template matTabContent>-->
+				<app-manage-books></app-manage-books>
+			<!--</ng-template>-->
 		</mat-tab>
 		<mat-tab label="Authors and categories">
-			<div class="forms-container">
-				<div class="half-div">
-					<app-manage-authors></app-manage-authors>
+			<!--<ng-template matTabContent>-->
+				<div class="forms-container">
+					<div class="half-div">
+						<app-manage-authors></app-manage-authors>
+					</div>
+					<div class="half-div">
+						<app-manage-categories></app-manage-categories>
+					</div>
 				</div>
-				<div class="half-div">
-					<app-manage-categories></app-manage-categories>
-				</div>
-			</div>
+			<!--</ng-template>-->
 		</mat-tab>
 		<mat-tab label="Handover">
 			<app-manage-handovers></app-manage-handovers>
@@ -28,7 +32,10 @@
 			<app-manage-requests></app-manage-requests>
 		</mat-tab>
 		<mat-tab label="Admins and users">
-			<app-manage-users></app-manage-users>
+			<ng-template matTabContent>
+				<app-manage-users></app-manage-users>
+			</ng-template>
+
 		</mat-tab>
 
 

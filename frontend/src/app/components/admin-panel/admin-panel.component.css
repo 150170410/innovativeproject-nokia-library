@@ -54,24 +54,12 @@ th, tr, td {
 	text-align: left;
 }
 
-/*::ng-deep .snackbar-success {*/
-/*font-size: 20px;*/
-/*background: #c3d707;*/
-/*color: black;*/
-/*}*/
+::ng-deep .mat-tab-label {
 
-/*::ng-deep .snackbar-success .mat-simple-snackbar-action {*/
-/*font-size: 20px;*/
-/*color: black !important;*/
-/*}*/
+}
 
-/*::ng-deep .snackbar-error {*/
-/*font-size: 20px;*/
-/*background: #9b1249;*/
-/*color: white;*/
-/*}*/
-
-/*::ng-deep .snackbar-error .mat-simple-snackbar-action {*/
-/*font-size: 20px;*/
-/*color: white !important;*/
-/*}*/
+::ng-deep .mat-tab-label-active {
+	font-weight: bold;
+	background-color: #124191;
+	color: white;
+}
