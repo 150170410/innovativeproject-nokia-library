@@ -12,7 +12,7 @@
 			Reserve book
 		</button>
 
-		<div *ngIf="bookCopy.status.id !== 1" class="available-on button-spacer"> available on: {{bookCopy.availableDate}}</div>
+		<div *ngIf="bookCopy.status.id !== 1" class="available-on button-spacer"> available on: {{bookCopy.availableDate | date:'dd/MM/yyyy'}}</div>
 
 	</li>
 </ol>
