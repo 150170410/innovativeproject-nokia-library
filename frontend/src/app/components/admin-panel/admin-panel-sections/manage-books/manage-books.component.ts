@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageInfo } from '../../../../models/MessageInfo';
 import { RestService } from '../../../../services/rest/rest.service';
@@ -30,6 +30,7 @@ export class ManageBooksComponent implements OnInit {
 
 	displayedBookCopiesColumns: string[] = ['signature', 'status', 'bookDetails', 'comments', 'actions'];
 	displayedBookDetailsColumns: string[] = ['isbn', 'title', 'authors', 'actions'];
+	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
@@ -100,6 +101,7 @@ export class ManageBooksComponent implements OnInit {
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
+		this.dataSource.sort = this.sort;
 	}
 
 	editBookCopy(bookCopy: Book) {
