@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { User } from '../../../../models/database/entites/User';
 
 @Component({
@@ -12,7 +12,8 @@ export class ManageUsersComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<User>();
-	displayedColumns: string[] = ['id', 'email', 'fullName', 'role', 'address', 'actions'];
+	displayedColumns: string[] = [ 'email', 'fullName', 'role', 'address', 'actions'];
+	@ViewChild(MatSort) sort: MatSort;
 
 	constructor() {
 	}
@@ -28,6 +29,7 @@ export class ManageUsersComponent implements OnInit {
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
+		this.dataSource.sort = this.sort;
 	}
 
 	promoteUser(user: User) {

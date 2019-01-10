@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { BookToOrder } from '../../../../models/database/entites/BookToOrder';
 import { ConfirmationDialogService } from '../../../../services/confirmation-dialog/confirmation-dialog.service';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
@@ -10,7 +10,7 @@ import { BookToOrderDTO } from '../../../../models/database/DTOs/BookToOrderDTO'
 @Component({
 	selector: 'app-books-requested',
 	templateUrl: './books-requested.component.html',
-	styleUrls: ['./books-requested.component.css', '../../user-panel.component.css']
+	styleUrls: ['./books-requested.component.css', '../../user-panel.component.scss']
 })
 export class BooksRequestedComponent implements OnInit {
 
@@ -21,6 +21,7 @@ export class BooksRequestedComponent implements OnInit {
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookToOrder>();
 	displayedColumns: string[] = ['isbn', 'title', 'actions'];
+	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
@@ -48,6 +49,7 @@ export class BooksRequestedComponent implements OnInit {
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
+		this.dataSource.sort = this.sort;
 	}
 
 	async cancelRequest(request: BookToOrder) {
