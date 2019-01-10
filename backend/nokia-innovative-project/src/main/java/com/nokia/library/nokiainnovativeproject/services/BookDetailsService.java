@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,11 +91,14 @@ public class BookDetailsService {
 		return bookDetailsRepository.save(persistingRequiredEntities(bookDetails, bookDetailsDTO));
 	}
 
+
 	public void deleteBookDetails(Long id) {
 		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
 		if (bookRepository.countBooksByBookDetails(bookDetails) > 0) {
 			throw new ValidationException("The book details you are trying to delete is assigned to a book. You can't delete it.");
 		}
+		bookDetails.getAuthors().forEach(author -> author.setIsRemovable(authorRepository.countBookDetailsByAuthor(author.getId()) == 1));
+		bookDetails.getCategories().forEach(category -> category.setIsRemovable(bookCategoryRepository.countBookDetailsByCategory(category.getId()) == 1));
 		bookDetailsRepository.delete(bookDetails);
 	}
 
@@ -125,6 +129,8 @@ public class BookDetailsService {
 		if(authors.size() != size)
 			throw new ResourceNotFoundException("author");
 
+		authors.forEach(author -> author.setIsRemovable(false));
+		categories.forEach(category -> category.setIsRemovable(false));
 		return bookDetails;
 	}
 }
