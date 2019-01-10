@@ -3,6 +3,7 @@ package com.nokia.library.nokiainnovativeproject.entities;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -23,4 +24,7 @@ public class BookCategory implements Serializable {
 	@NotBlank(message = "Book category name is required")
 	@Size(max = 50, message = "Book category name can't exceed 50 characters")
 	private String bookCategoryName;
+
+	@ColumnDefault("true")
+	private Boolean isRemovable;
 }

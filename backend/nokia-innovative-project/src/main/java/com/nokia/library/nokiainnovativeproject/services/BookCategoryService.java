@@ -38,6 +38,7 @@ public class BookCategoryService  {
 
 		ModelMapper mapper = new ModelMapper();
 		BookCategory bookCategory = mapper.map(bookCategoryDTO, BookCategory.class);
+		bookCategory.setIsRemovable(true);
 		return bookCategoryRepository.save(bookCategory);
 	}
 

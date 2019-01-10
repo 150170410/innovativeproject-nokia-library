@@ -49,7 +49,8 @@ public class BookCategoryControllerTest {
 		mapper = new ObjectMapper();
 		bookCategory = new BookCategory();
 		bookCategory.setBookCategoryName("test name");
-		bookCategoryDTO = new BookCategoryDTO("test name");
+		bookCategoryDTO = new BookCategoryDTO();
+		bookCategoryDTO.setBookCategoryName("test name");
 	}
 
 	@BeforeEach
@@ -91,7 +92,8 @@ public class BookCategoryControllerTest {
 
 	@Test
 	public void updateBookCategoryTest() throws Exception {
-		BookCategoryDTO updatedDTO = new BookCategoryDTO("updated name");
+		BookCategoryDTO updatedDTO = new BookCategoryDTO();
+		updatedDTO.setBookCategoryName("updated name");
 		BookCategory updatedBookCategory = new BookCategory();
 		updatedBookCategory.setBookCategoryName("updated name");
 

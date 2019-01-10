@@ -62,7 +62,7 @@
 						<mat-icon>edit</mat-icon>
 						Edit
 					</button>
-					<button color="warn" mat-button (click)="removeCategory(category.id)">
+					<button color="warn" mat-button (click)="removeCategory(category.id)" [disabled]="!category.isRemovable">
 						<mat-icon>cancel</mat-icon>
 						Remove
 					</button>

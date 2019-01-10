@@ -40,6 +40,7 @@ public class AuthorService {
                 authorDTO.getAuthorFullName()), "author");
         ModelMapper mapper = new ModelMapper();
         Author author = mapper.map(authorDTO, Author.class);
+        author.setIsRemovable(true);
         return authorRepository.save(author);
     }
 
