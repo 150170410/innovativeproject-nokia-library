@@ -22,7 +22,7 @@
 				</div>
 			<!--</ng-template>-->
 		</mat-tab>
-		<mat-tab label="Handover">
+		<mat-tab label="Awaiting books">
 			<app-manage-handovers></app-manage-handovers>
 		</mat-tab>
 		<mat-tab label="Return a book">
@@ -35,10 +35,7 @@
 			<ng-template matTabContent>
 				<app-manage-users></app-manage-users>
 			</ng-template>
-
 		</mat-tab>
-
-
 	</mat-tab-group>
 </div>
 <div *ngIf="!role_admin">

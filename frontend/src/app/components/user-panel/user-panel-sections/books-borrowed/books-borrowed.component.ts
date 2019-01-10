@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 import { RestService } from '../../../../services/rest/rest.service';
 import { ConfirmationDialogService } from '../../../../services/confirmation-dialog/confirmation-dialog.service';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 @Component({
 	selector: 'app-books-borrowed',
 	templateUrl: './books-borrowed.component.html',
-	styleUrls: ['./books-borrowed.component.css', '../../user-panel.component.css']
+	styleUrls: ['./books-borrowed.component.css', '../../user-panel.component.scss']
 })
 export class BooksBorrowedComponent implements OnInit {
 
@@ -19,6 +19,7 @@ export class BooksBorrowedComponent implements OnInit {
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
 	displayedColumns: string[] = ['bookTitle', 'rentalDate', 'returnDate', 'actions'];
+	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService,
 				private confirmService: ConfirmationDialogService,
@@ -38,6 +39,7 @@ export class BooksBorrowedComponent implements OnInit {
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
+		this.dataSource.sort = this.sort;
 	}
 
 	bookInfo(borrowing) {

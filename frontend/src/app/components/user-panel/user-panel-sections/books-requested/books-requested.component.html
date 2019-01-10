@@ -55,7 +55,7 @@
 			<mat-paginator #paginatorCopies [pageSizeOptions]="[10, 20, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
 		</div>
 	</div>
-	<table mat-table [dataSource]="dataSource">
+	<table mat-table [dataSource]="dataSource" matSort>
 
 		<ng-container matColumnDef="isbn">
 			<th mat-header-cell *matHeaderCellDef>Isbn</th>
@@ -63,7 +63,7 @@
 		</ng-container>
 
 		<ng-container matColumnDef="title">
-			<th mat-header-cell *matHeaderCellDef>Title</th>
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
 			<td mat-cell *matCellDef="let request">{{request.title}}</td>
 		</ng-container>
 

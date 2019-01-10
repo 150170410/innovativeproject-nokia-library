@@ -67,3 +67,7 @@ table, th, td {
 	background-color: #124191;
 	color: white;
 }
+
+::ng-deep .mat-header-cell .mat-sort-header-container {
+  justify-content: center;
+}
