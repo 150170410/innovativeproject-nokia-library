@@ -88,6 +88,8 @@ public class BookDetailsService {
 		bookDetails.setDescription(bookDetailsDTO.getDescription());
 		bookDetails.setCoverPictureUrl(bookDetailsDTO.getCoverPictureUrl());
 		bookDetails.setPublicationDate(bookDetailsDTO.getPublicationDate());
+		bookDetails.getAuthors().forEach(author -> author.setIsRemovable(true));
+		bookDetails.getCategories().forEach(category -> category.setIsRemovable(true));
 		return bookDetailsRepository.save(persistingRequiredEntities(bookDetails, bookDetailsDTO));
 	}
 
