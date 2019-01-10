@@ -60,7 +60,7 @@
 						<mat-icon>edit</mat-icon>
 						Edit
 					</button>
-					<button color="warn" mat-button (click)="removeAuthor(author.id)">
+					<button color="warn" mat-button (click)="removeAuthor(author.id)" [disabled]="!author.isRemovable">
 						<mat-icon>cancel</mat-icon>
 						Remove
 					</button>
