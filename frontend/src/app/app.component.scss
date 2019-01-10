@@ -1,0 +1,95 @@
+@import '../nokia-theme.scss';
+
+* {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+}
+
+.mat-icon {
+  font-family: 'Material Icons';
+}
+
+.main-content {
+  height: calc(100vh - 64px);
+  width: 65%;
+  max-width: 70%;
+  background: white;
+  margin: auto;
+}
+
+.navbar {
+  height: 63px;
+}
+
+::ng-deep .mat-sidenav-container {
+  height: calc(100vh - 64px) !important; /* or 100% */
+}
+
+.sidenav-menu {
+  background-color: #ffffff;
+  width: 223px;
+}
+
+.sidenav-button-close {
+  position: relative;
+  top: 14px;
+  left: 50px;
+}
+
+.content-sides-light {
+  background: #d1eaff;
+}
+
+.content-sides-dark {
+  background: black;
+}
+
+.footer {
+  left: 0;
+  bottom: 0;
+  padding: 0;
+  height: 45px;
+  width: 100%;
+  background-color: #124191;
+  color: white;
+  text-align: center;
+}
+
+.site {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
+
+.innovative-projects {
+  width: 150px;
+  position: fixed;
+  bottom: 1rem;
+  right: 2rem;
+  background-color: #d1eaff;
+}
+
+::ng-deep .snackbar-success {
+  font-size: 20px;
+  background: #c3d707;
+  color: black;
+}
+
+::ng-deep .snackbar-success .mat-simple-snackbar-action {
+  font-size: 20px;
+  color: black !important;
+}
+
+::ng-deep .snackbar-error {
+  font-size: 20px;
+  background: #9b1249;
+  color: white;
+}
+
+::ng-deep .snackbar-error .mat-simple-snackbar-action {
+  font-size: 20px;
+  color: white !important;
+}

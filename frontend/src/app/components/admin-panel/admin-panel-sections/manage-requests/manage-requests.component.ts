@@ -8,7 +8,7 @@ import { SnackbarService } from '../../../../services/snackbar/snackbar.service'
 @Component({
 	selector: 'app-manage-requests',
 	templateUrl: './manage-requests.component.html',
-	styleUrls: ['./manage-requests.component.css', '../../admin-panel.component.css']
+	styleUrls: ['./manage-requests.component.css', '../../admin-panel.component.scss']
 })
 export class ManageRequestsComponent implements OnInit {
 

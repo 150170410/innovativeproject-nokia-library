@@ -54,6 +54,10 @@
 			<mat-icon>more_vert</mat-icon>
 		</button>
 		<mat-menu #menuOptions="matMenu">
+			<button mat-menu-item (click)="changeTheme()">
+				<mat-icon>invert_colors</mat-icon>
+				<span>Change theme</span>
+			</button>
 			<button mat-menu-item *ngIf="!isAuth" (click)="login()">
 				<mat-icon>account_circle</mat-icon>
 				<span>Sign in</span>

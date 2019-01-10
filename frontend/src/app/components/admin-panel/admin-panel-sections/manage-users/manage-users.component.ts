@@ -5,7 +5,7 @@ import { User } from '../../../../models/database/entites/User';
 @Component({
 	selector: 'app-manage-users',
 	templateUrl: './manage-users.component.html',
-	styleUrls: ['./manage-users.component.css', '../../admin-panel.component.css']
+	styleUrls: ['./manage-users.component.css', '../../admin-panel.component.scss']
 })
 export class ManageUsersComponent implements OnInit {
 

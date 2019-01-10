@@ -18,7 +18,7 @@ import { ConfirmationDialogService } from '../../../../services/confirmation-dia
 @Component({
 	selector: 'app-manage-book-details',
 	templateUrl: './manage-book-details.component.html',
-	styleUrls: ['./manage-book-details.component.css', '../../admin-panel.component.css']
+	styleUrls: ['./manage-book-details.component.css', '../../admin-panel.component.scss']
 })
 export class ManageBookDetailsComponent implements OnInit {
 

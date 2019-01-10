@@ -21,7 +21,8 @@ For all users:
 * reminder about returning a book,
 * notification about book availability,
 * contact with developers (report a bug, request new feature, etc.),
-* user accounts.
+* user accounts,
+* night theme.
 
 For admins only:
 * Books management (add, edit, remove),

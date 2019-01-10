@@ -8,7 +8,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 @Component({
 	selector: 'app-manage-returns',
 	templateUrl: './manage-returns.component.html',
-	styleUrls: ['./manage-returns.component.css', '../../admin-panel.component.css']
+	styleUrls: ['./manage-returns.component.css', '../../admin-panel.component.scss']
 })
 export class ManageReturnsComponent implements OnInit {
 

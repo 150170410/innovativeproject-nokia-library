@@ -1,5 +1,5 @@
-<app-navbar class="navbar"></app-navbar>
-<mat-sidenav-container class="content-all">
+<app-navbar class="navbar" (changedTheme)="changedTheme($event)"></app-navbar>
+<mat-sidenav-container [class.dark-theme]="darkTheme" [ngClass]="{'content-sides-light': !darkTheme, 'content-sides-dark': darkTheme}">
 	<mat-sidenav class="sidenav-menu" #sidenav (keydown.escape)="sidenav.close()">
 	</mat-sidenav>
 	<mat-sidenav-content>
@@ -13,6 +13,6 @@
 			</div>
 		</div>
 
-		<img src="../assets/images/innovative_logo.png" class="innovative-projects" >
+		<img src="../assets/images/innovative_logo.png" class="innovative-projects">
 	</mat-sidenav-content>
 </mat-sidenav-container>

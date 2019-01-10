@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ContactUsComponent } from '../../../components/contact-us/contact-us.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -19,6 +19,8 @@ export class NavbarComponent implements OnInit {
 	role_admin = false;
 	role_employee = false;
 	loggedAs = '';
+
+	@Output() changedTheme = new EventEmitter<string>();
 
 	constructor(public dialog: MatDialog,
 				private formBuilder: FormBuilder,
@@ -50,8 +52,8 @@ export class NavbarComponent implements OnInit {
 	}
 
 	register() {
-	  this.router.navigateByUrl('/register')
-  }
+		this.router.navigateByUrl('/register')
+	}
 
 
 	search(searchParams: any) {
@@ -70,5 +72,22 @@ export class NavbarComponent implements OnInit {
 			this.placeHolder = 'Search for a book...';
 			return;
 		}
+	}
+
+	changeTheme() {
+		if (localStorage.getItem('theme') == 'light') {
+			this.changedTheme.emit('dark');
+		} else if (localStorage.getItem('theme') == 'dark') {
+			this.changedTheme.emit('light');
+		} else {
+			this.changedTheme.emit('dark');
+		}
+		// if (localStorage.getItem('theme') == 'light') {
+		// 	localStorage.setItem('theme', 'dark');
+		// } else if (localStorage.getItem('theme') == 'dark') {
+		// 	localStorage.setItem('theme', 'light');
+		// } else {
+		// 	localStorage.setItem('theme', 'dark');
+		// }
 	}
 }

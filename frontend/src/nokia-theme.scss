@@ -5,7 +5,7 @@
 
 @include mat-core();
 
-$nokia-main-color: (
+$nokia-primary-color: (
 		50 : #e3e8f2,
 		100 : #b8c6de,
 		200 : #89a0c8,
@@ -38,7 +38,7 @@ $nokia-main-color: (
 		)
 );
 
-$nokia-warn-color: (
+$light-warn-color: (
 		50 : #f3e3e9,
 		100 : #e1b8c8,
 		200 : #cd89a4,
@@ -71,7 +71,7 @@ $nokia-warn-color: (
 		)
 );
 
-$nokia-accent-color: (
+$light-accent-color: (
 		50 : #f8fae1,
 		100 : #edf3b5,
 		200 : #e1eb83,
@@ -104,10 +104,62 @@ $nokia-accent-color: (
 		)
 );
 
-$nokia-theme-primary: mat-palette($nokia-main-color);
-$nokia-theme-accent: mat-palette($nokia-accent-color);
-$nokia-theme-warn: mat-palette($nokia-warn-color);
+$dark-warn-color: (
+		50 : #fdecfe,
+		100 : #fbcefc,
+		200 : #f8aefa,
+		300 : #f58ef8,
+		400 : #f375f7,
+		500 : #f15df5,
+		600 : #ef55f4,
+		700 : #ed4bf2,
+		800 : #eb41f0,
+		900 : #e730ee,
+		A100 : #ffffff,
+		A200 : #fffdff,
+		A400 : #fdcaff,
+		A700 : #fcb1ff,
+		contrast: (
+				50 : #000000,
+				100 : #000000,
+				200 : #000000,
+				300 : #000000,
+				400 : #000000,
+				500 : #000000,
+				600 : #000000,
+				700 : #000000,
+				800 : #000000,
+				900 : #ffffff,
+				A100 : #000000,
+				A200 : #000000,
+				A400 : #000000,
+				A700 : #000000,
+		)
+);
 
-$nokia-theme: mat-light-theme($nokia-theme-primary, $nokia-theme-accent, $nokia-theme-warn);
+$light-theme-primary: mat-palette($nokia-primary-color);
+$light-theme-accent: mat-palette($light-accent-color);
+$light-theme-warn: mat-palette($light-warn-color);
+
+$nokia-theme: mat-light-theme($light-theme-primary, $light-theme-accent, $light-theme-warn);
 
 @include angular-material-theme($nokia-theme);
+$dark-theme-primary: mat-palette($mat-cyan);
+$dark-theme-accent: mat-palette($mat-yellow);
+$dark-theme-warn: mat-palette($dark-warn-color);
+
+$dark-theme: mat-dark-theme($dark-theme-primary, $light-theme-accent, $dark-theme-warn);
+.dark-theme {
+  @include angular-material-theme($dark-theme);
+}
+
+@include mat-toolbar-theme($nokia-theme);
+
+@mixin nokia-dark-theme($theme) {
+  $accent: map-get($theme, accent);
+  ::ng-deep .snackbar-error {
+	font-size: 20px;
+	background: $dark-warn-color;
+	color: white;
+  }
+}

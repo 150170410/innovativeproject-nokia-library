@@ -13,7 +13,7 @@ import { ConfirmationDialogService } from '../../../../services/confirmation-dia
 @Component({
 	selector: 'app-manage-books',
 	templateUrl: './manage-books.component.html',
-	styleUrls: ['./manage-books.component.css', '../../admin-panel.component.css']
+	styleUrls: ['./manage-books.component.css', '../../admin-panel.component.scss']
 })
 export class ManageBooksComponent implements OnInit {
 	bookCopyParams: FormGroup;
