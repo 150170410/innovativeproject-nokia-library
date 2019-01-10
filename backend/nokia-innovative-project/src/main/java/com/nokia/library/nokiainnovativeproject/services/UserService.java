@@ -37,9 +37,6 @@ public class UserService implements UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -52,7 +49,8 @@ public class UserService implements UserDetailsService {
     }
 
     private org.springframework.security.core.userdetails.User buildUserForAuthentication(User user, List<GrantedAuthority> authorities){
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(),
+                userRepository.getPasswordByUserId(user.getId()), authorities);
     }
 
     private List<GrantedAuthority> buildUserAuthority(List<Role> roles) {
@@ -67,9 +65,9 @@ public class UserService implements UserDetailsService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if(principal instanceof org.springframework.security.core.userdetails.User) {
-            org.springframework.security.core.userdetails.User loggedInUser =
-                    (org.springframework.security.core.userdetails.User) principal;
-            return userRepository.findUserByEmail(loggedInUser.getUsername());
+            org.springframework.security.core.userdetails.User user=
+                    ((org.springframework.security.core.userdetails.User) principal);
+            return userRepository.findUserByEmail(user.getUsername());
         }
         return null;
     }
@@ -107,9 +105,6 @@ public class UserService implements UserDetailsService {
 
     public User updateUser(Long id, UserDTO userDTO) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("user"));
-        if(user.getEmail() != userDTO.getEmail()) {
-            throw new ValidationException("You can't change email!");
-        }
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
@@ -132,8 +127,8 @@ public class UserService implements UserDetailsService {
         Role role = roleRepository.findByRole("ROLE_ADMIN");
         userRoles.add(role);
         user.setRoles(userRoles);
-        user = userRepository.saveAndFlush(user);
-        return detachAndSecure(user);
+        user = userRepository.save(user);
+        return user;
     }
 
     public User takeAdminRoleFromUser(Long id) {
@@ -145,16 +140,9 @@ public class UserService implements UserDetailsService {
         Hibernate.initialize(user.getBooks());
         Hibernate.initialize(user.getRoles());
         Hibernate.initialize(user.getAddress());
-        List<Role> userRoles = user.getRoles();
-        entityManager.detach(user);
-        List<Role> actualRoles = new ArrayList<>();
-        for(Role role : userRoles) {
-            if(!(role.getRole().equals("ROLE_ADMIN")))
-                actualRoles.add(role);
-        }
-        user.setRoles(actualRoles);
-        user = userRepository.saveAndFlush(user);
-        return detachAndSecure(user);
+        Role role = roleRepository.findByRole("ROLE_ADMIN");
+        user.getRoles().remove(role);
+        return userRepository.save(user);
     }
 
     public void deleteUser(Long id)
@@ -162,15 +150,6 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("user"));
         userRepository.delete(user);
-    }
-
-    private User detachAndSecure(User user) {
-        if (user != null) {
-            entityManager.detach(user);
-            user.setBooks(new ArrayList<>());
-            user.setPassword("[UNAUTHORIZED]");
-        }
-        return user;
     }
 
     private User persistingRequiredEntities(User user, UserDTO userDTO) {

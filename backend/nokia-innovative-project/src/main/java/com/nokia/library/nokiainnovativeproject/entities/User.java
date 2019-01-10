@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
@@ -33,12 +34,12 @@ public class User implements Serializable {
 
 	@Email(message = "Email should be valid")
 	@NotBlank(message = "Email can't be empty")
-	@Size(min = 5, max = 255, message = "User email must be 10-255 characters long")
+	@Size(max = 255, message = "The maximum size of the email is 255")
 	private String email;
 
-
-	@NotBlank(message = "Password can't be empty")
-	@Size(min = 7, max = 255, message = "Password must be 7-20 characters long")
+	@Getter(AccessLevel.NONE)
+	@NotNull(message = "Password can't be null")
+	@Size(min = 7, max = 255, message = "Password must be 7-255 characters long")
 	private String password;
 
 	@OneToOne(cascade = {

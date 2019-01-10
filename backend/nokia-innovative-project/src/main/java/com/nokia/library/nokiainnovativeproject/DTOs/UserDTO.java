@@ -24,8 +24,8 @@ public class UserDTO {
 	private String lastName;
 
 	@Email(message = "Email should be valid")
-	@NotBlank(message = "Email can't be null and can't contain whitespace")
-	@Size(min = 5, max = 255, message = "User email must be 10-40 characters long")
+	@NotBlank(message = "Email can't be empty")
+	@Size(max = 255, message = "The maximum size of the email is 255")
 	private String email;
 
 	@NotBlank(message = "Password can't be null and can't contain whitespace")

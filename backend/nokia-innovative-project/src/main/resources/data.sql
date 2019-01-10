@@ -109,8 +109,10 @@ INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES (
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('nubu', 7, 1, 'juj');
 INSERT INTO book (signature, book_details_id, book_status_id, comments) VALUES ('pook', 7, 1, 'is fine');
 
+INSERT INTO address (building, city) VALUES ('West Link', 'Wrocław');
+
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('user@user.com', 'User', 'User', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
+VALUES ('user@user.com', 'User', 'User', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('wojtek@wojtek.com', 'Wojtek', 'Wojtek', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
@@ -124,7 +126,6 @@ VALUES ('alex@alex.com', 'Alex', 'Alex', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('mikolaj@mikolaj.com', 'Mikolaj', 'Mikolaj', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
 
-INSERT INTO address (building, city) VALUES ('West Link', 'Wrocław');
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('admin@admin.com', 'Admin', 'Admin', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
 INSERT INTO role (role) VALUES ('ROLE_EMPLOYEE');

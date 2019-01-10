@@ -7,6 +7,7 @@ import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,12 +56,14 @@ public class UiController {
         return MessageInfo.success(userService.updateUser(id, userDTO), Arrays.asList("User updated successfully"));
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping(Mappings.USER + Mappings.ASSIGN_ADMIN)
     public ResponseEntity assignAdminRoleToUser (@PathVariable Long id) {
         return MessageInfo.success(userService.assignAdminRoleToUser(id),
                 Arrays.asList("The admin role has been successfully added"));
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping(Mappings.USER + Mappings.TAKE_ADMIN)
     public ResponseEntity takeAdminRoleFromUser(@PathVariable Long id) {
         return MessageInfo.success(userService.takeAdminRoleFromUser(id),
