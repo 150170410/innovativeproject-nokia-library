@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {Injectable, NgModule} from '@angular/core';
 import { routes } from './routes';
 import 'hammerjs';
 import { AppComponent } from './app.component';
@@ -13,7 +13,7 @@ import {
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import { ListviewComponent } from './components/listview/listview.component';
 import { BookService } from './services/book/book.service';
 import { PageNotFoundComponent } from './utils/components/page-not-found/page-not-found.component';
@@ -43,6 +43,18 @@ import { BookActionsComponent } from './components/book-actions/book-actions.com
 import { ManageHandoversComponent } from './components/admin-panel/admin-panel-sections/manage-handovers/manage-handovers.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { CookieService } from 'ngx-cookie-service';
+
+@Injectable()
+export class XhrInterceptor implements HttpInterceptor {
+
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    const xhr = req.clone({
+      headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
+    });
+    return next.handle(xhr);
+  }
+}
 
 @NgModule({
 	declarations: [
@@ -155,7 +167,8 @@ import { RegistrationComponent } from './components/registration/registration.co
 		MatPaginatorModule,
 		MatNativeDateModule
 	],
-	providers: [BookService, RestService,
+	providers: [BookService, RestService, CookieService,
+    { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true },
 		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } }],
 	bootstrap: [AppComponent],
 	entryComponents: [ConfirmationDialogComponent]

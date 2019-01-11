@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API_URL } from '../../config';
 import { Router } from '@angular/router';
 import { Authorities } from '../../models/database/entites/Authorities';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
 	providedIn: 'root'
@@ -13,7 +14,8 @@ export class AuthService {
 	URL = API_URL + '/api/v1/';
 
 	constructor(private http: HttpClient,
-				private router: Router) {
+				private router: Router,
+              private cookieService: CookieService) {
 	}
 
 	setHeaders() {
@@ -25,9 +27,16 @@ export class AuthService {
 		};
 	}
 
+	setSomething(url: string) {
+    this.http.get(API_URL + '/login', this.setHeaders()).toPromise().then(
+      (res: Response) => console.log(res));
+  }
+
 	async getOne(url: string) {
 	  try {
-      return await this.http.get<MessageInfo>(this.URL + url, this.setHeaders()).toPromise();
+      return await this.http.get(this.URL + url, this.setHeaders()).toPromise().then(res => {
+        return res;
+      });
     } catch (e) {
       sessionStorage.clear();
       sessionStorage.setItem('ROLE_ADMIN', 'false');
@@ -41,6 +50,7 @@ export class AuthService {
 	async loginUser() {
 
     const response: MessageInfo = await this.getOne('user') as MessageInfo;
+    //this.setSomething('user');
     if (response && response.object) {
       sessionStorage.setItem('authenticated', 'true');
       const roles: Authorities[] = response.object.authorities;
@@ -52,12 +62,13 @@ export class AuthService {
         }
       }
 
+      /*
       this.router.navigateByUrl('/homepage')
         .then(() => {
           sessionStorage.setItem('isSignedCorrectly', 'true');
           location.reload();
         });
-
+        */
     } else {
       sessionStorage.clear();
       sessionStorage.setItem('ROLE_ADMIN', 'false');
