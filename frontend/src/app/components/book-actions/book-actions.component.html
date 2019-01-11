@@ -1,5 +1,5 @@
 <ol>
-	<li *ngFor="let bookCopy of books;" class="book-item">
+	<li *ngFor="let bookCopy of booksUnlocked;" class="book-item">
 		<div class="signature">{{bookCopy.signature}}</div>
 
 		<button *ngIf="bookCopy.status.id === 1 && isAuth" mat-raised-button color="accent" class="button-spacer" (click)="borrowBook(bookCopy)">

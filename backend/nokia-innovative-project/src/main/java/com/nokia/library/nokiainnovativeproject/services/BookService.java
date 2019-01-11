@@ -99,14 +99,12 @@ public class BookService {
 	public Book lockBook(String signature) {
 		// TODO: add admin authorization, add condition about book status, can only equal 1, add  exceptions
 		Book bookToLock = bookRepository.findBySignature(signature);
-		System.out.println(bookToLock);
 		return changeState(bookToLock, BookStatusEnum.UNAVAILABLE.getStatusId(), 0, null);
 	}
 
 	public Book unlockBook(String signature) {
 		// TODO: add admin authorization, add condition about book status, can only equal 5, add exceptions
 		Book bookToUnlock = bookRepository.findBySignature(signature);
-		System.out.println(bookToUnlock);
 		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getStatusId(), 0, null);
 	}
 

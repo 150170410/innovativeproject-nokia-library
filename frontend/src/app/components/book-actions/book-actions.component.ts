@@ -14,6 +14,7 @@ export class BookActionsComponent implements OnInit {
 
 	isAuth: boolean;
 	@Input() books: Book[];
+	booksUnlocked: Book[] = [];
 	@Output() actionTaken = new EventEmitter<boolean>();
 
 	constructor(private http: RestService,
@@ -22,6 +23,11 @@ export class BookActionsComponent implements OnInit {
 
 	ngOnInit() {
 		this.isAuth = (sessionStorage.getItem('authenticated') === 'true');
+		this.books.forEach((b) =>{
+			if(b.status.id !== 5){
+				this.booksUnlocked.push(b);
+			}
+		})
 	}
 
 

@@ -143,15 +143,15 @@
 						<mat-icon>edit</mat-icon>
 						Edit
 					</button>
-					<button color="warn" mat-button (click)="removeBookCopy(bookCopy.id)" [disabled]="bookCopy.status.id !== 1">
+					<button color="warn" mat-button (click)="removeBookCopy(bookCopy.id)" [disabled]="bookCopy.status.id !== 1 && bookCopy.status.id !== 5">
 						<mat-icon>cancel</mat-icon>
 						Remove
 					</button>
-					<button *ngIf="bookCopy.status.id == 1" mat-button (click)="lockBook(bookCopy)">
+					<button *ngIf="bookCopy.status.id === 1" mat-button (click)="lockBook(bookCopy)">
 						<mat-icon>lock</mat-icon>
 						Lock
 					</button>
-					<button disabled *ngIf="bookCopy.status.id == 5" mat-button (click)="unlockBook(bookCopy)">
+					<button *ngIf="bookCopy.status.id === 5" mat-button (click)="unlockBook(bookCopy)">
 						<mat-icon>lock_open</mat-icon>
 						Unlock
 					</button>

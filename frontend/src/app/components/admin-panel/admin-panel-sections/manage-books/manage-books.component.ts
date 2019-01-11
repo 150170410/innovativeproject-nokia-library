@@ -171,10 +171,20 @@ export class ManageBooksComponent implements OnInit {
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
-
 	}
 
 	unlockBook(bookCopy) {
-
+		const body = {};
+		console.log(body);
+		this.http.save('books/unlock/' + bookCopy.signature, body).subscribe((response) => {
+			if (response.success) {
+				this.getBookCopies();
+				this.snackbar.snackSuccess('Book unlocked successfully!', 'OK');
+			} else {
+				this.snackbar.snackError('Error', 'OK');
+			}
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
 	}
 }

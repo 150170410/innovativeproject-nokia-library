@@ -57,8 +57,8 @@ public class BookController {
 	}
 
 	@PostMapping("/unlock/{signature}")
-	public ResponseEntity unlockBook(@PathVariable String signature, BindingResult bindingResult) {
-		MessageInfo.validateBindingResults(bindingResult);
+	public ResponseEntity unlockBook(@PathVariable String signature) {
+//		MessageInfo.validateBindingResults(bindingResult);
 		return MessageInfo.success(bookService.unlockBook(signature), Arrays.asList("Book unlocked successfully"));
 	}
 }
