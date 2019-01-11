@@ -63,6 +63,8 @@ public class BookDetailsService {
 		ModelMapper mapper = new ModelMapper();
 
 		List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
+		if(!books.isEmpty())
+			bookDetails.setIsRemovable(false);
 		List<BookWithoutBookDetails> bookWithoutBookDetails = new ArrayList<>();
 		for(Book book : books) {
 			bookWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
@@ -78,6 +80,7 @@ public class BookDetailsService {
 
 		ModelMapper mapper = new ModelMapper();
 		BookDetails bookDetails = mapper.map(bookDetailsDTO, BookDetails.class);
+		bookDetails.setIsRemovable(true);
 		return bookDetailsRepository.save(persistingRequiredEntities(bookDetails, bookDetailsDTO));
 	}
 
