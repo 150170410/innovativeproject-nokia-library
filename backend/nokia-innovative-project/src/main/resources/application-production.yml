@@ -4,14 +4,14 @@ spring:
       hibernate:
         enable_lazy_load_no_trans: true
         hbm2ddl:
-          auto: create-drop
+          auto: update
         dialect: org.hibernate.dialect.PostgreSQL94Dialect
         jdbc:
           lob:
             non_contextual_creation: true
       properties:
         higernate:
-          temp:
+          temp:s
             use_jdbc_metadata_defaults: false
     open-in-view: false
   servlet:
