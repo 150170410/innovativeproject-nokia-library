@@ -235,7 +235,7 @@
 						<mat-icon>edit</mat-icon>
 						Edit
 					</button>
-					<button color="warn" mat-button (click)="removeBookDetails(bookDetails.id)">
+					<button color="warn" mat-button (click)="removeBookDetails(bookDetails.id)" [disabled]="!bookDetails.isRemovable">
 						<mat-icon>cancel</mat-icon>
 						Remove
 					</button>
