@@ -160,7 +160,11 @@ public class RentalService {
 			throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_HANDED_OVER);
 		}
 		Book borrowedBook = rental.getBook();
-		bookService.changeState(borrowedBook, BookStatusEnum.BORROWED.getStatusId(), 0, 1L);
+		bookService.changeState(
+				borrowedBook,
+				BookStatusEnum.BORROWED.getStatusId(),
+				0,
+				1L);
 		rental.setHandOverDate(LocalDate.now());
 		rental.getBook().setAvailableDate(null);
 		return rentalRepository.save(rental);

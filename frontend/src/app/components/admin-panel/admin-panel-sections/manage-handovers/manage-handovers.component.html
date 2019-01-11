@@ -1,2 +1,60 @@
 <h1 style="color: red;">WORK IN PROGRESS</h1>
 <p>Here you can manage books awaiting to be picked up by users.</p>
+
+<div>
+	<div class="filter-paginator-wrapper">
+		<div class="filter">
+			<mat-form-field>
+				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+			</mat-form-field>
+		</div>
+		<div class="paginator">
+			<mat-paginator #paginatorCopies [pageSizeOptions]="[10, 20, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+		</div>
+	</div>
+	<table mat-table [dataSource]="dataSource" matSort>
+
+		<ng-container matColumnDef="signature">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Signature</th>
+			<td mat-cell *matCellDef="let bookCopy">{{bookCopy.signature}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="current_user">
+			<th mat-header-cell *matHeaderCellDef>Current user</th>
+			<td mat-cell *matCellDef="let bookCopy">Janusz Pawlacz</td>
+		</ng-container>
+
+		<ng-container matColumnDef="status">
+			<th mat-header-cell *matHeaderCellDef>Status</th>
+			<td mat-cell *matCellDef="let bookCopy" [ngClass]="{'st-available': bookCopy.status.id === 1, 'st-awaiting':bookCopy.status.id === 2,'st-borrowed':bookCopy.status.id === 3,'st-reserved':bookCopy.status.id === 4 }">{{bookCopy.status.statusName}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="bookDetails">
+			<th mat-header-cell *matHeaderCellDef>Book details</th>
+			<td mat-cell *matCellDef="let bookCopy"><b>{{bookCopy.bookDetails.title}}</b> by <i>{{bookCopy.bookDetails.authors | arrToStr:'author'}}</i></td>
+		</ng-container>
+
+		<ng-container matColumnDef="comments">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Comment</th>
+			<td mat-cell *matCellDef="let bookCopy">{{bookCopy.comments}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef>Actions</th>
+			<td mat-cell *matCellDef="let bookCopy">
+				<p>
+					<button color="primary" mat-button (click)="handoverBook(bookCopy)">
+						<mat-icon>forward</mat-icon>
+						Handover
+					</button>
+				</p>
+
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+	</table>
+
+</div>

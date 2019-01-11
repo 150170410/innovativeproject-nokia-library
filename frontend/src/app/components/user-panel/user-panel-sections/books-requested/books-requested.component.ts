@@ -75,7 +75,7 @@ export class BooksRequestedComponent implements OnInit {
 
 	requestBook(requestParams: FormGroup) {
 		const body = new BookToOrderDTO(requestParams.value.isbn, requestParams.value.title);
-		this.http.save('bookToOrder', body).subscribe((response) => {
+		this.http.save('bookToOrder/create', body).subscribe((response) => {
 			if (response.success) {
 				this.clearForm();
 				this.getRequestedBooks();

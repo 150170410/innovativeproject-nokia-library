@@ -57,7 +57,7 @@ export class ManageBooksComponent implements OnInit {
 		const body = new BookDTO(params.value.signature, this.selectedBookDetails.id, params.value.comments, 1);
 		console.log(body);
 		if (!this.toUpdate) {
-			this.http.save('books', body).subscribe((response) => {
+			this.http.save('books/create', body).subscribe((response) => {
 				if (response.success) {
 					this.clearForm();
 					this.getBookCopies();

@@ -50,7 +50,7 @@ export class RegistrationComponent implements OnInit {
 		const body = new UserDTO(params.value.name, params.value.surname, params.value.password,
 			params.value.email, null);
 
-		this.http.save('user', body).subscribe((response) => {
+		this.http.save('user/create', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('You\'ve registered successfully.', 'OK');
 				this.router.navigateByUrl('login');

@@ -36,7 +36,7 @@ export class RestService {
 	}
 
 	save(url: string, item: any): Observable<any> {
-		return this.http.post<any>(this.URL + url + '/create', item, this.setHeaders())
+		return this.http.post<any>(this.URL + url, item, this.setHeaders())
 		.pipe(
 			catchError(this.handleError)
 		);

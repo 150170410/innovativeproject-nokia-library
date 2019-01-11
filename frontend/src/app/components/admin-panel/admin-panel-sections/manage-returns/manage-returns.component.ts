@@ -22,18 +22,18 @@ export class ManageReturnsComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.getBookCopies()
+		this.getBookCopies();
 	}
 
-	returnBook() {
+	returnBook(book: Book) {
 
 	}
 
 	async getBookCopies() {
 		const response: MessageInfo = await this.http.getAll('books/getAll');
 		let borrowedBooks = [];
-		for(let i = 0; i < response.object.length; i++){
-			if(response.object[i].status.id === 2 || response.object[i].status.id === 3){
+		for (let i = 0; i < response.object.length; i++) {
+			if (response.object[i].status.id === 3) {
 				borrowedBooks.push(response.object[i])
 			}
 		}
