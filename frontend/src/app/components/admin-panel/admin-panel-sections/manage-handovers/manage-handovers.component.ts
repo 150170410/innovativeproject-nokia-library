@@ -13,12 +13,13 @@ import { Rental } from '../../../../models/database/entites/Rental';
 })
 export class ManageHandoversComponent implements OnInit {
 
+	rentalsAll: Rental[] = [];
 	rentals: Rental[] = [];
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
-	dataSource = new MatTableDataSource<Book>();
-	displayedColumns: string[] = ['signature', 'current_user', 'status', 'bookDetails', 'comments', 'actions'];
+	dataSource = new MatTableDataSource<Rental>();
+	displayedColumns: string[] = ['signature', 'current_user', 'owner', 'status', 'bookDetails', 'comments', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService,
@@ -27,20 +28,13 @@ export class ManageHandoversComponent implements OnInit {
 
 	ngOnInit() {
 		this.getRentals();
-		this.getBookCopies();
 	}
 
-	handoverBook(book: Book) {
+	handoverBook(rental: Rental) {
 		let body = {};
-		let id = 1;
-		for (let i = 0; i < this.rentals.length; i++) {
-			if (this.rentals[i].book.id == book.id) {
-				id = this.rentals[i].id;
-			}
-		}
-		this.http.save('rentals/handover/' + id, body).subscribe((response) => {
+		this.http.save('rentals/handover/' + rental.id, body).subscribe((response) => {
 			if (response.success) {
-				this.getBookCopies();
+				this.getRentals();
 				this.snackbar.snackSuccess('Book handover successful!', 'OK');
 			} else {
 				this.snackbar.snackError('Error', 'OK');
@@ -50,26 +44,23 @@ export class ManageHandoversComponent implements OnInit {
 		});
 	}
 
-	async getBookCopies() {
-		const response: MessageInfo = await this.http.getAll('books/getAll');
-		let borrowedBooks = [];
-		for (let i = 0; i < response.object.length; i++) {
-			if (response.object[i].status.id === 2) {
-				borrowedBooks.push(response.object[i])
+
+
+	async getRentals() {
+		const response: MessageInfo = await this.http.getAll('rentals/getAll');
+		this.rentalsAll = response.object;
+		for (let i = 0; i < this.rentalsAll.length; i++) {
+			const id = this.rentalsAll[i].book.status.id;
+			if (id == 2 || id == 4) {
+				this.rentals.push(this.rentalsAll[i]);
 			}
 		}
-		this.dataSource = new MatTableDataSource(borrowedBooks.reverse());
+		this.dataSource = new MatTableDataSource(this.rentals.reverse());
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
-	}
-
-	async getRentals() {
-		const response: MessageInfo = await this.http.getAll('rentals/getAll');
-		this.rentals = response.object;
-		console.log(this.rentals);
 	}
 
 	applyFilter(filterValue: string) {

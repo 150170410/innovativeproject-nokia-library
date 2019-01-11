@@ -91,8 +91,7 @@ public class RentalService {
 				borrowedBook,
 				BookStatusEnum.AWAITING2.getStatusId(),
 				DaysDeltaEnum.PLUSMONTH.getDays(),
-				1L));
-		rental.setBook(bookService.getBookById(rentalDTO.getBookId()));
+				user));
 		rental.setUser(user);
 
 		return rentalRepository.save(rental);
@@ -164,7 +163,7 @@ public class RentalService {
 				borrowedBook,
 				BookStatusEnum.BORROWED.getStatusId(),
 				0,
-				1L);
+				user);
 		rental.setHandOverDate(LocalDate.now());
 		rental.getBook().setAvailableDate(null);
 		return rentalRepository.save(rental);
