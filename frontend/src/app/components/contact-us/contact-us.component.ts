@@ -15,7 +15,6 @@ export class ContactUsComponent implements OnInit {
 	contactParams: FormGroup;
 	categories = ['Report a bug', 'Request new feature', 'I don\'t like...',' Something is unclear', 'Other'];
 	sendingFailed = false;
-	errorMessage;
 
 	constructor(private formBuilder: FormBuilder,
 				public dialogRef: MatDialogRef<ContactUsComponent>,

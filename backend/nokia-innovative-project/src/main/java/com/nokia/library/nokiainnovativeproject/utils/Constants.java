@@ -2,10 +2,8 @@ package com.nokia.library.nokiainnovativeproject.utils;
 
 import lombok.AllArgsConstructor;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 @AllArgsConstructor
 public class Constants {

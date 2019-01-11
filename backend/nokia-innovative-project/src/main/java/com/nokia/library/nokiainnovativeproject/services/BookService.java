@@ -78,16 +78,19 @@ public class BookService {
 		bookRepository.delete(book);
 	}
 
-	public Book changeStatus(Book book, Long newStatusId){
-		Long oldStatusId = book.getStatus().getId();
+	public Book changeState(Book book, Long newStatusId, Integer days, Long newUserId) {
 		BookStatus newStatus = bookStatusService.getBookStatusById(newStatusId);
 		book.setStatus(newStatus);
-		if(oldStatusId == 1 && newStatusId == 2){
+		if (days == 30) {
 			book.setAvailableDate(LocalDate.now().plusMonths(1));
-		} else if(oldStatusId == 2 && newStatusId == 3){
-			book.setAvailableDate(LocalDate.now().plusMonths(1));
+		} else if (days == -30) {
+			book.setAvailableDate(LocalDate.now().minusMonths(1));
+		} else if (0 < days && days < 30) {
+			book.setAvailableDate(LocalDate.now().plusDays(1));
+		} else if(-30 < days && days < 0){
+			book.setAvailableDate(LocalDate.now().minusDays(1));
 		}
-		// TODO: finish status changes logic here
+		// TODO: finish state changes here, also change current owner
 		return bookRepository.save(book);
 	}
 }
