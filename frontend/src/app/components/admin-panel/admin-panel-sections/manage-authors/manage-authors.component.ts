@@ -4,7 +4,7 @@ import { RestService } from '../../../../services/rest/rest.service';
 import { MessageInfo } from '../../../../models/MessageInfo';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorDTO } from '../../../../models/database/DTOs/AuthorDTO';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 import { ConfirmationDialogService } from '../../../../services/confirmation-dialog/confirmation-dialog.service';
 
@@ -23,7 +23,7 @@ export class ManageAuthorsComponent implements OnInit {
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Author>();
 	displayedAuthorsColumn: string[] = ['authorFullName', 'actions'];
-
+	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
@@ -78,6 +78,7 @@ export class ManageAuthorsComponent implements OnInit {
 		const response: MessageInfo = await this.http.getAll('author/getAll');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
+		this.dataSource.sort = this.sort;
 	}
 
 	editAuthor(author: Author) {

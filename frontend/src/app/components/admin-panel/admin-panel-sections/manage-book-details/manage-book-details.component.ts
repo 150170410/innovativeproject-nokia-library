@@ -9,7 +9,7 @@ import { Author } from '../../../../models/database/entites/Author';
 import { BookDetails } from '../../../../models/database/entites/BookDetails';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
 import { API_URL } from '../../../../config';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
@@ -65,7 +65,8 @@ export class ManageBookDetailsComponent implements OnInit {
 	// table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookDetails>();
-	displayedBookDetailColumns: string[] = ['title', 'authors', 'categories', 'description', 'coverURL', 'isbn', 'publicationDate', 'actions'];
+	displayedBookDetailColumns: string[] = ['isbn', 'title', 'authors', 'categories', 'description', 'coverURL', 'publicationDate', 'actions'];
+	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
@@ -161,10 +162,10 @@ export class ManageBookDetailsComponent implements OnInit {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
-
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
+		this.dataSource.sort = this.sort;
 	}
 
 	uploadFile(event) {

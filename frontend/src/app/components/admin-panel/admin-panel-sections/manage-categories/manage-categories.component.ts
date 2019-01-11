@@ -4,7 +4,7 @@ import { MessageInfo } from '../../../../models/MessageInfo';
 import { BookCategory } from '../../../../models/database/entites/BookCategory';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookCategoryDTO } from '../../../../models/database/DTOs/BookCategoryDTO';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 import { ConfirmationDialogService } from '../../../../services/confirmation-dialog/confirmation-dialog.service';
 
@@ -23,6 +23,7 @@ export class ManageCategoriesComponent implements OnInit {
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookCategory>();
 	displayedCategoryColumns: string[] = ['bookCategoryName', 'actions'];
+	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
@@ -76,6 +77,7 @@ export class ManageCategoriesComponent implements OnInit {
 		const response: MessageInfo = await this.http.getAll('bookCategory/getAll');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
+		this.dataSource.sort = this.sort;
 	}
 
 	editCategory(category: BookCategory) {

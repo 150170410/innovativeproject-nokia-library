@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Book } from '../../../../models/database/entites/Book';
 import { MessageInfo } from '../../../../models/MessageInfo';
 import { RestService } from '../../../../services/rest/rest.service';
-import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
 	selector: 'app-manage-returns',
@@ -17,6 +16,7 @@ export class ManageReturnsComponent implements OnInit {
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Book>();
 	displayedColumns: string[] = ['signature', 'current_user', 'status', 'bookDetails', 'comments', 'actions'];
+	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService) {
 	}
@@ -42,6 +42,7 @@ export class ManageReturnsComponent implements OnInit {
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
+		this.dataSource.sort = this.sort;
 	}
 
 	applyFilter(filterValue: string) {

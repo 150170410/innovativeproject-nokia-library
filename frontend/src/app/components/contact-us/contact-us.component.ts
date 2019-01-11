@@ -13,7 +13,7 @@ import { SnackbarService } from '../../services/snackbar/snackbar.service';
 export class ContactUsComponent implements OnInit {
 
 	contactParams: FormGroup;
-	categories = ['Report a bug', 'Request new feature', 'I don\'t like...', 'Other'];
+	categories = ['Report a bug', 'Request new feature', 'I don\'t like...',' Something is unclear', 'Other'];
 	sendingFailed = false;
 	errorMessage;
 

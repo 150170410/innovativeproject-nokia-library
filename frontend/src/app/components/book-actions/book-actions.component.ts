@@ -12,7 +12,7 @@ import { ReservationDTO } from '../../models/database/DTOs/ReservationDTO';
 })
 export class BookActionsComponent implements OnInit {
 
-  isAuth: boolean;
+	isAuth: boolean;
 	@Input() books: Book[];
 	@Output() actionTaken = new EventEmitter<boolean>();
 
@@ -21,7 +21,7 @@ export class BookActionsComponent implements OnInit {
 	}
 
 	ngOnInit() {
-    this.isAuth = (sessionStorage.getItem('authenticated') === 'true');
+		this.isAuth = (sessionStorage.getItem('authenticated') === 'true');
 	}
 
 
@@ -30,10 +30,16 @@ export class BookActionsComponent implements OnInit {
 		this.http.save('rentals', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Book borrowed successfully!', 'OK');
+				const justBorrowed = this.books.findIndex((book: Book) => {
+					return book.id == bookCopy.id;
+				}, bookCopy);
+				let now: Date = new Date();
+				this.books[justBorrowed].availableDate = now;
+				this.books[justBorrowed].availableDate.setMonth(now.getMonth() + 1);
+				this.books[justBorrowed].status.id = 2;
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}
-
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
