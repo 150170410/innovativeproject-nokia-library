@@ -12,4 +12,5 @@ export class BookDetails {
 	coverPictureUrl: string;
 	publicationDate: Date;
 	description: string;
+	isRemovable: boolean;
 }

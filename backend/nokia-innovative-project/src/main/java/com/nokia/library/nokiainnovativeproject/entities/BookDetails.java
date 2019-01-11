@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -63,4 +64,6 @@ public class BookDetails implements Serializable {
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
 	protected List<BookCategory> categories;
 
+	@ColumnDefault("true")
+	protected  Boolean isRemovable;
 }
