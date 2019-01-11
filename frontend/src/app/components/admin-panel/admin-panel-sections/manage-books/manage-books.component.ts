@@ -158,7 +158,19 @@ export class ManageBooksComponent implements OnInit {
 		this.clearForm();
 	}
 
-	lockBook(bookCopy) {
+	lockBook(bookCopy: Book) {
+		const body = {};
+		console.log(body);
+		this.http.save('books/lock/' + bookCopy.signature, body).subscribe((response) => {
+			if (response.success) {
+				this.getBookCopies();
+				this.snackbar.snackSuccess('Book locked successfully!', 'OK');
+			} else {
+				this.snackbar.snackError('Error', 'OK');
+			}
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
 
 	}
 

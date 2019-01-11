@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class BooksBorrowedComponent implements OnInit {
 
-	borrowings: Rental[] = [];
+	rentals: Rental[] = [];
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
@@ -31,9 +31,17 @@ export class BooksBorrowedComponent implements OnInit {
 		this.getBorrowedBooks();
 	}
 
+	cancelAwaiting(rental: Rental){
+
+	}
+
+	prolong(rental: Rental) {
+
+	}
+
 	async getBorrowedBooks() {
 		const response = await this.http.getAll('rentals/getAll');
-		this.borrowings = response.object;
+		this.rentals = response.object;
 		this.dataSource = new MatTableDataSource(response.object);
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
@@ -51,7 +59,5 @@ export class BooksBorrowedComponent implements OnInit {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	prolong(borrowing) {
 
-	}
 }

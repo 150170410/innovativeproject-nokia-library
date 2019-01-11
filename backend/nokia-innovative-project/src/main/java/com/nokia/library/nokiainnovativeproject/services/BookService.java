@@ -8,6 +8,7 @@ import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundExcep
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
+import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
@@ -88,10 +89,25 @@ public class BookService {
 			book.setAvailableDate(LocalDate.now().minusMonths(1));
 		} else if (0 < days && days < 30) {
 			book.setAvailableDate(LocalDate.now().plusDays(days));
-		} else if(-30 < days && days < 0){
+		} else if (-30 < days && days < 0) {
 			book.setAvailableDate(LocalDate.now().minusDays(days));
 		}
 		// TODO: finish state changes here, also change current owner
 		return bookRepository.save(book);
 	}
+
+	public Book lockBook(String signature) {
+		// TODO: add admin authorization, add condition about book status, can only equal 1, add  exceptions
+		Book bookToLock = bookRepository.findBySignature(signature);
+		System.out.println(bookToLock);
+		return changeState(bookToLock, BookStatusEnum.UNAVAILABLE.getStatusId(), 0, null);
+	}
+
+	public Book unlockBook(String signature) {
+		// TODO: add admin authorization, add condition about book status, can only equal 5, add exceptions
+		Book bookToUnlock = bookRepository.findBySignature(signature);
+		System.out.println(bookToUnlock);
+		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getStatusId(), 0, null);
+	}
+
 }

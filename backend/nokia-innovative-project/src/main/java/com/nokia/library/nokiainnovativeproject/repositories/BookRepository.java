@@ -19,4 +19,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
    List<Book> getBooksByBookDetailsId(Long id);
 
    Long countBooksByBookDetails(BookDetails bookDetails);
+
+   Book findBySignature(String signature);
 }

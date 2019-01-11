@@ -147,7 +147,7 @@
 						<mat-icon>cancel</mat-icon>
 						Remove
 					</button>
-					<button disabled *ngIf="bookCopy.status.id == 1" mat-button (click)="lockBook(bookCopy)">
+					<button *ngIf="bookCopy.status.id == 1" mat-button (click)="lockBook(bookCopy)">
 						<mat-icon>lock</mat-icon>
 						Lock
 					</button>
