@@ -7,7 +7,7 @@ import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.ReservationRepository;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import com.nokia.library.nokiainnovativeproject.utils.ReservationByDateComparator;
-import com.nokia.library.nokiainnovativeproject.utils.TimeDeltaEnum;
+import com.nokia.library.nokiainnovativeproject.utils.DaysDeltaEnum;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes;
-import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 
 @Service
 @Transactional
@@ -91,7 +90,7 @@ public class RentalService {
 		rental.setBook(bookService.changeState(
 				borrowedBook,
 				BookStatusEnum.AWAITING2.getStatusId(),
-				TimeDeltaEnum.PLUSMONTH.getDays(),
+				DaysDeltaEnum.PLUSMONTH.getDays(),
 				1L));
 		rental.setBook(bookService.getBookById(rentalDTO.getBookId()));
 		rental.setUser(user);
@@ -160,6 +159,8 @@ public class RentalService {
 		if (rental.getHandOverDate() != null) {
 			throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_HANDED_OVER);
 		}
+		Book borrowedBook = rental.getBook();
+		bookService.changeState(borrowedBook, BookStatusEnum.BORROWED.getStatusId(), 0, 1L);
 		rental.setHandOverDate(LocalDate.now());
 		rental.getBook().setAvailableDate(null);
 		return rentalRepository.save(rental);

@@ -1,12 +1,12 @@
 package com.nokia.library.nokiainnovativeproject.utils;
 
-public enum TimeDeltaEnum {
+public enum DaysDeltaEnum {
 	PLUSMONTH(30),
 	MINUSMONTH(-30);
 
 	private Integer days;
 
-	TimeDeltaEnum(Integer days) {
+	DaysDeltaEnum(Integer days) {
 		this.days = days;
 	}
 

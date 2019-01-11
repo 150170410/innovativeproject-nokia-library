@@ -78,7 +78,7 @@ public class BookService {
 		bookRepository.delete(book);
 	}
 
-	public Book changeState(Book book, Long newStatusId, Integer days, Long newUserId) {
+	public Book changeState(Book book, Long newStatusId, Integer days, Long newOwnerId) {
 		BookStatus newStatus = bookStatusService.getBookStatusById(newStatusId);
 		book.setStatus(newStatus);
 		if (days == 30) {
@@ -86,9 +86,9 @@ public class BookService {
 		} else if (days == -30) {
 			book.setAvailableDate(LocalDate.now().minusMonths(1));
 		} else if (0 < days && days < 30) {
-			book.setAvailableDate(LocalDate.now().plusDays(1));
+			book.setAvailableDate(LocalDate.now().plusDays(days));
 		} else if(-30 < days && days < 0){
-			book.setAvailableDate(LocalDate.now().minusDays(1));
+			book.setAvailableDate(LocalDate.now().minusDays(days));
 		}
 		// TODO: finish state changes here, also change current owner
 		return bookRepository.save(book);

@@ -68,3 +68,28 @@ th, tr, td {
   justify-content: center;
   text-align: center;
 }
+
+.st-available {
+  color: white;
+  background-color: rgba(40, 167, 69, 0.7);
+}
+
+.st-awaiting {
+  color: black;
+  background-color: rgba(255, 193, 7, 0.7);
+}
+
+.st-borrowed {
+  color: white;
+  background-color: rgba(0, 123, 255, 0.7);
+}
+
+.st-reserved {
+  color: white;
+  background-color: rgba(220, 53, 69, 0.7);
+}
+
+.st-unavailable {
+  color: white;
+  background-color: rgba(108, 117, 125, 0.7);
+}
