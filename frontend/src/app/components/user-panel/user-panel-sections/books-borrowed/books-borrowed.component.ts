@@ -28,18 +28,31 @@ export class BooksBorrowedComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.getBorrowedBooks();
+		this.getRentals();
 	}
 
-	cancelAwaiting(rental: Rental){
-
+	async cancelAwaiting(rental: Rental){
+		await this.confirmService.openDialog('Are you sure you want to cancel?').subscribe((result) => {
+			if (result) {
+				this.http.remove('rentals', rental.id).subscribe((response) => {
+					if (response.success) {
+						this.snackbar.snackSuccess('Book copy removed successfully!', 'OK');
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+					this.getRentals();
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
+			}
+		})
 	}
 
 	prolong(rental: Rental) {
 
 	}
 
-	async getBorrowedBooks() {
+	async getRentals() {
 		const response = await this.http.getAll('rentals/getAll');
 		this.rentals = response.object;
 		this.dataSource = new MatTableDataSource(response.object);

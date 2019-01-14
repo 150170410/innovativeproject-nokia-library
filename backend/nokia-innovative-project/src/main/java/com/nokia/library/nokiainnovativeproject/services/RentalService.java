@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -119,7 +120,38 @@ public class RentalService {
 
 	public Rental returnRental(Long id) {
 		//TODO: ADD ADMIN AUTHENTICATION
+		User user = userService.getLoggedInUser();
+		if (user == null) {
+			List<Role> userLoggedInRoles = user.getRoles();
+			boolean isAuthorized = false;
+			for (Role role : userLoggedInRoles) {
+				if (role.getRole().equals("ROLE_ADMIN")) {
+					isAuthorized = true;
+				}
+			}
+			if (!isAuthorized) {
+				throw new AuthorizationException();
+			}
+		}
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+		Book borrowedBook = rental.getBook();
+
+		List<User> usersQueue = new ArrayList<>();
+		if (usersQueue.isEmpty()) {
+			bookService.changeState(
+					borrowedBook,
+					BookStatusEnum.AVAILABLE.getStatusId(),
+					0,
+					user);
+		} else {
+			bookService.changeState(
+					borrowedBook,
+					BookStatusEnum.RESERVED.getStatusId(),
+					0,
+					user);
+		}
+
+
 		if (!rental.getIsCurrent()) {
 			throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
 		}
@@ -130,8 +162,26 @@ public class RentalService {
 
 	public void deleteRental(Long id) {
 		//TODO: ADD USER AUTHENTICATION
+		User user = userService.getLoggedInUser();
+		if (user == null) {
+			List<Role> userLoggedInRoles = user.getRoles();
+			boolean isAuthorized = false;
+			for (Role role : userLoggedInRoles) {
+				if (role.getRole().equals("ROLE_USER")) {
+					isAuthorized = true;
+				}
+			}
+			if (!isAuthorized) {
+				throw new AuthorizationException();
+			}
+		}
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
-		rental.getBook().setAvailableDate(null);
+		Book borrowedBook = rental.getBook();
+		bookService.changeState(
+				borrowedBook,
+				BookStatusEnum.AVAILABLE.getStatusId(),
+				0,
+				user);
 		if (rental.getHandOverDate() != null) {
 			throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_HANDED_OVER);
 		}
