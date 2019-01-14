@@ -11,9 +11,11 @@ import { MessageInfo } from '../../models/MessageInfo';
 })
 export class ListviewComponent implements OnInit {
 
-	books: any;
-	allBooks: BookDetails[] = [];
+	booksAll: BookDetails[] = [];
+	books: BookDetails[] = [];
 	listIsLoading = false;
+
+	value = '';
 
 	constructor(private bookDetailsService: BookDetailsService, private http: RestService) {
 	}
@@ -22,11 +24,17 @@ export class ListviewComponent implements OnInit {
 		this.getBooksDetails();
 	}
 
+	searchBooks(val) {
+		this.books = this.booksAll.filter(b => JSON.stringify(b).toLowerCase().includes(val.toLowerCase()))
+		// .map(b => Object.assign({}, b));
+	}
+
 	async getBooksDetails() {
 		this.listIsLoading = true;
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
-		this.allBooks = response.object.sort().reverse();
+		this.booksAll = response.object.sort().reverse();
 		this.listIsLoading = false;
+		this.books = this.booksAll;
 	}
 
 }

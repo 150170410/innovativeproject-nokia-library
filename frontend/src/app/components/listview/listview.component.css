@@ -42,3 +42,7 @@ table {
 .list-container{
 	min-height: 90%;
 }
+
+.search-field{
+	width: 300px;
+}

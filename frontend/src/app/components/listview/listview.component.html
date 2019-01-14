@@ -2,6 +2,13 @@
 <div *ngIf="listIsLoading">
 	<mat-spinner></mat-spinner>
 </div>
-<div *ngFor="let book of allBooks">
+<mat-form-field class="search-field">
+	<input #search matInput type="text" placeholder="Search for a book" [(ngModel)]="value">
+	<button mat-button matSuffix (click)="searchBooks(search.value)">
+		<mat-icon>search</mat-icon>
+	</button>
+</mat-form-field>
+
+<div *ngFor="let book of books">
 	<app-listview-item [bookDetails]="book"></app-listview-item>
 </div>
