@@ -48,7 +48,7 @@ public class RentalService {
 		return rental;
 	}
 
-	public List<Rental> getRentalsByUser( ) {
+	public List<Rental> getRentalsByUser() {
 		User user = userService.getLoggedInUser();
 		if (user == null) {
 			List<Role> userLoggedInRoles = user.getRoles();

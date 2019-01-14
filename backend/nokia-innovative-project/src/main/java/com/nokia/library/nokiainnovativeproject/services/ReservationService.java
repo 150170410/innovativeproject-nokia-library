@@ -3,6 +3,7 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.ReservationDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Rental;
 import com.nokia.library.nokiainnovativeproject.entities.Reservation;
+import com.nokia.library.nokiainnovativeproject.entities.Role;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
 import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.AuthorizationException;
@@ -48,6 +49,23 @@ public class ReservationService {
 
     public List<Reservation> getReservationsByUserId(Long userId) {
         return reservationRepository.findByUserId(userId);
+    }
+
+    public List<Reservation> getReservationsByUser() {
+		User user = userService.getLoggedInUser();
+		if (user == null) {
+			List<Role> userLoggedInRoles = user.getRoles();
+			boolean isAuthorized = false;
+			for (Role role : userLoggedInRoles) {
+				if (role.getRole().equals("ROLE_USER")) {
+					isAuthorized = true;
+				}
+			}
+			if (!isAuthorized) {
+				throw new AuthorizationException();
+			}
+		}
+        return reservationRepository.findByUserId(user.getId());
     }
 
     public List<Reservation> getReservationsByBookId(Long bookId) {
