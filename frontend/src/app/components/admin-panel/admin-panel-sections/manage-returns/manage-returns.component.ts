@@ -39,6 +39,7 @@ export class ManageReturnsComponent implements OnInit {
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}
+			this.getRentals();
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
@@ -47,6 +48,7 @@ export class ManageReturnsComponent implements OnInit {
 	async getRentals() {
 		const response: MessageInfo = await this.http.getAll('rentals/getAll');
 		this.rentalsAll = response.object;
+		this.rentals = [];
 		for (let i = 0; i < this.rentalsAll.length; i++) {
 			if (this.rentalsAll[i].book.status.id == 3) {
 				this.rentals.push(this.rentalsAll[i]);

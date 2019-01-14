@@ -20,7 +20,7 @@ import java.util.Date;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Rental implements Serializable {
 
-	public Rental(){
+	public Rental() {
 		this.isCurrent = true;
 		this.returnDate = LocalDate.now().plusMonths(1);
 	}
@@ -34,7 +34,7 @@ public class Rental implements Serializable {
 	@Setter(AccessLevel.NONE)
 	private Date rentalDate;
 
-	private Boolean isCurrent;
+	private Boolean isCurrent = true;
 
 	private LocalDate returnDate;
 	private LocalDate handOverDate;

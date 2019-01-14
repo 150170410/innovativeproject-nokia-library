@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class BooksBorrowedComponent implements OnInit {
 
 	rentals: Rental[] = [];
+	rentalsAll: Rental[] = [];
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
@@ -31,12 +32,12 @@ export class BooksBorrowedComponent implements OnInit {
 		this.getRentals();
 	}
 
-	async cancelAwaiting(rental: Rental){
+	async cancelAwaiting(rental: Rental) {
 		await this.confirmService.openDialog('Are you sure you want to cancel?').subscribe((result) => {
 			if (result) {
 				this.http.remove('rentals', rental.id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Book copy removed successfully!', 'OK');
+						this.snackbar.snackSuccess('Borrowing cancelled successfully!', 'OK');
 					} else {
 						this.snackbar.snackError('Error', 'OK');
 					}
@@ -53,9 +54,13 @@ export class BooksBorrowedComponent implements OnInit {
 	}
 
 	async getRentals() {
-		const response = await this.http.getAll('rentals/getAll');
-		this.rentals = response.object;
-		this.dataSource = new MatTableDataSource(response.object);
+		const response = await this.http.getAll('rentals/user');
+		this.rentalsAll = response.object;
+		console.log(this.rentalsAll);
+		this.rentals = this.rentalsAll.filter((r) => {
+			r.isCurrent
+		});
+		this.dataSource = new MatTableDataSource(this.rentals);
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());

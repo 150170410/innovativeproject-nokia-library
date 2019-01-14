@@ -48,8 +48,21 @@ public class RentalService {
 		return rental;
 	}
 
-	public List<Rental> getRentalsByUserId(Long userId) {
-		List<Rental> rentals = rentalRepository.findByUserId(userId);
+	public List<Rental> getRentalsByUser( ) {
+		User user = userService.getLoggedInUser();
+		if (user == null) {
+			List<Role> userLoggedInRoles = user.getRoles();
+			boolean isAuthorized = false;
+			for (Role role : userLoggedInRoles) {
+				if (role.getRole().equals("ROLE_USER")) {
+					isAuthorized = true;
+				}
+			}
+			if (!isAuthorized) {
+				throw new AuthorizationException();
+			}
+		}
+		List<Rental> rentals = rentalRepository.findByUserId(user.getId());
 		for (Rental rental : rentals) {
 			Hibernate.initialize(rental.getBook());
 			Hibernate.initialize(rental.getUser());
@@ -134,18 +147,16 @@ public class RentalService {
 			}
 		}
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
-		Book borrowedBook = rental.getBook();
-
 		List<User> usersQueue = new ArrayList<>();
 		if (usersQueue.isEmpty()) {
 			bookService.changeState(
-					borrowedBook,
+					rental.getBook(),
 					BookStatusEnum.AVAILABLE.getStatusId(),
 					0,
 					user);
 		} else {
 			bookService.changeState(
-					borrowedBook,
+					rental.getBook(),
 					BookStatusEnum.RESERVED.getStatusId(),
 					0,
 					user);
@@ -176,9 +187,8 @@ public class RentalService {
 			}
 		}
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
-		Book borrowedBook = rental.getBook();
 		bookService.changeState(
-				borrowedBook,
+				rental.getBook(),
 				BookStatusEnum.AVAILABLE.getStatusId(),
 				0,
 				user);
@@ -208,9 +218,8 @@ public class RentalService {
 		if (rental.getHandOverDate() != null) {
 			throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_HANDED_OVER);
 		}
-		Book borrowedBook = rental.getBook();
 		bookService.changeState(
-				borrowedBook,
+				rental.getBook(),
 				BookStatusEnum.BORROWED.getStatusId(),
 				0,
 				user);

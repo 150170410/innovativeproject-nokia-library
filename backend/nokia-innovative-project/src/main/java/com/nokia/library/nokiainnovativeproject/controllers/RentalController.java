@@ -30,9 +30,9 @@ public class RentalController {
         return MessageInfo.success(rentalService.getRentalById(id), Arrays.asList("Rental with ID = " + id.toString()));
     }
 
-    @GetMapping(USERS + RENTALS + GET_ONE)
-    public ResponseEntity getRentalsByUserId(@PathVariable Long id){
-        return MessageInfo.success(rentalService.getRentalsByUserId(id), Arrays.asList("Rentals with UserID = " + id.toString()));
+    @GetMapping(RENTALS + USER)
+    public ResponseEntity getRentalsByUserId(){
+        return MessageInfo.success(rentalService.getRentalsByUser(), Arrays.asList("Rentals with UserID = "));
     }
 
     @GetMapping(BOOKS + RENTALS + GET_ONE)
@@ -46,7 +46,7 @@ public class RentalController {
         return MessageInfo.success(rentalService.createRental(rentalDTO), Arrays.asList("Rental created successfully"));
     }
 
-    @PostMapping(RENTALS + UPDATE)
+    @PostMapping(RENTALS + PROLONG)
     public ResponseEntity prolongRental(@PathVariable Long id){
         return MessageInfo.success(rentalService.prolongRental(id), Arrays.asList("Rental updated successfully"));
     }

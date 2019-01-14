@@ -43,6 +43,7 @@ import { BookActionsComponent } from './components/book-actions/book-actions.com
 import { ManageHandoversComponent } from './components/admin-panel/admin-panel-sections/manage-handovers/manage-handovers.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { SnackbarService } from './services/snackbar/snackbar.service';
 
 @NgModule({
 	declarations: [
@@ -155,7 +156,7 @@ import { RegistrationComponent } from './components/registration/registration.co
 		MatPaginatorModule,
 		MatNativeDateModule
 	],
-	providers: [BookService, RestService,
+	providers: [BookService, RestService, SnackbarService,
 		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } }],
 	bootstrap: [AppComponent],
 	entryComponents: [ConfirmationDialogComponent]
