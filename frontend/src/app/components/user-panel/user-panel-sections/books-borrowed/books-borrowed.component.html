@@ -21,7 +21,9 @@
 
 		<ng-container matColumnDef="status">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-			<td mat-cell *matCellDef="let borrowing" [ngClass]="{'st-awaiting':borrowing.book.status.id === 2,'st-borrowed':borrowing.book.status.id === 3,'st-reserved':borrowing.book.status.id === 4 }">{{borrowing.book.status.statusName}}</td>
+			<td mat-cell *matCellDef="let borrowing" [ngClass]="{'st-available':borrowing.book.status.id === 1, 'st-awaiting':borrowing.book.status.id === 2,'st-borrowed':borrowing.book.status.id === 3,'st-reserved':borrowing.book.status.id === 4,'st-unavailable':borrowing.book.status.id === 5 }">
+				{{borrowing.book.status.statusName}}
+			</td>
 		</ng-container>
 
 		<ng-container matColumnDef="rentalDate">
@@ -50,9 +52,7 @@
 						<mat-icon>info</mat-icon>
 						Book info
 					</button>
-
 				</p>
-
 			</td>
 		</ng-container>
 

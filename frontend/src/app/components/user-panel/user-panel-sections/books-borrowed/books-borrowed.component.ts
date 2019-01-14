@@ -56,10 +56,8 @@ export class BooksBorrowedComponent implements OnInit {
 	async getRentals() {
 		const response = await this.http.getAll('rentals/user');
 		this.rentalsAll = response.object;
-		console.log(this.rentalsAll);
-		this.rentals = this.rentalsAll.filter((r) => {
-			r.isCurrent
-		});
+		this.rentals = this.rentalsAll.filter(r => r.isCurrent).map(r => Object.assign({}, r));
+
 		this.dataSource = new MatTableDataSource(this.rentals);
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
@@ -76,6 +74,4 @@ export class BooksBorrowedComponent implements OnInit {
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
-
-
 }
