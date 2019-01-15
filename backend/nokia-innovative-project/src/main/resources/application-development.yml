@@ -26,3 +26,4 @@ spring:
      max-request-size: -1
 server:
   port: 8081
+fe_url: http://localhost:4200

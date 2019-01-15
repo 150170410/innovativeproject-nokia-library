@@ -3,6 +3,7 @@ package com.nokia.library.nokiainnovativeproject.config;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 
 import com.nokia.library.nokiainnovativeproject.services.UserService;
+import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -71,6 +72,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .and()
-                .logout().deleteCookies("JSESSIONID");
+                .logout().logoutSuccessUrl("/callback").invalidateHttpSession(true).deleteCookies("JSESSIONID");
     }
 }

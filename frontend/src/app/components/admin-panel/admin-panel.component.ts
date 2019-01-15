@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthService} from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-admin-panel',
@@ -10,14 +11,21 @@ export class AdminPanelComponent implements OnInit {
   isAuth = false;
   role_admin = false;
   role_employee = false;
+  is_loaded = false;
 
-  constructor() {
-    this.isAuth = (sessionStorage.getItem('authenticated') === 'true');
-    this.role_admin = (sessionStorage.getItem('ROLE_ADMIN') === 'true');
-    this.role_employee = (sessionStorage.getItem('ROLE_EMPLOYEE') === 'true');
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
+    this.initAuthVariables();
   }
 
+  initAuthVariables() {
+    this.authService.isDataActual().then(() => {
+      this.isAuth = this.authService.isAuthenticated();
+      this.role_admin = this.authService.isAdmin();
+      this.role_employee = this.authService.isUser();
+      this.is_loaded = false;
+    });
+  }
 }
