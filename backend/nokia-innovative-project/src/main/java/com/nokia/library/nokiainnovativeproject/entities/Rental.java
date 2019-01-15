@@ -35,6 +35,7 @@ public class Rental implements Serializable {
 	private Date rentalDate;
 
 	private Boolean isCurrent = true;
+	private Boolean wasProlonged = false;
 
 	private LocalDate returnDate;
 	private LocalDate handOverDate;

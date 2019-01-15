@@ -49,6 +49,7 @@ export class ManageHandoversComponent implements OnInit {
 	async getRentals() {
 		const response: MessageInfo = await this.http.getAll('rentals/getAll');
 		this.rentalsAll = response.object;
+		this.rentals = [];
 		for (let i = 0; i < this.rentalsAll.length; i++) {
 			const id = this.rentalsAll[i].book.status.id;
 			if (id == 2 || id == 4) {

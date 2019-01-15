@@ -103,7 +103,7 @@ public class RentalService {
 		Book borrowedBook = bookService.getBookById(bookId);
 		rental.setBook(bookService.changeState(
 				borrowedBook,
-				BookStatusEnum.AWAITING2.getStatusId(),
+				BookStatusEnum.AWAITING.getStatusId(),
 				DaysDeltaEnum.PLUSMONTH.getDays(),
 				user));
 		rental.setUser(user);
@@ -147,7 +147,8 @@ public class RentalService {
 			}
 		}
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
-		List<User> usersQueue = new ArrayList<>();
+		List<Reservation> usersQueue = reservationRepository.findByBookId(rental.getId());
+
 		if (usersQueue.isEmpty()) {
 			bookService.changeState(
 					rental.getBook(),
@@ -161,8 +162,6 @@ public class RentalService {
 					0,
 					user);
 		}
-
-
 		if (!rental.getIsCurrent()) {
 			throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
 		}
@@ -187,11 +186,21 @@ public class RentalService {
 			}
 		}
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
-		bookService.changeState(
-				rental.getBook(),
-				BookStatusEnum.AVAILABLE.getStatusId(),
-				0,
-				user);
+		List<Reservation> usersQueue = new ArrayList<>(reservationRepository.findByBookId(rental.getId()));
+		if (usersQueue.isEmpty()) {
+			bookService.changeState(
+					rental.getBook(),
+					BookStatusEnum.AVAILABLE.getStatusId(),
+					0,
+					user);
+		} else {
+			bookService.changeState(
+					rental.getBook(),
+					BookStatusEnum.RESERVED.getStatusId(),
+					0,
+					user);
+		}
+
 		if (rental.getHandOverDate() != null) {
 			throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_HANDED_OVER);
 		}

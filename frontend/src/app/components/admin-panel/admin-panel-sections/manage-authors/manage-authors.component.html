@@ -59,7 +59,7 @@
 						<mat-icon>edit</mat-icon>
 						Edit
 					</button>
-					<button color="warn" mat-button (click)="removeAuthor(author.id)" [disabled]="!author.isRemovable">
+					<button color="warn" mat-button (click)="removeAuthor(author.id)" [disabled]="!author.isRemovable" matTooltip="This author is attached to some book details." [matTooltipDisabled]="author.isRemovable">
 						<mat-icon>cancel</mat-icon>
 						Remove
 					</button>

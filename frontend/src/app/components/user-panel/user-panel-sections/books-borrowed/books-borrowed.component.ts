@@ -15,6 +15,7 @@ export class BooksBorrowedComponent implements OnInit {
 
 	rentals: Rental[] = [];
 	rentalsAll: Rental[] = [];
+	canProlongDate = new Date();
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
@@ -30,6 +31,7 @@ export class BooksBorrowedComponent implements OnInit {
 
 	ngOnInit() {
 		this.getRentals();
+		this.canProlongDate.setDate(this.canProlongDate.getDate() + 3);
 	}
 
 	async cancelAwaiting(rental: Rental) {
@@ -50,7 +52,7 @@ export class BooksBorrowedComponent implements OnInit {
 	}
 
 	prolong(rental: Rental) {
-
+		
 	}
 
 	async getRentals() {

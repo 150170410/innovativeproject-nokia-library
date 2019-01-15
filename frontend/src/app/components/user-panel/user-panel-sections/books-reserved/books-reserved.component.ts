@@ -47,4 +47,12 @@ export class BooksReservedComponent implements OnInit {
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
+
+	acceptReservation(request) {
+
+	}
+
+	cancelReservation(request) {
+
+	}
 }
