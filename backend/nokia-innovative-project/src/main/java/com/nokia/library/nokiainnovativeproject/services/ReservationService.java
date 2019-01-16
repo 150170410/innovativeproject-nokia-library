@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class ReservationService {
+
 	private final BookRepository bookRepository;
 	private final RentalRepository rentalRepository;
 	private final ReservationRepository reservationRepository;
@@ -136,27 +137,28 @@ public class ReservationService {
 		Book borrowedBook = bookService.getBookById(bookId);
 		List<Reservation> queue = reservationRepository.findByBookId(bookId);
 		if (borrowedBook.getStatus().getId().equals(BookStatusEnum.BORROWED.getStatusId())) {
-			reservation.setBook(bookService.changeState(
+			borrowedBook = bookService.changeState(
 					borrowedBook,
 					borrowedBook.getStatus().getId(),
 					DaysDeltaEnum.MINUSMONTH.getDays(),
-					user));
+					user);
 		} else if (borrowedBook.getStatus().getId().equals(BookStatusEnum.RESERVED.getStatusId())) {
 			if (queue.isEmpty()) {
-				reservation.setBook(bookService.changeState(
+				borrowedBook = bookService.changeState(
 						borrowedBook,
 						BookStatusEnum.AVAILABLE.getStatusId(),
 						0,
-						user));
+						user);
 			} else {
-				reservation.setBook(bookService.changeState(
+				borrowedBook = bookService.changeState(
 						borrowedBook,
 						BookStatusEnum.RESERVED.getStatusId(),
 						DaysDeltaEnum.MINUSMONTH.getDays(),
-						user));
+						user);
 			}
 		}
-		bookRepository.save(reservation.getBook());
+		// TODO: put these 2 in transaction
+		bookRepository.save(borrowedBook);
 		reservationRepository.delete(reservation);
 	}
 

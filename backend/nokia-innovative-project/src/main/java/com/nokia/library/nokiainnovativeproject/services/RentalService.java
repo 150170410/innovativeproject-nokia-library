@@ -3,6 +3,7 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.RentalDTO;
 import com.nokia.library.nokiainnovativeproject.entities.*;
 import com.nokia.library.nokiainnovativeproject.exceptions.*;
+import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.ReservationRepository;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
@@ -28,6 +29,7 @@ import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTy
 @RequiredArgsConstructor
 public class RentalService {
 
+	private final BookRepository bookRepository;
 	private final RentalRepository rentalRepository;
 	private final ReservationRepository reservationRepository;
 	private final UserService userService;
@@ -186,24 +188,26 @@ public class RentalService {
 			}
 		}
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
-		List<Reservation> usersQueue = new ArrayList<>(reservationRepository.findByBookId(rental.getId()));
-		if (usersQueue.isEmpty()) {
-			bookService.changeState(
-					rental.getBook(),
+		Long bookId = rental.getBook().getId();
+		Book borrowedBook = bookService.getBookById(bookId);
+		List<Rental> queue = rentalRepository.findByBookId(bookId);
+
+		if (queue.isEmpty()) {
+			rental.setBook(bookService.changeState(
+					borrowedBook,
 					BookStatusEnum.AVAILABLE.getStatusId(),
 					0,
-					user);
+					user));
 		} else {
-			bookService.changeState(
-					rental.getBook(),
+			rental.setBook(bookService.changeState(
+					borrowedBook,
 					BookStatusEnum.RESERVED.getStatusId(),
-					0,
-					user);
+					DaysDeltaEnum.MINUSMONTH.getDays(),
+					user));
 		}
 
-		if (rental.getHandOverDate() != null) {
-			throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_HANDED_OVER);
-		}
+		// TODO: put these 2 in transaction
+		bookRepository.save(borrowedBook);
 		rentalRepository.delete(rental);
 	}
 
