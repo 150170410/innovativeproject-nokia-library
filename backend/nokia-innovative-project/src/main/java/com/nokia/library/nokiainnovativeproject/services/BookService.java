@@ -99,6 +99,8 @@ public class BookService {
 			book.setAvailableDate(oldAvailableDate.plusDays(days));
 		} else if (-30 < days && days < 0) {
 			book.setAvailableDate(oldAvailableDate.minusDays(days));
+		} else if (days == 0){
+			book.setAvailableDate(LocalDateTime.now());
 		}
 		System.out.println(book);
 		// TODO: finish state changes here, also change current owner
