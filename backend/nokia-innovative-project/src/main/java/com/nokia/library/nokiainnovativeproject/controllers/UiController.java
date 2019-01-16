@@ -22,7 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,13 +34,26 @@ public class UiController {
     private final UserService userService;
 
     @RequestMapping(Mappings.USER)
-    public ResponseEntity user() {
+    public ResponseEntity user(Principal principal) {
+
+        List<String> logger = new ArrayList<>();
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication != null)
+            logger.add(authentication.toString());
+
+        if(principal != null)
+            logger.add(principal.toString());
+
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            return MessageInfo.success(userDetails, Arrays.asList(RequestContextHolder.currentRequestAttributes().getSessionId()));
+
+            logger.add(RequestContextHolder.currentRequestAttributes().getSessionId());
+
+            return MessageInfo.success(userDetails, logger);
         }
-        return MessageInfo.success(null, Arrays.asList("Please, sign up!"));
+        return MessageInfo.success(null, logger);
     }
 
     @GetMapping(Mappings.USER + Mappings.GET_ALL)
