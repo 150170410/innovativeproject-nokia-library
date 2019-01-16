@@ -49,9 +49,15 @@ public class UiController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-            logger.add(RequestContextHolder.currentRequestAttributes().getSessionId());
 
-            return MessageInfo.success(userDetails, logger);
+            List<String> withToken = new ArrayList<>();
+            withToken.add(RequestContextHolder.currentRequestAttributes().getSessionId());
+
+            for(String s : logger) {
+                withToken.add(s);
+            }
+
+            return MessageInfo.success(userDetails, withToken);
         }
         return MessageInfo.success(null, logger);
     }
