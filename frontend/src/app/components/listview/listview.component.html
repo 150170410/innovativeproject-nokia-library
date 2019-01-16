@@ -11,3 +11,6 @@
 <div *ngIf="listIsLoading">
 	<mat-spinner></mat-spinner>
 </div>
+<div *ngIf="books.length < 1 && !!value">
+	<div>Nothing found.</div>
+</div>

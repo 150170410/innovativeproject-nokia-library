@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { Book } from '../../../../models/database/entites/Book';
 import { MessageInfo } from '../../../../models/MessageInfo';
 import { RestService } from '../../../../services/rest/rest.service';
 import { Rental } from '../../../../models/database/entites/Rental';

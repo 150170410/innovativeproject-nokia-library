@@ -17,8 +17,8 @@ Demo video no YouTube: https://youtu.be/f9H7dZBYAxw
 For all users:
 * Borrowing and reserving books,
 * prolongation of borrowed books,
-* requesting new book,
 * reminder about returning a book,
+* requesting new books,
 * notification about book availability,
 * contact with developers (report a bug, request new feature, etc.),
 * user accounts,
@@ -29,6 +29,12 @@ For admins only:
 * semi-automated book details completion,
 * returning books,
 * list of requested books.
+
+The business logic of main features which are borrowing and reserving books (and everything related to them) are explained on below flowchart:
+![Flowchart](./logic_flowchart.jpeg)
+
+5 big rectangles are different states of book: available, awaiting, borrowed, reserved, unavailable. 
+For every action taken by user or admin, estimated availability date can be changed by days or month, or it can reset back to default (small rectangles).
 
 # 3. Technologies
 * Backend
