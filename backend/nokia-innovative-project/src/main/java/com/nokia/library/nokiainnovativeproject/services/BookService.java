@@ -58,6 +58,7 @@ public class BookService {
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 		book.setComments(bookDTO.getComments());
 		book.setSignature(bookDTO.getSignature());
+		book.getBookDetails().setIsRemovable(true);
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
 
@@ -68,6 +69,7 @@ public class BookService {
 				() -> new ResourceNotFoundException("book details")));
 		book.setStatus(bookStatusRepository.findById(bookDTO.getBookStatusId()).orElseThrow(
 				() -> new ResourceNotFoundException("status")));
+		book.getBookDetails().setIsRemovable(false);
 		return book;
 	}
 
@@ -75,6 +77,10 @@ public class BookService {
 			throws ResourceNotFoundException {
 		Book book = bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("book"));
+
+		if(!book.getStatus().getStatusName().equals("AVAILABLE") && !book.getStatus().getStatusName().equals("UNAVAILABLE"))
+			return;
+		book.getBookDetails().setIsRemovable(bookRepository.countBooksByBookDetails(book.getBookDetails()) == 1);
 		bookRepository.delete(book);
 	}
 

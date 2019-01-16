@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BookDetails } from '../../../models/database/entites/BookDetails';
+import {AuthService} from '../../../services/auth/auth.service';
 
 @Component({
 	selector: 'app-listview-item',
@@ -14,11 +15,17 @@ export class ListviewItemComponent implements OnInit {
 
 	@Input() bookDetails: BookDetails;
 
-	constructor() {
-	  this.isAuth = (sessionStorage.getItem('authenticated') === 'true');
-    this.role_admin = (sessionStorage.getItem('ROLE_ADMIN') === 'true');
-    this.role_employee = (sessionStorage.getItem('ROLE_EMPLOYEE') === 'true');
+	constructor(private authService: AuthService) {
+    this.initAuthVariables();
 	}
+
+  initAuthVariables() {
+    this.authService.isDataActual().then(() => {
+      this.isAuth = this.authService.isAuthenticated();
+      this.role_admin = this.authService.isAdmin();
+      this.role_employee = this.authService.isUser();
+    });
+  }
 
 	ngOnInit() {
 	}
