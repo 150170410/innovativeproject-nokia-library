@@ -3,6 +3,7 @@ package com.nokia.library.nokiainnovativeproject.config;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 
 import com.nokia.library.nokiainnovativeproject.services.UserService;
+import com.sun.org.apache.regexp.internal.RE;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -44,7 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + RENTALS + HANDOVER,
                         API_VERSION + RENTALS + UPDATE,
 						API_VERSION + RENTALS + REMOVE,
-                        API_VERSION + USERS + RENTALS + GET_ONE,
+                        API_VERSION + RENTALS + RETURN,
+                        API_VERSION + RENTALS + USER,
+                        //API_VERSION + USERS + RENTALS + GET_ONE,
                         API_VERSION + BOOKS + RENTALS + GET_ONE,
                         API_VERSION + BOOKS + RESERVATIONS + GET_ONE,
                         API_VERSION + USERS + RESERVATIONS + GET_ONE,
@@ -52,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + RESERVATIONS + GET_ALL,
                         API_VERSION + RESERVATIONS + GET_ONE,
 						API_VERSION + RESERVATIONS + REMOVE,
+                        API_VERSION + RESERVATIONS + USER,
                         API_VERSION + USER + UPDATE).hasAnyRole("EMPLOYEE", "ADMIN")
                 .antMatchers(API_VERSION + BOOK_AUTHOR + "/**",
                         API_VERSION + AUTOCOMPLETION + "/**",

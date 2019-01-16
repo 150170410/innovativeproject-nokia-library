@@ -13,11 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +43,7 @@ public class RentalService {
 	}
 
 	public Rental getRentalById(Long id) {
-		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("rental"));
 		Hibernate.initialize(rental.getBook());
 		Hibernate.initialize(rental.getUser());
 		return rental;
@@ -53,18 +51,6 @@ public class RentalService {
 
 	public List<Rental> getRentalsByUser() {
 		User user = userService.getLoggedInUser();
-		if (user == null) {
-			List<Role> userLoggedInRoles = user.getRoles();
-			boolean isAuthorized = false;
-			for (Role role : userLoggedInRoles) {
-				if (role.getRole().equals("ROLE_USER")) {
-					isAuthorized = true;
-				}
-			}
-			if (!isAuthorized) {
-				throw new AuthorizationException();
-			}
-		}
 		List<Rental> rentals = rentalRepository.findByUserId(user.getId());
 		for (Rental rental : rentals) {
 			Hibernate.initialize(rental.getBook());
@@ -84,10 +70,6 @@ public class RentalService {
 
 	public Rental createRental(RentalDTO rentalDTO) {
 		User user = userService.getLoggedInUser();
-		if (user == null) {
-			throw new AuthorizationException();
-		}
-
 		ModelMapper mapper = new ModelMapper();
 		Rental rental = mapper.map(rentalDTO, Rental.class);
 		List<Rental> rentals = getRentalsByBookId(rentalDTO.getBookId()).stream().filter(Rental::getIsCurrent).collect(Collectors.toList());
@@ -115,8 +97,7 @@ public class RentalService {
 
 
 	public Rental prolongRental(Long id) {
-		//TODO: ADD USER AUTHENTICATION
-		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("rental"));
 		if (!rental.getIsCurrent()) {
 			throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
 		}
@@ -134,21 +115,8 @@ public class RentalService {
 	}
 
 	public Rental returnRental(Long id) {
-		//TODO: ADD ADMIN AUTHENTICATION
 		User user = userService.getLoggedInUser();
-		if (user == null) {
-			List<Role> userLoggedInRoles = user.getRoles();
-			boolean isAuthorized = false;
-			for (Role role : userLoggedInRoles) {
-				if (role.getRole().equals("ROLE_ADMIN")) {
-					isAuthorized = true;
-				}
-			}
-			if (!isAuthorized) {
-				throw new AuthorizationException();
-			}
-		}
-		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("rental"));
 		List<Reservation> usersQueue = reservationRepository.findByBookId(rental.getId());
 
 		if (usersQueue.isEmpty()) {
@@ -173,21 +141,8 @@ public class RentalService {
 	}
 
 	public void deleteRental(Long id) {
-		//TODO: ADD USER AUTHENTICATION
 		User user = userService.getLoggedInUser();
-		if (user == null) {
-			List<Role> userLoggedInRoles = user.getRoles();
-			boolean isAuthorized = false;
-			for (Role role : userLoggedInRoles) {
-				if (role.getRole().equals("ROLE_USER")) {
-					isAuthorized = true;
-				}
-			}
-			if (!isAuthorized) {
-				throw new AuthorizationException();
-			}
-		}
-		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("rental"));
 		Long bookId = rental.getBook().getId();
 		Book borrowedBook = bookService.getBookById(bookId);
 		List<Rental> queue = rentalRepository.findByBookId(bookId);
@@ -205,8 +160,11 @@ public class RentalService {
 					DaysDeltaEnum.MINUSMONTH.getDays(),
 					user));
 		}
-
 		// TODO: put these 2 in transaction
+		saveBorrowedBookAndDeleteRental(borrowedBook, rental);
+	}
+	@Transactional
+	public void saveBorrowedBookAndDeleteRental(Book borrowedBook, Rental rental) {
 		bookRepository.save(borrowedBook);
 		rentalRepository.delete(rental);
 	}
@@ -214,20 +172,7 @@ public class RentalService {
 
 	public Rental handOverRental(Long id) {
 		User user = userService.getLoggedInUser();
-		if (user == null) {
-			List<Role> userLoggedInRoles = user.getRoles();
-			boolean isAuthorized = false;
-			for (Role role : userLoggedInRoles) {
-				if (role.getRole().equals("ROLE_ADMIN")) {
-					isAuthorized = true;
-				}
-			}
-			if (!isAuthorized) {
-				throw new AuthorizationException();
-			}
-		}
-
-		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("rental"));
 		if (rental.getHandOverDate() != null) {
 			throw new InvalidBookStateException(MessageTypes.BOOK_ALREADY_HANDED_OVER);
 		}

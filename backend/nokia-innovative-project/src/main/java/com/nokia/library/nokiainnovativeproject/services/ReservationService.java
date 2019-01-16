@@ -3,7 +3,6 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.ReservationDTO;
 import com.nokia.library.nokiainnovativeproject.entities.*;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
-import com.nokia.library.nokiainnovativeproject.exceptions.AuthorizationException;
 
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
@@ -17,8 +16,8 @@ import com.nokia.library.nokiainnovativeproject.utils.DaysDeltaEnum;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +43,7 @@ public class ReservationService {
 	}
 
 	public Reservation getReservationById(Long id) {
-		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("reservation"));
 		Hibernate.initialize(reservation.getBook());
 		Hibernate.initialize(reservation.getUser());
 		return reservation;
@@ -56,18 +55,6 @@ public class ReservationService {
 
 	public List<Reservation> getReservationsByUser() {
 		User user = userService.getLoggedInUser();
-		if (user == null) {
-			List<Role> userLoggedInRoles = user.getRoles();
-			boolean isAuthorized = false;
-			for (Role role : userLoggedInRoles) {
-				if (role.getRole().equals("ROLE_USER")) {
-					isAuthorized = true;
-				}
-			}
-			if (!isAuthorized) {
-				throw new AuthorizationException();
-			}
-		}
 		return reservationRepository.findByUserId(user.getId());
 	}
 
@@ -77,11 +64,9 @@ public class ReservationService {
 
 	public Reservation createReservation(ReservationDTO reservationDTO) {
 		User user = userService.getLoggedInUser();
-		if (user == null) {
-			throw new AuthorizationException();
-		}
 		Reservation reservation = new Reservation();
-		List<Rental> rentals = rentalRepository.findByBookId(reservationDTO.getBookId()).stream().filter(Rental::getIsCurrent).collect(Collectors.toList());
+		List<Rental> rentals = rentalRepository.findByBookId(reservationDTO.getBookId()).stream()
+				.filter(Rental::getIsCurrent).collect(Collectors.toList());
 		if (rentals == null || rentals.isEmpty()) {
 			throw new InvalidBookStateException(MessageTypes.NOT_RENTED);
 		}
@@ -118,21 +103,8 @@ public class ReservationService {
 	}
 
 	public void deleteReservation(Long id) {
-		//TODO: ADD USER AUTHENTICATION
 		User user = userService.getLoggedInUser();
-		if (user == null) {
-			List<Role> userLoggedInRoles = user.getRoles();
-			boolean isAuthorized = false;
-			for (Role role : userLoggedInRoles) {
-				if (role.getRole().equals("ROLE_USER")) {
-					isAuthorized = true;
-				}
-			}
-			if (!isAuthorized) {
-				throw new AuthorizationException();
-			}
-		}
-		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("id"));
+		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("reservation"));
 		Long bookId = reservation.getBook().getId();
 		Book borrowedBook = bookService.getBookById(bookId);
 		List<Reservation> queue = reservationRepository.findByBookId(bookId);
@@ -158,9 +130,11 @@ public class ReservationService {
 			}
 		}
 		// TODO: put these 2 in transaction
+		saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
+	}
+	@Transactional
+	public void saveBorrowedBookAndDeleteReservation(Book borrowedBook, Reservation reservation) {
 		bookRepository.save(borrowedBook);
 		reservationRepository.delete(reservation);
 	}
-
-
 }
