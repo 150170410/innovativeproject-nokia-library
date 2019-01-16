@@ -34,7 +34,7 @@ public class NokiaInnovativeProjectApplication {
 		config.setAllowCredentials(true);
 		config.setAllowedOrigins(Collections.singletonList("*"));
 		config.setAllowedHeaders(Arrays.asList("X-ACCESS_TOKEN", "Access-Control-Allow-Origin", "Authorization", "Origin",
-				"x-requested-with", "Content-Type", "Content-Range", "Content-Disposition", "Content-Description", "JSESSIONID"));
+				"x-requested-with", "Content-Type"));
 		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
