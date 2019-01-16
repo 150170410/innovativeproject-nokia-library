@@ -39,9 +39,12 @@ export class BookActionsComponent implements OnInit {
 				const justBorrowed = this.books.findIndex((book: Book) => {
 					return book.id == bookCopy.id;
 				}, bookCopy);
-				let now: Date = new Date();
-				this.books[justBorrowed].availableDate = now;
-				this.books[justBorrowed].availableDate.setMonth(now.getMonth() + 1);
+				let prev: Date = this.books[justBorrowed].availableDate;
+				if(prev === null){
+					prev = new Date();
+					this.books[justBorrowed].availableDate = prev;
+				}
+				this.books[justBorrowed].availableDate.setMonth(prev.getMonth() + 1);
 				this.books[justBorrowed].status.id = 2;
 			} else {
 				this.snackbar.snackError('Error', 'OK');

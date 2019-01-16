@@ -27,11 +27,11 @@
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
 			<td mat-cell *matCellDef="let reservation">
 				<p>
-					<button color="primary" mat-button (click)="acceptReservation(request)">
+					<button *ngIf="reservation.book.status.id === 4" color="primary" mat-button (click)="acceptReservation(reservation)">
 						<mat-icon>done</mat-icon>
 						Accept
 					</button>
-					<button color="warn" mat-button (click)="cancelReservation(request)">
+					<button *ngIf="reservation.book.status.id === 2 || reservation.book.status.id === 3" color="warn" mat-button (click)="cancelReservation(reservation)">
 						<mat-icon>clear</mat-icon>
 						Cancel
 					</button>

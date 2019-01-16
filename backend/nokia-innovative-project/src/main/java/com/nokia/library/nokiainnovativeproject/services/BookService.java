@@ -54,6 +54,7 @@ public class BookService {
 	public Book createBook(BookDTO bookDTO) {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
+		book.setAvailableDate(LocalDateTime.now());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
 
@@ -84,14 +85,20 @@ public class BookService {
 	public Book changeState(Book book, Long newStatusId, Integer days, User newOwner) {
 		BookStatus newStatus = bookStatusService.getBookStatusById(newStatusId);
 		book.setStatus(newStatus);
+		LocalDateTime oldAvailableDate = book.getAvailableDate();
+		if(oldAvailableDate == null){
+			oldAvailableDate = LocalDateTime.now();
+			book.setAvailableDate(oldAvailableDate);
+		}
 		if (days == 30) {
-			book.setAvailableDate(LocalDateTime.now().plusMonths(1));
+			book.setAvailableDate(oldAvailableDate.plusMonths(1));
+			System.out.println(book.getAvailableDate());
 		} else if (days == -30) {
-			book.setAvailableDate(LocalDateTime.now().minusMonths(1));
+			book.setAvailableDate(oldAvailableDate.minusMonths(1));
 		} else if (0 < days && days < 30) {
-			book.setAvailableDate(LocalDateTime.now().plusDays(days));
+			book.setAvailableDate(oldAvailableDate.plusDays(days));
 		} else if (-30 < days && days < 0) {
-			book.setAvailableDate(LocalDateTime.now().minusDays(days));
+			book.setAvailableDate(oldAvailableDate.minusDays(days));
 		}
 		System.out.println(book);
 		// TODO: finish state changes here, also change current owner

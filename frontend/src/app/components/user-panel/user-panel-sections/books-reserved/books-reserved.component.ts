@@ -48,11 +48,24 @@ export class BooksReservedComponent implements OnInit {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	acceptReservation(request) {
+	acceptReservation(reservation: Reservation) {
 
 	}
 
-	cancelReservation(request) {
-
+	async cancelReservation(reservation: Reservation) {
+		await this.confirmService.openDialog('Are you sure you want to cancel this reservation?').subscribe((result) => {
+			if (result) {
+				this.http.remove('reservations', reservation.id).subscribe((response) => {
+					if (response.success) {
+						this.snackbar.snackSuccess('Reservation cancelled successfully!', 'OK');
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+					this.getReservations();
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
+			}
+		})
 	}
 }
