@@ -47,9 +47,9 @@ export class AuthService {
 
 	  console.log('in method isDataActual');
 
-	  if (this.isActual) {
-	    return;
-    }
+	  //if (this.isActual) {
+	  //  return;
+    //}
 
 	  if (this.cookieService.get('JSESSIONID') == null) {
       this.isAuth = false;
@@ -58,6 +58,8 @@ export class AuthService {
       this.name = '';
     } else {
       const response: MessageInfo = await this.getOne('user', null, null) as MessageInfo;
+
+      console.log(response);
 
       if (response && response.object) {
         this.setData(response);
