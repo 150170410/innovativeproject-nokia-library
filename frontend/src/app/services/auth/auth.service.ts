@@ -29,6 +29,9 @@ export class AuthService {
   }
 
    isAdmin() {
+
+     console.log('in method isAdmin');
+
     return this.roleAdmin;
   }
 
@@ -41,6 +44,13 @@ export class AuthService {
   }
 
   async isDataActual() {
+
+	  console.log('in method isDataActual');
+
+	  if (this.isActual) {
+	    return;
+    }
+
 	  if (this.cookieService.get('JSESSIONID') == null) {
       this.isAuth = false;
       this.roleAdmin = false;
@@ -112,6 +122,9 @@ export class AuthService {
   }
 
 	setData(response: MessageInfo) {
+
+	  console.log('in method setData');
+
     this.name = response.object.username;
     this.isAuth = true;
     const roles: Authorities[] = response.object.authorities;
@@ -122,6 +135,10 @@ export class AuthService {
         this.roleUser = true;
       }
     }
+    this.isActual = true;
+
+    console.log('after method setData');
+
   }
 
 	logoutUser() {

@@ -32,12 +32,18 @@ export class NavbarComponent implements OnInit {
 		this.initAuthVariables();
 	}
 
-	initAuthVariables() {
-    this.authService.isDataActual().then(() => {
+	async initAuthVariables() {
+
+	  console.log('before init');
+
+     this.authService.isDataActual().then(() => {
       this.isAuth = this.authService.isAuthenticated();
       this.role_admin = this.authService.isAdmin();
       this.role_employee = this.authService.isUser();
       this.loggedAs = this.authService.getUsername();
+
+      console.log('after init');
+
     });
   }
 

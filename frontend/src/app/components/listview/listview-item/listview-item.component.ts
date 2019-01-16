@@ -19,7 +19,7 @@ export class ListviewItemComponent implements OnInit {
     this.initAuthVariables();
 	}
 
-  initAuthVariables() {
+  async initAuthVariables() {
     this.authService.isDataActual().then(() => {
       this.isAuth = this.authService.isAuthenticated();
       this.role_admin = this.authService.isAdmin();
