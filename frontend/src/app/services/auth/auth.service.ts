@@ -86,7 +86,10 @@ export class AuthService {
 
 	async getOne(url: string, username: string, password: string) {
 	  try {
-	    if ((username == null || username === '') && this.cookieService.get('JSESSIONID') != null) {
+	    if (username == null || username === '') {
+
+        console.log('in get method');
+
         return await this.http.get(this.URL + url, {withCredentials: true}).toPromise();
       } else {
         return await this.http.get(this.URL + url, this.setHeaders(username, password)).toPromise();
