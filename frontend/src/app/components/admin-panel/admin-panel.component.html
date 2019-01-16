@@ -38,6 +38,6 @@
 		</mat-tab>
 	</mat-tab-group>
 </div>
-<div *ngIf="!role_admin">
+<div *ngIf="!role_admin && is_loaded">
 	<app-page-not-found></app-page-not-found>
 </div>

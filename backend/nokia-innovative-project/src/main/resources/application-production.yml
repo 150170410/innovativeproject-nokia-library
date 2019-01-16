@@ -20,3 +20,4 @@ spring:
       max-request-size: -1
 server:
   port: 8082
+fe_url: https://nokia-library-client.herokuapp.com

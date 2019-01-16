@@ -4,6 +4,7 @@ import { RestService } from '../../services/rest/rest.service';
 import { RentalDTO } from '../../models/database/DTOs/RentalDTO';
 import { SnackbarService } from '../../services/snackbar/snackbar.service';
 import { ReservationDTO } from '../../models/database/DTOs/ReservationDTO';
+import {AuthService} from '../../services/auth/auth.service';
 
 @Component({
 	selector: 'app-book-actions',
@@ -17,13 +18,19 @@ export class BookActionsComponent implements OnInit {
 	@Output() actionTaken = new EventEmitter<boolean>();
 
 	constructor(private http: RestService,
-				private snackbar: SnackbarService) {
+				private snackbar: SnackbarService,
+              private authService: AuthService) {
 	}
 
 	ngOnInit() {
-		this.isAuth = (sessionStorage.getItem('authenticated') === 'true');
-	}
+    this.initAuthVariables();
+  }
 
+  initAuthVariables() {
+    this.authService.isDataActual().then(() => {
+      this.isAuth = this.authService.isAuthenticated();
+    });
+  }
 
 	borrowBook(bookCopy: Book) {
 		const body = new RentalDTO(bookCopy.id);

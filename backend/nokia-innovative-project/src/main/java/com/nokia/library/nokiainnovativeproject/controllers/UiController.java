@@ -1,6 +1,7 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.UserDTO;
+import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.services.UserService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
@@ -8,8 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -17,7 +24,6 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
 
-@SpringBootApplication
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(Mappings.API_VERSION)
@@ -26,12 +32,13 @@ public class UiController {
     private final UserService userService;
 
     @RequestMapping(Mappings.USER)
-    public ResponseEntity user(Principal user) {
-
-        if(user == null) {
-            return MessageInfo.success(null, Arrays.asList("Please log in"));
+    public ResponseEntity user() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return MessageInfo.success(userDetails, Arrays.asList(RequestContextHolder.currentRequestAttributes().getSessionId()));
         }
-        return MessageInfo.success(user, Arrays.asList("You are logged in"));
+        return MessageInfo.success(null, Arrays.asList("Please, sign up!"));
     }
 
     @GetMapping(Mappings.USER + Mappings.GET_ALL)
