@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -22,7 +23,7 @@ public class Rental implements Serializable {
 
 	public Rental() {
 		this.isCurrent = true;
-		this.returnDate = LocalDate.now().plusMonths(1);
+		this.returnDate = LocalDateTime.now().plusMonths(1);
 	}
 
 	@Id
@@ -37,8 +38,8 @@ public class Rental implements Serializable {
 	private Boolean isCurrent = true;
 	private Boolean wasProlonged = false;
 
-	private LocalDate returnDate;
-	private LocalDate handOverDate;
+	private LocalDateTime returnDate;
+	private LocalDateTime handOverDate;
 
 	@ManyToOne(cascade = {CascadeType.MERGE,
 			CascadeType.PERSIST})

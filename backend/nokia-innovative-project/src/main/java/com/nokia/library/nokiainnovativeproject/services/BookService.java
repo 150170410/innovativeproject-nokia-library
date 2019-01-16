@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -84,16 +85,17 @@ public class BookService {
 		BookStatus newStatus = bookStatusService.getBookStatusById(newStatusId);
 		book.setStatus(newStatus);
 		if (days == 30) {
-			book.setAvailableDate(LocalDate.now().plusMonths(1));
+			book.setAvailableDate(LocalDateTime.now().plusMonths(1));
 		} else if (days == -30) {
-			book.setAvailableDate(LocalDate.now().minusMonths(1));
+			book.setAvailableDate(LocalDateTime.now().minusMonths(1));
 		} else if (0 < days && days < 30) {
-			book.setAvailableDate(LocalDate.now().plusDays(days));
+			book.setAvailableDate(LocalDateTime.now().plusDays(days));
 		} else if (-30 < days && days < 0) {
-			book.setAvailableDate(LocalDate.now().minusDays(days));
+			book.setAvailableDate(LocalDateTime.now().minusDays(days));
 		}
+		System.out.println(book);
 		// TODO: finish state changes here, also change current owner
-		return bookRepository.save(book);
+		return book;
 	}
 
 	public Book lockBook(String signature) {

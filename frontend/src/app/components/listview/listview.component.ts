@@ -35,6 +35,7 @@ export class ListviewComponent implements OnInit {
 		this.booksAll = response.object.sort().reverse();
 		this.listIsLoading = false;
 		this.books = this.booksAll;
+		console.log(this.booksAll);
 	}
 
 }

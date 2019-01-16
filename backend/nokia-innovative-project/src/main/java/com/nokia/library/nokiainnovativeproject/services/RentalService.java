@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -104,10 +105,9 @@ public class RentalService {
 		rental.setBook(bookService.changeState(
 				borrowedBook,
 				BookStatusEnum.AWAITING.getStatusId(),
-				DaysDeltaEnum.PLUSMONTH.getDays(),
+				30,
 				user));
 		rental.setUser(user);
-
 		return rentalRepository.save(rental);
 	}
 
@@ -118,7 +118,7 @@ public class RentalService {
 		if (!rental.getIsCurrent()) {
 			throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
 		}
-		if (rental.getReturnDate().minusWeeks(1).compareTo(LocalDate.now()) > 0) {
+		if (rental.getReturnDate().minusWeeks(1).compareTo(LocalDateTime.now()) > 0) {
 			throw new InvalidBookStateException(MessageTypes.PROLONG_NOT_AVAILABLE);
 		}
 		List<Reservation> reservations = reservationRepository.findByBookId(rental.getBook().getId());
@@ -165,7 +165,7 @@ public class RentalService {
 		if (!rental.getIsCurrent()) {
 			throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
 		}
-		rental.setReturnDate(LocalDate.now());
+		rental.setReturnDate(LocalDateTime.now());
 		rental.setIsCurrent(false);
 		return rentalRepository.save(rental);
 	}
@@ -232,8 +232,7 @@ public class RentalService {
 				BookStatusEnum.BORROWED.getStatusId(),
 				0,
 				user);
-		rental.setHandOverDate(LocalDate.now());
-		rental.getBook().setAvailableDate(null);
+		rental.setHandOverDate(LocalDateTime.now());
 		return rentalRepository.save(rental);
 	}
 }

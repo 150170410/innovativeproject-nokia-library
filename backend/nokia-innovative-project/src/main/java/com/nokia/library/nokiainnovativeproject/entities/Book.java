@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -44,5 +45,5 @@ public class Book implements Serializable {
 	@JoinColumn(name = "book_details_id")
 	private BookDetails bookDetails;
 
-	private LocalDate availableDate;
+	private LocalDateTime availableDate;
 }
