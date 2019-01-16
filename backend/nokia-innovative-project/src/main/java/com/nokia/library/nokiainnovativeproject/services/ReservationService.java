@@ -92,6 +92,7 @@ public class ReservationService {
 				borrowedBook.getStatus().getId(),
 				DaysDeltaEnum.PLUSMONTH.getDays(),
 				user));
+		reservation.setAvailableDate(reservation.getBook().getAvailableDate());
         return reservationRepository.save(reservation);
     }
 
