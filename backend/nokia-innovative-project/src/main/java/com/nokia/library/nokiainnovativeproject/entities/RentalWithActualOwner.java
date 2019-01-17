@@ -4,20 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookWithoutBookDetails {
+public class RentalWithActualOwner extends Rental implements Serializable {
 
     private Long id;
 
-    private String signature;
-
-    private String comments;
-
-    private BookStatus status;
-
-	private LocalDateTime availableDate;
+    private User actualOwner;
 }

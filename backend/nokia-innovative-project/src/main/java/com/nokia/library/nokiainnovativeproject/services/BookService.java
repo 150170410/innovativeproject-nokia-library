@@ -1,19 +1,21 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
-import com.nokia.library.nokiainnovativeproject.entities.Book;
-import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
+import com.nokia.library.nokiainnovativeproject.entities.*;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
+import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,13 +27,14 @@ public class BookService {
 	private final BookDetailsRepository bookDetailsRepository;
 	private final BookStatusRepository bookStatusRepository;
 	private final BookStatusService bookStatusService;
+	private final UserRepository userRepository;
 
 
 	public List<Book> getAllBooks() {
 		List<Book> books = bookRepository.findAll();
 		for (Book book : books) {
-			Hibernate.initialize(book.getStatus());
 			Hibernate.initialize(book.getBookDetails());
+			Hibernate.initialize(book.getStatus());
 		}
 		return books;
 	}
@@ -47,10 +50,10 @@ public class BookService {
 		return bookRepository.getBooksByBookDetailsId(id);
 	}
 
-
 	public Book createBook(BookDTO bookDTO) {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
+		book.setAvailableDate(LocalDateTime.now());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
 
@@ -84,16 +87,41 @@ public class BookService {
 		bookRepository.delete(book);
 	}
 
-	public Book changeStatus(Book book, Long newStatusId){
-		Long oldStatusId = book.getStatus().getId();
+	public Book changeState(Book book, Long newStatusId, Integer days, User newOwner) {
 		BookStatus newStatus = bookStatusService.getBookStatusById(newStatusId);
 		book.setStatus(newStatus);
-		if(oldStatusId == 1 && newStatusId == 2){
-			book.setAvailableDate(LocalDate.now().plusMonths(1));
-		} else if(oldStatusId == 2 && newStatusId == 3){
-			book.setAvailableDate(LocalDate.now().plusMonths(1));
+		LocalDateTime oldAvailableDate = book.getAvailableDate();
+		if(oldAvailableDate == null){
+			oldAvailableDate = LocalDateTime.now();
+			book.setAvailableDate(oldAvailableDate);
 		}
-		// TODO: finish status changes logic here
-		return bookRepository.save(book);
+		if (days == 30) {
+			book.setAvailableDate(oldAvailableDate.plusMonths(1));
+			System.out.println(book.getAvailableDate());
+		} else if (days == -30) {
+			book.setAvailableDate(oldAvailableDate.minusMonths(1));
+		} else if (0 < days && days < 30) {
+			book.setAvailableDate(oldAvailableDate.plusDays(days));
+		} else if (-30 < days && days < 0) {
+			book.setAvailableDate(oldAvailableDate.minusDays(days));
+		} else if (days == 0){
+			book.setAvailableDate(LocalDateTime.now());
+		}
+		System.out.println(book);
+		// TODO: finish state changes here, also change current owner
+		return book;
 	}
+
+	public Book lockBook(String signature) {
+		// TODO: add admin authorization, add condition about book status, can only equal 1, add  exceptions
+		Book bookToLock = bookRepository.findBySignature(signature);
+		return changeState(bookToLock, BookStatusEnum.UNAVAILABLE.getStatusId(), 0, null);
+	}
+
+	public Book unlockBook(String signature) {
+		// TODO: add admin authorization, add condition about book status, can only equal 5, add exceptions
+		Book bookToUnlock = bookRepository.findBySignature(signature);
+		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getStatusId(), 0, null);
+	}
+
 }

@@ -12,19 +12,19 @@
 	<mat-card-content>
 		<b>About:</b> {{bookDetails.description}}
 	</mat-card-content>
-	<mat-accordion *ngIf="bookDetails.books.length > 0">
+	<mat-accordion *ngIf="booksUnlocked.length > 0">
 		<mat-expansion-panel>
 			<mat-expansion-panel-header>
 				<mat-panel-title>
-					Available books: {{bookDetails.books | bookStatuses:1}}/{{bookDetails.books.length}}
+					Available books: {{bookDetails.books | bookStatuses:1}}/{{booksUnlocked.length}}
 				</mat-panel-title>
 			</mat-expansion-panel-header>
 
-			<app-book-actions [books]="bookDetails.books"></app-book-actions>
+			<app-book-actions [books]="booksUnlocked"></app-book-actions>
 
 		</mat-expansion-panel>
 	</mat-accordion>
-	<div class="not-available" *ngIf="(bookDetails.books.length < 1)">
+	<div class="not-available" *ngIf="(booksUnlocked.length < 1)">
 		<b>Sorry, but this book is not available.</b>
 	</div>
 </mat-card>

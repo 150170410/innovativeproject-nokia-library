@@ -44,17 +44,16 @@ public class User implements Serializable {
 
 	@OneToOne(cascade = {
 			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REMOVE},
+			CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
 	@JoinColumn(name = "address_id")
 	private Address address;
 
-	@ManyToMany(cascade = {CascadeType.DETACH,
+	@OneToMany(cascade = {
 			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH},
+			CascadeType.PERSIST,},
 			fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_books")
 	private List<Book> books;
 
 	@ManyToMany(fetch = FetchType.LAZY,

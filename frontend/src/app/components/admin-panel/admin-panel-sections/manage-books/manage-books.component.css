@@ -53,22 +53,6 @@ mat-spinner {
 	display: inline-block;
 }
 
-.st-available {
-	background-color: rgba(40, 167, 69, 0.7);
-}
-
-.st-borrowed {
-	background-color: rgba(255, 193, 7, 0.7);
-}
-
-.st-reserved {
-	background-color: rgba(220, 53, 69, 0.7);
-}
-
-.st-unknown {
-	background-color: rgba(108, 117, 125, 0.7);
-}
-
-.selected-book-wrapper{
+.selected-book-wrapper {
 	margin-bottom: 10px;
 }

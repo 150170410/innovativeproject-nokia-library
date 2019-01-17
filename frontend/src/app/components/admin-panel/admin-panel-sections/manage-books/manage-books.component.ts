@@ -57,7 +57,7 @@ export class ManageBooksComponent implements OnInit {
 		const body = new BookDTO(params.value.signature, this.selectedBookDetails.id, params.value.comments, 1);
 		console.log(body);
 		if (!this.toUpdate) {
-			this.http.save('books', body).subscribe((response) => {
+			this.http.save('books/create', body).subscribe((response) => {
 				if (response.success) {
 					this.clearForm();
 					this.getBookCopies();
@@ -129,7 +129,7 @@ export class ManageBooksComponent implements OnInit {
 					this.snackbar.snackError(error.error.message, 'OK');
 				});
 			}
-		})
+		});
 	}
 
 	clearForm() {
@@ -158,11 +158,33 @@ export class ManageBooksComponent implements OnInit {
 		this.clearForm();
 	}
 
-	lockBook(bookCopy) {
-
+	lockBook(bookCopy: Book) {
+		const body = {};
+		console.log(body);
+		this.http.save('books/lock/' + bookCopy.signature, body).subscribe((response) => {
+			if (response.success) {
+				this.getBookCopies();
+				this.snackbar.snackSuccess('Book locked successfully!', 'OK');
+			} else {
+				this.snackbar.snackError('Error', 'OK');
+			}
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
 	}
 
 	unlockBook(bookCopy) {
-
+		const body = {};
+		console.log(body);
+		this.http.save('books/unlock/' + bookCopy.signature, body).subscribe((response) => {
+			if (response.success) {
+				this.getBookCopies();
+				this.snackbar.snackSuccess('Book unlocked successfully!', 'OK');
+			} else {
+				this.snackbar.snackError('Error', 'OK');
+			}
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
 	}
 }

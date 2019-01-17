@@ -46,7 +46,7 @@ export class ManageAuthorsComponent implements OnInit {
 		const body = new AuthorDTO(
 			params.value.authorFullName);
 		if (!this.toUpdate) {
-			this.http.save('author', body).subscribe((response) => {
+			this.http.save('author/create', body).subscribe((response) => {
 				if (response.success) {
 					this.clearForm();
 					this.getAuthors();

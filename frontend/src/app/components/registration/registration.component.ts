@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material";
-import { UserDTO } from "../../models/database/DTOs/UserDTO";
-import { RestService } from "../../services/rest/rest.service";
-import { SnackbarService } from "../../services/snackbar/snackbar.service";
-import { Router } from "@angular/router";
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validator, Validators} from '@angular/forms';
+import {ErrorStateMatcher} from '@angular/material';
+import { UserDTO } from '../../models/database/DTOs/UserDTO';
+import { RestService } from '../../services/rest/rest.service';
+import { SnackbarService } from '../../services/snackbar/snackbar.service';
+import { Router } from '@angular/router';
+import {MessageInfo} from '../../models/MessageInfo';
+import {Address} from '../../models/database/entites/Address';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
 	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -24,6 +26,8 @@ export class RegistrationComponent implements OnInit {
 	matcher = new MyErrorStateMatcher();
 	registrationParams: FormGroup;
 
+  addresses: Address[] = [];
+
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
 				private snackbar: SnackbarService,
@@ -32,25 +36,39 @@ export class RegistrationComponent implements OnInit {
 
 	ngOnInit() {
 		this.initFormGroup();
+		this.initAddresses();
 	}
+
+  async initAddresses() {
+    const response: MessageInfo = await this.http.getAll('address/getAll');
+    this.addresses = response.object;
+  }
 
 	initFormGroup() {
 		this.registrationParams = this.formBuilder.group({
-			name: ['', [Validators.required]],
+      name: ['', [Validators.required]],
 			surname: ['', [Validators.required]],
+      address: ['', [Validators.required]],
 			email: ['', [Validators.required, Validators.email]],
 			password: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(20)]],
 			repeatedPassword: ['']
 		}, {
 			validators: this.checkPasswords
-		})
+		});
 	}
 
+  getAddress(param: any) {
+	  if (param) {
+	    const address: Address = this.addresses.filter( (add) => add.id === param)[0];
+	    return address;
+    }
+	  return null;
+  }
 	registrationButtonClick(params: any) {
 		const body = new UserDTO(params.value.name, params.value.surname, params.value.password,
-			params.value.email, null);
+			params.value.email, this.getAddress(params.value.address));
 
-		this.http.save('user', body).subscribe((response) => {
+		this.http.save('user/create', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('You\'ve registered successfully.', 'OK');
 				this.router.navigateByUrl('login');
@@ -63,9 +81,11 @@ export class RegistrationComponent implements OnInit {
 	}
 
 	checkPasswords(group: FormGroup) {
-		let pass = group.controls.password.value;
-		let confirmPass = group.controls.repeatedPassword.value;
-
-		return pass === confirmPass ? null : { notSame: true }
+		const pass = group.controls.password.value;
+		const confirmPass = group.controls.repeatedPassword.value;
+   if (pass !== confirmPass) {
+      return {notSame: true};
+    }
+   return null;
 	}
 }

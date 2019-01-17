@@ -8,4 +8,6 @@ export class Rental {
 	handOverDate: any;
 	user: User;
 	book: Book;
+	isCurrent: boolean;
+	actualOwner: User;
 }

@@ -15,7 +15,6 @@ export class ContactUsComponent implements OnInit {
 	contactParams: FormGroup;
 	categories = ['Report a bug', 'Request new feature', 'I don\'t like...',' Something is unclear', 'Other'];
 	sendingFailed = false;
-	errorMessage;
 
 	constructor(private formBuilder: FormBuilder,
 				public dialogRef: MatDialogRef<ContactUsComponent>,
@@ -38,7 +37,7 @@ export class ContactUsComponent implements OnInit {
 	sendEmail(contactParams: FormGroup) {
 		const email = new EmailMessage(contactParams.value.category + ': ' + contactParams.value.subject, contactParams.value.message);
 		this.dialogRef.close();
-		this.http.save('email', email).subscribe((response) => {
+		this.http.save('email/create', email).subscribe((response) => {
 			this.snackbar.snackSuccess('Message sent. Thank you!', 'OK');
 		}, (error) => {
 			this.snackbar.snackError('Something went wrong, but we still got the message.', 'OK');
