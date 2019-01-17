@@ -179,7 +179,7 @@ public class RentalService {
 		bookService.changeState(
 				rental.getBook(),
 				BookStatusEnum.BORROWED.getStatusId(),
-				0,
+				Integer.MAX_VALUE,
 				user);
 		rental.setHandOverDate(LocalDateTime.now());
 		return rentalRepository.save(rental);

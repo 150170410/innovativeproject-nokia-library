@@ -5,6 +5,12 @@
 		<mat-icon>search</mat-icon>
 	</button>
 </mat-form-field>
+<mat-checkbox
+	class="example-margin"
+	[(ngModel)]="hideUnavailable"
+	(click)="searchBooks(search.value)">
+	Hide unavailable
+</mat-checkbox>
 <div *ngFor="let book of books">
 	<app-listview-item [bookDetails]="book"></app-listview-item>
 </div>

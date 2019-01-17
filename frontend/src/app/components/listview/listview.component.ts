@@ -14,7 +14,7 @@ export class ListviewComponent implements OnInit {
 	booksAll: BookDetails[] = [];
 	books: BookDetails[] = [];
 	listIsLoading = false;
-
+	hideUnavailable = false;
 	value = '';
 
 	constructor(private bookDetailsService: BookDetailsService, private http: RestService) {
@@ -25,7 +25,12 @@ export class ListviewComponent implements OnInit {
 	}
 
 	searchBooks(val) {
-		this.books = this.booksAll.filter(b => JSON.stringify(b).toLowerCase().includes(val.toLowerCase()))
+		if (this.hideUnavailable) {
+			this.books = this.booksAll.filter(b => JSON.stringify(b).toLowerCase().includes(val.toLowerCase()))
+		} else {
+			this.books = this.booksAll.filter(b => JSON.stringify(b).toLowerCase().includes(val.toLowerCase()) && (b.books.length > 0))
+		}
+
 		// .map(b => Object.assign({}, b));
 	}
 
