@@ -143,7 +143,6 @@ public class RentalService {
 		User user = userService.getLoggedInUser();
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("rental"));
 		List<Reservation> usersQueue = reservationRepository.findByBookId(rental.getId());
-
 		if (usersQueue.isEmpty()) {
 			bookService.changeState(
 					rental.getBook(),
@@ -170,24 +169,24 @@ public class RentalService {
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("rental"));
 		Long bookId = rental.getBook().getId();
 		Book borrowedBook = bookService.getBookById(bookId);
-		List<Rental> queue = rentalRepository.findByBookId(bookId);
-
+		List<Reservation> queue = reservationRepository.findByBookId(bookId);
 		if (queue.isEmpty()) {
-			rental.setBook(bookService.changeState(
+			borrowedBook = bookService.changeState(
 					borrowedBook,
 					BookStatusEnum.AVAILABLE.getStatusId(),
 					0,
-					user));
+					user);
 		} else {
-			rental.setBook(bookService.changeState(
+			borrowedBook = bookService.changeState(
 					borrowedBook,
 					BookStatusEnum.RESERVED.getStatusId(),
 					DaysDeltaEnum.MINUSMONTH.getDays(),
-					user));
+					user);
 		}
 		// TODO: put these 2 in transaction
 		saveBorrowedBookAndDeleteRental(borrowedBook, rental);
 	}
+
 	@Transactional
 	public void saveBorrowedBookAndDeleteRental(Book borrowedBook, Rental rental) {
 		bookRepository.save(borrowedBook);
