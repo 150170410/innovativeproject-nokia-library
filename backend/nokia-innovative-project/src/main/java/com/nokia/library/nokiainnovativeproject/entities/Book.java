@@ -1,9 +1,7 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -47,4 +45,6 @@ public class Book implements Serializable {
 
 	@CreationTimestamp
 	private LocalDateTime availableDate;
+
+	private Long actualOwnerId;
 }

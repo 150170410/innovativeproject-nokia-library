@@ -25,9 +25,19 @@ public class RentalController {
 		return MessageInfo.success(rentalService.getAllRentals(), Arrays.asList("Full list of book rentals"));
 	}
 
+	@GetMapping(RENTALS + GET_ALL_FILL)
+	public ResponseEntity getAllRentalsWithOwner() {
+		return MessageInfo.success(rentalService.getAllRentalsWithOwner(), Arrays.asList("Full list of book rentals"));
+	}
+
 	@GetMapping(RENTALS + GET_ONE)
 	public ResponseEntity getRentalById(@PathVariable Long id) {
 		return MessageInfo.success(rentalService.getRentalById(id), Arrays.asList("Rental with ID = " + id.toString()));
+	}
+
+	@GetMapping(RENTALS + GET_ONE_FILL)
+	public ResponseEntity getRentalWithOwnerById(@PathVariable Long id) {
+		return MessageInfo.success(rentalService.getRentalsWithActualOwner(id), Arrays.asList("Rental with ID = " + id.toString()));
 	}
 
 	@GetMapping(RENTALS + USER)

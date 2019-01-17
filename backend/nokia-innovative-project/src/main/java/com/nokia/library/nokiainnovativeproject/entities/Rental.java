@@ -33,24 +33,23 @@ public class Rental implements Serializable {
 
 	@CreationTimestamp
 	@Setter(AccessLevel.NONE)
-	private Date rentalDate;
+	protected Date rentalDate;
 
-	private Boolean isCurrent = true;
-	private Boolean wasProlonged = false;
+	protected Boolean isCurrent = true;
+	protected Boolean wasProlonged = false;
 
-	private LocalDateTime returnDate;
-	private LocalDateTime handOverDate;
+	protected LocalDateTime returnDate;
+	protected LocalDateTime handOverDate;
 
 	@ManyToOne(cascade = {CascadeType.MERGE,
 			CascadeType.PERSIST})
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "user_id")
-	private User user;
+	protected User user;
 
 	@ManyToOne(cascade = {CascadeType.MERGE,
 			CascadeType.PERSIST})
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "book_catalog_number")
-	private Book book;
-
+	protected Book book;
 }

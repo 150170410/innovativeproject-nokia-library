@@ -159,6 +159,4 @@ class BookControllerTest {
                 .andExpect(status().isOk());
         verify(service).deleteBook(1L);
     }
-
-
 }

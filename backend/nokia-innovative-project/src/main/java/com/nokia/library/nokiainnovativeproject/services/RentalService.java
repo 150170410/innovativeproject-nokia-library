@@ -6,6 +6,7 @@ import com.nokia.library.nokiainnovativeproject.exceptions.*;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.ReservationRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import com.nokia.library.nokiainnovativeproject.utils.ReservationByDateComparator;
 import com.nokia.library.nokiainnovativeproject.utils.DaysDeltaEnum;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +34,7 @@ public class RentalService {
 	private final ReservationRepository reservationRepository;
 	private final UserService userService;
 	private final BookService bookService;
+	private final UserRepository userRepository;
 
 	public List<Rental> getAllRentals() {
 		List<Rental> rentals = rentalRepository.findAll();
@@ -47,6 +50,27 @@ public class RentalService {
 		Hibernate.initialize(rental.getBook());
 		Hibernate.initialize(rental.getUser());
 		return rental;
+	}
+
+	public RentalWithActualOwner getRentalsWithActualOwner(Long id){
+		return getRentalWithActualOwner(getRentalById(id));
+	}
+
+	public List<RentalWithActualOwner> getAllRentalsWithOwner() {
+		List<Rental> rentals = getAllRentals();
+		List<RentalWithActualOwner> rentalsWithActualOwner = new ArrayList<>();
+		for (Rental rental : rentals) {
+			rentalsWithActualOwner.add(getRentalWithActualOwner(rental));
+		}
+		return rentalsWithActualOwner;
+	}
+
+	private RentalWithActualOwner getRentalWithActualOwner(Rental rental) {
+		ModelMapper mapper = new ModelMapper();
+		RentalWithActualOwner rentalWithActualOwner = mapper.map(rental, RentalWithActualOwner.class);
+		User user = userRepository.findById(rental.getBook().getActualOwnerId()).orElseThrow( ()-> new ResourceNotFoundException("user"));
+		rentalWithActualOwner.setActualOwner(user);
+		return  rentalWithActualOwner;
 	}
 
 	public List<Rental> getRentalsByUser() {

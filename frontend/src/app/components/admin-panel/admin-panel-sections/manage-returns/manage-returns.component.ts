@@ -45,7 +45,7 @@ export class ManageReturnsComponent implements OnInit {
 	}
 
 	async getRentals() {
-		const response: MessageInfo = await this.http.getAll('rentals/getAll');
+		const response: MessageInfo = await this.http.getAll('rentals/getAllFill');
 		this.rentalsAll = response.object;
 		this.rentals = [];
 		for (let i = 0; i < this.rentalsAll.length; i++) {

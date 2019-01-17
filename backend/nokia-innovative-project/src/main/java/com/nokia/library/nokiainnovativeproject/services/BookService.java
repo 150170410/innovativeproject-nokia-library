@@ -1,13 +1,12 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
-import com.nokia.library.nokiainnovativeproject.entities.Book;
-import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
-import com.nokia.library.nokiainnovativeproject.entities.User;
+import com.nokia.library.nokiainnovativeproject.entities.*;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
@@ -15,8 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,13 +27,14 @@ public class BookService {
 	private final BookDetailsRepository bookDetailsRepository;
 	private final BookStatusRepository bookStatusRepository;
 	private final BookStatusService bookStatusService;
+	private final UserRepository userRepository;
 
 
 	public List<Book> getAllBooks() {
 		List<Book> books = bookRepository.findAll();
 		for (Book book : books) {
-			Hibernate.initialize(book.getStatus());
 			Hibernate.initialize(book.getBookDetails());
+			Hibernate.initialize(book.getStatus());
 		}
 		return books;
 	}
