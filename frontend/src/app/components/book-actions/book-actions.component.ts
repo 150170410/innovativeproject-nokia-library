@@ -38,7 +38,6 @@ export class BookActionsComponent implements OnInit {
 		const body = new RentalDTO(bookCopy.id);
 		this.isLoadingId = bookCopy.id;
 		this.isLoadingActionBorrow = true;
-
 		this.http.save('rentals/create', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Book borrowed successfully!', 'OK');
@@ -52,8 +51,12 @@ export class BookActionsComponent implements OnInit {
 				}
 				this.books[justBorrowed].availableDate.setMonth(prev.getMonth() + 1);
 				this.books[justBorrowed].status.id = 2;
+				this.isLoadingId = 0;
+				this.isLoadingActionBorrow = false;
 			} else {
 				this.snackbar.snackError('Error', 'OK');
+				this.isLoadingId = 0;
+				this.isLoadingActionBorrow = false;
 			}
 			this.isLoadingId = 0;
 			this.isLoadingActionBorrow = false;
@@ -67,13 +70,16 @@ export class BookActionsComponent implements OnInit {
 	reserveBook(bookCopy: Book) {
 		const body = new ReservationDTO(bookCopy.id);
 		this.isLoadingId = bookCopy.id;
-
 		this.isLoadingActionReserve = true;
 		this.http.save('reservations/create', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Book reserved successfully!', 'OK');
+				this.isLoadingId = 0;
+				this.isLoadingActionReserve = false;
 			} else {
 				this.snackbar.snackError('Error', 'OK');
+				this.isLoadingId = 0;
+				this.isLoadingActionReserve = false;
 			}
 			this.isLoadingId = 0;
 			this.isLoadingActionReserve = false;
