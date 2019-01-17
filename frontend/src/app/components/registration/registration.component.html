@@ -55,13 +55,22 @@
       <mat-form-field>
         <input formControlName="repeatedPassword"
                placeholder="Confirm password"
-               matInput required
+               matInput
                type="password"
                [errorStateMatcher]="matcher">
         <mat-error *ngIf="registrationParams.hasError('notSame')">
           Password not match
         </mat-error>
       </mat-form-field>
+
+      <mat-form-field>
+      <mat-select placeholder="Address" required formControlName="address">
+        <mat-option *ngFor="let address of addresses" [value]="address.id">
+          {{address.city}} {{address.building}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     </div>
 
     <div class="form-title">

@@ -102,16 +102,16 @@ INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('user@user.com', 'User', 'User', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('wojtek@wojtek.com', 'Wojtek', 'Wojtek', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
+VALUES ('wojtek@wojtek.com', 'Wojtek', 'Wojtek', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('jacek@jacek.com', 'Jacek', 'Jacek', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
+VALUES ('jacek@jacek.com', 'Jacek', 'Jacek', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('alex@alex.com', 'Alex', 'Alex', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
+VALUES ('alex@alex.com', 'Alex', 'Alex', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('mikolaj@mikolaj.com', 'Mikolaj', 'Mikolaj', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', null);
+VALUES ('mikolaj@mikolaj.com', 'Mikolaj', 'Mikolaj', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('admin@admin.com', 'Admin', 'Admin', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);

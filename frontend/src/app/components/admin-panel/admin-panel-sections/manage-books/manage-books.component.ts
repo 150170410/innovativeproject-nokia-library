@@ -129,7 +129,7 @@ export class ManageBooksComponent implements OnInit {
 					this.snackbar.snackError(error.error.message, 'OK');
 				});
 			}
-		})
+		});
 	}
 
 	clearForm() {

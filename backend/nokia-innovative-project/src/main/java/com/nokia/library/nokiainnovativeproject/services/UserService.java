@@ -153,14 +153,15 @@ public class UserService implements UserDetailsService {
 
     private User persistingRequiredEntities(User user, UserDTO userDTO) {
         Address address = userDTO.getAddress();
-        if (address != null) {
-            if(address.getId() != null) {
-                address = addressRepository.findById(address.getId()).orElseThrow(()-> new ResourceNotFoundException("address"));
-                user.setAddress(address);
-                return user;
-            } else {
-                user.setAddress(userDTO.getAddress());
-            }
+        if(address == null) {
+            throw new ValidationException("Please. Specify address");
+        }
+        if(address.getId() != null) {
+            address = addressRepository.findById(address.getId()).orElseThrow(()-> new ResourceNotFoundException("address"));
+            user.setAddress(address);
+            return user;
+        } else {
+            user.setAddress(userDTO.getAddress());
         }
         return user;
     }

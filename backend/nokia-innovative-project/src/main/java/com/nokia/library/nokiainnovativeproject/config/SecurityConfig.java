@@ -37,7 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + BOOK_DETAILS + GET_ALL,
                         API_VERSION + EMAIL + CREATE,
                         API_VERSION + USER ,
-                        API_VERSION + USER + CREATE).permitAll()
+                        API_VERSION + USER + CREATE,
+                        API_VERSION + ADDRESS + GET_ALL).permitAll()
                 .antMatchers(API_VERSION + BOOK_TO_ORDER + CREATE,
                         API_VERSION + BOOK_TO_ORDER + GET_ONE,
                         API_VERSION + BOOK_TO_ORDER + REMOVE,
