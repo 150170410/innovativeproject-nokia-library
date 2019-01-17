@@ -50,7 +50,6 @@ public class BookService {
 		return bookRepository.getBooksByBookDetailsId(id);
 	}
 
-
 	public Book createBook(BookDTO bookDTO) {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
