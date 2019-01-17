@@ -30,11 +30,6 @@ public class ReservationController {
 		return MessageInfo.success(reservationService.getReservationById(id), Arrays.asList("Reservation with ID = " + id.toString()));
 	}
 
-	@GetMapping(USERS + RESERVATIONS + GET_ONE)
-	public ResponseEntity getReservationsByUserId(@PathVariable Long id) {
-		return MessageInfo.success(reservationService.getReservationsByUserId(id), Arrays.asList("Reservations with UserID = " + id.toString()));
-	}
-
 	@GetMapping(RESERVATIONS + USER)
 	public ResponseEntity getReservationsByUser() {
 		return MessageInfo.success(reservationService.getReservationsByUser(), Arrays.asList("Reservations with UserID = "));

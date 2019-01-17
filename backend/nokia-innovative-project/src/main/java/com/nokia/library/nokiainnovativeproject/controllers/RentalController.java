@@ -31,7 +31,7 @@ public class RentalController {
 	}
 
 	@GetMapping(RENTALS + USER)
-	public ResponseEntity getRentalsByUserId() {
+	public ResponseEntity getRentalsByUser() {
 		return MessageInfo.success(rentalService.getRentalsByUser(), Arrays.asList("Rentals with UserID = "));
 	}
 

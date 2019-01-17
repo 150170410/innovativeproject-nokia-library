@@ -66,6 +66,6 @@ export class BooksReservedComponent implements OnInit {
 					this.snackbar.snackError(error.error.message, 'OK');
 				});
 			}
-		})
+		});
 	}
 }
