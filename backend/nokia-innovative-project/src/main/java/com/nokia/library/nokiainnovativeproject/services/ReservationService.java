@@ -109,7 +109,7 @@ public class ReservationService {
 		Long bookId = reservation.getBook().getId();
 		Book borrowedBook = bookService.getBookById(bookId);
 		List<Reservation> queue = reservationRepository.findByBookId(bookId);
-		if (borrowedBook.getStatus().getId().equals(BookStatusEnum.BORROWED.getStatusId())) {
+		if (borrowedBook.getStatus().getId().equals(BookStatusEnum.BORROWED.getStatusId()) || borrowedBook.getStatus().getId().equals(BookStatusEnum.AWAITING.getStatusId())) {
 			borrowedBook = bookService.changeState(
 					borrowedBook,
 					borrowedBook.getStatus().getId(),
