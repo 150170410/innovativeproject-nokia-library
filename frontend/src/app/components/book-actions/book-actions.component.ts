@@ -16,6 +16,9 @@ export class BookActionsComponent implements OnInit {
 	@Input() books: Book[];
 	booksUnlocked: Book[] = [];
 	@Output() actionTaken = new EventEmitter<boolean>();
+	isLoadingActionBorrow = false;
+	isLoadingActionReserve = false;
+	isLoadingId: number = 0;
 
 	constructor(private http: RestService,
 				private snackbar: SnackbarService) {
@@ -23,8 +26,8 @@ export class BookActionsComponent implements OnInit {
 
 	ngOnInit() {
 		this.isAuth = (sessionStorage.getItem('authenticated') === 'true');
-		this.books.forEach((b) =>{
-			if(b.status.id !== 5){
+		this.books.forEach((b) => {
+			if (b.status.id !== 5) {
 				this.booksUnlocked.push(b);
 			}
 		})
@@ -33,6 +36,9 @@ export class BookActionsComponent implements OnInit {
 
 	borrowBook(bookCopy: Book) {
 		const body = new RentalDTO(bookCopy.id);
+		this.isLoadingId = bookCopy.id;
+		this.isLoadingActionBorrow = true;
+
 		this.http.save('rentals/create', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Book borrowed successfully!', 'OK');
@@ -40,7 +46,7 @@ export class BookActionsComponent implements OnInit {
 					return book.id == bookCopy.id;
 				}, bookCopy);
 				let prev: Date = this.books[justBorrowed].availableDate;
-				if(prev === null){
+				if (prev === null) {
 					prev = new Date();
 					this.books[justBorrowed].availableDate = prev;
 				}
@@ -49,21 +55,32 @@ export class BookActionsComponent implements OnInit {
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}
+			this.isLoadingId = 0;
+			this.isLoadingActionBorrow = false;
 		}, (error) => {
+			this.isLoadingId = 0;
+			this.isLoadingActionBorrow = false;
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
 	}
 
 	reserveBook(bookCopy: Book) {
 		const body = new ReservationDTO(bookCopy.id);
+		this.isLoadingId = bookCopy.id;
+
+		this.isLoadingActionReserve = true;
 		this.http.save('reservations/create', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Book reserved successfully!', 'OK');
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}
+			this.isLoadingId = 0;
+			this.isLoadingActionReserve = false;
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
+			this.isLoadingId = 0;
+			this.isLoadingActionReserve = false;
 		});
 	}
 }

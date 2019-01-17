@@ -1,16 +1,15 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.ReservationDTO;
-import com.nokia.library.nokiainnovativeproject.entities.*;
+import com.nokia.library.nokiainnovativeproject.entities.Book;
+import com.nokia.library.nokiainnovativeproject.entities.Rental;
+import com.nokia.library.nokiainnovativeproject.entities.Reservation;
+import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
-
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.ReservationRepository;
-
-import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes;
-
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import com.nokia.library.nokiainnovativeproject.utils.DaysDeltaEnum;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes;
 
 @Service
 @Transactional

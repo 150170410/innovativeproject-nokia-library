@@ -2,14 +2,15 @@ package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.RentalDTO;
 import com.nokia.library.nokiainnovativeproject.entities.*;
-import com.nokia.library.nokiainnovativeproject.exceptions.*;
+import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
+import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.ReservationRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
-import com.nokia.library.nokiainnovativeproject.utils.ReservationByDateComparator;
 import com.nokia.library.nokiainnovativeproject.utils.DaysDeltaEnum;
+import com.nokia.library.nokiainnovativeproject.utils.ReservationByDateComparator;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
