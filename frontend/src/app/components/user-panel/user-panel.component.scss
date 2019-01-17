@@ -1,61 +1,61 @@
 .half-div {
-	float: left;
-	width: 48%;
-	display: inline-block;
-	margin: 10px;
+  float: left;
+  width: 48%;
+  display: inline-block;
+  margin: 10px;
 }
 
 .vert-spacer {
-	/*margin-left: 1px;*/
-	/*border-left: 1px solid black;*/
+  /*margin-left: 1px;*/
+  /*border-left: 1px solid black;*/
 }
 
 .full-card {
-	width: 100%;
-	height: calc(100vh - 64spx);
-	box-sizing: border-box;
+  width: 100%;
+  height: calc(100vh - 64spx);
+  box-sizing: border-box;
 }
 
 .forms-container {
-	margin: 10px auto;
-	position: relative;
-	text-align: center;
+  margin: 10px auto;
+  position: relative;
+  text-align: center;
 }
 
 table {
-	width: 100%;
-	border: 1px solid black;
-	border-collapse: collapse;
+  width: 100%;
+  border: 1px solid black;
+  border-collapse: collapse;
 }
 
 th {
-	font-size: 18px;
-	font-weight: bold;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 th, tr, td {
-	border: 1px solid black;
-	border-collapse: collapse;
+  border: 1px solid black;
+  border-collapse: collapse;
 }
 
 .form-title {
-	text-align: center;
+  text-align: center;
 }
 
 .mat-cell {
-	text-align: center;
+  text-align: center;
 }
 
 .mat-header-cell {
-	text-align: center;
+  text-align: center;
 }
 
 table {
-	border-collapse: collapse;
+  border-collapse: collapse;
 }
 
 table, th, td {
-	border: 1px solid black;
+  border: 1px solid black;
 }
 
 ::ng-deep .mat-tab-label {
@@ -63,11 +63,36 @@ table, th, td {
 }
 
 ::ng-deep .mat-tab-label-active {
-	font-weight: bold;
-	background-color: #124191;
-	color: white;
+  font-weight: bold;
+  background-color: #124191;
+  color: white;
 }
 
 ::ng-deep .mat-header-cell .mat-sort-header-container {
   justify-content: center;
+}
+
+.st-available {
+  color: white;
+  background-color: rgba(40, 167, 69, 0.7);
+}
+
+.st-awaiting {
+  color: black;
+  background-color: rgba(255, 193, 7, 0.7);
+}
+
+.st-borrowed {
+  color: white;
+  background-color: rgba(0, 123, 255, 0.7);
+}
+
+.st-reserved {
+  color: white;
+  background-color: rgba(220, 53, 69, 0.7);
+}
+
+.st-unavailable {
+  color: white;
+  background-color: rgba(108, 117, 125, 0.7);
 }
