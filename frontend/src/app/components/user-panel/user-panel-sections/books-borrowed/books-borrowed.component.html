@@ -1,4 +1,3 @@
-<h1 style="color: red;">WORK IN PROGRESS</h1>
 <p>
 	Books that you currently have.
 </p>
@@ -17,12 +16,21 @@
 
 		<ng-container matColumnDef="bookTitle">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
-			<td mat-cell *matCellDef="let borrowing">{{borrowing.book.bookDetails.title}}</td>
+			<td mat-cell *matCellDef="let rental">{{rental.book.bookDetails.title}}</td>
 		</ng-container>
+
+		<ng-container matColumnDef="status">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+			<td mat-cell *matCellDef="let borrowing" [ngClass]="{'st-available':borrowing.book.status.id === 1, 'st-awaiting':borrowing.book.status.id === 2,'st-borrowed':borrowing.book.status.id === 3,'st-reserved':borrowing.book.status.id === 4,'st-unavailable':borrowing.book.status.id === 5 }">
+				{{borrowing.book.status.statusName}}
+			</td>
+		</ng-container>
+
 		<ng-container matColumnDef="rentalDate">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Rental date</th>
-			<td mat-cell *matCellDef="let borrowing">{{borrowing.rentalDate| date:'dd.MM.yyyy'}}</td>
+			<td mat-cell *matCellDef="let borrowing">{{borrowing.rentalDate | date:'dd.MM.yyyy'}}</td>
 		</ng-container>
+
 		<ng-container matColumnDef="returnDate">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Return date</th>
 			<td mat-cell *matCellDef="let borrowing">{{borrowing.returnDate | date:'dd.MM.yyyy'}}</td>
@@ -30,18 +38,21 @@
 
 		<ng-container matColumnDef="actions">
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
-			<td mat-cell *matCellDef="let borrowing">
+			<td mat-cell *matCellDef="let rental">
 				<p>
-					<button color="primary" mat-button (click)="bookInfo(borrowing)">
-						<mat-icon>info</mat-icon>
-						Book info
+					<button *ngIf="rental.book.status.id == 2" color="warn" mat-button (click)="cancelAwaiting(rental)">
+						<mat-icon>close</mat-icon>
+						Cancel
 					</button>
-					<button disabled color="primary" mat-button (click)="prolong(borrowing)">
+					<button *ngIf="rental.book.status.id == 3" color="primary" mat-button (click)="prolong(rental)">
 						<mat-icon>forward_30</mat-icon>
 						Prolong
 					</button>
+					<button color="primary" mat-button (click)="bookInfo(rental)">
+						<mat-icon>info</mat-icon>
+						Book info
+					</button>
 				</p>
-
 			</td>
 		</ng-container>
 

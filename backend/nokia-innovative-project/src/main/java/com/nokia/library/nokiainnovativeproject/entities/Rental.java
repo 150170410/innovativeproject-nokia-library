@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -20,9 +21,9 @@ import java.util.Date;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Rental implements Serializable {
 
-	public Rental(){
+	public Rental() {
 		this.isCurrent = true;
-		this.returnDate = LocalDate.now().plusMonths(1);
+		this.returnDate = LocalDateTime.now().plusMonths(1);
 	}
 
 	@Id
@@ -32,23 +33,23 @@ public class Rental implements Serializable {
 
 	@CreationTimestamp
 	@Setter(AccessLevel.NONE)
-	private Date rentalDate;
+	protected Date rentalDate;
 
-	private Boolean isCurrent;
+	protected Boolean isCurrent = true;
+	protected Boolean wasProlonged = false;
 
-	private LocalDate returnDate;
-	private LocalDate handOverDate;
+	protected LocalDateTime returnDate;
+	protected LocalDateTime handOverDate;
 
 	@ManyToOne(cascade = {CascadeType.MERGE,
 			CascadeType.PERSIST})
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "user_id")
-	private User user;
+	protected User user;
 
 	@ManyToOne(cascade = {CascadeType.MERGE,
 			CascadeType.PERSIST})
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "book_catalog_number")
-	private Book book;
-
+	protected Book book;
 }

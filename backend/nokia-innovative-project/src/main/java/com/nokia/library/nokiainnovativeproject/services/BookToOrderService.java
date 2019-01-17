@@ -3,6 +3,7 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookToOrderDTO;
 import com.nokia.library.nokiainnovativeproject.DTOs.Email;
 import com.nokia.library.nokiainnovativeproject.entities.BookToOrder;
+import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookToOrderRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
@@ -32,6 +33,11 @@ public class BookToOrderService {
             Hibernate.initialize(bookToOrder.getUser());
         }
         return booksToOrder;
+    }
+
+    public List<BookToOrder> getBookToOrderByUser() {
+        User user = userService.getLoggedInUser();
+        return bookToOrderRepository.findAllByUser(user);
     }
 
     public BookToOrder getBookToOrderById(Long id) {

@@ -36,7 +36,7 @@ export class RestService {
 	}
 
 	save(url: string, item: any): Observable<any> {
-		return this.http.post<any>(this.URL + url + '/create', item, this.setHeaders())
+		return this.http.post<any>(this.URL + url, item, this.setHeaders())
 		.pipe(
 			catchError(this.handleError)
 		);
@@ -57,9 +57,6 @@ export class RestService {
 	}
 
 	private handleError(error: HttpErrorResponse) {
-
-		console.log('ja 2');
-
 		if (error.error instanceof ErrorEvent) {
 			console.error('An error occurred:', error.error.message);
 		} else {

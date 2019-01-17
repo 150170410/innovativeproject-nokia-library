@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { Book } from '../../../../models/database/entites/Book';
 import { MessageInfo } from '../../../../models/MessageInfo';
 import { RestService } from '../../../../services/rest/rest.service';
+import { Rental } from '../../../../models/database/entites/Rental';
+import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 
 @Component({
 	selector: 'app-manage-returns',
@@ -11,33 +12,48 @@ import { RestService } from '../../../../services/rest/rest.service';
 })
 export class ManageReturnsComponent implements OnInit {
 
+	rentalsAll: Rental[] = [];
+	rentals: Rental[] = [];
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
-	dataSource = new MatTableDataSource<Book>();
-	displayedColumns: string[] = ['signature', 'current_user', 'status', 'bookDetails', 'comments', 'actions'];
+	dataSource = new MatTableDataSource<Rental>();
+	displayedColumns: string[] = ['signature', 'current_user', 'owner', 'status', 'bookDetails', 'comments', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
-	constructor(private http: RestService) {
+	constructor(private http: RestService,
+				private snackbar: SnackbarService) {
 	}
 
 	ngOnInit() {
-		this.getBookCopies()
+		this.getRentals();
 	}
 
-	returnBook() {
-
+	returnBook(rental: Rental) {
+		const body = {};
+		this.http.save('rentals/return/' + rental.id, body).subscribe((response) => {
+			if (response.success) {
+				this.getRentals();
+				this.snackbar.snackSuccess('Book handover successful!', 'OK');
+			} else {
+				this.snackbar.snackError('Error', 'OK');
+			}
+			this.getRentals();
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
 	}
 
-	async getBookCopies() {
-		const response: MessageInfo = await this.http.getAll('books/getAll');
-		let borrowedBooks = [];
-		for(let i = 0; i < response.object.length; i++){
-			if(response.object[i].status.id === 2 || response.object[i].status.id === 3){
-				borrowedBooks.push(response.object[i])
+	async getRentals() {
+		const response: MessageInfo = await this.http.getAll('rentals/getAllFill');
+		this.rentalsAll = response.object;
+		this.rentals = [];
+		for (let i = 0; i < this.rentalsAll.length; i++) {
+			if (this.rentalsAll[i].book.status.id == 3) {
+				this.rentals.push(this.rentalsAll[i]);
 			}
 		}
-		this.dataSource = new MatTableDataSource(borrowedBooks.reverse());
+		this.dataSource = new MatTableDataSource(this.rentals.reverse());
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());

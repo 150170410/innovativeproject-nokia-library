@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { User } from '../../../../models/database/entites/User';
+import {MessageInfo} from '../../../../models/MessageInfo';
+import {RestService} from '../../../../services/rest/rest.service';
 
 @Component({
 	selector: 'app-manage-users',
@@ -15,15 +17,18 @@ export class ManageUsersComponent implements OnInit {
 	displayedColumns: string[] = [ 'email', 'fullName', 'role', 'address', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
-	constructor() {
+	constructor(private http: RestService) {
 	}
 
 	ngOnInit() {
 		this.getUsers();
 	}
 
-	getUsers() {
-		// const response: MessageInfo = await this.http.getAll('books/getAll');
+	async getUsers() {
+		const response: MessageInfo = await this.http.getAll('user/getAll');
+
+    console.log(response);
+
 		this.dataSource = new MatTableDataSource(User.all());
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {

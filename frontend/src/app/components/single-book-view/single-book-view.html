@@ -14,16 +14,14 @@
 		</div>
 	</div>
 
-
 	<div>
 		<h3>
-			Available books: {{bookDetails.books | bookStatuses:1}}/{{bookDetails.books.length}}
+			Available books: {{booksUnlocked | bookStatuses:1}}/{{booksUnlocked.length}}
 		</h3>
-		<app-book-actions [books]="bookDetails.books"
+		<app-book-actions [books]="booksUnlocked"
 						  (actionTaken)="actionTaken($event)"
 		></app-book-actions>
 	</div>
-
 
 	<h3>More details:</h3>
 	<ul>
@@ -31,7 +29,7 @@
 			<b>ISBN:</b> {{bookDetails.isbn}}
 		</li>
 		<li>
-			<b>Date of publication:</b> {{bookDetails.publicationDate | date: 'dd.MM.yyyy'}}
+			<b>Publication date:</b> {{bookDetails.publicationDate | date: 'dd.MM.yyyy'}}
 		</li>
 	</ul>
 

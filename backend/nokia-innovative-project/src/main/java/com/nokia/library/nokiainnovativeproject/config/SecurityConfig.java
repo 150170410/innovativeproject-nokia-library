@@ -3,6 +3,7 @@ package com.nokia.library.nokiainnovativeproject.config;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 
 import com.nokia.library.nokiainnovativeproject.services.UserService;
+import com.sun.org.apache.regexp.internal.RE;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -36,33 +37,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + BOOK_DETAILS + GET_ALL,
                         API_VERSION + EMAIL + CREATE,
                         API_VERSION + USER ,
-                        API_VERSION + USER + CREATE).permitAll()
-                .antMatchers(API_VERSION + BOOK_TO_ORDER + "/**",
+                        API_VERSION + USER + CREATE,
+                        API_VERSION + ADDRESS + GET_ALL).permitAll()
+                .antMatchers(API_VERSION + BOOK_TO_ORDER + CREATE,
+                        API_VERSION + BOOK_TO_ORDER + GET_ONE,
+                        API_VERSION + BOOK_TO_ORDER + REMOVE,
+                        API_VERSION + BOOK_TO_ORDER + UPDATE,
+                        API_VERSION + BOOK_TO_ORDER + USER,
                         API_VERSION + RENTALS + CREATE,
                         API_VERSION + RENTALS + GET_ALL,
                         API_VERSION + RENTALS + GET_ONE,
                         API_VERSION + RENTALS + HANDOVER,
                         API_VERSION + RENTALS + UPDATE,
-                        API_VERSION + USERS + RENTALS + GET_ONE,
+						API_VERSION + RENTALS + REMOVE,
+                        API_VERSION + RENTALS + RETURN,
+                        API_VERSION + RENTALS + USER,
                         API_VERSION + BOOKS + RENTALS + GET_ONE,
                         API_VERSION + BOOKS + RESERVATIONS + GET_ONE,
-                        API_VERSION + USERS + RESERVATIONS + GET_ONE,
                         API_VERSION + RESERVATIONS + CREATE,
                         API_VERSION + RESERVATIONS + GET_ALL,
                         API_VERSION + RESERVATIONS + GET_ONE,
+						API_VERSION + RESERVATIONS + REMOVE,
+                        API_VERSION + RESERVATIONS + USER,
                         API_VERSION + USER + UPDATE).hasAnyRole("EMPLOYEE", "ADMIN")
                 .antMatchers(API_VERSION + BOOK_AUTHOR + "/**",
                         API_VERSION + AUTOCOMPLETION + "/**",
                         API_VERSION + BOOK_CATEGORY + "/**",
+                        API_VERSION + BOOK_TO_ORDER + GET_ALL,
                         API_VERSION + BOOKS + CREATE,
                         API_VERSION + BOOKS + UPDATE,
                         API_VERSION + BOOKS + REMOVE,
+                        API_VERSION + RENTALS + GET_ALL_FILL,
+                        API_VERSION + RENTALS + GET_ONE_FILL,
                         API_VERSION + BOOK_DETAILS + CREATE,
                         API_VERSION + BOOK_DETAILS + UPDATE,
                         API_VERSION + BOOK_DETAILS + REMOVE,
                         API_VERSION + PICTURES + UPLOAD,
-                        API_VERSION + RENTALS + REMOVE,
-                        API_VERSION + RESERVATIONS + REMOVE,
                         API_VERSION + USER + GET_ONE,
                         API_VERSION + USER + GET_ALL,
                         API_VERSION + USER + ASSIGN_ADMIN,

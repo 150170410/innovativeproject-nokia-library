@@ -15,7 +15,7 @@ export class SnackbarService {
 
 	snackError(message: string, action: string) {
 		this.snackBar.open(message, action, {
-			duration: 200000,
+			duration: 15000,
 			panelClass: ['snackbar-error']
 		});
 	}

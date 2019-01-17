@@ -17,7 +17,7 @@ export class BooksReservedComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Reservation>();
-	displayedColumns: string[] = ['bookTitle', 'reservationDate', 'actions'];
+	displayedColumns: string[] = ['bookTitle', 'reservationDate', 'availableDate', 'actions'];
 
 	constructor(private http: RestService,
 				private confirmService: ConfirmationDialogService,
@@ -30,7 +30,7 @@ export class BooksReservedComponent implements OnInit {
 	}
 
 	async getReservations() {
-		const response = await this.http.getAll('reservations/getAll');
+		const response = await this.http.getAll('reservations/user');
 		this.reservations = response.object;
 		this.dataSource = new MatTableDataSource(response.object);
 		this.dataSource.paginator = this.paginator;
@@ -46,5 +46,26 @@ export class BooksReservedComponent implements OnInit {
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
+
+	acceptReservation(reservation: Reservation) {
+
+	}
+
+	async cancelReservation(reservation: Reservation) {
+		await this.confirmService.openDialog('Are you sure you want to cancel this reservation?').subscribe((result) => {
+			if (result) {
+				this.http.remove('reservations', reservation.id).subscribe((response) => {
+					if (response.success) {
+						this.snackbar.snackSuccess('Reservation cancelled successfully!', 'OK');
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+					this.getReservations();
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
+			}
+		});
 	}
 }

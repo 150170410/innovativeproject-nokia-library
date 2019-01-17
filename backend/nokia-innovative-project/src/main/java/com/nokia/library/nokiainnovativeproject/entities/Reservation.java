@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -27,6 +28,8 @@ public class Reservation implements Serializable {
     @CreationTimestamp
 	@Setter(AccessLevel.NONE)
     private Date reservationDate;
+
+    private LocalDateTime availableDate;
 
     @ManyToOne(cascade = {CascadeType.MERGE,
             CascadeType.PERSIST})

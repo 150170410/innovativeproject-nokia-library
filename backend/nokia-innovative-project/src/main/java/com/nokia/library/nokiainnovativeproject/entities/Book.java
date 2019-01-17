@@ -1,16 +1,15 @@
 package com.nokia.library.nokiainnovativeproject.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -44,5 +43,8 @@ public class Book implements Serializable {
 	@JoinColumn(name = "book_details_id")
 	private BookDetails bookDetails;
 
-	private LocalDate availableDate;
+	@CreationTimestamp
+	private LocalDateTime availableDate;
+
+	private Long actualOwnerId;
 }

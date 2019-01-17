@@ -42,7 +42,7 @@ export class BooksRequestedComponent implements OnInit {
 	}
 
 	async getRequestedBooks() {
-		const response = await this.http.getAll('bookToOrder/getAll');
+		const response = await this.http.getAll('bookToOrder/user');
 		this.requestedBooks = response.object;
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
@@ -75,7 +75,7 @@ export class BooksRequestedComponent implements OnInit {
 
 	requestBook(requestParams: FormGroup) {
 		const body = new BookToOrderDTO(requestParams.value.isbn, requestParams.value.title);
-		this.http.save('bookToOrder', body).subscribe((response) => {
+		this.http.save('bookToOrder/create', body).subscribe((response) => {
 			if (response.success) {
 				this.clearForm();
 				this.getRequestedBooks();

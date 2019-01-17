@@ -62,7 +62,7 @@
 						<mat-icon>edit</mat-icon>
 						Edit
 					</button>
-					<button color="warn" mat-button (click)="removeCategory(category.id)" [disabled]="!category.isRemovable">
+					<button color="warn" mat-button (click)="removeCategory(category.id)" [disabled]="!category.isRemovable" matTooltip="This category is attached to some book details." [matTooltipDisabled]="category.isRemovable">
 						<mat-icon>cancel</mat-icon>
 						Remove
 					</button>

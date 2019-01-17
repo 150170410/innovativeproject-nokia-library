@@ -32,13 +32,13 @@ public class BookController {
 	}
 
 	@PostMapping(CREATE)
-	public ResponseEntity createBook(@RequestBody @Valid  BookDTO bookDTO, BindingResult bindingResult){
+	public ResponseEntity createBook(@RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
 		return MessageInfo.success(bookService.createBook(bookDTO), Arrays.asList("Book created successfully"));
 	}
 
 	@PostMapping(UPDATE)
-	public ResponseEntity updateBook(@PathVariable Long id, @RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult){
+	public ResponseEntity updateBook(@PathVariable Long id, @RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
 		return MessageInfo.success(bookService.updateBook(id, bookDTO), Arrays.asList("Book updated successfully"));
 	}
@@ -47,5 +47,18 @@ public class BookController {
 	public ResponseEntity deleteBook(@PathVariable Long id) throws ResourceNotFoundException {
 		bookService.deleteBook(id);
 		return MessageInfo.success(null, Arrays.asList("Book with ID = " + id.toString() + " removed successfully"));
+	}
+
+	@PostMapping("/lock/{signature}")
+	public ResponseEntity lockBook(@PathVariable String signature) {
+//		MessageInfo.validateBindingResults(bindingResult);
+		return MessageInfo.success(bookService.lockBook(signature), Arrays.asList("Book locked successfully"));
+
+	}
+
+	@PostMapping("/unlock/{signature}")
+	public ResponseEntity unlockBook(@PathVariable String signature) {
+//		MessageInfo.validateBindingResults(bindingResult);
+		return MessageInfo.success(bookService.unlockBook(signature), Arrays.asList("Book unlocked successfully"));
 	}
 }

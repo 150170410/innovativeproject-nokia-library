@@ -24,6 +24,11 @@ public class BookToOrderController {
         return MessageInfo.success(bookToOrderService.getAllBookToOrders(), Arrays.asList("list of books to order"));
     }
 
+    @GetMapping(Mappings.USER)
+    public ResponseEntity getAllBookToOrderByUser() {
+        return MessageInfo.success(bookToOrderService.getBookToOrderByUser(), Arrays.asList("user's list of books to order"));
+    }
+
     @GetMapping(Mappings.GET_ONE)
     public ResponseEntity getBookToOrderById(@PathVariable Long id) {
         return MessageInfo.success(bookToOrderService.getBookToOrderById(id),

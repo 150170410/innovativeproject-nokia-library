@@ -13,12 +13,14 @@ import { Router } from '@angular/router';
 })
 export class BooksBorrowedComponent implements OnInit {
 
-	borrowings: Rental[] = [];
+	rentals: Rental[] = [];
+	rentalsAll: Rental[] = [];
+	canProlongDate = new Date();
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
-	displayedColumns: string[] = ['bookTitle', 'rentalDate', 'returnDate', 'actions'];
+	displayedColumns: string[] = ['bookTitle', 'status', 'rentalDate', 'returnDate', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService,
@@ -28,13 +30,37 @@ export class BooksBorrowedComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.getBorrowedBooks();
+		this.getRentals();
+		this.canProlongDate.setDate(this.canProlongDate.getDate() + 3);
 	}
 
-	async getBorrowedBooks() {
-		const response = await this.http.getAll('rentals/getAll');
-		this.borrowings = response.object;
-		this.dataSource = new MatTableDataSource(response.object);
+	async cancelAwaiting(rental: Rental) {
+		await this.confirmService.openDialog('Are you sure you want to cancel?').subscribe((result) => {
+			if (result) {
+				this.http.remove('rentals', rental.id).subscribe((response) => {
+					if (response.success) {
+						this.snackbar.snackSuccess('Borrowing cancelled successfully!', 'OK');
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+					this.getRentals();
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
+			}
+		})
+	}
+
+	prolong(rental: Rental) {
+		
+	}
+
+	async getRentals() {
+		const response = await this.http.getAll('rentals/user');
+		this.rentalsAll = response.object;
+		this.rentals = this.rentalsAll.filter(r => r.isCurrent).map(r => Object.assign({}, r));
+
+		this.dataSource = new MatTableDataSource(this.rentals);
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
@@ -49,9 +75,5 @@ export class BooksBorrowedComponent implements OnInit {
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
-	}
-
-	prolong(borrowing) {
-
 	}
 }

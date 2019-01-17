@@ -114,7 +114,7 @@ export class ManageBookDetailsComponent implements OnInit {
 		);
 		console.log(body);
 		if (!this.toUpdate) {
-			this.http.save('bookDetails', body).subscribe((response) => {
+			this.http.save('bookDetails/create', body).subscribe((response) => {
 				if (response.success) {
 					this.clearForm();
 					this.getBookDetails();

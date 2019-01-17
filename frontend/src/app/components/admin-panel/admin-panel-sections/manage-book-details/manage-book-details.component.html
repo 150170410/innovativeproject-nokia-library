@@ -25,7 +25,6 @@
 					<th>Title</th>
 					<th>Authors</th>
 					<th>Publication</th>
-					<th>Description</th>
 					<th>Actions</th>
 				</tr>
 				<tr *ngFor="let details of foundFromAPI">
@@ -37,9 +36,6 @@
 					</td>
 					<td>
 						{{details.publicationDate | date:'dd.MM.yyyy'}}
-					</td>
-					<td>
-						{{details.description}}
 					</td>
 					<td>
 						<button color="primary" type="button" mat-button (click)="selectDetails(details)">

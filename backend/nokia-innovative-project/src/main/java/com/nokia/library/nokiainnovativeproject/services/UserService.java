@@ -5,6 +5,7 @@ import com.nokia.library.nokiainnovativeproject.DTOs.UserDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Address;
 import com.nokia.library.nokiainnovativeproject.entities.Role;
 import com.nokia.library.nokiainnovativeproject.entities.User;
+import com.nokia.library.nokiainnovativeproject.exceptions.AuthorizationException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.AddressRepository;
@@ -23,8 +24,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.*;
 
 @Service
@@ -69,7 +68,7 @@ public class UserService implements UserDetailsService {
                     ((org.springframework.security.core.userdetails.User) principal);
             return userRepository.findUserByEmail(user.getUsername());
         }
-        return null;
+        throw new AuthorizationException();
     }
 
     public List<User> getAllUsers() {
@@ -154,14 +153,15 @@ public class UserService implements UserDetailsService {
 
     private User persistingRequiredEntities(User user, UserDTO userDTO) {
         Address address = userDTO.getAddress();
-        if (address != null) {
-            if(address.getId() != null) {
-                address = addressRepository.findById(address.getId()).orElseThrow(()-> new ResourceNotFoundException("address"));
-                user.setAddress(address);
-                return user;
-            } else {
-                user.setAddress(userDTO.getAddress());
-            }
+        if(address == null) {
+            throw new ValidationException("Please. Specify address");
+        }
+        if(address.getId() != null) {
+            address = addressRepository.findById(address.getId()).orElseThrow(()-> new ResourceNotFoundException("address"));
+            user.setAddress(address);
+            return user;
+        } else {
+            user.setAddress(userDTO.getAddress());
         }
         return user;
     }

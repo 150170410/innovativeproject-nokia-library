@@ -45,7 +45,7 @@ export class ManageCategoriesComponent implements OnInit {
 	createCategory(params: any) {
 		const body = new BookCategoryDTO(params.value.categoryName);
 		if (!this.toUpdate) {
-			this.http.save('bookCategory', body).subscribe((response) => {
+			this.http.save('bookCategory/create', body).subscribe((response) => {
 				if (response.success) {
 					this.clearForm();
 					this.getCategories();

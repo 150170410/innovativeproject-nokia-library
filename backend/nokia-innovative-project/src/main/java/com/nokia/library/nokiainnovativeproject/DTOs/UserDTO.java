@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
@@ -28,8 +29,8 @@ public class UserDTO {
 	@Size(max = 255, message = "The maximum size of the email is 255")
 	private String email;
 
-	@NotBlank(message = "Password can't be null and can't contain whitespace")
-	@Size(min = 7, max = 255, message = "Password must be 7-20 characters long")
+	@NotNull(message = "Password can't be null")
+	@Size(min = 7, max = 255, message = "Password must be 7-255 characters long")
 	private String password;
 
 	@Valid
