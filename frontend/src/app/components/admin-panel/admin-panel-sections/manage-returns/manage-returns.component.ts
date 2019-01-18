@@ -49,7 +49,7 @@ export class ManageReturnsComponent implements OnInit {
 		this.rentalsAll = response.object;
 		this.rentals = [];
 		for (let i = 0; i < this.rentalsAll.length; i++) {
-			if (this.rentalsAll[i].book.status.id == 3) {
+			if (this.rentalsAll[i].book.status.id == 3 && this.rentalsAll[i].isCurrent === true) {
 				this.rentals.push(this.rentalsAll[i]);
 			}
 		}
