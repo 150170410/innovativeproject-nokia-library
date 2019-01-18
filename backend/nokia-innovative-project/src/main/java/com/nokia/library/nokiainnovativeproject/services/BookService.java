@@ -27,7 +27,7 @@ public class BookService {
 	private final BookDetailsRepository bookDetailsRepository;
 	private final BookStatusRepository bookStatusRepository;
 	private final BookStatusService bookStatusService;
-	private final UserRepository userRepository;
+	private final UserService userService;
 
 
 	public List<Book> getAllBooks() {
@@ -54,6 +54,7 @@ public class BookService {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
 		book.setAvailableDate(LocalDateTime.now());
+		book.setActualOwnerId(userService.getLoggedInUser().getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
 
@@ -62,6 +63,7 @@ public class BookService {
 		book.setComments(bookDTO.getComments());
 		book.setSignature(bookDTO.getSignature());
 		book.getBookDetails().setIsRemovable(true);
+		book.setActualOwnerId(userService.getLoggedInUser().getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
 
@@ -90,6 +92,7 @@ public class BookService {
 	public Book changeState(Book book, Long newStatusId, Integer days, User newOwner) {
 		BookStatus newStatus = bookStatusService.getBookStatusById(newStatusId);
 		book.setStatus(newStatus);
+		book.setActualOwnerId(newOwner.getId());
 		LocalDateTime oldAvailableDate = book.getAvailableDate();
 		if(oldAvailableDate == null){
 			oldAvailableDate = LocalDateTime.now();
