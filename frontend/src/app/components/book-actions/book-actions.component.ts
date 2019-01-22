@@ -34,11 +34,11 @@ export class BookActionsComponent implements OnInit {
 	}
 
 
-	async borrowBook(bookCopy: Book) {
+	borrowBook(bookCopy: Book) {
 		const body = new RentalDTO(bookCopy.id);
 		this.isLoadingId = bookCopy.id;
 		this.isLoadingActionBorrow = true;
-		await this.http.save('rentals/create', body).subscribe((response) => {
+		this.http.save('rentals/create', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Book borrowed successfully!', 'OK');
 				const justBorrowed = this.books.findIndex((book: Book) => {
@@ -65,15 +65,13 @@ export class BookActionsComponent implements OnInit {
 			this.isLoadingActionBorrow = false;
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
-		this.isLoadingId = 0;
-		this.isLoadingActionBorrow = false;
 	}
 
-	async reserveBook(bookCopy: Book) {
+	reserveBook(bookCopy: Book) {
 		const body = new ReservationDTO(bookCopy.id);
 		this.isLoadingId = bookCopy.id;
 		this.isLoadingActionReserve = true;
-		await this.http.save('reservations/create', body).subscribe((response) => {
+		this.http.save('reservations/create', body).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Book reserved successfully!', 'OK');
 				this.isLoadingId = 0;
@@ -90,7 +88,5 @@ export class BookActionsComponent implements OnInit {
 			this.isLoadingId = 0;
 			this.isLoadingActionReserve = false;
 		});
-		this.isLoadingId = 0;
-		this.isLoadingActionReserve = false;
 	}
 }

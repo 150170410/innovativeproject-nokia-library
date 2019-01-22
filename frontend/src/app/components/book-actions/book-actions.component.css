@@ -1,13 +1,5 @@
-mat-card {
-	margin-bottom: 1px;
-}
-
-.button-spacer {
-	margin-left: 10px;
-}
-
 .book-item {
-	margin-top: 10px;
+	margin-top: 5px;
 }
 
 .signature {
@@ -15,15 +7,11 @@ mat-card {
 	display: inline-block;
 }
 
-.available-on {
+.action-item {
 	display: inline-block;
+	margin-left: 10px;
 }
 
-.not-available {
-	color: #9b1249;
-	font-size: 20px;
-}
-
-mat-spinner{
+mat-spinner {
 	display: inline-block;
 }
