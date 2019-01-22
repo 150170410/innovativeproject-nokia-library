@@ -11,6 +11,7 @@ import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,8 +108,10 @@ public class BookService {
 		} else if (days == 0){
 			book.setAvailableDate(LocalDateTime.now());
 		}
+		if(newOwner != null){
+			book.setActualOwnerId(newOwner.getId());
+		}
 		System.out.println(book);
-		// TODO: finish state changes here, also change current owner
 		return book;
 	}
 

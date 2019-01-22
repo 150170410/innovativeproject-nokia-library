@@ -103,37 +103,46 @@ public class ReservationService {
 		}
 	}
 
-	public void deleteReservation(Long id) {
+	public void rejectReservation(Long id) {
 		User user = userService.getLoggedInUser();
 		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("reservation"));
 		Long bookId = reservation.getBook().getId();
 		Book borrowedBook = bookService.getBookById(bookId);
 		List<Reservation> queue = reservationRepository.findByBookId(bookId);
-		if (borrowedBook.getStatus().getId().equals(BookStatusEnum.BORROWED.getStatusId()) ||
-				borrowedBook.getStatus().getId().equals(BookStatusEnum.AWAITING.getStatusId())) {
-			borrowedBook = bookService.changeState(
-					borrowedBook,
-					borrowedBook.getStatus().getId(),
-					DaysDeltaEnum.MINUSMONTH.getDays(),
-					user);
-		} else if (borrowedBook.getStatus().getId().equals(BookStatusEnum.RESERVED.getStatusId())) {
-			if (queue.isEmpty()) {
+		if (borrowedBook.getStatus().getId().equals(BookStatusEnum.RESERVED.getStatusId()) &&
+				reservation.getUser().getId().equals(user.getId())) {
+			if (queue.size() < 1) {
 				borrowedBook = bookService.changeState(
 						borrowedBook,
 						BookStatusEnum.AVAILABLE.getStatusId(),
 						0,
-						user);
+						null);
 			} else {
 				borrowedBook = bookService.changeState(
 						borrowedBook,
 						BookStatusEnum.RESERVED.getStatusId(),
 						DaysDeltaEnum.MINUSMONTH.getDays(),
-						user);
+						null);
 			}
 		}
-		// TODO: put these 2 in transaction
 		saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
 	}
+
+	public void cancelReservation(Long id) {
+		User user = userService.getLoggedInUser();
+		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("reservation"));
+		Long bookId = reservation.getBook().getId();
+		Book borrowedBook = bookService.getBookById(bookId);
+		if (reservation.getUser().getId().equals(user.getId())) {
+			borrowedBook = bookService.changeState(
+					borrowedBook,
+					borrowedBook.getStatus().getId(),
+					DaysDeltaEnum.MINUSMONTH.getDays(),
+					null);
+		}
+		saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
+	}
+
 	@Transactional
 	public void saveBorrowedBookAndDeleteReservation(Book borrowedBook, Reservation reservation) {
 		bookRepository.save(borrowedBook);
