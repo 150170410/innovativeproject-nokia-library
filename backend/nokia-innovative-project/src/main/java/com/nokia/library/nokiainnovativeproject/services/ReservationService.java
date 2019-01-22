@@ -5,6 +5,7 @@ import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.Rental;
 import com.nokia.library.nokiainnovativeproject.entities.Reservation;
 import com.nokia.library.nokiainnovativeproject.entities.User;
+import com.nokia.library.nokiainnovativeproject.exceptions.AuthorizationException;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
@@ -103,6 +104,30 @@ public class ReservationService {
 		}
 	}
 
+	public void acceptReservation(Long id) {
+		User user = userService.getLoggedInUser();
+		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("reservation"));
+		Long bookId = reservation.getBook().getId();
+		Book borrowedBook = bookService.getBookById(bookId);
+		if (borrowedBook.getStatus().getId().equals(BookStatusEnum.RESERVED.getStatusId()) &&
+				reservation.getUser().getId().equals(user.getId())) {
+			borrowedBook = bookService.changeState(
+					borrowedBook,
+					BookStatusEnum.AWAITING.getStatusId(),
+					Integer.MAX_VALUE,
+					null);
+			Rental rental = new Rental();
+			rental.setBook(borrowedBook);
+			rental.setUser(user);
+
+			bookRepository.save(borrowedBook);
+			rentalRepository.save(rental);
+			reservationRepository.delete(reservation);
+		} else {
+			throw new AuthorizationException();
+		}
+	}
+
 	public void rejectReservation(Long id) {
 		User user = userService.getLoggedInUser();
 		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("reservation"));
@@ -124,8 +149,11 @@ public class ReservationService {
 						DaysDeltaEnum.MINUSMONTH.getDays(),
 						null);
 			}
+			saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
+		} else {
+			throw new AuthorizationException();
 		}
-		saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
+
 	}
 
 	public void cancelReservation(Long id) {
@@ -139,8 +167,9 @@ public class ReservationService {
 					borrowedBook.getStatus().getId(),
 					DaysDeltaEnum.MINUSMONTH.getDays(),
 					null);
+			saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
 		}
-		saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
+
 	}
 
 	@Transactional

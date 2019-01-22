@@ -11,12 +11,10 @@ import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -98,7 +96,6 @@ public class BookService {
 		}
 		if (days == 30) {
 			book.setAvailableDate(oldAvailableDate.plusMonths(1));
-			System.out.println(book.getAvailableDate());
 		} else if (days == -30) {
 			book.setAvailableDate(oldAvailableDate.minusMonths(1));
 		} else if (0 < days && days < 30) {
@@ -109,9 +106,9 @@ public class BookService {
 			book.setAvailableDate(LocalDateTime.now());
 		}
 		if(newOwner != null){
-			book.setActualOwnerId(newOwner.getId());
+			book.setCurrentOwnerId(newOwner.getId());
 		}
-		System.out.println(book);
+//		System.out.println(book);
 		return book;
 	}
 

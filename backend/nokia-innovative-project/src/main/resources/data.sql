@@ -132,17 +132,17 @@ INSERT INTO user_roles (user_id, roles_id) VALUES (5, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (6, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (6, 2);
 
-INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('booka', 1, 1, 'dirty', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('bookaAA', 1, 1, 'putti', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('bookB', 2, 1, 'missing pages', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('YHNANK', 3, 1, 'bad', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('ALMNUM', 4, 1, 'cool', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('SIG123', 5, 1, 'stupid', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('OUF', 6, 1, 'chairman', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('ui ui', 7, 1, 'gut', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('miu miau', 7, 1, 'missing cover', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('nubu', 7, 1, 'juj', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('pook', 7, 1, 'is fine', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('booka', 1, 1, 'dirty', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('bookaAA', 1, 1, 'putti', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('bookB', 2, 1, 'missing pages', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('YHNANK', 3, 1, 'bad', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('ALMNUM', 4, 1, 'cool', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('SIG123', 5, 1, 'stupid', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('OUF', 6, 1, 'chairman', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('ui ui', 7, 1, 'gut', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('miu miau', 7, 1, 'missing cover', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('nubu', 7, 1, 'juj', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('pook', 7, 1, 'is fine', 6);
 
 INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0439708184', 'Harry Potter and the Sorcerer''s Stone', 1);
 INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('9780679745587', 'In Cold Blood', 2);

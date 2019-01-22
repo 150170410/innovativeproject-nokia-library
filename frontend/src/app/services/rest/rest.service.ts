@@ -56,6 +56,14 @@ export class RestService {
 		);
 	}
 
+	remove2(url: string, id: number) {
+		return this.http.delete<any>(this.URL + url + id, this.setHeaders())
+		.pipe(
+			catchError(this.handleError)
+		);
+	}
+
+
 	private handleError(error: HttpErrorResponse) {
 		if (error.error instanceof ErrorEvent) {
 			console.error('An error occurred:', error.error.message);

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +54,7 @@ public class RentalService {
 		return rental;
 	}
 
-	public RentalWithActualOwner getRentalsWithActualOwner(Long id){
+	public RentalWithActualOwner getRentalsWithActualOwner(Long id) {
 		return getRentalWithActualOwner(getRentalById(id));
 	}
 
@@ -69,9 +70,9 @@ public class RentalService {
 	private RentalWithActualOwner getRentalWithActualOwner(Rental rental) {
 		ModelMapper mapper = new ModelMapper();
 		RentalWithActualOwner rentalWithActualOwner = mapper.map(rental, RentalWithActualOwner.class);
-		User user = userRepository.findById(rental.getBook().getActualOwnerId()).orElseThrow( ()-> new ResourceNotFoundException("user"));
+		User user = userRepository.findById(rental.getBook().getCurrentOwnerId()).orElseThrow(() -> new ResourceNotFoundException("user"));
 		rentalWithActualOwner.setActualOwner(user);
-		return  rentalWithActualOwner;
+		return rentalWithActualOwner;
 	}
 
 	public List<Rental> getRentalsByUser() {
@@ -150,15 +151,18 @@ public class RentalService {
 					0,
 					user);
 		} else {
+			Integer daysDelta = (int) (long) LocalDateTime.from(rental.getReturnDate()).until(LocalDateTime.now(), ChronoUnit.DAYS);
+			System.out.println(daysDelta);
 			bookService.changeState(
 					rental.getBook(),
 					BookStatusEnum.RESERVED.getStatusId(),
-					0,
+					daysDelta,
 					user);
 		}
 		if (!rental.getIsCurrent()) {
 			throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
 		}
+
 		rental.setReturnDate(LocalDateTime.now());
 		rental.setIsCurrent(false);
 		return rentalRepository.save(rental);
@@ -170,6 +174,7 @@ public class RentalService {
 		Long bookId = rental.getBook().getId();
 		Book borrowedBook = bookService.getBookById(bookId);
 		List<Reservation> queue = reservationRepository.findByBookId(bookId);
+		System.out.println(queue);
 		if (queue.isEmpty()) {
 			borrowedBook = bookService.changeState(
 					borrowedBook,
@@ -183,7 +188,6 @@ public class RentalService {
 					DaysDeltaEnum.MINUSMONTH.getDays(),
 					user);
 		}
-		// TODO: put these 2 in transaction
 		saveBorrowedBookAndDeleteRental(borrowedBook, rental);
 	}
 

@@ -49,15 +49,41 @@ export class BooksReservedComponent implements OnInit {
 	}
 
 	acceptReservation(reservation: Reservation) {
-
+		this.http.remove2('reservations/accept/', reservation.id).subscribe((response) => {
+			if (response.success) {
+				this.snackbar.snackSuccess('Reservation accepted successfully!', 'OK');
+			} else {
+				this.snackbar.snackError('Error', 'OK');
+			}
+			this.getReservations();
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
 	}
 
 	async cancelReservation(reservation: Reservation) {
 		await this.confirmService.openDialog('Are you sure you want to cancel this reservation?').subscribe((result) => {
 			if (result) {
-				this.http.remove('reservations', reservation.id).subscribe((response) => {
+				this.http.remove2('reservations/cancel/', reservation.id).subscribe((response) => {
 					if (response.success) {
 						this.snackbar.snackSuccess('Reservation cancelled successfully!', 'OK');
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+					this.getReservations();
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
+			}
+		});
+	}
+
+	async rejectReservation(reservation: Reservation){
+		await this.confirmService.openDialog('Are you sure you want to reject this reservation?').subscribe((result) => {
+			if (result) {
+				this.http.remove2('reservations/reject/', reservation.id).subscribe((response) => {
+					if (response.success) {
+						this.snackbar.snackSuccess('Reservation rejected successfully!', 'OK');
 					} else {
 						this.snackbar.snackError('Error', 'OK');
 					}

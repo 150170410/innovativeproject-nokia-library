@@ -37,7 +37,11 @@
 						<mat-icon>done</mat-icon>
 						Accept
 					</button>
-					<button *ngIf="reservation.book.status.id === 2 || reservation.book.status.id === 3" color="warn" mat-button (click)="cancelReservation(reservation)">
+					<button *ngIf="reservation.book.status.id === 4" color="warn" mat-button (click)="rejectReservation(reservation)">
+						<mat-icon>highlight_off</mat-icon>
+						Reject
+					</button>
+					<button *ngIf="reservation.book.status.id === 2 || reservation.book.status.id === 3 || reservation.book.status.id === 4" color="warn" mat-button (click)="cancelReservation(reservation)">
 						<mat-icon>clear</mat-icon>
 						Cancel
 					</button>

@@ -51,7 +51,7 @@ export class ManageHandoversComponent implements OnInit {
 		this.rentalsAll = response.object;
 		this.rentals = [];
 		for (let i = 0; i < this.rentalsAll.length; i++) {
-			if (this.rentalsAll[i].book.status.id === 2 && this.rentalsAll[i].isCurrent === true) {
+			if ((this.rentalsAll[i].book.status.id === 2 || this.rentalsAll[i].book.status.id === 4) && this.rentalsAll[i].isCurrent === true) {
 				this.rentals.push(this.rentalsAll[i]);
 			}
 		}
