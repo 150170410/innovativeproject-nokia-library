@@ -1,5 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
+import com.nokia.library.nokiainnovativeproject.DTOs.Email;
 import com.nokia.library.nokiainnovativeproject.DTOs.RentalDTO;
 import com.nokia.library.nokiainnovativeproject.entities.*;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,6 +37,7 @@ public class RentalService {
 	private final ReservationRepository reservationRepository;
 	private final UserService userService;
 	private final BookService bookService;
+	private final EmailService emailService;
 	private final UserRepository userRepository;
 
 	public List<Rental> getAllRentals() {
@@ -117,7 +120,12 @@ public class RentalService {
 				30,
 				user));
 		rental.setUser(user);
-		return rentalRepository.save(rental);
+		rental = rentalRepository.save(rental);
+		User admin = userService.getUserById(borrowedBook.getActualOwnerId());
+		Email email = new Email("Book rent", String.format("Your book can be picked up from: %s %s, %s",
+				admin.getFirstName(), admin.getLastName(), admin.getAddress().getBuilding()));
+		emailService.sendSimpleMessage(email, Arrays.asList(user.getEmail()));
+		return rental;
 	}
 
 
