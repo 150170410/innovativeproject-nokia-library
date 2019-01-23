@@ -17,7 +17,7 @@ export class BooksReservedComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Reservation>();
-	displayedColumns: string[] = ['bookTitle', 'reservationDate', 'availableDate', 'actions'];
+	displayedColumns: string[] = ['signature', 'bookTitle', 'reservationDate', 'availableDate', 'actions'];
 
 	constructor(private http: RestService,
 				private confirmService: ConfirmationDialogService,

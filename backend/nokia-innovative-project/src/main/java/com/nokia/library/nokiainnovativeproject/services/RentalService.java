@@ -116,7 +116,7 @@ public class RentalService {
 				borrowedBook,
 				BookStatusEnum.AWAITING.getStatusId(),
 				30,
-				user));
+				null));
 		rental.setUser(user);
 		return rentalRepository.save(rental);
 	}
@@ -208,7 +208,7 @@ public class RentalService {
 				rental.getBook(),
 				BookStatusEnum.BORROWED.getStatusId(),
 				Integer.MAX_VALUE,
-				user);
+				rental.getUser());
 		rental.setHandOverDate(LocalDateTime.now());
 		return rentalRepository.save(rental);
 	}

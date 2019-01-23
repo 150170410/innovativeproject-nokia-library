@@ -28,7 +28,7 @@ export class ManageBooksComponent implements OnInit {
 	dataSource = new MatTableDataSource<Book>();
 	dataSourceBookDetails = new MatTableDataSource<BookDetails>();
 
-	displayedBookCopiesColumns: string[] = ['signature', 'status', 'bookDetails', 'comments', 'actions'];
+	displayedBookCopiesColumns: string[] = ['signature', 'status', 'current_user', 'bookDetails', 'comments', 'actions'];
 	displayedBookDetailsColumns: string[] = ['isbn', 'title', 'authors', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 

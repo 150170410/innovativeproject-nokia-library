@@ -14,6 +14,11 @@
 	</div>
 	<table mat-table [dataSource]="dataSource" matSort>
 
+		<ng-container matColumnDef="signature">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Signature</th>
+			<td mat-cell *matCellDef="let rental">{{rental.book.signature}}</td>
+		</ng-container>
+
 		<ng-container matColumnDef="bookTitle">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
 			<td mat-cell *matCellDef="let rental">{{rental.book.bookDetails.title}}</td>
