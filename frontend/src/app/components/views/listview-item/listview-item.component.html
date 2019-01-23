@@ -6,7 +6,7 @@
 	</div>
 
 	<div class="details-wrapper">
-		<h3 routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" class="cursor-pointer title"><b> {{bookDetails.title}}</b> by {{bookDetails.authors | arrToStr:'author'}}</h3>
+		<h3 routerLink="/book/{{bookDetails.id}}" routerLinkActive="active" class="cursor-pointer title"><b> {{bookDetails.title}}</b> by {{bookDetails.authors | arrToStr:'author'}}</h3>
 
 		<h4>
 			{{bookDetails.categories| arrToStr:'category'}}

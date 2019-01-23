@@ -2,4 +2,11 @@
 	<h1>Welcome to Nokia Library</h1>
 </div>
 
-<app-listview></app-listview>
+<mat-radio-group [(ngModel)]="selectedView">
+	<mat-radio-button *ngFor="let viewType of viewTypes" [value]="viewType">
+		<div>{{viewType}}</div>
+	</mat-radio-button>
+</mat-radio-group>
+
+<app-table-view *ngIf="selectedView === 'tableview'"></app-table-view>
+<app-listview *ngIf="selectedView === 'listview'"></app-listview>

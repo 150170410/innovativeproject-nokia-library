@@ -14,14 +14,13 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { ListviewComponent } from './components/listview/listview.component';
+import { ListviewComponent } from './components/views/listview/listview.component';
 import { BookService } from './services/book/book.service';
 import { PageNotFoundComponent } from './utils/components/page-not-found/page-not-found.component';
 import { RestService } from './services/rest/rest.service';
-import { GridViewComponent } from './components/grid-view/grid-view.component';
-import { SingleBookViewComponent } from './components/single-book-view/single-book-view';
+import { SingleBookViewComponent } from './components/views/single-book-view/single-book-view';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
-import { ListviewItemComponent } from './components/listview/listview-item/listview-item.component';
+import { ListviewItemComponent } from './components/views/listview-item/listview-item.component';
 import { ArrToStrPipe } from './pipes/arr-to-str/arr-to-str.pipe';
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
@@ -44,7 +43,7 @@ import { ManageHandoversComponent } from './components/admin-panel/admin-panel-s
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { SnackbarService } from './services/snackbar/snackbar.service';
-import { TableViewComponent } from './components/table-view/table-view.component';
+import { TableViewComponent } from './components/views/table-view/table-view.component';
 
 @NgModule({
 	declarations: [
@@ -54,7 +53,6 @@ import { TableViewComponent } from './components/table-view/table-view.component
 		ListviewComponent,
 		SingleBookViewComponent,
 		PageNotFoundComponent,
-		GridViewComponent,
 		ManageBookDetailsComponent,
 		ContactUsComponent,
 		ManageAuthorsComponent,

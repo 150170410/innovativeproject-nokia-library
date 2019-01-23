@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { BookDetailsService } from '../../services/book-details/book-details.service';
-import { BookDetails } from '../../models/database/entites/BookDetails';
-import { RestService } from '../../services/rest/rest.service';
-import { MessageInfo } from '../../models/MessageInfo';
+import { BookDetailsService } from '../../../services/book-details/book-details.service';
+import { BookDetails } from '../../../models/database/entites/BookDetails';
+import { RestService } from '../../../services/rest/rest.service';
+import { MessageInfo } from '../../../models/MessageInfo';
 
 @Component({
 	selector: 'app-listview',
@@ -40,7 +40,6 @@ export class ListviewComponent implements OnInit {
 		this.booksAll = response.object.sort().reverse();
 		this.listIsLoading = false;
 		this.books = this.booksAll;
-		console.log(this.booksAll);
 	}
 
 }
