@@ -109,19 +109,22 @@ INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('user@user.com', 'User', 'User', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('wojtek@wojtek.com', 'Wojtek', 'Wojtek', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+VALUES ('wojtek.wojciechowski@user.com', 'Wojtek', 'Wojciechowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('jacek@jacek.com', 'Jacek', 'Jacek', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+VALUES ('jacek.jackowski@user.com', 'Jacek', 'Jackowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('alex@alex.com', 'Alex', 'Alex', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+VALUES ('alex.alexowski@user.com', 'Alex', 'Alexowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('mikolaj@mikolaj.com', 'Mikolaj', 'Mikolaj', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+VALUES ('mikolaj.mikolajowski@user.com', 'Mikołaj', 'Mikołajski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('admin@admin.com', 'Admin', 'Admin', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
+VALUES ('janusz.pawlacz@user.com', 'Janusz', 'Pawlacz', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+
+INSERT INTO "user" (email, first_name, last_name, password, address_id)
+VALUES ('admin.adminowski@admin.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
 INSERT INTO role (role) VALUES ('ROLE_EMPLOYEE');
 INSERT INTO role (role) VALUES ('ROLE_ADMIN');
 INSERT INTO user_roles (user_id, roles_id) VALUES (1, 1);
@@ -130,19 +133,20 @@ INSERT INTO user_roles (user_id, roles_id) VALUES (3, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (4, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (5, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (6, 1);
-INSERT INTO user_roles (user_id, roles_id) VALUES (6, 2);
+INSERT INTO user_roles (user_id, roles_id) VALUES (7, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (7, 2);
 
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('booka', 1, 1, 'dirty', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('bookaAA', 1, 1, 'putti', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('bookB', 2, 1, 'missing pages', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('YHNANK', 3, 1, 'bad', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('ALMNUM', 4, 1, 'cool', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('SIG123', 5, 1, 'stupid', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('OUF', 6, 1, 'chairman', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('ui ui', 7, 1, 'gut', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('miu miau', 7, 1, 'missing cover', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('nubu', 7, 1, 'juj', 6);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('pook', 7, 1, 'is fine', 6);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('booka', 1, 1, 'dirty', 7);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('bookaAA', 1, 1, 'putti', 7);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('bookB', 2, 1, 'missing pages', 7);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('YHNANK', 3, 1, 'bad', 7);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('ALMNUM', 4, 1, 'cool', 7);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('SIG123', 5, 1, 'stupid', 7);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('OUF', 6, 1, 'chairman', 7);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('ui ui', 7, 1, 'gut', 7);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('miu miau', 7, 1, 'missing cover', 7);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('nubu', 7, 1, 'juj', 7);
+INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('pook', 7, 1, 'is fine', 7);
 
 INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0439708184', 'Harry Potter and the Sorcerer''s Stone', 1);
 INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('9780679745587', 'In Cold Blood', 2);

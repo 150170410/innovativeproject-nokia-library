@@ -59,6 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + RESERVATIONS + GET_ALL,
                         API_VERSION + RESERVATIONS + GET_ONE,
 						API_VERSION + RESERVATIONS + REMOVE,
+						API_VERSION + RESERVATIONS + ACCEPT,
+						API_VERSION + RESERVATIONS + CANCEL,
+						API_VERSION + RESERVATIONS + REJECT,
                         API_VERSION + RESERVATIONS + USER,
                         API_VERSION + USER + UPDATE).hasAnyRole("EMPLOYEE", "ADMIN")
                 .antMatchers(API_VERSION + BOOK_AUTHOR + "/**",

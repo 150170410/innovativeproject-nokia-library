@@ -74,7 +74,7 @@ public class RentalController {
 
 	@DeleteMapping(RENTALS + REMOVE)
 	public ResponseEntity cancelRental(@PathVariable Long id) {
-		rentalService.deleteRental(id);
+		rentalService.cancelRental(id);
 		return MessageInfo.success(null, Arrays.asList("Rental with ID = " + id.toString() + " removed successfully"));
 	}
 }

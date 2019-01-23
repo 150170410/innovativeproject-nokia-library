@@ -44,6 +44,7 @@ import { ManageHandoversComponent } from './components/admin-panel/admin-panel-s
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { SnackbarService } from './services/snackbar/snackbar.service';
+import { TableViewComponent } from './components/table-view/table-view.component';
 
 @NgModule({
 	declarations: [
@@ -76,7 +77,8 @@ import { SnackbarService } from './services/snackbar/snackbar.service';
 		BookActionsComponent,
 		ManageHandoversComponent,
 		LoginComponent,
-		RegistrationComponent
+		RegistrationComponent,
+		TableViewComponent
 	],
 	imports: [
 		BrowserModule,

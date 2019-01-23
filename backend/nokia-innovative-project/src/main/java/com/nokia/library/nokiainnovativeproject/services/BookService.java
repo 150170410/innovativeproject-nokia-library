@@ -80,7 +80,7 @@ public class BookService {
 		Book book = bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("book"));
 
-		if(!book.getStatus().getStatusName().equals("AVAILABLE") && !book.getStatus().getStatusName().equals("UNAVAILABLE"))
+		if (!book.getStatus().getStatusName().equals("AVAILABLE") && !book.getStatus().getStatusName().equals("UNAVAILABLE"))
 			return;
 		book.getBookDetails().setIsRemovable(bookRepository.countBooksByBookDetails(book.getBookDetails()) == 1);
 		bookRepository.delete(book);
@@ -90,7 +90,7 @@ public class BookService {
 		BookStatus newStatus = bookStatusService.getBookStatusById(newStatusId);
 		book.setStatus(newStatus);
 		LocalDateTime oldAvailableDate = book.getAvailableDate();
-		if(oldAvailableDate == null){
+		if (oldAvailableDate == null) {
 			oldAvailableDate = LocalDateTime.now();
 			book.setAvailableDate(oldAvailableDate);
 		}
@@ -98,29 +98,40 @@ public class BookService {
 			book.setAvailableDate(oldAvailableDate.plusMonths(1));
 		} else if (days == -30) {
 			book.setAvailableDate(oldAvailableDate.minusMonths(1));
-		} else if (0 < days && days < 30) {
+		} else if (0 < days && days <= 31) {
 			book.setAvailableDate(oldAvailableDate.plusDays(days));
-		} else if (-30 < days && days < 0) {
-			book.setAvailableDate(oldAvailableDate.minusDays(days));
-		} else if (days == 0){
+		} else if (-31 <= days && days < 0) {
+			book.setAvailableDate(oldAvailableDate.minusDays(-1 * days));
+		} else if (days == 0) {
 			book.setAvailableDate(LocalDateTime.now());
 		}
-		if(newOwner != null){
+		if (newOwner != null) {
 			book.setCurrentOwnerId(newOwner.getId());
 		}
-//		System.out.println(book);
+		// System.out.println(book);
 		return book;
 	}
 
 	public Book lockBook(String signature) {
-		// TODO: add admin authorization, add condition about book status, can only equal 1, add  exceptions
+		// TODO: add  exceptions
 		Book bookToLock = bookRepository.findBySignature(signature);
+		if(bookToLock.getStatus().getId().equals(BookStatusEnum.AVAILABLE.getStatusId())){
+
+		} else {
+
+		}
 		return changeState(bookToLock, BookStatusEnum.UNAVAILABLE.getStatusId(), 0, null);
 	}
 
 	public Book unlockBook(String signature) {
-		// TODO: add admin authorization, add condition about book status, can only equal 5, add exceptions
+		// TODO: add exceptions
 		Book bookToUnlock = bookRepository.findBySignature(signature);
+		if(bookToUnlock.getStatus().getId().equals(BookStatusEnum.UNAVAILABLE.getStatusId())){
+
+		} else {
+
+		}
+
 		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getStatusId(), 0, null);
 	}
 

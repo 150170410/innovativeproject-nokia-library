@@ -81,7 +81,7 @@ public class ReservationService {
 				borrowedBook,
 				borrowedBook.getStatus().getId(),
 				DaysDeltaEnum.PLUSMONTH.getDays(),
-				user));
+				null));
 		reservation.setAvailableDate(reservation.getBook().getAvailableDate());
 		return reservationRepository.save(reservation);
 	}
@@ -107,8 +107,7 @@ public class ReservationService {
 	public void acceptReservation(Long id) {
 		User user = userService.getLoggedInUser();
 		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("reservation"));
-		Long bookId = reservation.getBook().getId();
-		Book borrowedBook = bookService.getBookById(bookId);
+		Book borrowedBook = bookService.getBookById(reservation.getBook().getId());
 		if (borrowedBook.getStatus().getId().equals(BookStatusEnum.RESERVED.getStatusId()) &&
 				reservation.getUser().getId().equals(user.getId())) {
 			borrowedBook = bookService.changeState(
@@ -140,7 +139,7 @@ public class ReservationService {
 				borrowedBook = bookService.changeState(
 						borrowedBook,
 						BookStatusEnum.AVAILABLE.getStatusId(),
-						0,
+						DaysDeltaEnum.RESET.getDays(),
 						null);
 			} else {
 				borrowedBook = bookService.changeState(
@@ -150,17 +149,16 @@ public class ReservationService {
 						null);
 			}
 			saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
+			// TODO: change available date for all other reservations
 		} else {
 			throw new AuthorizationException();
 		}
-
 	}
 
 	public void cancelReservation(Long id) {
 		User user = userService.getLoggedInUser();
 		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("reservation"));
-		Long bookId = reservation.getBook().getId();
-		Book borrowedBook = bookService.getBookById(bookId);
+		Book borrowedBook = bookService.getBookById(reservation.getBook().getId());
 		if (reservation.getUser().getId().equals(user.getId())) {
 			borrowedBook = bookService.changeState(
 					borrowedBook,
@@ -168,8 +166,10 @@ public class ReservationService {
 					DaysDeltaEnum.MINUSMONTH.getDays(),
 					null);
 			saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
+			// TODO: change available date for all other reservations
+		} else {
+			throw new AuthorizationException();
 		}
-
 	}
 
 	@Transactional
