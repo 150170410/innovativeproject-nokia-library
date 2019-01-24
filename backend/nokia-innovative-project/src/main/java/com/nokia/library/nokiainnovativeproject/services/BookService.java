@@ -1,12 +1,13 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
-import com.nokia.library.nokiainnovativeproject.entities.*;
+import com.nokia.library.nokiainnovativeproject.entities.Book;
+import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
+import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
@@ -53,7 +54,7 @@ public class BookService {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
 		book.setAvailableDate(LocalDateTime.now());
-		book.setActualOwnerId(userService.getLoggedInUser().getId());
+		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
 
@@ -62,7 +63,7 @@ public class BookService {
 		book.setComments(bookDTO.getComments());
 		book.setSignature(bookDTO.getSignature());
 		book.getBookDetails().setIsRemovable(true);
-		book.setActualOwnerId(userService.getLoggedInUser().getId());
+		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
 
@@ -91,7 +92,7 @@ public class BookService {
 	public Book changeState(Book book, Long newStatusId, Integer days, User newOwner) {
 		BookStatus newStatus = bookStatusService.getBookStatusById(newStatusId);
 		book.setStatus(newStatus);
-		book.setActualOwnerId(newOwner.getId());
+		book.setCurrentOwnerId(newOwner.getId());
 		LocalDateTime oldAvailableDate = book.getAvailableDate();
 		if (oldAvailableDate == null) {
 			oldAvailableDate = LocalDateTime.now();

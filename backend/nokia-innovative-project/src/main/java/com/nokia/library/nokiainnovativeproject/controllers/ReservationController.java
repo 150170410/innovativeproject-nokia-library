@@ -46,7 +46,7 @@ public class ReservationController {
 		return MessageInfo.success(reservationService.createReservation(reservationDTO), Arrays.asList("Reservation created successfully"));
 	}
 
-	@DeleteMapping(RESERVATIONS + ACCEPT)
+	@PostMapping(RESERVATIONS + ACCEPT)
 	public ResponseEntity acceptReservation(@PathVariable Long id) {
 		reservationService.acceptReservation(id);
 		return MessageInfo.success(null, Arrays.asList("Reservation with ID = " + id.toString() + " accepted successfully"));
