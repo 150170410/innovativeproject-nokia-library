@@ -24,11 +24,6 @@ public class BookToOrderController {
         return MessageInfo.success(bookToOrderService.getAllBookToOrders(), Arrays.asList("list of books to order"));
     }
 
-    @GetMapping(Mappings.USER)
-    public ResponseEntity getAllBookToOrderByUser() {
-        return MessageInfo.success(bookToOrderService.getBookToOrderByUser(), Arrays.asList("user's list of books to order"));
-    }
-
     @GetMapping(Mappings.GET_ONE)
     public ResponseEntity getBookToOrderById(@PathVariable Long id) {
         return MessageInfo.success(bookToOrderService.getBookToOrderById(id),
@@ -54,5 +49,11 @@ public class BookToOrderController {
     public ResponseEntity deleteBookToOrder(@PathVariable Long id) {
         bookToOrderService.deleteBookToOrder(id);
         return MessageInfo.success(null, Arrays.asList("BookToOrder with ID = "+  id.toString() + " removed successfully"));
+    }
+
+    @PostMapping("/subscribe/{id}")
+    public ResponseEntity changeSubscribeStatus(@PathVariable Long id){
+        bookToOrderService.changeSubscribeStatus(id);
+        return MessageInfo.success(null, Arrays.asList("Subscribe status has been changed"));
     }
 }

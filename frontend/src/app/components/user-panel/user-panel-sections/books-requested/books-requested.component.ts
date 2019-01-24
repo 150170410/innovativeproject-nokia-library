@@ -44,6 +44,7 @@ export class BooksRequestedComponent implements OnInit {
 	async getRequestedBooks() {
 		const response = await this.http.getAll('bookToOrder/getAll');
 		this.requestedBooks = response.object;
+		console.log(response.object);
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
@@ -93,11 +94,22 @@ export class BooksRequestedComponent implements OnInit {
 		this.requestParams.markAsUntouched();
 	}
 
-	subscribeToRequest(request) {
-
-	}
-
-	unsubscribeFromRequest(request) {
-
+	changeSubscribeState(request) {
+		this.http.changeSubscribeStatus(request.id)
+		.subscribe(
+			(response) => {
+				if (response.success) {
+					this.requestedBooks.forEach(element => {
+						if(element.id == request.id){
+							element.subscribed = !element.subscribed;
+							element.subscribed ? element.totalSubs++ : element.totalSubs--;
+						}
+						
+					});
+					this.snackbar.snackSuccess('Success', 'OK');
+				}
+			}, (error) => {
+				this.snackbar.snackError(error.error.message, 'OK');
+		});
 	}
 }

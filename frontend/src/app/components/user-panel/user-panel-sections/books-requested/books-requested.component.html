@@ -66,19 +66,24 @@
 			<td mat-cell *matCellDef="let request">{{request.title}}</td>
 		</ng-container>
 
+		<ng-container matColumnDef="totalSubs">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Total subscriptions</th>
+			<td mat-cell *matCellDef="let request">{{request.totalSubs}}</td>
+		</ng-container>
+
 		<ng-container matColumnDef="actions">
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
 			<td mat-cell *matCellDef="let request">
 				<p>
-					<button color="warn" mat-button (click)="cancelRequest(request)">
+					<button color="warn" mat-button (click)="cancelRequest(request)" [disabled] = "!request.removable">
 						<mat-icon>clear</mat-icon>
 						Cancel
 					</button>
-					<button disabled color="primary" mat-button (click)="subscribeToRequest(request)">
+					<button [disabled] = "request.subscribed" color="primary" mat-button (click)="changeSubscribeState(request)">
 						<mat-icon>notifications</mat-icon>
 						Subscribe
 					</button>
-					<button disabled color="primary" mat-button (click)="unsubscribeFromRequest(request)">
+					<button [disabled] = "!request.subscribed"color="primary" mat-button (click)="changeSubscribeState(request)">
 						<mat-icon>notifications_off</mat-icon>
 						Unsubscribe
 					</button>

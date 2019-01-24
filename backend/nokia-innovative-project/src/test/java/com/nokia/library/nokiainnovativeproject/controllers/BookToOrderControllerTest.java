@@ -54,12 +54,14 @@ public class BookToOrderControllerTest {
         bookToOrder = new BookToOrder();
         bookToOrder.setTitle("title");
         bookToOrder.setIsbn("123456789098");
-        bookToOrderDTO = new BookToOrderDTO("123456789098", "title");
+        bookToOrderDTO = new BookToOrderDTO();
+        bookToOrderDTO.setTitle("title");
+        bookToOrderDTO.setIsbn("123456789098");
     }
 
     @Test
     public void whenGetAllBookToOrderThenOk() throws Exception {
-        when(service.getAllBookToOrders()).thenReturn(Arrays.asList(bookToOrder));
+        when(service.getAllBookToOrders()).thenReturn(Arrays.asList(bookToOrderDTO));
         mockMvc.perform(get(BASE_URL + Mappings.GET_ALL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -70,7 +72,7 @@ public class BookToOrderControllerTest {
 
     @Test
     public void whenGetBookToOrderThenOk() throws Exception {
-        when(service.getBookToOrderById(1L)).thenReturn(bookToOrder);
+        when(service.getBookToOrderById(1L)).thenReturn(bookToOrderDTO);
         mockMvc.perform(get(BASE_URL + Mappings.GET_ONE, 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
