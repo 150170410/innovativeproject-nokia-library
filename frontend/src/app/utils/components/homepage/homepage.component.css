@@ -11,3 +11,22 @@ div h1, h2 {
 	max-width: 300px;
 }
 
+
+.header-wrapper {
+	display: flex;
+	justify-content: space-between;
+}
+
+.info-wrapper {
+	float: left;
+}
+
+.viewtypes-wrapper {
+	display: flex;
+	float: right;
+	align-items: center;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+	margin-left: 16px;
+}

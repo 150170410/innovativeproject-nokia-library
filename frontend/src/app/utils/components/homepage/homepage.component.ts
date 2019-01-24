@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomepageComponent implements OnInit {
 
-	selectedView: string = 'tableview';
-	viewTypes: string[] = ['tableview','listview' ];
+	selectedView: string = 'Table';
+	viewTypes: string[] = ['Table', 'List'];
 
 	constructor() {
 	}
