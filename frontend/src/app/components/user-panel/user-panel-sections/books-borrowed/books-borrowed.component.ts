@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 @Component({
 	selector: 'app-books-borrowed',
 	templateUrl: './books-borrowed.component.html',
-	styleUrls: ['./books-borrowed.component.css', '../../user-panel.component.scss']
+	styleUrls: ['./books-borrowed.component.scss', '../../user-panel.component.scss']
 })
 export class BooksBorrowedComponent implements OnInit {
 

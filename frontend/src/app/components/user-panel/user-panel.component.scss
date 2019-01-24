@@ -5,11 +5,6 @@
   margin: 10px;
 }
 
-.vert-spacer {
-  /*margin-left: 1px;*/
-  /*border-left: 1px solid black;*/
-}
-
 .full-card {
   width: 100%;
   height: calc(100vh - 64spx);
@@ -50,14 +45,6 @@ th, tr, td {
   text-align: center;
 }
 
-table {
-  border-collapse: collapse;
-}
-
-table, th, td {
-  border: 1px solid black;
-}
-
 ::ng-deep .mat-tab-label {
 
 }
@@ -95,4 +82,13 @@ table, th, td {
 .st-unavailable {
   color: white;
   background-color: rgba(108, 117, 125, 0.7);
+}
+
+.filter-paginator-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter mat-form-field {
+  width: 150px;
 }

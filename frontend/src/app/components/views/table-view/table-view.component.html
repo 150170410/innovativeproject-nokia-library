@@ -52,7 +52,7 @@
 				</div>
 				<div class="book-description">
 					{{bookDetails.description| limitTo:400}}
-					<span class="book-read-more"> -- read more </span>
+					<span class="book-read-more cursor-pointer" routerLink="/book/{{bookDetails.id}}" routerLinkActive="active"> -- read more </span>
 					<div class="book-actions">
 
 						<app-book-actions [books]="bookDetails.books"></app-book-actions>

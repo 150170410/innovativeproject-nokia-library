@@ -33,6 +33,10 @@ img {
 	box-shadow: 3px 3px 1px #ccc;
 }
 
-.title{
+.title {
 	margin-top: 0;
+}
+
+.book-read-more {
+	opacity: 0.5;
 }

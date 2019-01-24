@@ -13,65 +13,16 @@
 		</h4>
 
 		<b>About:</b> {{bookDetails.description | limitTo:400}}
+		<span class="book-read-more cursor-pointer" routerLink="/book/{{bookDetails.id}}" routerLinkActive="active"> -- read more </span>
 	</div>
-
-	<!--<div class="actions-wrapper">-->
-	<!--<mat-accordion *ngIf="booksUnlocked.length > 0">-->
-	<!--<mat-expansion-panel>-->
-	<!--<mat-expansion-panel-header>-->
-	<!--<mat-panel-title>-->
-	<!--Available books: {{bookDetails.books | bookStatuses:1}}/{{booksUnlocked.length}}-->
-	<!--</mat-panel-title>-->
-	<!--</mat-expansion-panel-header>-->
-
-	<!--<app-book-actions [books]="booksUnlocked"></app-book-actions>-->
-
-	<!--</mat-expansion-panel>-->
-	<!--</mat-accordion>-->
-	<!--</div>-->
 
 	<div class="actions-wrapper" *ngIf="booksUnlocked.length > 0">
-
 		Available books: {{bookDetails.books | bookStatuses:1}}/{{booksUnlocked.length}}
-
 		<app-book-actions [books]="booksUnlocked"></app-book-actions>
-
 	</div>
-
 
 	<div class="actions-wrapper not-available" *ngIf="(booksUnlocked.length < 1)">
 		<b>Sorry, but this book is not available.</b>
 	</div>
 
-
 </mat-card>
-<!--<mat-card>-->
-<!--<mat-card-header>-->
-<!--<img *ngIf="bookDetails.coverPictureUrl" mat-card-avatar src="{{bookDetails.coverPictureUrl}}">-->
-<!--<img *ngIf="!bookDetails.coverPictureUrl" mat-card-avatar src="../../../../assets/images/default-cover.png">-->
-<!--<mat-card-title routerLink="/single-book-view/{{bookDetails.id}}" routerLinkActive="active" class="cursor-pointer"><b> {{bookDetails.title}}</b> by {{bookDetails.authors | arrToStr:'author'}}</mat-card-title>-->
-<!--<mat-card-subtitle>-->
-<!--<h4>-->
-<!--{{bookDetails.categories| arrToStr:'category'}}-->
-<!--</h4>-->
-<!--</mat-card-subtitle>-->
-<!--</mat-card-header>-->
-<!--<mat-card-content>-->
-<!--<b>About:</b> {{bookDetails.description}}-->
-<!--</mat-card-content>-->
-<!--<mat-accordion *ngIf="booksUnlocked.length > 0">-->
-<!--<mat-expansion-panel>-->
-<!--<mat-expansion-panel-header>-->
-<!--<mat-panel-title>-->
-<!--Available books: {{bookDetails.books | bookStatuses:1}}/{{booksUnlocked.length}}-->
-<!--</mat-panel-title>-->
-<!--</mat-expansion-panel-header>-->
-
-<!--<app-book-actions [books]="booksUnlocked"></app-book-actions>-->
-
-<!--</mat-expansion-panel>-->
-<!--</mat-accordion>-->
-<!--<div class="not-available" *ngIf="(booksUnlocked.length < 1)">-->
-<!--<b>Sorry, but this book is not available.</b>-->
-<!--</div>-->
-<!--</mat-card>-->

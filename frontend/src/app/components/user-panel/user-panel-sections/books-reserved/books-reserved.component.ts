@@ -9,7 +9,7 @@ import { Reservation } from '../../../../models/database/entites/Reservation';
 @Component({
 	selector: 'app-books-reserved',
 	templateUrl: './books-reserved.component.html',
-	styleUrls: ['./books-reserved.component.css', '../../user-panel.component.scss']
+	styleUrls: ['./books-reserved.component.scss', '../../user-panel.component.scss']
 })
 export class BooksReservedComponent implements OnInit {
 	reservations: Reservation[] = [];

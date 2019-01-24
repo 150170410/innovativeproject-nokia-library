@@ -2,45 +2,33 @@
 	<mat-toolbar-row>
 
 		<div>
-			<a class="nav-link white" routerLink="/homepage" routerLinkActive="active">
+			<button mat-button class="nav-link" routerLink="/homepage" routerLinkActive="active">
 				<mat-icon>library_books</mat-icon>
 				Books
-			</a>
+			</button>
 		</div>
 
 		<!--<img class="nav-link white" src="../../../../assets/images/nokia-logo-dark.jpg">-->
 
 		<div *ngIf="role_employee">
-			<a class="nav-link white" routerLink="/user-panel" routerLinkActive="active">
+			<button mat-button class="nav-link" routerLink="/user-panel" routerLinkActive="active">
 				<mat-icon>dashboard</mat-icon>
 				User panel
-			</a>
+			</button>
 		</div>
 
 		<div *ngIf="role_admin">
-			<a class="nav-link white" routerLink="/admin-panel" routerLinkActive="active">
+			<button mat-button class="nav-link" routerLink="/admin-panel" routerLinkActive="active">
 				<mat-icon>ballot</mat-icon>
 				Admin panel
-			</a>
+			</button>
 		</div>
 
 		<!--<div class="search-bar-wrapper">-->
 		<!--<form [formGroup]="searchParams" class="search-bar" (ngSubmit)="search(searchParams)">-->
-		<!--<mat-form-field class="search-bar-field" floatLabel=never>-->
-		<!--<input formControlName="searchValue"-->
-		<!--matInput-->
-		<!--placeholder="{{placeHolder}}"-->
-		<!--(click)="checkPlaceHolder()"-->
-		<!--(blur)="checkPlaceHolder()"-->
-		<!--&gt;-->
-		<!--&lt;!&ndash;<button mat-button *ngIf="placeHolder" matSuffix mat-icon-button>&ndash;&gt;-->
-		<!--&lt;!&ndash;<mat-icon>close</mat-icon>&ndash;&gt;-->
-		<!--&lt;!&ndash;</button>&ndash;&gt;-->
-		<!--<button mat-icon-button>-->
-		<!--<mat-icon>search</mat-icon>-->
-		<!--</button>-->
-
-		<!--</mat-form-field>-->
+		<!--<h1>-->
+		<!--Nokia Library-->
+		<!--</h1>-->
 		<!--</form>-->
 		<!--</div>-->
 
