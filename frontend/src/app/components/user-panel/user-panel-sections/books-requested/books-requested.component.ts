@@ -20,7 +20,7 @@ export class BooksRequestedComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookToOrder>();
-	displayedColumns: string[] = ['isbn', 'title', 'actions'];
+	displayedColumns: string[] = ['isbn', 'totalSubs', 'title', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private formBuilder: FormBuilder,
