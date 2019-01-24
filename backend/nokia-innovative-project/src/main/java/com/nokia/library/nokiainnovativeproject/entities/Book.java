@@ -39,7 +39,7 @@ public class Book implements Serializable {
 	@ManyToOne(cascade = {
 			CascadeType.MERGE,
 			CascadeType.PERSIST},
-			fetch = FetchType.LAZY)
+			fetch = FetchType.EAGER)
 	@JoinColumn(name = "book_details_id")
 	private BookDetails bookDetails;
 
