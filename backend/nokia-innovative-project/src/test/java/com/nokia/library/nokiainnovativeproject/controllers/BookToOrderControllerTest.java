@@ -53,10 +53,10 @@ public class BookToOrderControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         bookToOrder = new BookToOrder();
         bookToOrder.setTitle("title");
-        bookToOrder.setIsbn("123456789098");
+        bookToOrder.setIsbn("9781449396985");
         bookToOrderDTO = new BookToOrderDTO();
         bookToOrderDTO.setTitle("title");
-        bookToOrderDTO.setIsbn("123456789098");
+        bookToOrderDTO.setIsbn("9781449396985");
     }
 
     @Test
@@ -67,7 +67,7 @@ public class BookToOrderControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].title", Matchers.is("title")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].isbn", Matchers.is("123456789098")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object[0].isbn", Matchers.is("9781449396985")));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class BookToOrderControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.object.title", Matchers.is("title")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.isbn", Matchers.is("123456789098")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.isbn", Matchers.is("9781449396985")));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class BookToOrderControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.object.title", Matchers.is("title")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.object.isbn", Matchers.is("123456789098")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.object.isbn", Matchers.is("9781449396985")));
     }
 
     @Test
