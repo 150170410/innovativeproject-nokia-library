@@ -7,6 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
@@ -16,8 +17,10 @@ public class BookToOrderDTO {
 
     private Long id;
 
-    @Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers long")
+    @Size(min = 10, max = 17, message = "ISBN must be 10-17 numbers long")
     @NotBlank(message = "ISBN is required")
+    @Pattern(regexp = "(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})",
+            message = "ISBN is not valid")
     private String isbn;
 
     @Length(max = 100, message = "Title can't exceed 100 characters")

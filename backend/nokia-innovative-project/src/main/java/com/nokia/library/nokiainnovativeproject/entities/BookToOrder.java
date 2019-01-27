@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
 import java.io.Serializable;
@@ -28,8 +29,10 @@ public class BookToOrder implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers long")
+    @Size(min = 10, max = 17, message = "ISBN must be 10-17 numbers long")
     @NotBlank(message = "ISBN is required")
+    @Pattern(regexp = "(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})",
+            message = "ISBN is not valid")
     private String isbn;
 
     @Length(max = 100, message = "Title can't exceed 100 characters")

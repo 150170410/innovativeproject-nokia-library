@@ -7,10 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.List;
 
@@ -19,8 +16,10 @@ import java.util.List;
 @NoArgsConstructor
 public class BookDetailsDTO {
 
-	@Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers long")
+	@Size(min = 10, max = 17, message = "ISBN must be 10-17 numbers long")
 	@NotBlank(message = "ISBN is required")
+	@Pattern(regexp = "(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})",
+			message = "ISBN is not valid")
 	private String isbn;
 
 	@Size(max = 100, message = "Title can't exceed 100 characters")
