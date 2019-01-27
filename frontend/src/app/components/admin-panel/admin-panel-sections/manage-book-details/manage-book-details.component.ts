@@ -228,7 +228,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	getInfoFromAPI() {
 		this.fetchingDetails = true;
-		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value, this.http.setHeaders())
+		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value)
 		.subscribe((response: MessageInfo) => {
 			if (response.success) {
 				this.availableTitles = [];
@@ -291,7 +291,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.snackbar.snackError(error.error.message, 'OK');
 				});
 			}
-		})
+		});
 	}
 
 	clearForm() {
