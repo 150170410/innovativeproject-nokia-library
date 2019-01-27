@@ -32,13 +32,13 @@ export class SingleBookViewComponent implements OnInit {
 		this.bookDetails = response.object;
 		this.pageLoading = false;
 		this.bookDetails.books.forEach((book) =>{
-			if(book.status.id !== 5){
+			if(book.status.id !== 5) {
 				this.booksUnlocked.push(book);
 			}
-		})
+		});
 	}
 
-	actionTaken(val: any){
+	actionTaken(val: any) {
 		this.getBookDetails();
 	}
 }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BookDetails } from '../../../models/database/entites/BookDetails';
 import { Book } from '../../../models/database/entites/Book';
+import {AuthService} from '../../../services/auth/auth.service';
 
 @Component({
 	selector: 'app-listview-item',
@@ -16,18 +17,23 @@ export class ListviewItemComponent implements OnInit {
 	@Input() bookDetails: BookDetails;
 	booksUnlocked: Book[] = [];
 
-	constructor() {
-		this.isAuth = (sessionStorage.getItem('authenticated') === 'true');
-		this.role_admin = (sessionStorage.getItem('ROLE_ADMIN') === 'true');
-		this.role_employee = (sessionStorage.getItem('ROLE_EMPLOYEE') === 'true');
+	constructor(private authService: AuthService) {
+		this.initData();
 	}
+
+  initData() {
+    this.authService.getUserData().then( () => {
+      this.isAuth = this.authService.isAuthenticated();
+      this.role_admin = this.authService.isAdmin();
+      this.role_employee = this.authService.isUser();
+    });
+  }
 
 	ngOnInit() {
 		this.bookDetails.books.forEach((book) =>{
-			if(book.status.id !== 5){
+			if (book.status.id !== 5) {
 				this.booksUnlocked.push(book);
 			}
-		})
+		});
 	}
-
 }
