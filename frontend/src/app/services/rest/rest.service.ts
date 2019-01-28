@@ -63,6 +63,13 @@ export class RestService {
 		);
 	}
 
+	acceptBookToOrder(id: number) {
+		return this.http.post<any>(this.URL + 'bookToOrder/accept/' + id, id, this.setHeaders())
+		.pipe(
+			catchError(this.handleError)
+		);
+	}
+
 	private handleError(error: HttpErrorResponse) {
 		if (error.error instanceof ErrorEvent) {
 			console.error('An error occurred:', error.error.message);

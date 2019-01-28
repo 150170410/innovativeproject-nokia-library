@@ -51,6 +51,12 @@ public class BookToOrderController {
         return MessageInfo.success(null, Arrays.asList("BookToOrder with ID = "+  id.toString() + " removed successfully"));
     }
 
+    @PostMapping("/accept/{id}")
+    public ResponseEntity acceptBookToOrder(@PathVariable Long id) {
+        bookToOrderService.acceptBookToOrder(id);
+        return MessageInfo.success(null, Arrays.asList("BookToOrder with ID = "+  id.toString() + " has been accepted"));
+    }
+
     @PostMapping("/subscribe/{id}")
     public ResponseEntity changeSubscribeStatus(@PathVariable Long id){
         bookToOrderService.changeSubscribeStatus(id);

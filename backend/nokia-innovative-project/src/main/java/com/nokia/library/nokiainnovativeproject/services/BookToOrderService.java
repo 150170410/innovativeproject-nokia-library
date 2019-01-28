@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -98,6 +99,17 @@ public class BookToOrderService {
     public void deleteBookToOrder(Long id) {
         BookToOrder bookToOrder = bookToOrderRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("bookToOrder"));
         bookToOrderRepository.delete(bookToOrder);
+    }
+
+    public void acceptBookToOrder(Long id) {
+        BookToOrder bookToOrder = bookToOrderRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("bookToOrder"));
+        bookToOrderRepository.delete(bookToOrder);
+        Email email = new Email();
+        email.setMessageContext("Book request has been accepted(" +
+                " Title: " + bookToOrder.getTitle() + ", Isbn: " + bookToOrder.getIsbn() + ").");
+        email.setSubject("New book request: " + bookToOrder.getTitle() + ".");
+        Hibernate.initialize(bookToOrder.getUsers());
+        emailService.sendSimpleMessage(email, bookToOrder.getUsers().stream().map(User::getEmail).collect(Collectors.toList()));
     }
 
     private Email createMessage(BookToOrder bookToOrder) {
