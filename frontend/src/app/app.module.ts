@@ -158,7 +158,7 @@ import { TableViewComponent } from './components/views/table-view/table-view.com
 		MatNativeDateModule
 	],
 	providers: [BookService, RestService, SnackbarService,
-		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } }],
+		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } }],
 	bootstrap: [AppComponent],
 	entryComponents: [ConfirmationDialogComponent]
 })

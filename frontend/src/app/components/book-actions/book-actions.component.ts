@@ -47,7 +47,7 @@ export class BookActionsComponent implements OnInit {
 		this.isLoadingActionBorrow = true;
 		this.http.save('rentals/create', body).subscribe((response) => {
 			if (response.success) {
-				this.snackbar.snackSuccess('Book borrowed successfully!', 'OK');
+				this.snackbar.snackSuccess('Book borrowed successfully! Check email for details.', 'OK');
 				const justBorrowed = this.books.findIndex((book: Book) => {
 					return book.id == bookCopy.id;
 				}, bookCopy);

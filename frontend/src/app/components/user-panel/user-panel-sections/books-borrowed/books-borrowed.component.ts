@@ -20,7 +20,7 @@ export class BooksBorrowedComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
-	displayedColumns: string[] = ['signature', 'bookTitle', 'status', 'rentalDate', 'returnDate', 'actions'];
+	displayedColumns: string[] = ['signature', 'bookTitle', 'status', 'rentalDate', 'returnDate', 'goTo', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService,

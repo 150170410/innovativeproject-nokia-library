@@ -92,7 +92,6 @@ public class BookService {
 	public Book changeState(Book book, Long newStatusId, Integer days, User newOwner) {
 		BookStatus newStatus = bookStatusService.getBookStatusById(newStatusId);
 		book.setStatus(newStatus);
-		book.setCurrentOwnerId(newOwner.getId());
 		LocalDateTime oldAvailableDate = book.getAvailableDate();
 		if (oldAvailableDate == null) {
 			oldAvailableDate = LocalDateTime.now();
