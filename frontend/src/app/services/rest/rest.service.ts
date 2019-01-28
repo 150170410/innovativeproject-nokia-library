@@ -36,19 +36,11 @@ export class RestService {
 	}
 
 	remove(url: string, id: number) {
-		return this.http.delete<any>(this.URL + url + '/remove/' + id, {withCredentials: true})
+		return this.http.delete<any>(this.URL + url + id, {withCredentials: true})
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
-
-	remove2(url: string, id: number) {
-		return this.http.delete<any>(this.URL + url + id)
-		.pipe(
-			catchError(this.handleError)
-		);
-	}
-
 
 	private handleError(error: HttpErrorResponse) {
 		if (error.error instanceof ErrorEvent) {
@@ -60,5 +52,4 @@ export class RestService {
 		}
 		return throwError(error);
 	}
-
 }

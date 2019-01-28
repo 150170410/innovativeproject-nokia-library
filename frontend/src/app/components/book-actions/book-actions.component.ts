@@ -4,7 +4,7 @@ import { RestService } from '../../services/rest/rest.service';
 import { RentalDTO } from '../../models/database/DTOs/RentalDTO';
 import { SnackbarService } from '../../services/snackbar/snackbar.service';
 import { ReservationDTO } from '../../models/database/DTOs/ReservationDTO';
-import {AuthService} from '../../services/auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
 	selector: 'app-book-actions',
@@ -23,8 +23,8 @@ export class BookActionsComponent implements OnInit {
 
 	constructor(private http: RestService,
 				private snackbar: SnackbarService,
-              private authService: AuthService) {
-	  this.initData();
+				private authService: AuthService) {
+		this.initData();
 	}
 
 	ngOnInit() {
@@ -35,11 +35,11 @@ export class BookActionsComponent implements OnInit {
 		});
 	}
 
-  initData() {
-    this.authService.getUserData().then( () => {
-      this.isAuth = this.authService.isAuthenticated();
-    });
-  }
+	initData() {
+		this.authService.getUserData().then(() => {
+			this.isAuth = this.authService.isAuthenticated();
+		});
+	}
 
 	borrowBook(bookCopy: Book) {
 		const body = new RentalDTO(bookCopy.id);

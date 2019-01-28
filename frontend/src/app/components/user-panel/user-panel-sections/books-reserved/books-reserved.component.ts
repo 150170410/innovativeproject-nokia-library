@@ -49,7 +49,7 @@ export class BooksReservedComponent implements OnInit {
 	}
 
 	acceptReservation(reservation: Reservation) {
-		this.http.remove2('reservations/accept/', reservation.id).subscribe((response) => {
+		this.http.remove('reservations/accept/', reservation.id).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Reservation accepted successfully!', 'OK');
 			} else {
@@ -64,7 +64,7 @@ export class BooksReservedComponent implements OnInit {
 	async cancelReservation(reservation: Reservation) {
 		await this.confirmService.openDialog('Are you sure you want to cancel this reservation?').subscribe((result) => {
 			if (result) {
-				this.http.remove2('reservations/cancel/', reservation.id).subscribe((response) => {
+				this.http.remove('reservations/cancel/', reservation.id).subscribe((response) => {
 					if (response.success) {
 						this.snackbar.snackSuccess('Reservation cancelled successfully!', 'OK');
 					} else {
@@ -81,7 +81,7 @@ export class BooksReservedComponent implements OnInit {
 	async rejectReservation(reservation: Reservation){
 		await this.confirmService.openDialog('Are you sure you want to reject this reservation?').subscribe((result) => {
 			if (result) {
-				this.http.remove2('reservations/reject/', reservation.id).subscribe((response) => {
+				this.http.remove('reservations/reject/', reservation.id).subscribe((response) => {
 					if (response.success) {
 						this.snackbar.snackSuccess('Reservation rejected successfully!', 'OK');
 					} else {

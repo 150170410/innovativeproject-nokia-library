@@ -92,7 +92,7 @@ export class ManageCategoriesComponent implements OnInit {
 	async removeCategory(id: number) {
 		await this.confirmService.openDialog().subscribe((result) => {
 			if (result) {
-				this.http.remove('bookCategory', id).subscribe((response) => {
+				this.http.remove('bookCategory/remove/', id).subscribe((response) => {
 					if (response.success) {
 						this.snackbar.snackSuccess('Category removed successfully!', 'OK');
 						this.getCategories();

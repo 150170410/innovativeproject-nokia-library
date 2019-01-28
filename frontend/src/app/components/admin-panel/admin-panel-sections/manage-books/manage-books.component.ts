@@ -118,7 +118,7 @@ export class ManageBooksComponent implements OnInit {
 	async removeBookCopy(id: number) {
 		await this.confirmService.openDialog().subscribe((result) => {
 			if (result) {
-				this.http.remove('books', id).subscribe((response) => {
+				this.http.remove('books/remove/', id).subscribe((response) => {
 					if (response.success) {
 						this.snackbar.snackSuccess('Book copy removed successfully!', 'OK');
 					} else {

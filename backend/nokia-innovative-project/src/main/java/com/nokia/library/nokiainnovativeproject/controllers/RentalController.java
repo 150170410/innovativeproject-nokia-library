@@ -56,7 +56,7 @@ public class RentalController {
 		return MessageInfo.success(rentalService.createRental(rentalDTO), Arrays.asList("Rental created successfully"));
 	}
 
-	@PostMapping(RENTALS + UPDATE)
+	@PostMapping(RENTALS + PROLONG)
 	public ResponseEntity prolongRental(@PathVariable Long id) {
 		return MessageInfo.success(rentalService.prolongRental(id), Arrays.asList("Rental updated successfully"));
 	}

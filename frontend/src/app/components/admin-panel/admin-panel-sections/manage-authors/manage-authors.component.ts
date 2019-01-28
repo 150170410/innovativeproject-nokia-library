@@ -93,7 +93,7 @@ export class ManageAuthorsComponent implements OnInit {
 	async removeAuthor(id: number) {
 		await this.confirmService.openDialog().subscribe((result) => {
 			if (result) {
-				this.http.remove('author', id).subscribe((response) => {
+				this.http.remove('author/remove/', id).subscribe((response) => {
 					if (response.success) {
 						this.snackbar.snackSuccess('Author removed successfully!', 'OK');
 					} else {

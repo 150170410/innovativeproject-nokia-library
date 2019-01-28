@@ -280,7 +280,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	async removeBookDetails(id: number) {
 		await this.confirmService.openDialog().subscribe((result) => {
 			if (result) {
-				this.http.remove('bookDetails', id).subscribe((response) => {
+				this.http.remove('bookDetails/remove/', id).subscribe((response) => {
 					if (response.success) {
 						this.snackbar.snackSuccess('Book details removed successfully!', 'OK');
 					} else {
