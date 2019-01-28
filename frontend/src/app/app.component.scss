@@ -11,11 +11,19 @@
   font-family: 'Material Icons';
 }
 
-.main-content {
+.main-content-light {
   min-height: calc(100vh - 64px);
   width: 70%;
   max-width: 75%;
   background: white;
+  margin: auto;
+}
+
+.main-content-dark {
+  min-height: calc(100vh - 64px);
+  width: 70%;
+  max-width: 75%;
+  background: #303030;
   margin: auto;
 }
 

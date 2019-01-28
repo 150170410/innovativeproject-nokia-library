@@ -3,7 +3,7 @@
 	<mat-sidenav class="sidenav-menu" #sidenav (keydown.escape)="sidenav.close()">
 	</mat-sidenav>
 	<mat-sidenav-content>
-		<div class="main-content site">
+		<div class="site" [class.dark-theme]="darkTheme" [ngClass]="{'main-content-light': !darkTheme, 'main-content-dark': darkTheme}">
 			<mat-card class="content">
 				<router-outlet></router-outlet>
 			</mat-card>

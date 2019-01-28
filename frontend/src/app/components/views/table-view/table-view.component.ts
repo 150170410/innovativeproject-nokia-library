@@ -1,11 +1,10 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageInfo } from '../../../models/MessageInfo';
 import { RestService } from '../../../services/rest/rest.service';
 import { BookDetailsService } from '../../../services/book-details/book-details.service';
 import { BookDetails } from '../../../models/database/entites/BookDetails';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Book } from '../../../models/database/entites/Book';
 
 @Component({
 	selector: 'app-table-view',
@@ -26,6 +25,7 @@ export class TableViewComponent implements OnInit {
 	listIsLoading = false;
 	hideUnavailable = false;
 	value = '';
+	addresses = ['West Link', 'East Link'];
 
 	// table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -43,13 +43,9 @@ export class TableViewComponent implements OnInit {
 	}
 
 	searchBooks(val) {
-		// if (this.hideUnavailable) {
-		// 	this.books = this.booksAll.filter(b => JSON.stringify(b).toLowerCase().includes(val.toLowerCase()))
-		// } else {
-		// 	this.books = this.booksAll.filter(b => JSON.stringify(b).toLowerCase().includes(val.toLowerCase()) && (b.books.length > 0))
-		// }
-
-		// .map(b => Object.assign({}, b));
+		// this.books = this.booksAll.filter((b) => {
+		// 	return b.title.toLowerCase().includes(val.toLowerCase())
+		// });
 		this.dataSource.filter = val.trim().toLowerCase();
 	}
 
@@ -59,7 +55,9 @@ export class TableViewComponent implements OnInit {
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
-			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
+			return data.title.toLowerCase().includes(filter.toLowerCase())
+				|| JSON.stringify(data.authors).toLowerCase().includes(filter.toLowerCase())
+				|| JSON.stringify(data.categories).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
 		this.listIsLoading = false;

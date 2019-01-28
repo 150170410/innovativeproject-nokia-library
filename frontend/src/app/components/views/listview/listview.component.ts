@@ -25,12 +25,11 @@ export class ListviewComponent implements OnInit {
 	}
 
 	searchBooks(val) {
-		if (this.hideUnavailable) {
-			this.books = this.booksAll.filter(b => JSON.stringify(b).toLowerCase().includes(val.toLowerCase()))
-		} else {
-			this.books = this.booksAll.filter(b => JSON.stringify(b).toLowerCase().includes(val.toLowerCase()) && (b.books.length > 0))
-		}
-
+		this.books = this.booksAll.filter((b) => {
+			return (b.title.toLowerCase().includes(val.toLowerCase())
+				|| JSON.stringify(b.authors).toLowerCase().includes(val.toLowerCase())
+				|| JSON.stringify(b.categories).toLowerCase().includes(val.toLowerCase()));
+		});
 		// .map(b => Object.assign({}, b));
 	}
 
