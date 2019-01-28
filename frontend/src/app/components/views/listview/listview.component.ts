@@ -30,7 +30,6 @@ export class ListviewComponent implements OnInit {
 				|| JSON.stringify(b.authors).toLowerCase().includes(val.toLowerCase())
 				|| JSON.stringify(b.categories).toLowerCase().includes(val.toLowerCase()));
 		});
-		// .map(b => Object.assign({}, b));
 	}
 
 	async getBooksDetails() {
