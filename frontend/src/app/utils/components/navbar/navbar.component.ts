@@ -21,20 +21,20 @@ export class NavbarComponent implements OnInit {
 	constructor(public dialog: MatDialog,
 				private authService: AuthService,
 				private router: Router) {
-	  this.initData();
+		this.initData();
 	}
 
 	ngOnInit() {
 	}
 
 	initData() {
-	  this.authService.getUserData().then( () => {
-	    this.isAuth = this.authService.isAuthenticated();
-	    this.role_admin = this.authService.isAdmin();
-	    this.role_employee = this.authService.isUser();
-	    this.loggedAs = this.authService.getUsername();
-    });
-  }
+		this.authService.getUserData().then(() => {
+			this.isAuth = this.authService.isAuthenticated();
+			this.role_admin = this.authService.isAdmin();
+			this.role_employee = this.authService.isUser();
+			this.loggedAs = this.authService.getUsername();
+		});
+	}
 
 	login() {
 		this.router.navigateByUrl('/login');

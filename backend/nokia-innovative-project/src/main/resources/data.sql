@@ -143,7 +143,7 @@ INSERT INTO book (signature, book_details_id, book_status_id, comments, current_
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('YHNANK', 3, 1, 'bad', 7);
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('ALMNUM', 4, 1, 'cool', 7);
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('SIG123', 5, 1, 'stupid', 7);
-INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('OUF', 6, 1, 'chairman', 7);
+-- INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('OUF', 6, 1, 'chairman', 7);
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('ui ui', 7, 1, 'gut', 7);
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('miu miau', 7, 1, 'missing cover', 7);
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('nubu', 7, 1, 'juj', 7);

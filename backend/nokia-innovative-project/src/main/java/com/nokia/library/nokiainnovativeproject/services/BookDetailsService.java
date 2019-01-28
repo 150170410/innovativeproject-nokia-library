@@ -35,8 +35,14 @@ public class BookDetailsService {
 	public List<BookDetailsWithBooks> getAllBookDetails() {
 
 		List<BookDetails> list = bookDetailsRepository.findAll();
+		List<BookDetails> availableBooks = new ArrayList<>();
+		for (BookDetails bookDetails : list) {
+			if(!bookService.getAllBooksByBookDetailsId(bookDetails.getId()).isEmpty()){
+				availableBooks.add(bookDetails);
+			}
+		}
 		List<BookDetailsWithBooks> bookDetailsWithBooks = new ArrayList<>();
-		for(BookDetails bookDetails : list) {
+		for (BookDetails bookDetails : availableBooks) {
 			Hibernate.initialize(bookDetails.getAuthors());
 			Hibernate.initialize(bookDetails.getCategories());
 
@@ -44,7 +50,7 @@ public class BookDetailsService {
 
 			List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
 			List<BookWithoutBookDetails> bookWithoutBookDetails = new ArrayList<>();
-			for(Book book : books) {
+			for (Book book : books) {
 				bookWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
 			}
 
@@ -63,10 +69,10 @@ public class BookDetailsService {
 		ModelMapper mapper = new ModelMapper();
 
 		List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
-		if(!books.isEmpty())
+		if (!books.isEmpty())
 			bookDetails.setIsRemovable(false);
 		List<BookWithoutBookDetails> bookWithoutBookDetails = new ArrayList<>();
-		for(Book book : books) {
+		for (Book book : books) {
 			bookWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
 		}
 		BookDetailsWithBooks withBooks = mapper.map(bookDetails, BookDetailsWithBooks.class);
@@ -124,14 +130,14 @@ public class BookDetailsService {
 		categories.removeAll(categoriesToRemove);
 		categories.addAll(existingCategories);
 		bookDetails.setCategories(categories);
-		if(categories.size() != size)
+		if (categories.size() != size)
 			throw new ResourceNotFoundException("category");
 
 		size = authors.size();
 		authors.removeAll(authorsToRemove);
 		authors.addAll(existingAuthors);
 		bookDetails.setAuthors(authors);
-		if(authors.size() != size)
+		if (authors.size() != size)
 			throw new ResourceNotFoundException("author");
 
 		authors.forEach(author -> author.setIsRemovable(false));

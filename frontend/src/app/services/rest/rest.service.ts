@@ -43,7 +43,7 @@ export class RestService {
 	}
 
 	remove2(url: string, id: number) {
-		return this.http.delete<any>(this.URL + url + id, this.setHeaders())
+		return this.http.delete<any>(this.URL + url + id)
 		.pipe(
 			catchError(this.handleError)
 		);
