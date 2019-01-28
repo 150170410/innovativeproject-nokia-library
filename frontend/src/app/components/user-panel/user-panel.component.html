@@ -1,15 +1,20 @@
-<h1>User panel</h1>
-<mat-tab-group mat-stretch-tabs class="full-card">
-	<mat-tab label="Borrowed books">
-		<app-books-borrowed></app-books-borrowed>
-	</mat-tab>
-	<mat-tab label="Reserved books">
-		<app-books-reserved></app-books-reserved>
-	</mat-tab>
-	<mat-tab label="New books requests">
-		<app-books-requested></app-books-requested>
-	</mat-tab>
-	<mat-tab label="History of borrowings">
-		<app-books-history></app-books-history>
-	</mat-tab>
-</mat-tab-group>
+<div *ngIf="role_employee">
+  <h1>User panel</h1>
+  <mat-tab-group mat-stretch-tabs class="full-card">
+    <mat-tab label="Borrowed books">
+      <app-books-borrowed></app-books-borrowed>
+    </mat-tab>
+    <mat-tab label="Reserved books">
+      <app-books-reserved></app-books-reserved>
+    </mat-tab>
+    <mat-tab label="New books requests">
+      <app-books-requested></app-books-requested>
+    </mat-tab>
+    <mat-tab label="History of borrowings">
+      <app-books-history></app-books-history>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<div *ngIf="!role_employee">
+  <app-page-not-found></app-page-not-found>
+</div>

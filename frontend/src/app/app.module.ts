@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { routes } from './routes';
 import 'hammerjs';
 import { AppComponent } from './app.component';
@@ -44,6 +44,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { SnackbarService } from './services/snackbar/snackbar.service';
 import { TableViewComponent } from './components/views/table-view/table-view.component';
+
 
 @NgModule({
 	declarations: [
