@@ -13,7 +13,7 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findByUserId(Long userId);
     List<Rental> findByBookId(Long bookId);
 
-    @Query(value = "SELECT * FROM RENTAL WHERE RETURN_DATE >= now() - interval '1 week';",
+    @Query(value = "SELECT * FROM RENTAL WHERE RETURN_DATE >= now() - interval '3 days';",
     nativeQuery = true)
     List<Rental> findRentalsForReminder();
 

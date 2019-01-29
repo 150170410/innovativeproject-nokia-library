@@ -54,7 +54,7 @@ public class EmailService {
 		sendSimpleMessage(email, userEmails);
 	}
 
-    @Scheduled(cron = "0 0 21 */3 * ?")
+    @Scheduled(cron = "0 0 21 * * ?")
     @Transactional
 	public void renewalsReminder() {
         List<Rental> rentals = rentalRepository.findRentalsForReminder();

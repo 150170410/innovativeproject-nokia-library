@@ -44,7 +44,6 @@ export class BooksRequestedComponent implements OnInit {
 	async getRequestedBooks() {
 		const response = await this.http.getAll('bookToOrder/getAll');
 		this.requestedBooks = response.object;
-		console.log(response.object);
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
