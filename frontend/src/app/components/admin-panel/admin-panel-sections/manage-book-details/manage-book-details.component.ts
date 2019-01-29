@@ -96,7 +96,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	initBookDetailsForm() {
 		this.bookDetailsParams = this.formBuilder.group({
-			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(17), Validators.pattern('(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})')]], 
+			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(17), Validators.pattern('(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})')]],
 			title: ['', [Validators.required, Validators.maxLength(100)]],
 			authors: this.authorsFormControl,
 			categories: this.categoriesFormControl,
@@ -328,7 +328,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.snackbar.snackError(error.error.message, 'OK');
 				});
 			}
-		})
+		});
 	}
 
 	clearForm() {

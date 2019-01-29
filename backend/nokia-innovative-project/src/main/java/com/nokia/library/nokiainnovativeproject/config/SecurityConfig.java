@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -19,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -27,8 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic()
-                .and().csrf().disable().cors().and()
+        http.csrf().disable().httpBasic().authenticationEntryPoint(restAuthenticationEntryPoint)
+                .and().cors().and()
                 .authorizeRequests()
                 .antMatchers("/error**", "/", "/login**").permitAll()
                 .antMatchers(API_VERSION + BOOKS + GET_ONE,
@@ -81,7 +85,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .and()
-                .logout().deleteCookies("JSESSIONID")
+                .logout().logoutSuccessUrl("/callback").deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
+
+        http.addFilterAfter(new CustomFilter(), BasicAuthenticationFilter.class);
     }
 }

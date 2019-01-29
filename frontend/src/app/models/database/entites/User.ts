@@ -1,4 +1,5 @@
 import { Book } from './Book';
+import {Role} from './Role';
 
 export class User {
 	id: number;
@@ -6,10 +7,10 @@ export class User {
 	firstName: string;
 	lastName: string;
 	address: any;
-	roles: any;
+	roles: Role[];
 	books: Book[];
 
-	constructor(id: number, email: string, firstName: string, lastName: string, address: any, roles: any, books: Book[]) {
+	constructor(id: number, email: string, firstName: string, lastName: string, address: any, roles: Role[], books: Book[]) {
 		this.id = id;
 		this.email = email;
 		this.firstName = firstName;
@@ -18,12 +19,4 @@ export class User {
 		this.roles = roles;
 		this.books = books;
 	}
-
-	 static all(){
-		return [
-			new User(1, 'janusz.pawlacz@nokia.com', 'Janusz', 'Pawlacz', 'west link', 'user', []),
-			new User(2, 'jacek.zalewski@email.com', 'Jacek', 'Zalewski', 'nowhere', 'admin', [])
-		];
-	}
-
 }

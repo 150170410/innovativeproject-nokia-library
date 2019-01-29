@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
 	selector: 'app-login',
@@ -9,12 +10,11 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  error: boolean;
+  error = true;
 
 	constructor(private formBuilder: FormBuilder,
-				private authService: AuthService) {
-    this.error = (sessionStorage.getItem('isSignedCorrectly') === 'true') ||
-            (sessionStorage.getItem('isSignedCorrectly') === null);
+				private authService: AuthService,
+              private router: Router) {
 	}
 
 	loginParams: FormGroup;
@@ -31,11 +31,12 @@ export class LoginComponent implements OnInit {
 	}
 
 	loginButtonClick(params: any) {
-		sessionStorage.setItem('username', params.value.email);
-		sessionStorage.setItem('password', params.value.password);
-		this.loginParams.reset();
-		this.authService.loginUser().then(
-      () => this.error = (sessionStorage.getItem('isSignedCorrectly') === 'true')
-    );
+		this.authService.loginUser(params.value.email, params.value.password).then(() => {
+		  this.error = this.authService.isSigned();
+		  this.loginParams.reset();
+		  if (this.error) {
+        this.router.navigateByUrl('/');
+      }
+    });
 	}
 }

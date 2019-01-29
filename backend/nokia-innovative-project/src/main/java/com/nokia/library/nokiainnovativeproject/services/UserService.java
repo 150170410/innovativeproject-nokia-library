@@ -107,7 +107,6 @@ public class UserService implements UserDetailsService {
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         user = userRepository.save(persistingRequiredEntities(user, userDTO));
         return user;
     }

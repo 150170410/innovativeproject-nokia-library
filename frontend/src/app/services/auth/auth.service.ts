@@ -1,82 +1,97 @@
 import { Injectable } from '@angular/core';
-import { MessageInfo } from '../../models/MessageInfo';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { API_URL } from '../../config';
-import { Router } from '@angular/router';
-import { Authorities } from '../../models/database/entites/Authorities';
+import {MessageInfo} from '../../models/MessageInfo';
+import {RestService} from '../rest/rest.service';
+import {Router} from '@angular/router';
+import {Authorities} from '../../models/database/entites/Authorities';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class AuthService {
 
-	URL = API_URL + '/api/v1/';
+  username: string;
+  isSignedCorrectly: boolean;
+  roleAdmin = false;
+  roleUser = false;
+  isAuth = false;
+  name: string;
+  isActual = false;
 
 	constructor(private http: HttpClient,
-				private router: Router) {
+              private restService: RestService,
+              private router: Router) {
 	}
 
-	setHeaders() {
-		return {
-			headers: new HttpHeaders({
-				'Authorization': 'Basic ' +
-				btoa(sessionStorage.getItem('username') + ':' + sessionStorage.getItem('password'))
-			})
-		};
-	}
+	async loginUser(username: string, password: string) {
+    let body = new HttpParams();
+    body = body.set('username', username);
+    body = body.set('password', password);
+    try {
+      await this.http.post(API_URL + '/login', body, {withCredentials: true}).toPromise();
+      this.isSignedCorrectly = true;
 
-	async getOne(url: string) {
-	  try {
-      return await this.http.get<MessageInfo>(this.URL + url, this.setHeaders()).toPromise();
+      this.navigateToHomepage().then( () => {
+        location.reload();
+      });
     } catch (e) {
-      sessionStorage.clear();
-      sessionStorage.setItem('ROLE_ADMIN', 'false');
-      sessionStorage.setItem('ROLE_EMPLOYEE', 'false');
-      sessionStorage.setItem('authenticated', 'false');
-      sessionStorage.setItem('isSignedCorrectly', 'false');
-      return null;
+      this.isSignedCorrectly = false;
     }
 	}
+	async navigateToHomepage() {
+    await this.router.navigateByUrl('/homepage');
+  }
 
-	async loginUser() {
+  isSigned() {
+    return this.isSignedCorrectly;
+  }
+  isAuthenticated() {
+    return this.isAuth;
+  }
 
-    const response: MessageInfo = await this.getOne('user') as MessageInfo;
-    if (response && response.object) {
-      sessionStorage.setItem('authenticated', 'true');
-      const roles: Authorities[] = response.object.authorities;
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].authority === 'ROLE_ADMIN') {
-          sessionStorage.setItem('ROLE_ADMIN', 'true');
-        } else if (roles[i].authority === 'ROLE_EMPLOYEE') {
-          sessionStorage.setItem('ROLE_EMPLOYEE', 'true');
+  isAdmin() {
+    return this.roleAdmin;
+  }
+
+  isUser() {
+    return this.roleUser;
+  }
+
+  getUsername() {
+    return this.name;
+  }
+
+  async getUserData() {
+	  if (this.isActual === false) {
+      this.isActual = true;
+      const response: MessageInfo = await this.restService.getAll('user');
+      if (response && response.object) {
+        this.name = response.object.name;
+        this.isAuth = true;
+        const roles: Authorities[] = response.object.authorities;
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].authority === 'ROLE_ADMIN') {
+            this.roleAdmin = true;
+          } else if (roles[i].authority === 'ROLE_EMPLOYEE') {
+            this.roleUser = true;
+          }
         }
+      } else {
+        console.log('User is not logged!');
+        this.isAuth = false;
+        this.roleAdmin = false;
+        this.roleUser = false;
+        this.name = '';
       }
-
-      this.router.navigateByUrl('/homepage')
-        .then(() => {
-          sessionStorage.setItem('isSignedCorrectly', 'true');
-          location.reload();
-        });
-
-    } else {
-      sessionStorage.clear();
-      sessionStorage.setItem('ROLE_ADMIN', 'false');
-      sessionStorage.setItem('ROLE_EMPLOYEE', 'false');
-      sessionStorage.setItem('authenticated', 'false');
-      sessionStorage.setItem('isSignedCorrectly', 'false');
     }
-	}
+  }
 
 	logoutUser() {
-		sessionStorage.clear();
-		sessionStorage.setItem('ROLE_ADMIN', 'false');
-		sessionStorage.setItem('ROLE_EMPLOYEE', 'false');
-		sessionStorage.setItem('authenticated', 'false');
-    sessionStorage.setItem('isSignedCorrectly', 'true');
-
-		this.router.navigateByUrl('/homepage')
-		.then(() => {
-			location.reload();
-		});
+    this.isAuth = false;
+    this.roleAdmin = false;
+    this.roleUser = false;
+    this.name = '';
+    window.location.href = API_URL + '/logout';
 	}
 }
