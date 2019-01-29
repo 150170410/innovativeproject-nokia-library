@@ -183,7 +183,7 @@ export class ManageUsersComponent implements OnInit {
     document.getElementById('admin-panel-tabs').scrollIntoView();
   }
 
-  changeUserButtonClick() {
+  changeUserButtonClick(userParams) {
     if (!this.actualUser) {
       this.snackbar.snackError('Please select a user to change data!', 'OK');
     } else {
