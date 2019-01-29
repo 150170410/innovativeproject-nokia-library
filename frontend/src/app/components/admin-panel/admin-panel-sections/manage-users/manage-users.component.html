@@ -1,3 +1,69 @@
+<p>Here you can change information about user.</p>
+
+<mat-card class="user-form-wrapper">
+  <div class="user-form-container">
+  <form name="userParams" (ngSubmit)="changeUserButtonClick(userParams)" [formGroup]="userParams">
+      <mat-form-field>
+        <input formControlName="name"
+               placeholder="Name"
+               matInput required>
+        <mat-error *ngIf="userParams.controls['name'].hasError">
+          <div *ngIf="userParams.controls['name'].errors?.required">
+            Name is required
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input formControlName="surname"
+               placeholder="Surname"
+               matInput required>
+        <mat-error *ngIf="userParams.controls['surname'].hasError">
+          <div *ngIf="userParams.controls['surname'].errors?.required">
+            Surname is required
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input formControlName="email"
+               placeholder="Email"
+               matInput required>
+        <mat-error *ngIf="userParams.controls['email'].hasError">
+          <div *ngIf="userParams.controls['email'].errors?.required">
+            Email is required
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="text" placeholder="City" matInput [formControl]="my2Control"
+               formControlName="addressCity" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredCities | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="text" placeholder="Building" matInput [formControl]="myControl"
+                [matAutocomplete]="auto2" formControlName="addressBuilding">
+        <mat-autocomplete #auto2="matAutocomplete">
+          <mat-option *ngFor="let option of filteredBuilding | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+    <div class="form-title">
+      <button color="primary" mat-raised-button type="submit" [disabled]="actualUser == null">
+        Change user data
+      </button>
+    </div>
+  </form>
+  </div>
+</mat-card>
 <p>Here you can promote users to admins or demote admins to regular users.</p>
 <div>
 	<div class="filter-paginator-wrapper">
@@ -24,23 +90,26 @@
 
 		<ng-container matColumnDef="role">
 			<th mat-header-cell *matHeaderCellDef>Role</th>
-			<td mat-cell *matCellDef="let user" [ngClass]="{'role-user': user.roles == 'user','role-admin': user.roles == 'admin' }">{{user.roles}}</td>
+			<td mat-cell *matCellDef="let user" [ngClass]="{'role-user': user.roles[0].role == 'ROLE_EMPLOYEE','role-admin': user.roles[0].role == 'ROLE_ADMIN' }">{{user.roles[0].role}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="address">
-			<th mat-header-cell *matHeaderCellDef>Address</th>
-			<td mat-cell *matCellDef="let user">{{user.address}}</td>
+			<th mat-header-cell *matHeaderCellDef>Address</th>r
+      <td mat-cell *matCellDef="let user">{{user.address.city}} {{user.address.building}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="actions">
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
 			<td mat-cell *matCellDef="let user">
 				<p>
-					<button disabled *ngIf="user.roles == 'user'" color="primary" mat-button (click)="promoteUser(user)">
+          <button color="primary" mat-button (click)="fillUserTable(user)">
+            Change user data
+          </button>
+					<button *ngIf="user.roles[0].role == 'ROLE_EMPLOYEE'" color="primary" mat-button (click)="promoteUser(user)">
 						<mat-icon>arrow_upward</mat-icon>
 						Promote to admin
 					</button>
-					<button disabled *ngIf="user.roles == 'admin'" color="warn" mat-button (click)="demoteUser(user)">
+					<button [disabled]="!isMoreThanOneAdmin" *ngIf="user.roles[0].role == 'ROLE_ADMIN'" color="warn" mat-button (click)="demoteUser(user)">
 						<mat-icon>arrow_downward</mat-icon>
 						Demote to user
 					</button>

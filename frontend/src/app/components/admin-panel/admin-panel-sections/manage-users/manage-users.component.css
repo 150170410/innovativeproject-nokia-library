@@ -11,6 +11,11 @@ mat-form-field {
 	margin: auto;
 }
 
+.user-form-wrapper {
+  width: 500px;
+  margin: auto;
+}
+
 .button-spacer {
 	margin-left: 10px;
 }
