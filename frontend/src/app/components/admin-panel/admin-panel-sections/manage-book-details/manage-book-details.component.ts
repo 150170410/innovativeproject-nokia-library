@@ -265,7 +265,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	getInfoFromAPI() {
 		this.fetchingDetails = true;
-		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value.replace("-", "").replace(" ","").toLocaleLowerCase(), this.http.setHeaders())
+		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value.replace("-", "").replace(" ","").toLocaleLowerCase(), {withCredentials: true})
 		.subscribe((response: MessageInfo) => {
 			if (response.success) {
 				this.availableTitles = [];

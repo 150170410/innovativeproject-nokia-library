@@ -6,6 +6,7 @@ import { SnackbarService } from '../../../../services/snackbar/snackbar.service'
 import { RestService } from '../../../../services/rest/rest.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookToOrderDTO } from '../../../../models/database/DTOs/BookToOrderDTO';
+import { MessageInfo } from '../../../../models/MessageInfo';
 
 @Component({
 	selector: 'app-books-requested',
@@ -106,7 +107,7 @@ export class BooksRequestedComponent implements OnInit {
 	requestBook(requestParams: FormGroup) {
 		if(this.validateISBN()){
 			const body = new BookToOrderDTO(requestParams.value.isbn, requestParams.value.title);
-			this.http.save('bookToOrder/create', body).subscribe((response) => {
+			this.http.save('bookToOrder/create', body).subscribe((response: MessageInfo) => {
 				if (response.success) {
 					this.clearForm();
 					this.getRequestedBooks();
@@ -130,7 +131,7 @@ export class BooksRequestedComponent implements OnInit {
 	changeSubscribeState(request) {
 		this.http.changeSubscribeStatus(request.id)
 		.subscribe(
-			(response) => {
+			(response: MessageInfo) => {
 				if (response.success) {
 					this.requestedBooks.forEach(element => {
 						if(element.id == request.id){

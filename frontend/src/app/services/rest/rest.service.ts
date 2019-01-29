@@ -50,14 +50,14 @@ export class RestService {
 	}
 
 	changeSubscribeStatus(id: number) {
-		return this.http.post<any>(this.URL + 'bookToOrder/subscribe/' + id, id, this.setHeaders())
+		return this.http.post<any>(this.URL + 'bookToOrder/subscribe/' + id, id, {withCredentials: true})
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
 	acceptBookToOrder(id: number) {
-		return this.http.post<any>(this.URL + 'bookToOrder/accept/' + id, id, this.setHeaders())
+		return this.http.post<any>(this.URL + 'bookToOrder/accept/' + id, id, {withCredentials: true})
 		.pipe(
 			catchError(this.handleError)
 		);
