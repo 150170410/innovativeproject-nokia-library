@@ -5,6 +5,11 @@ import {MessageInfo} from '../../../../models/MessageInfo';
 import {RestService} from '../../../../services/rest/rest.service';
 import {Role} from '../../../../models/database/entites/Role';
 import {SnackbarService} from '../../../../services/snackbar/snackbar.service';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Address} from '../../../../models/database/entites/Address';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {UserDTO} from '../../../../models/database/DTOs/UserDTO';
 
 @Component({
 	selector: 'app-manage-users',
@@ -15,6 +20,20 @@ export class ManageUsersComponent implements OnInit {
 
   users: User[] = [];
   isMoreThanOneAdmin: boolean;
+  userParams: FormGroup;
+  actualUser: User;
+
+  addresses: Address[] = [];
+  availableCities: string[] = [];
+  availableBuildings: string[] = [];
+
+  filteredBuilding: Observable<string[]>;
+  filteredCities: Observable<string[]>;
+  myControl = new FormControl();
+  my2Control = new FormControl();
+
+  updatedBuilding: string;
+  updatedCity: string;
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
@@ -23,12 +42,63 @@ export class ManageUsersComponent implements OnInit {
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService,
-              private snackbar: SnackbarService) {
+              private snackbar: SnackbarService,
+              private formBuilder: FormBuilder) {
 	}
 
 	ngOnInit() {
 		this.getUsers();
+		this.initFormGroup();
+		this.getAddresses();
 	}
+
+	getAddresses() {
+    this.initAddresses().then( () => {
+      this.filteredBuilding = this.myControl.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+      this.filteredCities = this.my2Control.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filter2(value))
+        );
+    });
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    this.updatedBuilding = value;
+    return this.availableBuildings.filter(option => option.toLowerCase().includes(filterValue));
+  }
+  private _filter2(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    this.updatedCity = value;
+    return this.availableCities.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  async initAddresses() {
+    const response: MessageInfo = await this.http.getAll('address/getAll');
+    this.addresses = [];
+    if (response && response.object) {
+      this.addresses = response.object;
+    }
+    this.addresses.forEach( (address) => {
+      this.availableBuildings.push(address.building);
+      this.availableCities.push(address.city);
+    });
+  }
+
+  initFormGroup() {
+    this.userParams = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      surname: ['', [Validators.required]],
+      addressCity: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      addressBuilding: ['', [Validators.required]]
+    });
+  }
 
 	async getUsers() {
     const response: MessageInfo = await this.http.getAll('user/getAll');
@@ -100,4 +170,59 @@ export class ManageUsersComponent implements OnInit {
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
+
+  fillUserTable(user: User) {
+	  this.actualUser = user;
+	  this.userParams.patchValue({
+      name: user.firstName,
+      surname: user.lastName,
+      addressCity: user.address.city,
+      email: user.email,
+      addressBuilding: user.address.building
+    });
+    document.getElementById('admin-panel-tabs').scrollIntoView();
+  }
+
+  changeUserButtonClick() {
+    if (!this.actualUser) {
+      this.snackbar.snackError('Please select a user to change data!', 'OK');
+    } else {
+      const name: string = this.userParams.value.name;
+      const surname: string = this.userParams.value.surname;
+      let addressCity: string = this.userParams.value.addressCity;
+      const email: string = this.userParams.value.email;
+      let addressBuilding: string = this.userParams.value.addressBuilding;
+
+      if (this.updatedCity) {
+        addressCity = this.updatedCity;
+      }
+      if (this.updatedBuilding) {
+        addressBuilding = this.updatedBuilding;
+      }
+
+      let address: Address = this.addresses.filter((add) =>
+        add.city === addressCity && add.building === addressBuilding)[0];
+      if (!address) {
+        address = new Address(null, addressCity, addressBuilding);
+      }
+
+      const user = new UserDTO(name, surname, 'passwordIsNotRequiredInThisExample', email, address);
+
+      console.log(user);
+
+      this.http.update('user', this.actualUser.id, user).subscribe((response) => {
+        if (response.success) {
+          this.getUsers();
+          this.getAddresses();
+          this.snackbar.snackSuccess('User updated successfully!', 'OK');
+          this.userParams.reset();
+          this.actualUser = null;
+        } else {
+          this.snackbar.snackError('Error', 'OK');
+        }
+      }, (error) => {
+        this.snackbar.snackError(error.error.message, 'OK');
+      });
+    }
+  }
 }
