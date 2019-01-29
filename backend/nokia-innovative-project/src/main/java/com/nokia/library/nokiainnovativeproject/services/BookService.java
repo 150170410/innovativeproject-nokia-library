@@ -4,11 +4,13 @@ import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
 import com.nokia.library.nokiainnovativeproject.entities.User;
+import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
+import com.nokia.library.nokiainnovativeproject.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
@@ -111,30 +113,22 @@ public class BookService {
 		if (newOwner != null) {
 			book.setCurrentOwnerId(newOwner.getId());
 		}
-		// System.out.println(book);
 		return book;
 	}
 
 	public Book lockBook(String signature) {
-		// TODO: add  exceptions
 		Book bookToLock = bookRepository.findBySignature(signature);
-		if(bookToLock.getStatus().getId().equals(BookStatusEnum.AVAILABLE.getStatusId())){
-
-		} else {
-
+		if (!bookToLock.getStatus().getId().equals(BookStatusEnum.AVAILABLE.getStatusId())) {
+			throw new InvalidBookStateException(Constants.MessageTypes.BOOK_RESERVED);
 		}
 		return changeState(bookToLock, BookStatusEnum.UNAVAILABLE.getStatusId(), 0, null);
 	}
 
 	public Book unlockBook(String signature) {
-		// TODO: add exceptions
 		Book bookToUnlock = bookRepository.findBySignature(signature);
-		if(bookToUnlock.getStatus().getId().equals(BookStatusEnum.UNAVAILABLE.getStatusId())){
-
-		} else {
-
+		if (!bookToUnlock.getStatus().getId().equals(BookStatusEnum.UNAVAILABLE.getStatusId())) {
+			throw new InvalidBookStateException(Constants.MessageTypes.BOOK_RESERVED);
 		}
-
 		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getStatusId(), 0, null);
 	}
 
