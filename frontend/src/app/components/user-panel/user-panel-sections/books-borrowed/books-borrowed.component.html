@@ -1,6 +1,9 @@
 <p>
 	Books that you currently have or you need to pick up from library. If the book is awaiting, go to the corresponding admin to pick it up. If you are ready to return the book, go to any admin to return it.
 </p>
+<p>
+	You can prolong the book for another month no earlier than 1 week before you are supposed to return the book.
+</p>
 
 <!--<div class="mat-elevation-z8">-->
 <!--<div class="loading-shade"-->
@@ -61,7 +64,7 @@
 						<mat-icon>close</mat-icon>
 						Cancel
 					</button>
-					<button *ngIf="rental.book.status.id == 3" color="primary" mat-button (click)="prolong(rental)">
+					<button *ngIf="rental.book.status.id == 3" color="primary" mat-button (click)="prolong(rental)" [disabled]="rental.returnDate > canProlongDate">
 						<mat-icon>forward_30</mat-icon>
 						Prolong
 					</button>

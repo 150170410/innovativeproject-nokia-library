@@ -35,7 +35,8 @@ export class BooksBorrowedComponent implements OnInit {
 
 	ngOnInit() {
 		this.getRentals();
-		this.canProlongDate.setDate(this.canProlongDate.getDate() + 3);
+		this.canProlongDate = new Date();
+		this.canProlongDate.setDate(this.canProlongDate.getDate() + 21);
 	}
 
 	async cancelAwaiting(rental: Rental) {
@@ -80,6 +81,10 @@ export class BooksBorrowedComponent implements OnInit {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
+		for (let i = 0; i < this.rentals.length; i++) {
+			this.rentals[i].returnDate = new Date(this.rentals[i].returnDate);
+		}
+
 	}
 
 	bookInfo(borrowing) {
