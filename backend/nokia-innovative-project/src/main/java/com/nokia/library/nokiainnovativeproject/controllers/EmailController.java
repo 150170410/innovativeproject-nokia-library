@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Arrays;
 
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(Mappings.API_VERSION + Mappings.EMAIL)
@@ -27,6 +29,6 @@ public class EmailController {
     public ResponseEntity sendEmail(@RequestBody @Valid Email email, BindingResult bindingResult) {
         MessageInfo.validateBindingResults(bindingResult);
         emailService.sendSimpleMessage(email, EmailRecipients.recipients);
-        return MessageInfo.success(null, Arrays.asList("Email sent successfully"));
+        return MessageInfo.success(null, Arrays.asList("Email" + SENT_SUCCESSFULLY));
     }
 }

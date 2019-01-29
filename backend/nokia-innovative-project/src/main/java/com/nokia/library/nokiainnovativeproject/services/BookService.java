@@ -31,7 +31,6 @@ public class BookService {
 	private final BookStatusService bookStatusService;
 	private final UserService userService;
 
-
 	public List<Book> getAllBooks() {
 		List<Book> books = bookRepository.findAll();
 		for (Book book : books) {
@@ -131,5 +130,4 @@ public class BookService {
 		}
 		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getStatusId(), 0, null);
 	}
-
 }

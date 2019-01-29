@@ -8,16 +8,14 @@ import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.exception.ConstraintViolationException;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
 
 import java.util.Arrays;
 import java.util.List;
-
 
 @Service
 @Transactional
@@ -53,7 +51,7 @@ public class AuthorService {
     public void deleteAuthor(Long id) {
 		Author author = authorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("author"));
         if(bookDetailsRepository.countBookDetailsByAuthors(Arrays.asList(author)) > 0) {
-            throw new ValidationException("The author you are trying to delete is assigned to a book. You can't delete it.");
+            throw new ValidationException("The author" + IS_ASSIGNED_CANT_DELETE);
         }
         authorRepository.delete(author);
     }

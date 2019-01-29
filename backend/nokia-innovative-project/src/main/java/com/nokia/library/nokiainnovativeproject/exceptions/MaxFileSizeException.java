@@ -10,5 +10,4 @@ public class MaxFileSizeException extends RuntimeException{
     public MaxFileSizeException(long size){
         super(String.format("The request was rejected because its size (%s) exceeds the configured maximum (%s)", size, Constants.MAX_FILE_SIZE));
     }
-
 }

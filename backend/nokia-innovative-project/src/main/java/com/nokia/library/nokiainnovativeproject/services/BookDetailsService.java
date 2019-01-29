@@ -12,14 +12,14 @@ import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
+
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
 
 @Service
 @Transactional
@@ -128,7 +128,7 @@ public class BookDetailsService {
 	public void deleteBookDetails(Long id) {
 		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
 		if (bookRepository.countBooksByBookDetails(bookDetails) > 0) {
-			throw new ValidationException("The book details you are trying to delete is assigned to a book. You can't delete it.");
+			throw new ValidationException("The book details" + IS_ASSIGNED_CANT_DELETE);
 		}
 		bookDetails.getAuthors().forEach(author -> author.setIsRemovable(authorRepository.countBookDetailsByAuthor(author.getId()) == 1));
 		bookDetails.getCategories().forEach(category -> category.setIsRemovable(bookCategoryRepository.countBookDetailsByCategory(category.getId()) == 1));

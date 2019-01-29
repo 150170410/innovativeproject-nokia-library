@@ -1,6 +1,5 @@
 package com.nokia.library.nokiainnovativeproject.controllers;
 
-
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
 import com.nokia.library.nokiainnovativeproject.services.AutocompletionService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
@@ -18,6 +17,7 @@ import java.util.List;
 
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.API_VERSION;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.AUTOCOMPLETION;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,7 +38,7 @@ public class AutocompletionController {
         BookDetailsDTO bookDetailsBN = autocompletionService.getBookDetailsFromApiBN(isbn);
         if(bookDetailsBN != null)
             list.add(bookDetailsBN);
-        return list.isEmpty() ? MessageInfo.failure(Arrays.asList("Book details with this isbn not found.")) : MessageInfo.success(list, Arrays.asList("bookDetails"));
+        return list.isEmpty() ? MessageInfo.failure(Arrays.asList(BOOK_WITH_ISBN_NOT_FOUND.toString())) :
+                MessageInfo.success(list, Arrays.asList(LIST_OF + "bookDetails"));
     }
-
 }

@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import java.util.Arrays;
 
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,42 +24,39 @@ public class BookController {
 
 	@GetMapping(GET_ALL)
 	public ResponseEntity getAllBooks() {
-		return MessageInfo.success(bookService.getAllBooks(), Arrays.asList("list of books"));
+		return MessageInfo.success(bookService.getAllBooks(), Arrays.asList(LIST_OF + "books."));
 	}
 
 	@GetMapping(GET_ONE)
 	public ResponseEntity getBookById(@PathVariable Long id) {
-		return MessageInfo.success(bookService.getBookById(id), Arrays.asList("Book of ID = " + id.toString()));
+		return MessageInfo.success(bookService.getBookById(id), Arrays.asList("Book" + REQUESTED));
 	}
 
 	@PostMapping(CREATE)
 	public ResponseEntity createBook(@RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
-		return MessageInfo.success(bookService.createBook(bookDTO), Arrays.asList("Book created successfully"));
+		return MessageInfo.success(bookService.createBook(bookDTO), Arrays.asList("Book" + CREATED_SUCCESSFULLY));
 	}
 
 	@PostMapping(UPDATE)
 	public ResponseEntity updateBook(@PathVariable Long id, @RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
-		return MessageInfo.success(bookService.updateBook(id, bookDTO), Arrays.asList("Book updated successfully"));
+		return MessageInfo.success(bookService.updateBook(id, bookDTO), Arrays.asList("Book" + UPDATED_SUCCESSFULLY));
 	}
 
 	@DeleteMapping(REMOVE)
 	public ResponseEntity deleteBook(@PathVariable Long id) throws ResourceNotFoundException {
 		bookService.deleteBook(id);
-		return MessageInfo.success(null, Arrays.asList("Book with ID = " + id.toString() + " removed successfully"));
+		return MessageInfo.success(null, Arrays.asList("Book" + UPDATED_SUCCESSFULLY));
 	}
 
 	@PostMapping("/lock/{signature}")
 	public ResponseEntity lockBook(@PathVariable String signature) {
-//		MessageInfo.validateBindingResults(bindingResult);
-		return MessageInfo.success(bookService.lockBook(signature), Arrays.asList("Book locked successfully"));
-
+		return MessageInfo.success(bookService.lockBook(signature), Arrays.asList("Book" + LOCKED_SUCCESSFULLY));
 	}
 
 	@PostMapping("/unlock/{signature}")
 	public ResponseEntity unlockBook(@PathVariable String signature) {
-//		MessageInfo.validateBindingResults(bindingResult);
-		return MessageInfo.success(bookService.unlockBook(signature), Arrays.asList("Book unlocked successfully"));
+		return MessageInfo.success(bookService.unlockBook(signature), Arrays.asList("Book" + UNLOCKED_SUCCESSFULLY));
 	}
 }

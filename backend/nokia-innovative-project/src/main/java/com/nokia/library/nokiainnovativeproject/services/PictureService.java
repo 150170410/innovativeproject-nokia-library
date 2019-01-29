@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
+
 @Service
 @RequiredArgsConstructor
 public class PictureService {
@@ -35,7 +37,7 @@ public class PictureService {
 
     private void validateFile(MultipartFile file) {
         if(file == null || file.isEmpty()){
-            throw new ValidationException("File is either null or empty");
+            throw new ValidationException("File" + IS_EMPTY);
         }
         if(file.getSize() > Constants.MAX_FILE_SIZE ) { throw new MaxFileSizeException(file.getSize()); }
         if (!supportedTypes.contains(file.getContentType()))

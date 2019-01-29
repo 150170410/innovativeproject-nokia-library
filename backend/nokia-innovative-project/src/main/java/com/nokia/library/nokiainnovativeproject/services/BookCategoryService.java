@@ -1,6 +1,5 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
-
 import com.nokia.library.nokiainnovativeproject.DTOs.BookCategoryDTO;
 import com.nokia.library.nokiainnovativeproject.entities.BookCategory;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
@@ -15,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
 
 @Service
 @Transactional
@@ -51,7 +52,7 @@ public class BookCategoryService  {
 	public void deleteBookCategory(Long id) {
 		BookCategory bookCategory = bookCategoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book category"));
 		if (bookDetailsRepository.countBookDetailsByCategories(Arrays.asList(bookCategory)) > 0) {
-			throw new ValidationException("The category you are trying to delete is assigned to a book. You can't delete it.");
+			throw new ValidationException("The category" + IS_ASSIGNED_CANT_DELETE);
 		}
 		bookCategoryRepository.delete(bookCategory);
 	}

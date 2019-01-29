@@ -3,6 +3,7 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookToOrderDTO;
 import com.nokia.library.nokiainnovativeproject.services.BookToOrderService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,25 +22,25 @@ public class BookToOrderController {
 
     @GetMapping(Mappings.GET_ALL)
     public ResponseEntity getAllBookToOrder(){
-        return MessageInfo.success(bookToOrderService.getAllBookToOrders(), Arrays.asList("list of books to order"));
+        return MessageInfo.success(bookToOrderService.getAllBookToOrders(), Arrays.asList(LIST_OF + "books to order."));
     }
 
     @GetMapping(Mappings.USER)
     public ResponseEntity getAllBookToOrderByUser() {
-        return MessageInfo.success(bookToOrderService.getBookToOrderByUser(), Arrays.asList("user's list of books to order"));
+        return MessageInfo.success(bookToOrderService.getBookToOrderByUser(), Arrays.asList("user's" + LIST_OF + "books to order."));
     }
 
     @GetMapping(Mappings.GET_ONE)
     public ResponseEntity getBookToOrderById(@PathVariable Long id) {
         return MessageInfo.success(bookToOrderService.getBookToOrderById(id),
-                Arrays.asList("BookToOrderController to order of ID = " + id.toString()));
+                Arrays.asList("Book to order" + REQUESTED));
     }
 
     @PostMapping(Mappings.CREATE)
     public ResponseEntity createBookToOrder(@RequestBody @Valid BookToOrderDTO bookToOrderDTO, BindingResult bindingResult) {
         MessageInfo.validateBindingResults(bindingResult);
         return MessageInfo.success(bookToOrderService.createBookToOrder(bookToOrderDTO),
-                Arrays.asList("BookToOrder created successfully"));
+                Arrays.asList("Book to order" + CREATED_SUCCESSFULLY));
     }
 
     @PostMapping(Mappings.UPDATE)
@@ -47,12 +48,12 @@ public class BookToOrderController {
                                          BindingResult bindingResult) {
         MessageInfo.validateBindingResults(bindingResult);
         return MessageInfo.success(bookToOrderService.updateBookToOrder(id, bookToOrderDTO),
-                Arrays.asList("BookToOrder updated successfully"));
+                Arrays.asList("Book to order" + UPDATED_SUCCESSFULLY));
     }
 
     @DeleteMapping(Mappings.REMOVE)
     public ResponseEntity deleteBookToOrder(@PathVariable Long id) {
         bookToOrderService.deleteBookToOrder(id);
-        return MessageInfo.success(null, Arrays.asList("BookToOrder with ID = "+  id.toString() + " removed successfully"));
+        return MessageInfo.success(null, Arrays.asList("BookToOrder" + REMOVED_SUCCESSFULLY));
     }
 }

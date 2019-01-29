@@ -8,6 +8,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.*;
+
 import java.util.*;
 
 @Service
@@ -20,10 +22,10 @@ public class AutocompletionService {
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-            headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+            headers.add("user-agent", REST_AUTOCOMPLETION_CLIENT);
             HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 
-            String uri = "https://api.itbook.store/1.0/books/";
+            String uri = IT_BOOK_STORE_API_LINK;
             ResponseEntity<String> result = restTemplate.exchange(uri + isbn, HttpMethod.GET, entity, String.class);
             if (result.getStatusCode().is2xxSuccessful()) {
                 JSONObject bookJSON = new JSONObject(result.toString().replace("<200,", ""));
@@ -60,10 +62,10 @@ public class AutocompletionService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+        headers.add("user-agent", REST_AUTOCOMPLETION_CLIENT);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 
-        String uri = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
+        String uri = GOOGLE_API_LINK;
         ResponseEntity<String> result = restTemplate.exchange(uri + isbn, HttpMethod.GET, entity, String.class);
         if(result.getStatusCode().is2xxSuccessful()) {
             JSONObject responseJSON = new JSONObject(result.toString().replace("<200,", ""));
@@ -104,10 +106,10 @@ public class AutocompletionService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+        headers.add("user-agent", REST_AUTOCOMPLETION_CLIENT);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 
-        String uri = "http://data.bn.org.pl/api/bibs.json?isbnIssn=";
+        String uri = BN_API_LINK;
         ResponseEntity<String> result = restTemplate.exchange(uri + isbn, HttpMethod.GET, entity, String.class);
 
         if(result.getStatusCode().is2xxSuccessful()) {

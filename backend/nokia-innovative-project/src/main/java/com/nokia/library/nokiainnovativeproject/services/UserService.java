@@ -1,6 +1,5 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
-
 import com.nokia.library.nokiainnovativeproject.DTOs.UserDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Address;
 import com.nokia.library.nokiainnovativeproject.entities.Role;
@@ -26,6 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.*;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -41,7 +43,7 @@ public class UserService implements UserDetailsService {
 
         User user = userRepository.findUserByEmail(email);
         if(user == null) {
-            throw new UsernameNotFoundException("Sorry we can't find user with email: " + email);
+            throw new UsernameNotFoundException(CANT_FIND_USER_BY_EMAIL.toString());
         }
         Hibernate.initialize(user.getRoles());
         return buildUserForAuthentication(user, buildUserAuthority(user.getRoles()));
@@ -92,12 +94,12 @@ public class UserService implements UserDetailsService {
 
     public User createUser(UserDTO userDTO) {
         if(userRepository.countUserByEmail(userDTO.getEmail()) > 0){
-            throw new ValidationException("User with this email already exist!");
+            throw new ValidationException(USER_WITH_EMAIL_EXIST.toString());
         }
         ModelMapper mapper = new ModelMapper();
         User user = mapper.map(userDTO, User.class);
         user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-        user.setRoles(Arrays.asList(roleRepository.findByRole("ROLE_EMPLOYEE")));
+        user.setRoles(Arrays.asList(roleRepository.findByRole(ROLE_EMPLOYEE)));
         user = userRepository.save(persistingRequiredEntities(user, userDTO));
         return user;
     }
@@ -115,14 +117,14 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("user"));
         if(user.getAddress() == null) {
-            throw new ValidationException("User has no address. First, assign the address to the user.");
+            throw new ValidationException(USER_HAS_NO_ADDRESS.toString());
         }
         List<Role> userRoles = user.getRoles();
         for(Role role : userRoles) {
-            if(role.getRole().equals("ROLE_ADMIN"))
+            if(role.getRole().equals(ROLE_ADMIN))
                 return user;
         }
-        Role role = roleRepository.findByRole("ROLE_ADMIN");
+        Role role = roleRepository.findByRole(ROLE_ADMIN);
         userRoles.add(role);
         user.setRoles(userRoles);
         user = userRepository.save(user);
@@ -130,15 +132,15 @@ public class UserService implements UserDetailsService {
     }
 
     public User takeAdminRoleFromUser(Long id) {
-        if(userRepository.countUserByRole("ROLE_ADMIN") <= 1) {
-            throw new ValidationException("You can't delete the last admin from the database");
+        if(userRepository.countUserByRole(ROLE_ADMIN) <= 1) {
+            throw new ValidationException(CANT_DELETE_LAST_ADMIN.toString());
         }
         User user = userRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("user"));
         Hibernate.initialize(user.getBooks());
         Hibernate.initialize(user.getRoles());
         Hibernate.initialize(user.getAddress());
-        Role role = roleRepository.findByRole("ROLE_ADMIN");
+        Role role = roleRepository.findByRole(ROLE_ADMIN);
         user.getRoles().remove(role);
         return userRepository.save(user);
     }
@@ -153,7 +155,7 @@ public class UserService implements UserDetailsService {
     private User persistingRequiredEntities(User user, UserDTO userDTO) {
         Address address = userDTO.getAddress();
         if(address == null) {
-            throw new ValidationException("Please. Specify address");
+            throw new ValidationException(SPECIFY_ADDRESS.toString());
         }
         if(address.getId() != null) {
             address = addressRepository.findById(address.getId()).orElseThrow(()-> new ResourceNotFoundException("address"));
