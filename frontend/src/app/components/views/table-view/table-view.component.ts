@@ -51,7 +51,7 @@ export class TableViewComponent implements OnInit {
 
 	async getBooksDetails() {
 		this.listIsLoading = true;
-		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
+		const response: MessageInfo = await this.http.getAll('bookDetails/getAll/available');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {

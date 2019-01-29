@@ -34,7 +34,7 @@ export class ListviewComponent implements OnInit {
 
 	async getBooksDetails() {
 		this.listIsLoading = true;
-		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
+		const response: MessageInfo = await this.http.getAll('bookDetails/getAll/available');
 		this.booksAll = response.object.sort().reverse();
 		this.listIsLoading = false;
 		this.books = this.booksAll;

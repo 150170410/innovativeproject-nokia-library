@@ -18,6 +18,7 @@ public class Mappings {
 	public static final String CANCEL = "/cancel/{id}";
 	public static final String REJECT = "/reject/{id}";
 	public static final String ACCEPT = "/accept/{id}";
+	public static final String AVAILABLE = "/available";
 
 
 	// controller mappings

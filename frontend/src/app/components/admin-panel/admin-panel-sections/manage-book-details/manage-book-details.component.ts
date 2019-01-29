@@ -228,7 +228,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	getInfoFromAPI() {
 		this.fetchingDetails = true;
-		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value)
+		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value, {withCredentials: true})
 		.subscribe((response: MessageInfo) => {
 			if (response.success) {
 				this.availableTitles = [];
@@ -238,7 +238,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.mapBookDetails.set(element.title, element);
 					// this.availableTitles.push(element.title);
 				});
-				this.snackbar.snackSuccess('I have found something. Check title', 'OK');
+				this.snackbar.snackSuccess('I have found something. Select chosen details from table.', 'OK');
 			} else {
 				this.snackbar.snackError('Nothing found', 'OK');
 			}

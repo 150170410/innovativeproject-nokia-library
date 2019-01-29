@@ -27,6 +27,11 @@ public class BookDetailsController {
 		return MessageInfo.success(bookDetailsService.getAllBookDetails(), Arrays.asList("list of bookDetails"));
 	}
 
+	@GetMapping(GET_ALL + AVAILABLE)
+	public ResponseEntity getAvailableBookDetails() {
+		return MessageInfo.success(bookDetailsService.getAvailableBookDetails(), Arrays.asList("list of available bookDetails"));
+	}
+
 	@GetMapping(GET_ONE)
 	public ResponseEntity getBookDetailsById(@PathVariable Long id) {
 		return MessageInfo.success(bookDetailsService.getBookDetailsById(id), Arrays.asList("bookDetails of ID = " + id.toString()));

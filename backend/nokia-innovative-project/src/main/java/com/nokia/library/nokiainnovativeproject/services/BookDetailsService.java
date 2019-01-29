@@ -35,6 +35,28 @@ public class BookDetailsService {
 	public List<BookDetailsWithBooks> getAllBookDetails() {
 
 		List<BookDetails> list = bookDetailsRepository.findAll();
+		List<BookDetailsWithBooks> bookDetailsWithBooks = new ArrayList<>();
+		for (BookDetails bookDetails : list) {
+			Hibernate.initialize(bookDetails.getAuthors());
+			Hibernate.initialize(bookDetails.getCategories());
+
+			ModelMapper mapper = new ModelMapper();
+
+			List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
+			List<BookWithoutBookDetails> bookWithoutBookDetails = new ArrayList<>();
+			for (Book book : books) {
+				bookWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
+			}
+
+			BookDetailsWithBooks withBooks = mapper.map(bookDetails, BookDetailsWithBooks.class);
+			withBooks.setBooks(bookWithoutBookDetails);
+			bookDetailsWithBooks.add(withBooks);
+		}
+		return bookDetailsWithBooks;
+	}
+
+	public List<BookDetailsWithBooks> getAvailableBookDetails() {
+		List<BookDetails> list = bookDetailsRepository.findAll();
 		List<BookDetails> availableBooks = new ArrayList<>();
 		for (BookDetails bookDetails : list) {
 			if(!bookService.getAllBooksByBookDetailsId(bookDetails.getId()).isEmpty()){
