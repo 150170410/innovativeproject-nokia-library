@@ -28,6 +28,13 @@ export class RestService {
 		);
 	}
 
+  post(url: string): Observable<any> {
+    return this.http.post<any>(this.URL + url, null, {withCredentials: true})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
 	update(url: string, id: number, item: any) {
 		return this.http.post<any>(this.URL + url + '/update/' + id, item, {withCredentials: true})
 		.pipe(

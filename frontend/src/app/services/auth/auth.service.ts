@@ -32,16 +32,15 @@ export class AuthService {
       await this.http.post(API_URL + '/login', body, {withCredentials: true}).toPromise();
       this.isSignedCorrectly = true;
 
-      this.reload().then(() => {
-        this.router.navigateByUrl('/homepage');
+      this.navigateToHomepage().then( () => {
+        location.reload();
       });
-
     } catch (e) {
       this.isSignedCorrectly = false;
     }
 	}
-  async reload() {
-    location.reload();
+	async navigateToHomepage() {
+    await this.router.navigateByUrl('/homepage');
   }
 
   isSigned() {
