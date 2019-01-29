@@ -135,7 +135,7 @@ public class ReservationService {
 		List<Reservation> queue = reservationRepository.findByBookId(bookId);
 		if (borrowedBook.getStatus().getId().equals(BookStatusEnum.RESERVED.getStatusId()) &&
 				reservation.getUser().getId().equals(user.getId())) {
-			if (queue.size() < 1) {
+			if (queue.size() == 1) {
 				borrowedBook = bookService.changeState(
 						borrowedBook,
 						BookStatusEnum.AVAILABLE.getStatusId(),
@@ -149,7 +149,7 @@ public class ReservationService {
 						null);
 			}
 			saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
-			// TODO: change available date for all other reservations
+			updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
 		} else {
 			throw new AuthorizationException();
 		}
@@ -166,7 +166,8 @@ public class ReservationService {
 					DaysDeltaEnum.MINUSMONTH.getDays(),
 					null);
 			saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
-			// TODO: change available date for all other reservations
+			List<Reservation> queue = reservationRepository.findByBookId(borrowedBook.getId());
+			updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
 		} else {
 			throw new AuthorizationException();
 		}
@@ -177,4 +178,15 @@ public class ReservationService {
 		bookRepository.save(borrowedBook);
 		reservationRepository.delete(reservation);
 	}
+
+	public void updateReservationsQueue(List<Reservation> queue, Integer days) {
+		for (Reservation reservation : queue) {
+			if (days == -31) {
+				reservation.setAvailableDate(reservation.getAvailableDate().minusMonths(1));
+			} else if (-31 < days && days < 0) {
+				reservation.setAvailableDate(reservation.getAvailableDate().minusDays(-1 * days));
+			}
+		}
+	}
+
 }

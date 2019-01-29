@@ -99,13 +99,13 @@ public class BookService {
 			oldAvailableDate = LocalDateTime.now();
 			book.setAvailableDate(oldAvailableDate);
 		}
-		if (days == 30) {
+		if (days == 31) {
 			book.setAvailableDate(oldAvailableDate.plusMonths(1));
-		} else if (days == -30) {
+		} else if (days == -31) {
 			book.setAvailableDate(oldAvailableDate.minusMonths(1));
-		} else if (0 < days && days <= 31) {
+		} else if (0 < days && days < 31) {
 			book.setAvailableDate(oldAvailableDate.plusDays(days));
-		} else if (-31 <= days && days < 0) {
+		} else if (-31 < days && days < 0) {
 			book.setAvailableDate(oldAvailableDate.minusDays(-1 * days));
 		} else if (days == 0) {
 			book.setAvailableDate(LocalDateTime.now());

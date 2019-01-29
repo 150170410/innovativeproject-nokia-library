@@ -36,6 +36,7 @@ public class RentalService {
 	private final RentalRepository rentalRepository;
 	private final ReservationRepository reservationRepository;
 	private final UserService userService;
+	private final ReservationService reservationService;
 	private final BookService bookService;
 	private final UserRepository userRepository;
 
@@ -153,8 +154,8 @@ public class RentalService {
 		if (!rental.getIsCurrent()) {
 			throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
 		}
-		List<Reservation> usersQueue = reservationRepository.findByBookId(rental.getId());
-		if (usersQueue.isEmpty()) {
+		List<Reservation> queue = reservationRepository.findByBookId(rental.getId());
+		if (queue.isEmpty()) {
 			bookService.changeState(
 					rental.getBook(),
 					BookStatusEnum.AVAILABLE.getStatusId(),
@@ -167,10 +168,11 @@ public class RentalService {
 					BookStatusEnum.RESERVED.getStatusId(),
 					daysDelta,
 					user);
+			reservationService.updateReservationsQueue(queue, daysDelta);
 		}
 		rental.setReturnDate(LocalDateTime.now());
 		rental.setIsCurrent(false);
-		// TODO: change available date for all other reservations
+
 		return rentalRepository.save(rental);
 	}
 
@@ -193,6 +195,7 @@ public class RentalService {
 						BookStatusEnum.RESERVED.getStatusId(),
 						DaysDeltaEnum.MINUSMONTH.getDays(),
 						null);
+				reservationService.updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
 			}
 			bookRepository.save(borrowedBook);
 			rentalRepository.delete(rental);
