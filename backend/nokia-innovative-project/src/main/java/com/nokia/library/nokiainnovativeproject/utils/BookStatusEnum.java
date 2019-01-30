@@ -1,5 +1,10 @@
 package com.nokia.library.nokiainnovativeproject.utils;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public enum BookStatusEnum {
 	AVAILABLE(1L),
 	AWAITING(2L),
@@ -9,11 +14,4 @@ public enum BookStatusEnum {
 
 	private Long id;
 
-	BookStatusEnum(Long id) {
-		this.id = id;
-	}
-
-	public Long getStatusId(){
-		return id;
-	}
 }
