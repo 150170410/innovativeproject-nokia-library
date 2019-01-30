@@ -4,9 +4,9 @@ spring:
       hibernate:
         enable_lazy_load_no_trans: true
         hbm2ddl:
-          auto: update
+          auto: create-drop
         dialect: org.hibernate.dialect.PostgreSQL94Dialect
-        ddl-auto: update
+        ddl-auto: create-drop
         jdbc:
           lob:
             non_contextual_creation: true

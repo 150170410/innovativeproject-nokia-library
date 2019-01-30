@@ -162,22 +162,24 @@ public class RentalService {
 		if (!rental.getIsCurrent()) {
 			throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
 		}
-		List<Reservation> queue = reservationRepository.findByBookId(rental.getId());
+		List<Reservation> queue = reservationRepository.findByBookId(rental.getBook().getId());
+		Book borrowedBook = rental.getBook();
 		if (queue.isEmpty()) {
-			bookService.changeState(
-					rental.getBook(),
+			borrowedBook = bookService.changeState(
+					borrowedBook,
 					BookStatusEnum.AVAILABLE.getId(),
 					DaysDeltaEnum.RESET.getDays(),
 					user);
 		} else {
 			Integer daysDelta = (int) (long) LocalDateTime.from(rental.getReturnDate()).until(LocalDateTime.now(), ChronoUnit.DAYS);
-			bookService.changeState(
-					rental.getBook(),
+			borrowedBook = bookService.changeState(
+					borrowedBook,
 					BookStatusEnum.RESERVED.getId(),
 					daysDelta,
 					user);
 			reservationService.updateReservationsQueue(queue, daysDelta);
 		}
+		bookRepository.save(borrowedBook);
 		rental.setReturnDate(LocalDateTime.now());
 		rental.setIsCurrent(false);
 
@@ -226,7 +228,7 @@ public class RentalService {
 	}
 
 	void validateUser(User user, Rental rental) {
-		if (rental.getUser().getId().equals(user.getId())) {
+		if (!rental.getUser().getId().equals(user.getId())) {
 			throw new AuthorizationException();
 		}
 	}

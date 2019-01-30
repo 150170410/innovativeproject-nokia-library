@@ -139,7 +139,7 @@ public class ReservationService {
 		List<Reservation> queue = reservationRepository.findByBookId(bookId);
 
 		validateUser(user, reservation);
-		
+
 		validateBookStatus(borrowedBook, RESERVED);
 
 		if (queue.size() == 1) {
@@ -174,7 +174,6 @@ public class ReservationService {
 		saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
 		List<Reservation> queue = reservationRepository.findByBookId(borrowedBook.getId());
 		updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
-
 	}
 
 	@Transactional
@@ -194,7 +193,7 @@ public class ReservationService {
 	}
 
 	private void validateUser(User user, Reservation reservation) {
-		if (reservation.getUser().getId().equals(user.getId())) {
+		if (!reservation.getUser().getId().equals(user.getId())) {
 			throw new AuthorizationException();
 		}
 	}
