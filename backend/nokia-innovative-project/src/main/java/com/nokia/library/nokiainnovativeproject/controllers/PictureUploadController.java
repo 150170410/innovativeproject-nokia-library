@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +27,6 @@ public class PictureUploadController {
     @PostMapping(value = Mappings.UPLOAD)
     public ResponseEntity uploadPicture(MultipartFile picture) throws IOException {
         Map uploadResult = pictureService.uploadPicture(picture);
-        return  MessageInfo.success(uploadResult.get("secure_url"), Arrays.asList("Picture" + UPLOADED));
+        return  MessageInfo.success(uploadResult.get("secure_url"), Arrays.asList("Picture" + Messages.get(UPLOADED)));
     }
 }

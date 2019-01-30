@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.API_VERSION;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.AUTOCOMPLETION;
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
@@ -38,7 +39,7 @@ public class AutocompletionController {
         BookDetailsDTO bookDetailsBN = autocompletionService.getBookDetailsFromApiBN(isbn);
         if(bookDetailsBN != null)
             list.add(bookDetailsBN);
-        return list.isEmpty() ? MessageInfo.failure(Arrays.asList(BOOK_WITH_ISBN_NOT_FOUND.toString())) :
-                MessageInfo.success(list, Arrays.asList(LIST_OF + "bookDetails"));
+        return list.isEmpty() ? MessageInfo.failure(Arrays.asList(Messages.get(BOOK_WITH_ISBN_NOT_FOUND))) :
+                MessageInfo.success(list, Arrays.asList(Messages.get(LIST_OF) + "bookDetails"));
     }
 }

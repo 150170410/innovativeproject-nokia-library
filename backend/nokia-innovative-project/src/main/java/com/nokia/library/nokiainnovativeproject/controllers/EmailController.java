@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import java.util.Arrays;
 
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +30,6 @@ public class EmailController {
     public ResponseEntity sendEmail(@RequestBody @Valid Email email, BindingResult bindingResult) {
         MessageInfo.validateBindingResults(bindingResult);
         emailService.sendSimpleMessage(email, EmailRecipients.recipients);
-        return MessageInfo.success(null, Arrays.asList("Email" + SENT_SUCCESSFULLY));
+        return MessageInfo.success(null, Arrays.asList("Email" + Messages.get(SENT_SUCCESSFULLY)));
     }
 }

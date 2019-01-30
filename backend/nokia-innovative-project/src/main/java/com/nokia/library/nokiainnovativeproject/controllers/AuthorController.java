@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Arrays;
 
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
 
@@ -23,29 +24,29 @@ public class AuthorController {
 
     @GetMapping(GET_ALL)
     public ResponseEntity getAllAuthors(){
-        return MessageInfo.success(authorService.getAllAuthors(), Arrays.asList(LIST_OF + "authors."));
+        return MessageInfo.success(authorService.getAllAuthors(), Arrays.asList(Messages.get(LIST_OF) + "authors."));
     }
 
     @GetMapping(GET_ONE)
     public ResponseEntity getAuthorById(@PathVariable Long id){
-        return MessageInfo.success(authorService.getAuthorById(id), Arrays.asList("Author" + REQUESTED));
+        return MessageInfo.success(authorService.getAuthorById(id), Arrays.asList("Author" + Messages.get(REQUESTED)));
     }
 
     @PostMapping(CREATE)
     public ResponseEntity createAuthor(@RequestBody @Valid AuthorDTO authorDTO, BindingResult bindingResult){
         MessageInfo.validateBindingResults(bindingResult);
-        return MessageInfo.success(authorService.createAuthor(authorDTO), Arrays.asList("Author" + CREATED_SUCCESSFULLY));
+        return MessageInfo.success(authorService.createAuthor(authorDTO), Arrays.asList("Author" + Messages.get(CREATED_SUCCESSFULLY)));
     }
 
     @PostMapping(UPDATE)
     public ResponseEntity updateAuthor(@PathVariable Long id, @RequestBody  @Valid AuthorDTO authorDTO, BindingResult bindingResult){
         MessageInfo.validateBindingResults(bindingResult);
-        return MessageInfo.success(authorService.updateAuthor(id, authorDTO), Arrays.asList("Author" + UPDATED_SUCCESSFULLY));
+        return MessageInfo.success(authorService.updateAuthor(id, authorDTO), Arrays.asList("Author" + Messages.get(UPDATED_SUCCESSFULLY)));
     }
 
     @DeleteMapping(REMOVE)
     public ResponseEntity deleteAuthor(@PathVariable Long id){
         authorService.deleteAuthor(id);
-        return MessageInfo.success(null, Arrays.asList("Author" + REMOVED_SUCCESSFULLY));
+        return MessageInfo.success(null, Arrays.asList("Author" + Messages.get(REMOVED_SUCCESSFULLY)));
     }
 }

@@ -43,7 +43,7 @@ public class UserService implements UserDetailsService {
 
         User user = userRepository.findUserByEmail(email);
         if(user == null) {
-            throw new UsernameNotFoundException(CANT_FIND_USER_BY_EMAIL.toString());
+            throw new UsernameNotFoundException(Messages.get(CANT_FIND_USER_BY_EMAIL));
         }
         Hibernate.initialize(user.getRoles());
         return buildUserForAuthentication(user, buildUserAuthority(user.getRoles()));
@@ -94,7 +94,7 @@ public class UserService implements UserDetailsService {
 
     public User createUser(UserDTO userDTO) {
         if(userRepository.countUserByEmail(userDTO.getEmail()) > 0){
-            throw new ValidationException(USER_WITH_EMAIL_EXIST.toString());
+            throw new ValidationException(Messages.get(USER_WITH_EMAIL_EXIST));
         }
         ModelMapper mapper = new ModelMapper();
         User user = mapper.map(userDTO, User.class);
@@ -117,7 +117,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("user"));
         if(user.getAddress() == null) {
-            throw new ValidationException(USER_HAS_NO_ADDRESS.toString());
+            throw new ValidationException(Messages.get(USER_HAS_NO_ADDRESS));
         }
         List<Role> userRoles = user.getRoles();
         for(Role role : userRoles) {
@@ -133,7 +133,7 @@ public class UserService implements UserDetailsService {
 
     public User takeAdminRoleFromUser(Long id) {
         if(userRepository.countUserByRole(ROLE_ADMIN) <= 1) {
-            throw new ValidationException(CANT_DELETE_LAST_ADMIN.toString());
+            throw new ValidationException(Messages.get(CANT_DELETE_LAST_ADMIN));
         }
         User user = userRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("user"));
@@ -155,7 +155,7 @@ public class UserService implements UserDetailsService {
     private User persistingRequiredEntities(User user, UserDTO userDTO) {
         Address address = userDTO.getAddress();
         if(address == null) {
-            throw new ValidationException(SPECIFY_ADDRESS.toString());
+            throw new ValidationException(Messages.get(SPECIFY_ADDRESS));
         }
         if(address.getId() != null) {
             address = addressRepository.findById(address.getId()).orElseThrow(()-> new ResourceNotFoundException("address"));

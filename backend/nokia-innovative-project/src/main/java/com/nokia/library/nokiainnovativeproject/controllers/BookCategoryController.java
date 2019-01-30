@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Arrays;
 
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
 
@@ -23,29 +24,34 @@ public class BookCategoryController {
 
 	@GetMapping(GET_ALL)
 	public ResponseEntity getAllBookCategories() {
-		return MessageInfo.success(bookCategoryService.getAllBookCategories(), Arrays.asList(LIST_OF + "bookCategories."));
+		return MessageInfo.success(bookCategoryService.getAllBookCategories(),
+				Arrays.asList(Messages.get(LIST_OF) + "bookCategories."));
 	}
 
 	@GetMapping(GET_ONE)
 	public ResponseEntity getBookCategoryById(@PathVariable Long id) {
-		return MessageInfo.success(bookCategoryService.getBookCategoryById(id), Arrays.asList("BookCategory" + REQUESTED));
+		return MessageInfo.success(bookCategoryService.getBookCategoryById(id),
+				Arrays.asList("BookCategory" + Messages.get(REQUESTED)));
 	}
 
 	@PostMapping(CREATE)
 	public ResponseEntity createBookCategory(@RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
-		return MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO), Arrays.asList("BookCategory" + CREATED_SUCCESSFULLY));
+		return MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO),
+				Arrays.asList("BookCategory" + Messages.get(CREATED_SUCCESSFULLY)));
 	}
 
 	@PostMapping(UPDATE)
-	public ResponseEntity updateBookCategory(@PathVariable Long id, @RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult){
+	public ResponseEntity updateBookCategory(@PathVariable Long id, @RequestBody @Valid
+			BookCategoryDTO bookCategoryDTO, BindingResult bindingResult){
 		MessageInfo.validateBindingResults(bindingResult);
-		return MessageInfo.success(bookCategoryService.updateBookCategory(id, bookCategoryDTO), Arrays.asList("BookCategory" + UPDATED_SUCCESSFULLY));
+		return MessageInfo.success(bookCategoryService.updateBookCategory(id, bookCategoryDTO),
+				Arrays.asList("BookCategory" + Messages.get(UPDATED_SUCCESSFULLY)));
 	}
 
 	@DeleteMapping(REMOVE)
 	public ResponseEntity deleteBookCategory(@PathVariable Long id) {
 		bookCategoryService.deleteBookCategory(id);
-		return MessageInfo.success(null, Arrays.asList("BookCategory" + REMOVED_SUCCESSFULLY));
+		return MessageInfo.success(null, Arrays.asList("BookCategory" + Messages.get(REMOVED_SUCCESSFULLY)));
 	}
 }

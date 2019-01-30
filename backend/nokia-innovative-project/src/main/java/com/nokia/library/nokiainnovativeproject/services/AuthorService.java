@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +52,7 @@ public class AuthorService {
     public void deleteAuthor(Long id) {
 		Author author = authorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("author"));
         if(bookDetailsRepository.countBookDetailsByAuthors(Arrays.asList(author)) > 0) {
-            throw new ValidationException("The author" + IS_ASSIGNED_CANT_DELETE);
+            throw new ValidationException("The author" + Messages.get(IS_ASSIGNED_CANT_DELETE));
         }
         authorRepository.delete(author);
     }
