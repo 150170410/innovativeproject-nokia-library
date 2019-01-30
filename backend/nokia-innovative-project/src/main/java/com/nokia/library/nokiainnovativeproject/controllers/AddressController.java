@@ -3,6 +3,10 @@ package com.nokia.library.nokiainnovativeproject.controllers;
 import com.nokia.library.nokiainnovativeproject.services.AddressService;
 import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
+
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +24,6 @@ public class AddressController {
 
     @GetMapping(Mappings.GET_ALL)
     public ResponseEntity getAllAddresses() {
-        return MessageInfo.success(addressService.getAllAddress(), Arrays.asList("list of addresses"));
+        return MessageInfo.success(addressService.getAllAddress(), Arrays.asList(Messages.get(LIST_OF) + "addresses"));
     }
 }

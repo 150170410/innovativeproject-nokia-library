@@ -1,0 +1,28 @@
+<mat-card>
+
+	<div class="cover-wrapper">
+		<img *ngIf="bookDetails.coverPictureUrl" src="{{bookDetails.coverPictureUrl}}">
+		<img *ngIf="!bookDetails.coverPictureUrl" src="../../../../assets/images/default-cover.png">
+	</div>
+
+	<div class="details-wrapper">
+		<h3 routerLink="/book/{{bookDetails.id}}" routerLinkActive="active" class="cursor-pointer title"><b> {{bookDetails.title}}</b> by {{bookDetails.authors | arrToStr:'author'}}</h3>
+
+		<h4>
+			{{bookDetails.categories| arrToStr:'category'}}
+		</h4>
+
+		<b>About:</b> {{bookDetails.description | limitTo:400}}
+		<span class="book-read-more cursor-pointer" routerLink="/book/{{bookDetails.id}}" routerLinkActive="active"> -- read more </span>
+	</div>
+
+	<div class="actions-wrapper" *ngIf="booksUnlocked.length > 0">
+		Available books: {{bookDetails.books | bookStatuses:1}}/{{booksUnlocked.length}}
+		<app-book-actions [books]="booksUnlocked"></app-book-actions>
+	</div>
+
+	<div class="actions-wrapper not-available" *ngIf="(booksUnlocked.length < 1)">
+		<b>Sorry, but this book is not available.</b>
+	</div>
+
+</mat-card>

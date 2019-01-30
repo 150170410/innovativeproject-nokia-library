@@ -4,7 +4,9 @@ import { RestService } from '../../services/rest/rest.service';
 import { RentalDTO } from '../../models/database/DTOs/RentalDTO';
 import { SnackbarService } from '../../services/snackbar/snackbar.service';
 import { ReservationDTO } from '../../models/database/DTOs/ReservationDTO';
-import {AuthService} from '../../services/auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { BookStatusEnum } from '../../utils/BookStatusEnum';
+
 
 @Component({
 	selector: 'app-book-actions',
@@ -23,31 +25,31 @@ export class BookActionsComponent implements OnInit {
 
 	constructor(private http: RestService,
 				private snackbar: SnackbarService,
-              private authService: AuthService) {
-	  this.initData();
+				private authService: AuthService) {
+		this.initData();
 	}
 
 	ngOnInit() {
 		this.books.forEach((b) => {
-			if (b.status.id !== 5) {
+			if (b.status.id !== BookStatusEnum.UNAVAILABLE) {
 				this.booksUnlocked.push(b);
 			}
 		});
 	}
 
-  initData() {
-    this.authService.getUserData().then( () => {
-      this.isAuth = this.authService.isAuthenticated();
-    });
-  }
+	initData() {
+		this.authService.getUserData().then(() => {
+			this.isAuth = this.authService.isAuthenticated();
+		});
+	}
 
-	async borrowBook(bookCopy: Book) {
+	borrowBook(bookCopy: Book) {
 		const body = new RentalDTO(bookCopy.id);
 		this.isLoadingId = bookCopy.id;
 		this.isLoadingActionBorrow = true;
-		await this.http.save('rentals/create', body).subscribe((response) => {
+		this.http.save('rentals/create', body).subscribe((response) => {
 			if (response.success) {
-				this.snackbar.snackSuccess('Book borrowed successfully!', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 				const justBorrowed = this.books.findIndex((book: Book) => {
 					return book.id == bookCopy.id;
 				}, bookCopy);
@@ -72,17 +74,15 @@ export class BookActionsComponent implements OnInit {
 			this.isLoadingActionBorrow = false;
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
-		this.isLoadingId = 0;
-		this.isLoadingActionBorrow = false;
 	}
 
-	async reserveBook(bookCopy: Book) {
+	reserveBook(bookCopy: Book) {
 		const body = new ReservationDTO(bookCopy.id);
 		this.isLoadingId = bookCopy.id;
 		this.isLoadingActionReserve = true;
-		await this.http.save('reservations/create', body).subscribe((response) => {
+		this.http.save('reservations/create', body).subscribe((response) => {
 			if (response.success) {
-				this.snackbar.snackSuccess('Book reserved successfully!', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 				this.isLoadingId = 0;
 				this.isLoadingActionReserve = false;
 			} else {
@@ -97,7 +97,5 @@ export class BookActionsComponent implements OnInit {
 			this.isLoadingId = 0;
 			this.isLoadingActionReserve = false;
 		});
-		this.isLoadingId = 0;
-		this.isLoadingActionReserve = false;
 	}
 }

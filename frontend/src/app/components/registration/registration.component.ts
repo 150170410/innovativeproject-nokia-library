@@ -70,7 +70,7 @@ export class RegistrationComponent implements OnInit {
 
 		this.http.save('user/create', body).subscribe((response) => {
 			if (response.success) {
-				this.snackbar.snackSuccess('You\'ve registered successfully.', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 				this.router.navigateByUrl('login');
 			} else {
 				this.snackbar.snackError('Error', 'OK');

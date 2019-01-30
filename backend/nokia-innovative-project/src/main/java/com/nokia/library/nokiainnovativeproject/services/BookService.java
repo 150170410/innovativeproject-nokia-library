@@ -1,13 +1,16 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
-import com.nokia.library.nokiainnovativeproject.entities.*;
+import com.nokia.library.nokiainnovativeproject.entities.Book;
+import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
+import com.nokia.library.nokiainnovativeproject.entities.User;
+import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
+import com.nokia.library.nokiainnovativeproject.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
@@ -15,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,7 +30,6 @@ public class BookService {
 	private final BookStatusRepository bookStatusRepository;
 	private final BookStatusService bookStatusService;
 	private final UserService userService;
-
 
 	public List<Book> getAllBooks() {
 		List<Book> books = bookRepository.findAll();
@@ -54,7 +55,7 @@ public class BookService {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
 		book.setAvailableDate(LocalDateTime.now());
-		book.setActualOwnerId(userService.getLoggedInUser().getId());
+		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
 
@@ -63,7 +64,7 @@ public class BookService {
 		book.setComments(bookDTO.getComments());
 		book.setSignature(bookDTO.getSignature());
 		book.getBookDetails().setIsRemovable(true);
-		book.setActualOwnerId(userService.getLoggedInUser().getId());
+		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
 
@@ -83,7 +84,7 @@ public class BookService {
 		Book book = bookRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("book"));
 
-		if(!book.getStatus().getStatusName().equals("AVAILABLE") && !book.getStatus().getStatusName().equals("UNAVAILABLE"))
+		if (!book.getStatus().getStatusName().equals("AVAILABLE") && !book.getStatus().getStatusName().equals("UNAVAILABLE"))
 			return;
 		book.getBookDetails().setIsRemovable(bookRepository.countBooksByBookDetails(book.getBookDetails()) == 1);
 		bookRepository.delete(book);
@@ -92,39 +93,41 @@ public class BookService {
 	public Book changeState(Book book, Long newStatusId, Integer days, User newOwner) {
 		BookStatus newStatus = bookStatusService.getBookStatusById(newStatusId);
 		book.setStatus(newStatus);
-		book.setActualOwnerId(newOwner.getId());
 		LocalDateTime oldAvailableDate = book.getAvailableDate();
-		if(oldAvailableDate == null){
+		if (oldAvailableDate == null) {
 			oldAvailableDate = LocalDateTime.now();
 			book.setAvailableDate(oldAvailableDate);
 		}
-		if (days == 30) {
+		if (days == 31) {
 			book.setAvailableDate(oldAvailableDate.plusMonths(1));
-			System.out.println(book.getAvailableDate());
-		} else if (days == -30) {
+		} else if (days == -31) {
 			book.setAvailableDate(oldAvailableDate.minusMonths(1));
-		} else if (0 < days && days < 30) {
+		} else if (0 < days && days < 31) {
 			book.setAvailableDate(oldAvailableDate.plusDays(days));
-		} else if (-30 < days && days < 0) {
-			book.setAvailableDate(oldAvailableDate.minusDays(days));
-		} else if (days == 0){
+		} else if (-31 < days && days < 0) {
+			book.setAvailableDate(oldAvailableDate.minusDays(-1 * days));
+		} else if (days == 0) {
 			book.setAvailableDate(LocalDateTime.now());
 		}
-		System.out.println(book);
-		// TODO: finish state changes here, also change current owner
+		if (newOwner != null) {
+			book.setCurrentOwnerId(newOwner.getId());
+		}
 		return book;
 	}
 
 	public Book lockBook(String signature) {
-		// TODO: add admin authorization, add condition about book status, can only equal 1, add  exceptions
 		Book bookToLock = bookRepository.findBySignature(signature);
-		return changeState(bookToLock, BookStatusEnum.UNAVAILABLE.getStatusId(), 0, null);
+		if (!bookToLock.getStatus().getId().equals(BookStatusEnum.AVAILABLE.getId())) {
+			throw new InvalidBookStateException(Constants.MessageTypes.BOOK_RESERVED);
+		}
+		return changeState(bookToLock, BookStatusEnum.UNAVAILABLE.getId(), 0, null);
 	}
 
 	public Book unlockBook(String signature) {
-		// TODO: add admin authorization, add condition about book status, can only equal 5, add exceptions
 		Book bookToUnlock = bookRepository.findBySignature(signature);
-		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getStatusId(), 0, null);
+		if (!bookToUnlock.getStatus().getId().equals(BookStatusEnum.UNAVAILABLE.getId())) {
+			throw new InvalidBookStateException(Constants.MessageTypes.BOOK_RESERVED);
+		}
+		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getId(), 0, null);
 	}
-
 }

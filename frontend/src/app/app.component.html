@@ -3,16 +3,19 @@
 	<mat-sidenav class="sidenav-menu" #sidenav (keydown.escape)="sidenav.close()">
 	</mat-sidenav>
 	<mat-sidenav-content>
-		<div class="main-content site">
+		<div class="site" [class.dark-theme]="darkTheme" [ngClass]="{'main-content-light': !darkTheme, 'main-content-dark': darkTheme}">
 			<mat-card class="content">
 				<router-outlet></router-outlet>
 			</mat-card>
 			<div class="footer">
-				<div>Nokia Library v0.5</div>
+				<div>Nokia Library v0.8</div>
 				<div>2018-2019</div>
 			</div>
 		</div>
 
-		<img src="../assets/images/innovative_logo.png" class="innovative-projects">
+		<a href="https://github.com/nokia-wroclaw/innovativeproject-nokia-library" target="_blank">
+			<img *ngIf="!darkTheme" src="../assets/images/innovative_logo.png" class="innovative-projects">
+			<img *ngIf="darkTheme" src="../assets/images/innovative_logo_negative.png" class="innovative-projects">
+		</a>
 	</mat-sidenav-content>
 </mat-sidenav-container>

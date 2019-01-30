@@ -3,7 +3,6 @@ package com.nokia.library.nokiainnovativeproject.config;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 
 import com.nokia.library.nokiainnovativeproject.services.UserService;
-import com.sun.org.apache.regexp.internal.RE;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,10 +10,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.*;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -64,8 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + RESERVATIONS + GET_ALL,
                         API_VERSION + RESERVATIONS + GET_ONE,
 						API_VERSION + RESERVATIONS + REMOVE,
+						API_VERSION + RESERVATIONS + ACCEPT,
+						API_VERSION + RESERVATIONS + CANCEL,
+						API_VERSION + RESERVATIONS + REJECT,
                         API_VERSION + RESERVATIONS + USER,
-                        API_VERSION + USER + UPDATE).hasAnyRole("EMPLOYEE", "ADMIN")
+                        API_VERSION + USER + UPDATE).hasAnyRole(EMPLOYEE, ADMIN)
                 .antMatchers(API_VERSION + BOOK_AUTHOR + "/**",
                         API_VERSION + AUTOCOMPLETION + "/**",
                         API_VERSION + BOOK_CATEGORY + "/**",
@@ -81,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + USER + GET_ONE,
                         API_VERSION + USER + GET_ALL,
                         API_VERSION + USER + ASSIGN_ADMIN,
-                        API_VERSION + USER + TAKE_ADMIN).hasRole("ADMIN")
+                        API_VERSION + USER + TAKE_ADMIN).hasRole(ADMIN)
                 .and()
                 .formLogin()
                 .and()

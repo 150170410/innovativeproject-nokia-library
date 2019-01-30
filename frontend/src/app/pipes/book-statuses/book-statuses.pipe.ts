@@ -12,11 +12,19 @@ export class BookStatusesPipe implements PipeTransform {
 		}
 
 		let count = 0;
-		books.forEach((book) =>{
-			if(book.status.id === status){
-				count++;
-			}
-		});
+		if (status === 'unlocked') {
+			books.forEach((book) => {
+				if (book.status.id !== 5) {
+					count++;
+				}
+			});
+		} else {
+			books.forEach((book) => {
+				if (book.status.id === status) {
+					count++;
+				}
+			});
+		}
 		return count;
 	}
 

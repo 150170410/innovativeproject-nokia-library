@@ -29,7 +29,7 @@ export class ManageRequestsComponent implements OnInit {
 	}
 
 	async fulfillRequest(request: BookToOrder) {
-		await this.http.acceptBookToOrder(request.id).subscribe((response) => {
+		await this.http.remove('bookToOrder/remove/', request.id).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Thank you for fulfilling the request!', 'OK');
 				this.getRequestedBooks();

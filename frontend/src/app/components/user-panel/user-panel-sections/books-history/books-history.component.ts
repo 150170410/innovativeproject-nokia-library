@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 @Component({
 	selector: 'app-books-history',
 	templateUrl: './books-history.component.html',
-	styleUrls: ['./books-history.component.css', '../../user-panel.component.scss']
+	styleUrls: ['./books-history.component.scss', '../../user-panel.component.scss']
 })
 export class BooksHistoryComponent implements OnInit {
 

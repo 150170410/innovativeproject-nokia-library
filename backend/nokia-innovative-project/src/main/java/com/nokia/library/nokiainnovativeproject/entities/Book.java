@@ -46,5 +46,5 @@ public class Book implements Serializable {
 	@CreationTimestamp
 	private LocalDateTime availableDate;
 
-	private Long actualOwnerId;
+	private Long currentOwnerId;
 }

@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Arrays;
 
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
-
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,31 +24,34 @@ public class BookCategoryController {
 
 	@GetMapping(GET_ALL)
 	public ResponseEntity getAllBookCategories() {
-		return MessageInfo.success(bookCategoryService.getAllBookCategories(), Arrays.asList("list of bookCategories"));
+		return MessageInfo.success(bookCategoryService.getAllBookCategories(),
+				Arrays.asList(Messages.get(LIST_OF) + "bookCategories."));
 	}
 
 	@GetMapping(GET_ONE)
 	public ResponseEntity getBookCategoryById(@PathVariable Long id) {
-		return MessageInfo.success(bookCategoryService.getBookCategoryById(id), Arrays.asList("BookCategory of ID = " + id.toString()));
+		return MessageInfo.success(bookCategoryService.getBookCategoryById(id),
+				Arrays.asList("BookCategory" + Messages.get(REQUESTED)));
 	}
 
 	@PostMapping(CREATE)
 	public ResponseEntity createBookCategory(@RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult) {
-		// TODO: If I understood correctly you decided to create a book category with book details. Why did you decide to create this endpoint?
-		// https://github.com/nokia-wroclaw/innovativeproject-nokia-library/pull/26#discussion_r232785455
 		MessageInfo.validateBindingResults(bindingResult);
-		return MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO), Arrays.asList("BookCategory created successfully"));
+		return MessageInfo.success(bookCategoryService.createBookCategory(bookCategoryDTO),
+				Arrays.asList("BookCategory" + Messages.get(CREATED_SUCCESSFULLY)));
 	}
 
 	@PostMapping(UPDATE)
-	public ResponseEntity updateBookCategory(@PathVariable Long id, @RequestBody @Valid BookCategoryDTO bookCategoryDTO, BindingResult bindingResult){
+	public ResponseEntity updateBookCategory(@PathVariable Long id, @RequestBody @Valid
+			BookCategoryDTO bookCategoryDTO, BindingResult bindingResult){
 		MessageInfo.validateBindingResults(bindingResult);
-		return MessageInfo.success(bookCategoryService.updateBookCategory(id, bookCategoryDTO), Arrays.asList("BookCategory updated successfully"));
+		return MessageInfo.success(bookCategoryService.updateBookCategory(id, bookCategoryDTO),
+				Arrays.asList("BookCategory" + Messages.get(UPDATED_SUCCESSFULLY)));
 	}
 
 	@DeleteMapping(REMOVE)
 	public ResponseEntity deleteBookCategory(@PathVariable Long id) {
 		bookCategoryService.deleteBookCategory(id);
-		return MessageInfo.success(null, Arrays.asList("BookCategory with ID = " + id.toString() + " removed successfully"));
+		return MessageInfo.success(null, Arrays.asList("BookCategory" + Messages.get(REMOVED_SUCCESSFULLY)));
 	}
 }

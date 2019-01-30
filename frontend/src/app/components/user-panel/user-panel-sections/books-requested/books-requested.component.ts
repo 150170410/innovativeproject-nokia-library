@@ -56,9 +56,9 @@ export class BooksRequestedComponent implements OnInit {
 	async cancelRequest(request: BookToOrder) {
 		await this.confirmService.openDialog('Are you sure you want to cancel this request?').subscribe((result) => {
 			if (result) {
-				this.http.remove('bookToOrder', request.id).subscribe((response) => {
+				this.http.remove('bookToOrder/remove/', request.id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Request was cancelled successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
 						this.getRequestedBooks();
 					} else {
 						this.snackbar.snackError('Error', 'OK');
@@ -138,7 +138,7 @@ export class BooksRequestedComponent implements OnInit {
 							element.subscribed = !element.subscribed;
 							element.subscribed ? element.totalSubs++ : element.totalSubs--;
 						}
-						
+
 					});
 					this.snackbar.snackSuccess('Success', 'OK');
 				}

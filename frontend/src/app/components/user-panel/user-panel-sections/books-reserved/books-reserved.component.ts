@@ -9,7 +9,7 @@ import { Reservation } from '../../../../models/database/entites/Reservation';
 @Component({
 	selector: 'app-books-reserved',
 	templateUrl: './books-reserved.component.html',
-	styleUrls: ['./books-reserved.component.css', '../../user-panel.component.scss']
+	styleUrls: ['./books-reserved.component.scss', '../../user-panel.component.scss']
 })
 export class BooksReservedComponent implements OnInit {
 	reservations: Reservation[] = [];
@@ -17,7 +17,7 @@ export class BooksReservedComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Reservation>();
-	displayedColumns: string[] = ['bookTitle', 'reservationDate', 'availableDate', 'actions'];
+	displayedColumns: string[] = ['signature', 'bookTitle', 'reservationDate', 'availableDate', 'actions'];
 
 	constructor(private http: RestService,
 				private confirmService: ConfirmationDialogService,
@@ -49,15 +49,41 @@ export class BooksReservedComponent implements OnInit {
 	}
 
 	acceptReservation(reservation: Reservation) {
-
+		this.http.save('reservations/accept/' + reservation.id, {}).subscribe((response) => {
+			if (response.success) {
+				this.snackbar.snackSuccess(response.message, 'OK');
+			} else {
+				this.snackbar.snackError('Error', 'OK');
+			}
+			this.getReservations();
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
 	}
 
 	async cancelReservation(reservation: Reservation) {
 		await this.confirmService.openDialog('Are you sure you want to cancel this reservation?').subscribe((result) => {
 			if (result) {
-				this.http.remove('reservations', reservation.id).subscribe((response) => {
+				this.http.remove('reservations/cancel/', reservation.id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Reservation cancelled successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+					this.getReservations();
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
+			}
+		});
+	}
+
+	async rejectReservation(reservation: Reservation){
+		await this.confirmService.openDialog('Are you sure you want to reject this reservation?').subscribe((result) => {
+			if (result) {
+				this.http.remove('reservations/reject/', reservation.id).subscribe((response) => {
+					if (response.success) {
+						this.snackbar.snackSuccess(response.message, 'OK');
 					} else {
 						this.snackbar.snackError('Error', 'OK');
 					}

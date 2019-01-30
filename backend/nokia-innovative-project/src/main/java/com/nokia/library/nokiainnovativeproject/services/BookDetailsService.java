@@ -12,14 +12,15 @@ import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
+
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 
 @Service
 @Transactional
@@ -36,7 +37,7 @@ public class BookDetailsService {
 
 		List<BookDetails> list = bookDetailsRepository.findAll();
 		List<BookDetailsWithBooks> bookDetailsWithBooks = new ArrayList<>();
-		for(BookDetails bookDetails : list) {
+		for (BookDetails bookDetails : list) {
 			Hibernate.initialize(bookDetails.getAuthors());
 			Hibernate.initialize(bookDetails.getCategories());
 
@@ -44,7 +45,35 @@ public class BookDetailsService {
 
 			List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
 			List<BookWithoutBookDetails> bookWithoutBookDetails = new ArrayList<>();
-			for(Book book : books) {
+			for (Book book : books) {
+				bookWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
+			}
+
+			BookDetailsWithBooks withBooks = mapper.map(bookDetails, BookDetailsWithBooks.class);
+			withBooks.setBooks(bookWithoutBookDetails);
+			bookDetailsWithBooks.add(withBooks);
+		}
+		return bookDetailsWithBooks;
+	}
+
+	public List<BookDetailsWithBooks> getAvailableBookDetails() {
+		List<BookDetails> list = bookDetailsRepository.findAll();
+		List<BookDetails> availableBooks = new ArrayList<>();
+		for (BookDetails bookDetails : list) {
+			if(!bookService.getAllBooksByBookDetailsId(bookDetails.getId()).isEmpty()){
+				availableBooks.add(bookDetails);
+			}
+		}
+		List<BookDetailsWithBooks> bookDetailsWithBooks = new ArrayList<>();
+		for (BookDetails bookDetails : availableBooks) {
+			Hibernate.initialize(bookDetails.getAuthors());
+			Hibernate.initialize(bookDetails.getCategories());
+
+			ModelMapper mapper = new ModelMapper();
+
+			List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
+			List<BookWithoutBookDetails> bookWithoutBookDetails = new ArrayList<>();
+			for (Book book : books) {
 				bookWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
 			}
 
@@ -63,10 +92,10 @@ public class BookDetailsService {
 		ModelMapper mapper = new ModelMapper();
 
 		List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
-		if(!books.isEmpty())
+		if (!books.isEmpty())
 			bookDetails.setIsRemovable(false);
 		List<BookWithoutBookDetails> bookWithoutBookDetails = new ArrayList<>();
-		for(Book book : books) {
+		for (Book book : books) {
 			bookWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
 		}
 		BookDetailsWithBooks withBooks = mapper.map(bookDetails, BookDetailsWithBooks.class);
@@ -100,7 +129,7 @@ public class BookDetailsService {
 	public void deleteBookDetails(Long id) {
 		BookDetails bookDetails = bookDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book details"));
 		if (bookRepository.countBooksByBookDetails(bookDetails) > 0) {
-			throw new ValidationException("The book details you are trying to delete is assigned to a book. You can't delete it.");
+			throw new ValidationException("The book details" + Messages.get(IS_ASSIGNED_CANT_DELETE));
 		}
 		bookDetails.getAuthors().forEach(author -> author.setIsRemovable(authorRepository.countBookDetailsByAuthor(author.getId()) == 1));
 		bookDetails.getCategories().forEach(category -> category.setIsRemovable(bookCategoryRepository.countBookDetailsByCategory(category.getId()) == 1));
@@ -124,14 +153,14 @@ public class BookDetailsService {
 		categories.removeAll(categoriesToRemove);
 		categories.addAll(existingCategories);
 		bookDetails.setCategories(categories);
-		if(categories.size() != size)
+		if (categories.size() != size)
 			throw new ResourceNotFoundException("category");
 
 		size = authors.size();
 		authors.removeAll(authorsToRemove);
 		authors.addAll(existingAuthors);
 		bookDetails.setAuthors(authors);
-		if(authors.size() != size)
+		if (authors.size() != size)
 			throw new ResourceNotFoundException("author");
 
 		authors.forEach(author -> author.setIsRemovable(false));

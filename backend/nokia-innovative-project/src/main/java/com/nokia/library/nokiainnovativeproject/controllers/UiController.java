@@ -11,11 +11,12 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
+
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.*;
 
 @SpringBootApplication
 @RestController
@@ -29,45 +30,52 @@ public class UiController {
     public ResponseEntity user(Principal user) {
 
         if(user == null) {
-            return MessageInfo.success(null, Arrays.asList("Please log in"));
+            return MessageInfo.success(null,
+                    Arrays.asList(Messages.get(USER_NOT_LOGGED_IN)));
         }
-        return MessageInfo.success(user, Arrays.asList("You are logged in"));
+        return MessageInfo.success(user,
+                Arrays.asList(Messages.get(USER_LOGGED_IN)));
     }
 
     @GetMapping(Mappings.USER + Mappings.GET_ALL)
     public ResponseEntity getAllUsers() {
-        return MessageInfo.success(userService.getAllUsers(), Arrays.asList("List of users"));
+        return MessageInfo.success(userService.getAllUsers(),
+                Arrays.asList(Messages.get(LIST_OF) + "users."));
     }
 
     @GetMapping(Mappings.USER + Mappings.GET_ONE)
     public ResponseEntity getUserById(@PathVariable Long id) {
-        return MessageInfo.success(userService.getUserById(id), Arrays.asList("User of ID: " + id));
+        return MessageInfo.success(userService.getUserById(id),
+                Arrays.asList("User" + Messages.get(REQUESTED)));
     }
 
     @PostMapping(Mappings.USER + Mappings.CREATE)
-    public ResponseEntity registerUser(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
+    public ResponseEntity registerUser(@RequestBody @Valid UserDTO userDTO,
+                                       BindingResult bindingResult) {
         MessageInfo.validateBindingResults(bindingResult);
-        return MessageInfo.success(userService.createUser(userDTO), Arrays.asList("User created successfully"));
+        return MessageInfo.success(userService.createUser(userDTO),
+                Arrays.asList("User" + Messages.get(CREATED_SUCCESSFULLY)));
     }
 
     @PostMapping(Mappings.USER + Mappings.UPDATE)
-    public ResponseEntity updateUser(@PathVariable Long id, @RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
+    public ResponseEntity updateUser(@PathVariable Long id, @RequestBody @Valid
+            UserDTO userDTO, BindingResult bindingResult) {
         MessageInfo.validateBindingResults(bindingResult);
-        return MessageInfo.success(userService.updateUser(id, userDTO), Arrays.asList("User updated successfully"));
+        return MessageInfo.success(userService.updateUser(id, userDTO),
+                Arrays.asList("User" + Messages.get(UPDATED_SUCCESSFULLY)));
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured(ROLE_ADMIN)
     @PostMapping(Mappings.USER + Mappings.ASSIGN_ADMIN)
     public ResponseEntity assignAdminRoleToUser (@PathVariable Long id) {
         return MessageInfo.success(userService.assignAdminRoleToUser(id),
-                Arrays.asList("The admin role has been successfully added"));
+                Arrays.asList(Messages.get(ADMIN_ROLE_ADDED)));
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured(ROLE_ADMIN)
     @PostMapping(Mappings.USER + Mappings.TAKE_ADMIN)
     public ResponseEntity takeAdminRoleFromUser(@PathVariable Long id) {
         return MessageInfo.success(userService.takeAdminRoleFromUser(id),
-                Arrays.asList("The admin role has been successfully removed"));
+                Arrays.asList(Messages.get(ADMIN_ROLE_REMOVED)));
     }
-
 }

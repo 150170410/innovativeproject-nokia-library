@@ -1,19 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ContactUsComponent } from '../../../components/contact-us/contact-us.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-navbar',
 	templateUrl: './navbar.component.html',
-	styleUrls: ['./navbar.component.css']
+	styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-
-	placeHolder = 'Search for a book...';
-	searchParams: FormGroup;
 
 	isAuth = false;
 	role_admin = false;
@@ -23,30 +19,22 @@ export class NavbarComponent implements OnInit {
 	@Output() changedTheme = new EventEmitter<string>();
 
 	constructor(public dialog: MatDialog,
-				private formBuilder: FormBuilder,
 				private authService: AuthService,
 				private router: Router) {
-	  this.initData();
+		this.initData();
 	}
 
 	ngOnInit() {
-		this.initForm();
-	}
-
-	initForm() {
-		this.searchParams = this.formBuilder.group({
-			searchValue: ''
-		});
 	}
 
 	initData() {
-	  this.authService.getUserData().then( () => {
-	    this.isAuth = this.authService.isAuthenticated();
-	    this.role_admin = this.authService.isAdmin();
-	    this.role_employee = this.authService.isUser();
-	    this.loggedAs = this.authService.getUsername();
-    });
-  }
+		this.authService.getUserData().then(() => {
+			this.isAuth = this.authService.isAuthenticated();
+			this.role_admin = this.authService.isAdmin();
+			this.role_employee = this.authService.isUser();
+			this.loggedAs = this.authService.getUsername();
+		});
+	}
 
 	login() {
 		this.router.navigateByUrl('/login');
@@ -60,23 +48,8 @@ export class NavbarComponent implements OnInit {
 		this.router.navigateByUrl('/register');
 	}
 
-
-	search(searchParams: any) {
-		console.log(searchParams.value.searchValue);
-	}
-
 	openDialog() {
 		const dialogRef = this.dialog.open(ContactUsComponent, {});
-	}
-
-	checkPlaceHolder() {
-		if (this.placeHolder) {
-			this.placeHolder = null;
-			return;
-		} else {
-			this.placeHolder = 'Search for a book...';
-			return;
-		}
 	}
 
 	changeTheme() {
@@ -87,12 +60,5 @@ export class NavbarComponent implements OnInit {
 		} else {
 			this.changedTheme.emit('dark');
 		}
-		// if (localStorage.getItem('theme') == 'light') {
-		// 	localStorage.setItem('theme', 'dark');
-		// } else if (localStorage.getItem('theme') == 'dark') {
-		// 	localStorage.setItem('theme', 'light');
-		// } else {
-		// 	localStorage.setItem('theme', 'dark');
-		// }
 	}
 }

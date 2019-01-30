@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GridViewComponent } from './grid-view.component';
+import { TableViewComponent } from './table-view.component';
 
-describe('GridViewComponent', () => {
-  let component: GridViewComponent;
-  let fixture: ComponentFixture<GridViewComponent>;
+describe('TableViewComponent', () => {
+  let component: TableViewComponent;
+  let fixture: ComponentFixture<TableViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GridViewComponent ]
+      declarations: [ TableViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GridViewComponent);
+    fixture = TestBed.createComponent(TableViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

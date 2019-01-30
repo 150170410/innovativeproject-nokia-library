@@ -1,0 +1,42 @@
+mat-card {
+	margin-bottom: 1px;
+}
+
+.not-available {
+	color: #9b1249;
+	font-size: 20px;
+}
+
+.cover-wrapper {
+	display: inline-block;
+	float: left;
+	width: 150px;
+	min-height: 200px;
+}
+
+.details-wrapper {
+	display: inline-block;
+	width: 600px;
+	min-height: 200px;
+}
+
+.actions-wrapper {
+	display: inline-block;
+	float: right;
+	width: 500px;
+	min-height: 200px;
+}
+
+img {
+	max-height: 200px;
+	max-width: 120px;
+	box-shadow: 3px 3px 1px #ccc;
+}
+
+.title {
+	margin-top: 0;
+}
+
+.book-read-more {
+	opacity: 0.5;
+}

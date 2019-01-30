@@ -4,6 +4,7 @@ import { MessageInfo } from '../../../../models/MessageInfo';
 import { RestService } from '../../../../services/rest/rest.service';
 import { Rental } from '../../../../models/database/entites/Rental';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
+import { BookStatusEnum } from '../../../../utils/BookStatusEnum';
 
 @Component({
 	selector: 'app-manage-returns',
@@ -18,7 +19,7 @@ export class ManageReturnsComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
-	displayedColumns: string[] = ['signature', 'current_user', 'owner', 'status', 'bookDetails', 'comments', 'actions'];
+	displayedColumns: string[] = ['signature', 'current_user', 'owner', 'bookDetails', 'comments', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService,
@@ -34,7 +35,7 @@ export class ManageReturnsComponent implements OnInit {
 		this.http.save('rentals/return/' + rental.id, body).subscribe((response) => {
 			if (response.success) {
 				this.getRentals();
-				this.snackbar.snackSuccess('Book handover successful!', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}
@@ -49,7 +50,7 @@ export class ManageReturnsComponent implements OnInit {
 		this.rentalsAll = response.object;
 		this.rentals = [];
 		for (let i = 0; i < this.rentalsAll.length; i++) {
-			if (this.rentalsAll[i].book.status.id == 3 && this.rentalsAll[i].isCurrent === true) {
+			if (this.rentalsAll[i].book.status.id == BookStatusEnum.BORROWED && this.rentalsAll[i].isCurrent === true) {
 				this.rentals.push(this.rentalsAll[i]);
 			}
 		}

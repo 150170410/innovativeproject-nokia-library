@@ -1,6 +1,15 @@
 <p>
-	Books that you currently have.
+	Books that you currently have or you need to pick up from library. If the book is awaiting, go to the corresponding admin to pick it up. If you are ready to return the book, go to any admin to return it.
 </p>
+<p>
+	You can prolong the book for another month no earlier than 1 week before you are supposed to return the book.
+</p>
+
+<!--<div class="mat-elevation-z8">-->
+<!--<div class="loading-shade"-->
+<!--*ngIf="isLoadingResults">-->
+<!--<mat-spinner *ngIf="isLoadingResults"></mat-spinner>-->
+<!--</div>-->
 <div>
 	<div class="filter-paginator-wrapper">
 		<div class="filter">
@@ -9,10 +18,15 @@
 			</mat-form-field>
 		</div>
 		<div class="paginator">
-			<mat-paginator #paginatorCopies [pageSizeOptions]="[10, 20, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+			<mat-paginator #paginator [pageSizeOptions]="[10, 20, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
 		</div>
 	</div>
 	<table mat-table [dataSource]="dataSource" matSort>
+
+		<ng-container matColumnDef="signature">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Signature</th>
+			<td mat-cell *matCellDef="let rental">{{rental.book.signature}}</td>
+		</ng-container>
 
 		<ng-container matColumnDef="bookTitle">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
@@ -21,7 +35,8 @@
 
 		<ng-container matColumnDef="status">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-			<td mat-cell *matCellDef="let borrowing" [ngClass]="{'st-available':borrowing.book.status.id === 1, 'st-awaiting':borrowing.book.status.id === 2,'st-borrowed':borrowing.book.status.id === 3,'st-reserved':borrowing.book.status.id === 4,'st-unavailable':borrowing.book.status.id === 5 }">
+			<td mat-cell *matCellDef="let borrowing"
+				[ngClass]="{'st-available':borrowing.book.status.id === 1, 'st-awaiting':borrowing.book.status.id === 2,'st-borrowed':borrowing.book.status.id === 3,'st-reserved':borrowing.book.status.id === 4,'st-unavailable':borrowing.book.status.id === 5 }">
 				{{borrowing.book.status.statusName}}
 			</td>
 		</ng-container>
@@ -36,6 +51,11 @@
 			<td mat-cell *matCellDef="let borrowing">{{borrowing.returnDate | date:'dd.MM.yyyy'}}</td>
 		</ng-container>
 
+		<ng-container matColumnDef="goTo">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header>Go to</th>
+			<td mat-cell *matCellDef="let borrowing"><b>Janusz Pawlacz</b> at East Link</td>
+		</ng-container>
+
 		<ng-container matColumnDef="actions">
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
 			<td mat-cell *matCellDef="let rental">
@@ -44,7 +64,7 @@
 						<mat-icon>close</mat-icon>
 						Cancel
 					</button>
-					<button *ngIf="rental.book.status.id == 3" color="primary" mat-button (click)="prolong(rental)">
+					<button *ngIf="rental.book.status.id == 3" color="primary" mat-button (click)="prolong(rental)" [disabled]="rental.returnDate > canProlongDate">
 						<mat-icon>forward_30</mat-icon>
 						Prolong
 					</button>
@@ -62,3 +82,4 @@
 	</table>
 
 </div>
+<!--</div>-->

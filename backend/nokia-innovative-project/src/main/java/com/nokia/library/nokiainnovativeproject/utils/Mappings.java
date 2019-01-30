@@ -15,6 +15,11 @@ public class Mappings {
 	public static final String CREATE = "/create";
 	public static final String UPDATE = "/update/{id}";
 	public static final String REMOVE = "/remove/{id}";
+	public static final String CANCEL = "/cancel/{id}";
+	public static final String REJECT = "/reject/{id}";
+	public static final String ACCEPT = "/accept/{id}";
+	public static final String AVAILABLE = "/available";
+
 
 	// controller mappings
 	public static final String BOOK_DETAILS = "/bookDetails";
@@ -49,7 +54,6 @@ public class Mappings {
 	public static final String ASSIGN_ADMIN = "/assignAdmin/{id}";
 
 	public static final String SUBSCRIPTION = "/subscribe/{id}";
-	public static final String ACCEPT = "/accept/{id}";
 
 
 }

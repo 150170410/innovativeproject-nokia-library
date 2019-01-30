@@ -8,4 +8,5 @@ export class Book {
 	comments: string;
 	status: BookStatus;
 	availableDate: Date;
+	currentOwnerId: number;
 }

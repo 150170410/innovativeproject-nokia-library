@@ -1,4 +1,4 @@
-<button mat-raised-button color="primary" routerLink="/listView" routerLinkActive="active">< Go back</button>
+<button mat-raised-button color="primary" routerLink="/homepage" routerLinkActive="active">< Go back</button>
 <mat-spinner *ngIf="pageLoading"></mat-spinner>
 <div *ngIf="!pageLoading">
 	<h1>{{bookDetails.title}}</h1>
@@ -6,7 +6,7 @@
 	<div class="wrapper">
 		<div class="cover-wrapper">
 			<img *ngIf="bookDetails.coverPictureUrl" src="{{bookDetails.coverPictureUrl}}">
-			<img *ngIf="!bookDetails.coverPictureUrl" src="../../../assets/images/default-cover.png">
+			<img *ngIf="!bookDetails.coverPictureUrl" src="../../../../assets/images/default-cover.png">
 		</div>
 		<div class="info-box-wrapper">
 			<div><b>Categories:</b> {{bookDetails.categories| arrToStr:'category'}}</div>
@@ -18,9 +18,7 @@
 		<h3>
 			Available books: {{booksUnlocked | bookStatuses:1}}/{{booksUnlocked.length}}
 		</h3>
-		<app-book-actions [books]="booksUnlocked"
-						  (actionTaken)="actionTaken($event)"
-		></app-book-actions>
+		<app-book-actions [books]="booksUnlocked" (actionTaken)="actionTaken($event)"></app-book-actions>
 	</div>
 
 	<h3>More details:</h3>

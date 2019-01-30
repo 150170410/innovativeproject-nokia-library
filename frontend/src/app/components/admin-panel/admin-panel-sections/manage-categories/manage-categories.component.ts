@@ -49,7 +49,7 @@ export class ManageCategoriesComponent implements OnInit {
 				if (response.success) {
 					this.clearForm();
 					this.getCategories();
-					this.snackbar.snackSuccess('Category added successfully!', 'OK');
+					this.snackbar.snackSuccess(response.message, 'OK');
 				} else {
 					this.snackbar.snackError('Error', 'OK');
 				}
@@ -63,7 +63,7 @@ export class ManageCategoriesComponent implements OnInit {
 					this.clearForm();
 					this.getCategories();
 					this.formMode = 'Add';
-					this.snackbar.snackSuccess('Category edited successfully!', 'OK');
+					this.snackbar.snackSuccess(response.message, 'OK');
 				} else {
 					this.snackbar.snackError('Error', 'OK');
 				}
@@ -92,9 +92,9 @@ export class ManageCategoriesComponent implements OnInit {
 	async removeCategory(id: number) {
 		await this.confirmService.openDialog().subscribe((result) => {
 			if (result) {
-				this.http.remove('bookCategory', id).subscribe((response) => {
+				this.http.remove('bookCategory/remove/', id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Category removed successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
 						this.getCategories();
 					} else {
 						this.snackbar.snackError('Error', 'OK');

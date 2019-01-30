@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Arrays;
 
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,59 +24,70 @@ public class RentalController {
 
 	@GetMapping(RENTALS + GET_ALL)
 	public ResponseEntity getAllRentals() {
-		return MessageInfo.success(rentalService.getAllRentals(), Arrays.asList("Full list of book rentals"));
+		return MessageInfo.success(rentalService.getAllRentals(),
+				Arrays.asList(Messages.get(LIST_OF) + "book rentals."));
 	}
 
 	@GetMapping(RENTALS + GET_ALL_FILL)
 	public ResponseEntity getAllRentalsWithOwner() {
-		return MessageInfo.success(rentalService.getAllRentalsWithOwner(), Arrays.asList("Full list of book rentals"));
+		return MessageInfo.success(rentalService.getAllRentalsWithOwner(),
+				Arrays.asList(Messages.get(LIST_OF) + "book rentals."));
 	}
 
 	@GetMapping(RENTALS + GET_ONE)
 	public ResponseEntity getRentalById(@PathVariable Long id) {
-		return MessageInfo.success(rentalService.getRentalById(id), Arrays.asList("Rental with ID = " + id.toString()));
+		return MessageInfo.success(rentalService.getRentalById(id),
+				Arrays.asList("Rental" + Messages.get(REQUESTED)));
 	}
 
 	@GetMapping(RENTALS + GET_ONE_FILL)
 	public ResponseEntity getRentalWithOwnerById(@PathVariable Long id) {
-		return MessageInfo.success(rentalService.getRentalsWithActualOwner(id), Arrays.asList("Rental with ID = " + id.toString()));
+		return MessageInfo.success(rentalService.getRentalsWithActualOwner(id),
+				Arrays.asList("Rental" + Messages.get(REQUESTED)));
 	}
 
 	@GetMapping(RENTALS + USER)
 	public ResponseEntity getRentalsByUser() {
-		return MessageInfo.success(rentalService.getRentalsByUser(), Arrays.asList("Rentals with UserID = "));
+		return MessageInfo.success(rentalService.getRentalsByUser(),
+				Arrays.asList("Rentals" + Messages.get(REQUESTED)));
 	}
 
 	@GetMapping(BOOKS + RENTALS + GET_ONE)
 	public ResponseEntity getRentalsByBookId(@PathVariable Long id) {
-		return MessageInfo.success(rentalService.getRentalsByBookId(id), Arrays.asList("Rentals with BookID = " + id.toString()));
+		return MessageInfo.success(rentalService.getRentalsByBookId(id),
+				Arrays.asList("Rentals" + Messages.get(REQUESTED)));
 	}
 
 	@PostMapping(RENTALS + CREATE)
 	public ResponseEntity createRental(@RequestBody @Valid RentalDTO rentalDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
-		return MessageInfo.success(rentalService.createRental(rentalDTO), Arrays.asList("Rental created successfully"));
+		return MessageInfo.success(rentalService.createRental(rentalDTO),
+				Arrays.asList(Messages.get(BORROWED_SUCCESSFULLY)));
 	}
 
-	@PostMapping(RENTALS + UPDATE)
+	@PostMapping(RENTALS + PROLONG)
 	public ResponseEntity prolongRental(@PathVariable Long id) {
-		return MessageInfo.success(rentalService.prolongRental(id), Arrays.asList("Rental updated successfully"));
+		return MessageInfo.success(rentalService.prolongRental(id),
+				Arrays.asList(Messages.get(PROLONGED_SUCCESSFULLY)));
 	}
 
 	@PostMapping(RENTALS + HANDOVER)
 	public ResponseEntity handOverRental(@PathVariable Long id) {
-		return MessageInfo.success(rentalService.handOverRental(id), Arrays.asList("Rental updated successfully"));
+		return MessageInfo.success(rentalService.handOverRental(id),
+				Arrays.asList(Messages.get(HANDOVER_SUCCESSFULLY)));
 	}
 
 	@PostMapping(RENTALS + RETURN)
 	public ResponseEntity returnRental(@PathVariable Long id) {
 		rentalService.returnRental(id);
-		return MessageInfo.success(null, Arrays.asList("Rental with ID = " + id.toString() + " returned successfully"));
+		return MessageInfo.success(null,
+				Arrays.asList(Messages.get(RETURNED_SUCCESSFULLY)));
 	}
 
 	@DeleteMapping(RENTALS + REMOVE)
 	public ResponseEntity cancelRental(@PathVariable Long id) {
-		rentalService.deleteRental(id);
-		return MessageInfo.success(null, Arrays.asList("Rental with ID = " + id.toString() + " removed successfully"));
+		rentalService.cancelRental(id);
+		return MessageInfo.success(null,
+				Arrays.asList("Rental" + Messages.get(REMOVED_SUCCESSFULLY)));
 	}
 }
