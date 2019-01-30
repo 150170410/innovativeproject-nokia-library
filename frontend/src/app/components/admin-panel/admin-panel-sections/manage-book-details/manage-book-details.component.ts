@@ -118,7 +118,7 @@ export class ManageBookDetailsComponent implements OnInit {
 				if (response.success) {
 					this.clearForm();
 					this.getBookDetails();
-					this.snackbar.snackSuccess('Book details added successfully!', 'OK');
+					this.snackbar.snackSuccess(response.message, 'OK');
 					this.foundFromAPI = [];
 				} else {
 					this.snackbar.snackError('Error', 'OK');
@@ -133,7 +133,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					this.clearForm();
 					this.getBookDetails();
 					this.formMode = 'Add';
-					this.snackbar.snackSuccess('Book details edited successfully!', 'OK');
+					this.snackbar.snackSuccess(response.message, 'OK');
 					this.foundFromAPI = [];
 				} else {
 					this.snackbar.snackError('Error', 'OK');
@@ -282,7 +282,7 @@ export class ManageBookDetailsComponent implements OnInit {
 			if (result) {
 				this.http.remove('bookDetails/remove/', id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Book details removed successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
 					} else {
 						this.snackbar.snackError('Error', 'OK');
 					}

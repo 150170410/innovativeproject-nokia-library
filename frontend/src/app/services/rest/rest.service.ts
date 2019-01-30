@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/internal/operators';
 import { API_URL } from '../../config';
 import { Observable, throwError } from 'rxjs/index';
@@ -15,35 +15,35 @@ export class RestService {
 	}
 
 	async getAll(url: string) {
-		return await this.http.get<MessageInfo>(this.URL + url, {withCredentials: true})
+		return await this.http.get<MessageInfo>(this.URL + url, { withCredentials: true })
 		.pipe(
 			catchError(this.handleError)
 		).toPromise();
 	}
 
 	save(url: string, item: any): Observable<any> {
-		return this.http.post<any>(this.URL + url, item, {withCredentials: true})
+		return this.http.post<any>(this.URL + url, item, { withCredentials: true })
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
-  post(url: string): Observable<any> {
-    return this.http.post<any>(this.URL + url, null, {withCredentials: true})
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
+	post(url: string): Observable<any> {
+		return this.http.post<any>(this.URL + url, null, { withCredentials: true })
+		.pipe(
+			catchError(this.handleError)
+		);
+	}
 
 	update(url: string, id: number, item: any) {
-		return this.http.post<any>(this.URL + url + '/update/' + id, item, {withCredentials: true})
+		return this.http.post<any>(this.URL + url + '/update/' + id, item, { withCredentials: true })
 		.pipe(
 			catchError(this.handleError)
 		);
 	}
 
 	remove(url: string, id: number) {
-		return this.http.delete<any>(this.URL + url + id, {withCredentials: true})
+		return this.http.delete<any>(this.URL + url + id, { withCredentials: true })
 		.pipe(
 			catchError(this.handleError)
 		);

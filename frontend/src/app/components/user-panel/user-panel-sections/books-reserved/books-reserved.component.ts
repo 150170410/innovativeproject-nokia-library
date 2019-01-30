@@ -51,7 +51,7 @@ export class BooksReservedComponent implements OnInit {
 	acceptReservation(reservation: Reservation) {
 		this.http.remove('reservations/accept/', reservation.id).subscribe((response) => {
 			if (response.success) {
-				this.snackbar.snackSuccess('Reservation accepted successfully!', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}
@@ -66,7 +66,7 @@ export class BooksReservedComponent implements OnInit {
 			if (result) {
 				this.http.remove('reservations/cancel/', reservation.id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Reservation cancelled successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
 					} else {
 						this.snackbar.snackError('Error', 'OK');
 					}
@@ -83,7 +83,7 @@ export class BooksReservedComponent implements OnInit {
 			if (result) {
 				this.http.remove('reservations/reject/', reservation.id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Reservation rejected successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
 					} else {
 						this.snackbar.snackError('Error', 'OK');
 					}

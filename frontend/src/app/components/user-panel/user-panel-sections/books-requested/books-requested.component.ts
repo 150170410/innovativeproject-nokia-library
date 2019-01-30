@@ -57,7 +57,7 @@ export class BooksRequestedComponent implements OnInit {
 			if (result) {
 				this.http.remove('bookToOrder/remove/', request.id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Request was cancelled successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
 						this.getRequestedBooks();
 					} else {
 						this.snackbar.snackError('Error', 'OK');
@@ -79,7 +79,7 @@ export class BooksRequestedComponent implements OnInit {
 			if (response.success) {
 				this.clearForm();
 				this.getRequestedBooks();
-				this.snackbar.snackSuccess('Book requested successfully!', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}

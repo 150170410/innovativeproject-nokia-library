@@ -61,7 +61,7 @@ export class ManageBooksComponent implements OnInit {
 				if (response.success) {
 					this.clearForm();
 					this.getBookCopies();
-					this.snackbar.snackSuccess('Book details added successfully!', 'OK');
+					this.snackbar.snackSuccess(response.message, 'OK');
 				} else {
 					this.snackbar.snackError('Error', 'OK');
 				}
@@ -75,7 +75,7 @@ export class ManageBooksComponent implements OnInit {
 					this.clearForm();
 					this.getBookCopies();
 					this.formMode = 'Add';
-					this.snackbar.snackSuccess('Book copy updated successfully!', 'OK');
+					this.snackbar.snackSuccess(response.message, 'OK');
 				} else {
 					this.snackbar.snackError('Error', 'OK');
 				}
@@ -120,7 +120,7 @@ export class ManageBooksComponent implements OnInit {
 			if (result) {
 				this.http.remove('books/remove/', id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Book copy removed successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
 					} else {
 						this.snackbar.snackError('Error', 'OK');
 					}
@@ -164,7 +164,7 @@ export class ManageBooksComponent implements OnInit {
 		this.http.save('books/lock/' + bookCopy.signature, body).subscribe((response) => {
 			if (response.success) {
 				this.getBookCopies();
-				this.snackbar.snackSuccess('Book locked successfully!', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}
@@ -179,7 +179,7 @@ export class ManageBooksComponent implements OnInit {
 		this.http.save('books/unlock/' + bookCopy.signature, body).subscribe((response) => {
 			if (response.success) {
 				this.getBookCopies();
-				this.snackbar.snackSuccess('Book unlocked successfully!', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}

@@ -50,7 +50,7 @@ export class ManageAuthorsComponent implements OnInit {
 				if (response.success) {
 					this.clearForm();
 					this.getAuthors();
-					this.snackbar.snackSuccess('Author added successfully!', 'OK');
+					this.snackbar.snackSuccess(response.message, 'OK');
 				} else {
 					this.snackbar.snackError('Error', 'OK');
 				}
@@ -64,7 +64,7 @@ export class ManageAuthorsComponent implements OnInit {
 					this.clearForm();
 					this.getAuthors();
 					this.formMode = 'Add';
-					this.snackbar.snackSuccess('Author updated successfully!', 'OK');
+					this.snackbar.snackSuccess(response.message, 'OK');
 				} else {
 					this.snackbar.snackError('Error', 'OK');
 				}
@@ -95,7 +95,7 @@ export class ManageAuthorsComponent implements OnInit {
 			if (result) {
 				this.http.remove('author/remove/', id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Author removed successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
 					} else {
 						this.snackbar.snackError('Error', 'OK');
 					}

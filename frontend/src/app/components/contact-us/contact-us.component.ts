@@ -38,7 +38,7 @@ export class ContactUsComponent implements OnInit {
 		const email = new EmailMessage(contactParams.value.category + ': ' + contactParams.value.subject, contactParams.value.message);
 		this.dialogRef.close();
 		this.http.save('email/create', email).subscribe((response) => {
-			this.snackbar.snackSuccess('Message sent. Thank you!', 'OK');
+			this.snackbar.snackSuccess(response.message, 'OK');
 		}, (error) => {
 			this.snackbar.snackError('Something went wrong, but we still got the message.', 'OK');
 		});

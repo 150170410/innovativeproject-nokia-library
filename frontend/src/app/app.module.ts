@@ -44,6 +44,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { SnackbarService } from './services/snackbar/snackbar.service';
 import { TableViewComponent } from './components/views/table-view/table-view.component';
+import { RolesPipe } from './pipes/roles.pipe';
 
 
 @NgModule({
@@ -77,7 +78,8 @@ import { TableViewComponent } from './components/views/table-view/table-view.com
 		ManageHandoversComponent,
 		LoginComponent,
 		RegistrationComponent,
-		TableViewComponent
+		TableViewComponent,
+		RolesPipe
 	],
 	imports: [
 		BrowserModule,

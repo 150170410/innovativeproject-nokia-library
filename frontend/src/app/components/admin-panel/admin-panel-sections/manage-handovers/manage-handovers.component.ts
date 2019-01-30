@@ -5,6 +5,7 @@ import { Book } from '../../../../models/database/entites/Book';
 import { RestService } from '../../../../services/rest/rest.service';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 import { Rental } from '../../../../models/database/entites/Rental';
+import { BookStatusEnum } from '../../../../utils/BookStatusEnum';
 
 @Component({
 	selector: 'app-manage-handovers',
@@ -35,7 +36,7 @@ export class ManageHandoversComponent implements OnInit {
 		this.http.save('rentals/handover/' + rental.id, body).subscribe((response) => {
 			if (response.success) {
 				this.getRentals();
-				this.snackbar.snackSuccess('Book handover successful!', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}
@@ -51,7 +52,7 @@ export class ManageHandoversComponent implements OnInit {
 		this.rentalsAll = response.object;
 		this.rentals = [];
 		for (let i = 0; i < this.rentalsAll.length; i++) {
-			if ((this.rentalsAll[i].book.status.id === 2 || this.rentalsAll[i].book.status.id === 4) && this.rentalsAll[i].isCurrent === true) {
+			if ((this.rentalsAll[i].book.status.id === BookStatusEnum.AWAITING || this.rentalsAll[i].book.status.id === BookStatusEnum.RESERVED) && this.rentalsAll[i].isCurrent === true) {
 				this.rentals.push(this.rentalsAll[i]);
 			}
 		}

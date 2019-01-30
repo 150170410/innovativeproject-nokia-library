@@ -44,7 +44,7 @@ export class BooksBorrowedComponent implements OnInit {
 			if (result) {
 				this.http.remove('rentals/remove/', rental.id).subscribe((response) => {
 					if (response.success) {
-						this.snackbar.snackSuccess('Borrowing cancelled successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
 					} else {
 						this.snackbar.snackError('Error', 'OK');
 					}
@@ -60,7 +60,7 @@ export class BooksBorrowedComponent implements OnInit {
 		const body = {};
 		this.http.save('rentals/prolong/' + rental.id, body).subscribe((response) => {
 			if (response.success) {
-				this.snackbar.snackSuccess('Book prolonged successfully!', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 				this.getRentals();
 			} else {
 				this.snackbar.snackError('Error', 'OK');
