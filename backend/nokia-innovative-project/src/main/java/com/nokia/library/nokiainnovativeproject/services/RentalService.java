@@ -124,7 +124,7 @@ public class RentalService {
 				null));
 		rental.setUser(user);
 		rental = rentalRepository.save(rental);
-		User admin = userService.getUserById(borrowedBook.getActualOwnerId());
+		User admin = userService.getUserById(borrowedBook.getCurrentOwnerId());
 		Email email = new Email("Book rent", String.format("Your book can be picked up from: %s %s, %s",
 				admin.getFirstName(), admin.getLastName(), admin.getAddress().getBuilding()));
 		emailService.sendSimpleMessage(email, Arrays.asList(user.getEmail()));
