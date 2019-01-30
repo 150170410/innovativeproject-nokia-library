@@ -22,9 +22,9 @@
 			<td mat-cell *matCellDef="let request">{{request.title}}</td>
 		</ng-container>
 
-		<ng-container matColumnDef="user">
-			<th mat-header-cell *matHeaderCellDef>Requesting user</th>
-			<td mat-cell *matCellDef="let request">{{request.user.firstName + ' ' + request.user.lastName}}</td>
+		<ng-container matColumnDef="totalSubs">
+			<th mat-header-cell *matHeaderCellDef>Total subscriptions</th>
+			<td mat-cell *matCellDef="let request">{{request.totalSubs}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="actions">
@@ -35,7 +35,7 @@
 						<mat-icon>done</mat-icon>
 						Fulfill
 					</button>
-					<button disabled color="warn" mat-button (click)="rejectRequest(request)">
+					<button color="warn" mat-button (click)="rejectRequest(request)">
 						<mat-icon>block</mat-icon>
 						Reject
 					</button>

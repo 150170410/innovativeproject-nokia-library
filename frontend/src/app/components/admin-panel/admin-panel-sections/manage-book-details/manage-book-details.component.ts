@@ -62,6 +62,8 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	availableTitles: string[] = [];
 
+	inited = false;
+
 	// table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookDetails>();
@@ -89,11 +91,12 @@ export class ManageBookDetailsComponent implements OnInit {
 		this.getCategories();
 		this.getAuthors();
 		this.maxDate = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDay());
+		this.inited = true;
 	}
 
 	initBookDetailsForm() {
 		this.bookDetailsParams = this.formBuilder.group({
-			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13), Validators.pattern('^(97(8|9))?\\d{9}(\\d|X)$')]], // TODO: fix regex for ISBN
+			isbn: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(17), Validators.pattern('(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})')]],
 			title: ['', [Validators.required, Validators.maxLength(100)]],
 			authors: this.authorsFormControl,
 			categories: this.categoriesFormControl,
@@ -103,44 +106,78 @@ export class ManageBookDetailsComponent implements OnInit {
 		});
 	}
 
-	createBookDetails(params: any) {
-		const body = new BookDetailsDTO(params.value.isbn,
-			params.value.title,
-			this.authorsToAuthor(this.selectedAuthors),
-			this.categoriesToBookCategory(this.selectedCategories),
-			params.value.publicationDate,
-			params.value.description,
-			params.value.coverPictureUrl
-		);
-		console.log(body);
-		if (!this.toUpdate) {
-			this.http.save('bookDetails/create', body).subscribe((response) => {
-				if (response.success) {
-					this.clearForm();
-					this.getBookDetails();
-					this.snackbar.snackSuccess(response.message, 'OK');
-					this.foundFromAPI = [];
-				} else {
-					this.snackbar.snackError('Error', 'OK');
-				}
-			}, (error) => {
-				this.snackbar.snackError(error.error.message, 'OK');
-			});
+	validateISBN(): Boolean {
+		let isbn = this.normalizeISBN(this.bookDetailsParams.value.isbn);
+		let result: Boolean;
+		let sum = 0;
+		if(isbn.length == 10){
+			for(var i = 0; i < 10; i++)
+			 sum+= isbn[i];
+			 result = sum % 11 == 0;
 		} else {
-			this.http.update('bookDetails', this.toUpdate.id, body).subscribe((response) => {
-				if (response.success) {
-					this.toUpdate = null;
-					this.clearForm();
-					this.getBookDetails();
-					this.formMode = 'Add';
-					this.snackbar.snackSuccess(response.message, 'OK');
-					this.foundFromAPI = [];
-				} else {
-					this.snackbar.snackError('Error', 'OK');
-				}
-			}, (error) => {
-				this.snackbar.snackError(error.error.message, 'OK');
-			});
+			for(var i = 0; i < 13; i++){
+			 if(i % 2 == 1)
+			     isbn[i]*=3;
+			 sum+= isbn[i];
+			}
+			 result = sum % 10 == 0;
+		}
+		return result;
+	}
+
+	normalizeISBN(isbn: string){
+		let arr: Array<number> = [];
+		let isbnArr = isbn.replace("-", "").replace(" ","").toLocaleLowerCase().split("");
+		for(var i = 0; i < isbnArr.length; i++){
+			if(isbnArr[i] == "x")
+			  isbnArr[i] = "10";
+			arr.push(+isbnArr[i]);
+		}
+		return arr;
+	}
+
+	createBookDetails(params: any) {
+		if(this.validateISBN()) {
+			const body = new BookDetailsDTO(params.value.isbn,
+				params.value.title,
+				this.authorsToAuthor(this.selectedAuthors),
+				this.categoriesToBookCategory(this.selectedCategories),
+				params.value.publicationDate,
+				params.value.description,
+				params.value.coverPictureUrl
+			);
+			console.log(body);
+			if (!this.toUpdate) {
+				this.http.save('bookDetails/create', body).subscribe((response) => {
+					if (response.success) {
+						this.clearForm();
+						this.getBookDetails();
+						this.snackbar.snackSuccess('Book details added successfully!', 'OK');
+						this.foundFromAPI = [];
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
+			} else {
+				this.http.update('bookDetails', this.toUpdate.id, body).subscribe((response) => {
+					if (response.success) {
+						this.toUpdate = null;
+						this.clearForm();
+						this.getBookDetails();
+						this.formMode = 'Add';
+						this.snackbar.snackSuccess('Book details edited successfully!', 'OK');
+						this.foundFromAPI = [];
+					} else {
+						this.snackbar.snackError('Error', 'OK');
+					}
+				}, (error) => {
+					this.snackbar.snackError(error.error.message, 'OK');
+				});
+			}
+		} else {
+			this.snackbar.snackError('This is not real ISBN', 'OK');
 		}
 	}
 
@@ -228,7 +265,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	getInfoFromAPI() {
 		this.fetchingDetails = true;
-		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value, {withCredentials: true})
+		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value.replace("-", "").replace(" ","").toLocaleLowerCase(), {withCredentials: true})
 		.subscribe((response: MessageInfo) => {
 			if (response.success) {
 				this.availableTitles = [];
