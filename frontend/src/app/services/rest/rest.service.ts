@@ -28,6 +28,13 @@ export class RestService {
 		);
 	}
 
+  post(url: string): Observable<any> {
+    return this.http.post<any>(this.URL + url, null, {withCredentials: true})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
 	update(url: string, id: number, item: any) {
 		return this.http.post<any>(this.URL + url + '/update/' + id, item, {withCredentials: true})
 		.pipe(
@@ -37,6 +44,20 @@ export class RestService {
 
 	remove(url: string, id: number) {
 		return this.http.delete<any>(this.URL + url + '/remove/' + id, {withCredentials: true})
+		.pipe(
+			catchError(this.handleError)
+		);
+	}
+
+	changeSubscribeStatus(id: number) {
+		return this.http.post<any>(this.URL + 'bookToOrder/subscribe/' + id, id, {withCredentials: true})
+		.pipe(
+			catchError(this.handleError)
+		);
+	}
+
+	acceptBookToOrder(id: number) {
+		return this.http.post<any>(this.URL + 'bookToOrder/accept/' + id, id, {withCredentials: true})
 		.pipe(
 			catchError(this.handleError)
 		);

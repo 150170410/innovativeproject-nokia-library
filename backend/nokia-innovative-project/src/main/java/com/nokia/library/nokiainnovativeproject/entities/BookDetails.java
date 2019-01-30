@@ -8,10 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -27,8 +24,10 @@ public class BookDetails implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(min = 10, max = 13, message = "ISBN must be 10-13 numbers long")
+	@Size(min = 10, max = 17, message = "ISBN must be 10-17 numbers long")
 	@NotBlank(message = "ISBN is required")
+	@Pattern(regexp = "(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})",
+			message = "ISBN is not valid")
 	protected String isbn;
 
 	@Size(max = 100, message = "Title can't exceed 100 characters")

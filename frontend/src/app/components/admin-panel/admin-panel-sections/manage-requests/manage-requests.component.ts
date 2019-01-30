@@ -17,7 +17,7 @@ export class ManageRequestsComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookToOrder>();
-	displayedColumns: string[] = ['isbn', 'title', 'user', 'actions'];
+	displayedColumns: string[] = ['isbn', 'title', 'totalSubs', 'actions'];
 
 	constructor(private http: RestService,
 				private confirmService: ConfirmationDialogService,
@@ -29,7 +29,7 @@ export class ManageRequestsComponent implements OnInit {
 	}
 
 	async fulfillRequest(request: BookToOrder) {
-		await this.http.remove('bookToOrder', request.id).subscribe((response) => {
+		await this.http.acceptBookToOrder(request.id).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess('Thank you for fulfilling the request!', 'OK');
 				this.getRequestedBooks();
@@ -39,7 +39,6 @@ export class ManageRequestsComponent implements OnInit {
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
-
 	}
 
 	async getRequestedBooks() {
@@ -56,7 +55,16 @@ export class ManageRequestsComponent implements OnInit {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	rejectRequest(request) {
-
+	async rejectRequest(request: BookToOrder) {
+		await this.http.remove('bookToOrder', request.id).subscribe((response) => {
+			if (response.success) {
+				this.snackbar.snackSuccess('The request was rejected.', 'OK');
+				this.getRequestedBooks();
+			} else {
+				this.snackbar.snackError('Error', 'OK');
+			}
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
 	}
 }

@@ -121,7 +121,11 @@ INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('mikolaj@mikolaj.com', 'Mikolaj', 'Mikolaj', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('admin@admin.com', 'Admin', 'Admin', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
+VALUES ('nokia.library@gmail.com', 'Admin', 'Admin', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
+
+INSERT INTO "user" (email, first_name, last_name, password, address_id)
+VALUES ('aabc0041@gmail.com', 'Ja', 'Cek', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+
 INSERT INTO role (role) VALUES ('ROLE_EMPLOYEE');
 INSERT INTO role (role) VALUES ('ROLE_ADMIN');
 INSERT INTO user_roles (user_id, roles_id) VALUES (1, 1);
@@ -131,6 +135,7 @@ INSERT INTO user_roles (user_id, roles_id) VALUES (4, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (5, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (6, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (6, 2);
+INSERT INTO user_roles (user_id, roles_id) VALUES (7, 1);
 
 INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('booka', 1, 1, 'dirty', 6);
 INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('bookaAA', 1, 1, 'putti', 6);
@@ -144,7 +149,3 @@ INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_o
 INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('nubu', 7, 1, 'juj', 6);
 INSERT INTO book (signature, book_details_id, book_status_id, comments, actual_owner_id) VALUES ('pook', 7, 1, 'is fine', 6);
 
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0439708184', 'Harry Potter and the Sorcerer''s Stone', 1);
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('9780679745587', 'In Cold Blood', 2);
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES('9780679732761', 'Invisible Man', 3);
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0061958271', 'Little House on the Prairie', 4);

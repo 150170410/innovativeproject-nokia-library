@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + BOOK_TO_ORDER + UPDATE,
                         API_VERSION + BOOK_TO_ORDER + USER,
 						API_VERSION + BOOK_TO_ORDER + GET_ALL,
+                        API_VERSION + BOOK_TO_ORDER + SUBSCRIPTION,
                         API_VERSION + RENTALS + CREATE,
                         API_VERSION + RENTALS + GET_ALL,
                         API_VERSION + RENTALS + GET_ONE,
