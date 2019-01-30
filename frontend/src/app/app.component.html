@@ -13,6 +13,7 @@
 			</div>
 		</div>
 
-		<img src="../assets/images/innovative_logo.png" class="innovative-projects">
+		<img *ngIf="!darkTheme" src="../assets/images/innovative_logo.png" class="innovative-projects">
+		<img *ngIf="darkTheme" src="../assets/images/innovative_logo_negative.png" class="innovative-projects">
 	</mat-sidenav-content>
 </mat-sidenav-container>
