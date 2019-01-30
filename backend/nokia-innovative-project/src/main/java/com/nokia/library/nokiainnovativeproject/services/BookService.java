@@ -3,6 +3,7 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
+import com.nokia.library.nokiainnovativeproject.entities.BookToOrder;
 import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
@@ -29,6 +30,7 @@ public class BookService {
 	private final BookDetailsRepository bookDetailsRepository;
 	private final BookStatusRepository bookStatusRepository;
 	private final BookStatusService bookStatusService;
+	private final BookToOrderService bookToOrderService;
 	private final UserService userService;
 
 	public List<Book> getAllBooks() {
@@ -76,6 +78,9 @@ public class BookService {
 		book.setStatus(bookStatusRepository.findById(bookDTO.getBookStatusId()).orElseThrow(
 				() -> new ResourceNotFoundException("status")));
 		book.getBookDetails().setIsRemovable(false);
+		BookToOrder bookToOrder = bookToOrderService.getBookToOrderByIsbn(book.getBookDetails().getIsbn());
+		if(bookToOrder != null)
+			bookToOrderService.acceptBookToOrder(bookToOrder.getId());
 		return book;
 	}
 
