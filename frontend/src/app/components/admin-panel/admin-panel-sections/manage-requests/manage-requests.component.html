@@ -1,4 +1,5 @@
 <p>Here you can manage book requests sent by users. When the request gets fulfilled, requesting user will get an email notification about book being available.</p>
+<p>If a book with same isbn is added, then the request will be auto-fullfilled.</p>
 <div>
 	<div class="filter-paginator-wrapper">
 		<div class="filter">
@@ -31,10 +32,10 @@
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
 			<td mat-cell *matCellDef="let request">
 				<p>
-					<button color="primary" mat-button (click)="fulfillRequest(request)">
+					<!-- <button color="primary" mat-button (click)="fulfillRequest(request)">
 						<mat-icon>done</mat-icon>
 						Fulfill
-					</button>
+					</button> -->
 					<button color="warn" mat-button (click)="rejectRequest(request)">
 						<mat-icon>block</mat-icon>
 						Reject
