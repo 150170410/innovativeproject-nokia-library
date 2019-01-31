@@ -25,12 +25,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 })
 export class TableViewComponent implements OnInit {
 
-	booksAll: BookDetails[] = [];
-	books: BookDetails[] = [];
-	listIsLoading = false;
-	hideUnavailable = false;
 	searchValue = '';
-	addresses = ['West Link', 'East Link'];
 	expandedElement = null;
 
 	// table
@@ -38,6 +33,8 @@ export class TableViewComponent implements OnInit {
 	dataSource = new MatTableDataSource<BookDetails>();
 	displayedBookDetailColumns: string[] = ['title', 'authors', 'categories', 'availableBooks'];
 	@ViewChild(MatSort) sort: MatSort;
+
+	isLoadingResults = true;
 
 	// browser
 	visible = true;
@@ -65,7 +62,11 @@ export class TableViewComponent implements OnInit {
 	}
 
 	searchBooks(val: string) {
-		this.dataSource.filter = val.trim().toLowerCase();
+		if (val === '') {
+			this.dataSource.filter = '{';
+		} else {
+			this.dataSource.filter = val.trim().toLowerCase();
+		}
 	}
 
 	filterByCategory(row): boolean {
@@ -79,20 +80,18 @@ export class TableViewComponent implements OnInit {
 	}
 
 	async getBooksDetails() {
-		this.listIsLoading = true;
+		this.isLoadingResults = true;
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll/available');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
-			console.log(filter);
-			console.log(JSON.stringify(data));
 			return (data.title.toLowerCase().includes(filter.toLowerCase())
 				|| JSON.stringify(data.authors).toLowerCase().includes(filter.toLowerCase()))
 				&& this.filterByCategory(JSON.stringify(data.categories).toLowerCase())
 				&& JSON.stringify(data).toLowerCase().includes(filter.toLowerCase())
 		};
 		this.dataSource.sort = this.sort;
-		this.listIsLoading = false;
+		this.isLoadingResults = false;
 	}
 
 	async getCategories() {
@@ -100,7 +99,7 @@ export class TableViewComponent implements OnInit {
 		this.availableCategories = this.categoriesToString(response.object).sort();
 		this.categoriesFormControl.patchValue('');
 	}
-	
+
 	removeCat(category: string): void {
 		const index = this.selectedCategories.indexOf(category);
 		if (index >= 0) {
