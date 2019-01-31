@@ -50,7 +50,7 @@ public class ReservationController {
 	public ResponseEntity createReservation(@RequestBody @Valid ReservationDTO reservationDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
 		return MessageInfo.success(reservationService.createReservation(reservationDTO),
-				Arrays.asList("Reservation" + Messages.get(CREATED_SUCCESSFULLY)));
+				Arrays.asList(Messages.get(RESERVED_SUCCESSFULLY)));
 	}
 
 	@PostMapping(RESERVATIONS + ACCEPT)

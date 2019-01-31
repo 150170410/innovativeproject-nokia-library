@@ -4,5 +4,7 @@ export class BookToOrder {
 	id: number;
 	isbn: string;
 	title: string;
-	user: User;
+	subscribed: boolean;
+    removable: boolean;
+	totalSubs: number;
 }

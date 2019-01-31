@@ -49,7 +49,7 @@ export class BooksReservedComponent implements OnInit {
 	}
 
 	acceptReservation(reservation: Reservation) {
-		this.http.remove('reservations/accept/', reservation.id).subscribe((response) => {
+		this.http.save('reservations/accept/' + reservation.id, {}).subscribe((response) => {
 			if (response.success) {
 				this.snackbar.snackSuccess(response.message, 'OK');
 			} else {

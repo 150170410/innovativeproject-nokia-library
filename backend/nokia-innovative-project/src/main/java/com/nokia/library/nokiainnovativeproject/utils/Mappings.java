@@ -53,5 +53,7 @@ public class Mappings {
 	public static final String TAKE_ADMIN = "/takeAdmin/{id}";
 	public static final String ASSIGN_ADMIN = "/assignAdmin/{id}";
 
+	public static final String SUBSCRIPTION = "/subscribe/{id}";
+
 
 }

@@ -62,26 +62,26 @@ public class RentalController {
 	public ResponseEntity createRental(@RequestBody @Valid RentalDTO rentalDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
 		return MessageInfo.success(rentalService.createRental(rentalDTO),
-				Arrays.asList("Rental" + Messages.get(CREATED_SUCCESSFULLY)));
+				Arrays.asList(Messages.get(BORROWED_SUCCESSFULLY)));
 	}
 
 	@PostMapping(RENTALS + PROLONG)
 	public ResponseEntity prolongRental(@PathVariable Long id) {
 		return MessageInfo.success(rentalService.prolongRental(id),
-				Arrays.asList("Rental" + Messages.get(UPDATED_SUCCESSFULLY)));
+				Arrays.asList(Messages.get(PROLONGED_SUCCESSFULLY)));
 	}
 
 	@PostMapping(RENTALS + HANDOVER)
 	public ResponseEntity handOverRental(@PathVariable Long id) {
 		return MessageInfo.success(rentalService.handOverRental(id),
-				Arrays.asList("Rental" + Messages.get(UPDATED_SUCCESSFULLY)));
+				Arrays.asList(Messages.get(HANDOVER_SUCCESSFULLY)));
 	}
 
 	@PostMapping(RENTALS + RETURN)
 	public ResponseEntity returnRental(@PathVariable Long id) {
 		rentalService.returnRental(id);
 		return MessageInfo.success(null,
-				Arrays.asList("Rental" + Messages.get(RETURNED_SUCCESSFULLY)));
+				Arrays.asList(Messages.get(RETURNED_SUCCESSFULLY)));
 	}
 
 	@DeleteMapping(RENTALS + REMOVE)

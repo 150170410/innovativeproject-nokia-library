@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "\"User\"")
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements Serializable {
@@ -22,6 +23,7 @@ public class User implements Serializable {
 	@Id
 	@Setter(AccessLevel.NONE)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
 	private Long id;
 
 	@Size(min = 3, max = 30, message = "User's name must be 3-30 characters long")

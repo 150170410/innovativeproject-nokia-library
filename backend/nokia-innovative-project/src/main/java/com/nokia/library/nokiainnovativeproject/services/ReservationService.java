@@ -11,6 +11,9 @@ import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundExcep
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.RentalRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.ReservationRepository;
+
+import static com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum.*;
+
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import com.nokia.library.nokiainnovativeproject.utils.DaysDeltaEnum;
 import lombok.RequiredArgsConstructor;
@@ -108,23 +111,24 @@ public class ReservationService {
 		User user = userService.getLoggedInUser();
 		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("reservation"));
 		Book borrowedBook = bookService.getBookById(reservation.getBook().getId());
-		if (borrowedBook.getStatus().getId().equals(BookStatusEnum.RESERVED.getStatusId()) &&
-				reservation.getUser().getId().equals(user.getId())) {
-			borrowedBook = bookService.changeState(
-					borrowedBook,
-					BookStatusEnum.AWAITING.getStatusId(),
-					Integer.MAX_VALUE,
-					null);
-			Rental rental = new Rental();
-			rental.setBook(borrowedBook);
-			rental.setUser(user);
 
-			bookRepository.save(borrowedBook);
-			rentalRepository.save(rental);
-			reservationRepository.delete(reservation);
-		} else {
-			throw new AuthorizationException();
-		}
+		validateUser(user, reservation);
+
+		validateBookStatus(borrowedBook, RESERVED);
+
+		borrowedBook = bookService.changeState(
+				borrowedBook,
+				BookStatusEnum.AWAITING.getId(),
+				Integer.MAX_VALUE,
+				null);
+		Rental rental = new Rental();
+		rental.setBook(borrowedBook);
+		rental.setUser(user);
+
+		bookRepository.save(borrowedBook);
+		rentalRepository.save(rental);
+		reservationRepository.delete(reservation);
+
 	}
 
 	public void rejectReservation(Long id) {
@@ -133,44 +137,43 @@ public class ReservationService {
 		Long bookId = reservation.getBook().getId();
 		Book borrowedBook = bookService.getBookById(bookId);
 		List<Reservation> queue = reservationRepository.findByBookId(bookId);
-		if (borrowedBook.getStatus().getId().equals(BookStatusEnum.RESERVED.getStatusId()) &&
-				reservation.getUser().getId().equals(user.getId())) {
-			if (queue.size() == 1) {
-				borrowedBook = bookService.changeState(
-						borrowedBook,
-						BookStatusEnum.AVAILABLE.getStatusId(),
-						DaysDeltaEnum.RESET.getDays(),
-						null);
-			} else {
-				borrowedBook = bookService.changeState(
-						borrowedBook,
-						BookStatusEnum.RESERVED.getStatusId(),
-						DaysDeltaEnum.MINUSMONTH.getDays(),
-						null);
-			}
-			saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
-			updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
+
+		validateUser(user, reservation);
+
+		validateBookStatus(borrowedBook, RESERVED);
+
+		if (queue.size() == 1) {
+			borrowedBook = bookService.changeState(
+					borrowedBook,
+					BookStatusEnum.AVAILABLE.getId(),
+					DaysDeltaEnum.RESET.getDays(),
+					null);
 		} else {
-			throw new AuthorizationException();
+			borrowedBook = bookService.changeState(
+					borrowedBook,
+					BookStatusEnum.RESERVED.getId(),
+					DaysDeltaEnum.MINUSMONTH.getDays(),
+					null);
 		}
+		saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
+		updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
 	}
 
 	public void cancelReservation(Long id) {
 		User user = userService.getLoggedInUser();
 		Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("reservation"));
 		Book borrowedBook = bookService.getBookById(reservation.getBook().getId());
-		if (reservation.getUser().getId().equals(user.getId())) {
-			borrowedBook = bookService.changeState(
-					borrowedBook,
-					borrowedBook.getStatus().getId(),
-					DaysDeltaEnum.MINUSMONTH.getDays(),
-					null);
-			saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
-			List<Reservation> queue = reservationRepository.findByBookId(borrowedBook.getId());
-			updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
-		} else {
-			throw new AuthorizationException();
-		}
+
+		validateUser(user, reservation);
+
+		borrowedBook = bookService.changeState(
+				borrowedBook,
+				borrowedBook.getStatus().getId(),
+				DaysDeltaEnum.MINUSMONTH.getDays(),
+				null);
+		saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
+		List<Reservation> queue = reservationRepository.findByBookId(borrowedBook.getId());
+		updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
 	}
 
 	@Transactional
@@ -188,4 +191,17 @@ public class ReservationService {
 			}
 		}
 	}
+
+	private void validateUser(User user, Reservation reservation) {
+		if (!reservation.getUser().getId().equals(user.getId())) {
+			throw new AuthorizationException();
+		}
+	}
+
+	private void validateBookStatus(Book borrowedBook, BookStatusEnum bookStatusEnum) {
+		if (borrowedBook.getStatus().getId() != bookStatusEnum.getId()) {
+			throw new InvalidBookStateException(MessageTypes.BOOK_RESERVED);
+		}
+	}
+
 }

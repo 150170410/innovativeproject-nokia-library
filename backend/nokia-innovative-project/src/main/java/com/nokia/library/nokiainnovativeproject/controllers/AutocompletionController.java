@@ -29,15 +29,16 @@ public class AutocompletionController {
 
     @GetMapping(Mappings.GET_ALL)
     public ResponseEntity getBookDetails(@RequestParam String isbn) {
+        isbn.replace(" ", "").replace("-", "");
         List<BookDetailsDTO> list = new ArrayList<>();
         BookDetailsDTO bookDetailsItBookStore = autocompletionService.getBookDetailsFromApiItBookStore(isbn);
-        if(bookDetailsItBookStore != null)
+        if (bookDetailsItBookStore != null)
             list.add(bookDetailsItBookStore);
         BookDetailsDTO bookDetailsGoogle = autocompletionService.getBookDetailsFromApiGoogle(isbn);
-        if(bookDetailsGoogle  != null)
+        if (bookDetailsGoogle != null)
             list.add(bookDetailsGoogle);
         BookDetailsDTO bookDetailsBN = autocompletionService.getBookDetailsFromApiBN(isbn);
-        if(bookDetailsBN != null)
+        if (bookDetailsBN != null)
             list.add(bookDetailsBN);
         return list.isEmpty() ? MessageInfo.failure(Arrays.asList(Messages.get(BOOK_WITH_ISBN_NOT_FOUND))) :
                 MessageInfo.success(list, Arrays.asList(Messages.get(LIST_OF) + "bookDetails"));

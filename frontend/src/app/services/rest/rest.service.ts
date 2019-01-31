@@ -49,6 +49,20 @@ export class RestService {
 		);
 	}
 
+	changeSubscribeStatus(id: number) {
+		return this.http.post<any>(this.URL + 'bookToOrder/subscribe/' + id, id, {withCredentials: true})
+		.pipe(
+			catchError(this.handleError)
+		);
+	}
+
+	acceptBookToOrder(id: number) {
+		return this.http.post<any>(this.URL + 'bookToOrder/accept/' + id, id, {withCredentials: true})
+		.pipe(
+			catchError(this.handleError)
+		);
+	}
+
 	private handleError(error: HttpErrorResponse) {
 		if (error.error instanceof ErrorEvent) {
 			console.error('An error occurred:', error.error.message);

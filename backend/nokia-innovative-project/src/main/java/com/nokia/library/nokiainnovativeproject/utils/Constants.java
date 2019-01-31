@@ -32,6 +32,9 @@ public class Constants {
         NOT_RENTED,
         BOOK_ALREADY_IN_POSSESSION,
         CREATED_SUCCESSFULLY,
+		BORROWED_SUCCESSFULLY,
+		PROLONGED_SUCCESSFULLY,
+		HANDOVER_SUCCESSFULLY,
         UPDATED_SUCCESSFULLY,
         REMOVED_SUCCESSFULLY,
         LOCKED_SUCCESSFULLY,
@@ -40,6 +43,7 @@ public class Constants {
         ACCEPTED_SUCCESSFULLY,
         CANCELLED_SUCCESSFULLY,
         REJECTED_SUCCESSFULLY,
+		RESERVED_SUCCESSFULLY,
         SENT_SUCCESSFULLY,
         LIST_OF,
         REQUESTED,
@@ -62,14 +66,7 @@ public class Constants {
 
     public static Map<MessageTypes, String> Messages = new HashMap<>();
     static {
-        Messages.put(MessageTypes.BOOK_ALREADY_RENTED, "This book is rented by another user");
-        Messages.put(MessageTypes.BOOK_RESERVED, "This book is reserved by another user");
-        Messages.put(MessageTypes.RENTAL_OBSOLETE, "This rental is archived.");
-        Messages.put(MessageTypes.PROLONG_NOT_AVAILABLE, "This rental cannot be prolonged yet.");
-        Messages.put(MessageTypes.BOOK_ALREADY_HANDED_OVER, "This book has already been handed over");
-        Messages.put(MessageTypes.BOOK_ALREADY_RESERVED, "This book has already been reserved by this user.");
-        Messages.put(MessageTypes.NOT_RENTED, "This book has not been rented by anyone. It's available for renting.");
-        Messages.put(MessageTypes.BOOK_ALREADY_IN_POSSESSION, "This book has already been rented by this user. It cannot be reserved.");
+
         Messages.put(MessageTypes.CREATED_SUCCESSFULLY, " created successfully.");
         Messages.put(MessageTypes.UPDATED_SUCCESSFULLY, " updated successfully.");
         Messages.put(MessageTypes.REMOVED_SUCCESSFULLY, " you have selected has been removed successfully.");
@@ -80,10 +77,8 @@ public class Constants {
         Messages.put(MessageTypes.UNLOCKED_SUCCESSFULLY, " unlocked successfully");
         Messages.put(MessageTypes.SENT_SUCCESSFULLY, " sent successfully.");
         Messages.put(MessageTypes.UPLOADED, " uploaded.");
-        Messages.put(MessageTypes.RETURNED_SUCCESSFULLY, " returned successfully.");
-        Messages.put(MessageTypes.ACCEPTED_SUCCESSFULLY, " accepted successfully.");
-        Messages.put(MessageTypes.CANCELLED_SUCCESSFULLY, " cancelled successfully.");
-        Messages.put(MessageTypes.REJECTED_SUCCESSFULLY, " rejected successfully.");
+
+
         Messages.put(MessageTypes.ADMIN_ROLE_ADDED, "The admin role has been successfully added.");
         Messages.put(MessageTypes.ADMIN_ROLE_REMOVED, "The admin role has been successfully removed.");
         Messages.put(MessageTypes.USER_LOGGED_IN, "You are logged in.");
@@ -98,5 +93,25 @@ public class Constants {
         Messages.put(MessageTypes.CANT_DELETE_LAST_ADMIN, "You can't delete the last admin from the database!");
         Messages.put(MessageTypes.SPECIFY_ADDRESS, "Please. Specify address!");
         Messages.put(MessageTypes.CANT_FIND_USER_BY_EMAIL, "Sorry we can't find this user by email!");
+
+        // rentals
+		Messages.put(MessageTypes.RETURNED_SUCCESSFULLY, "Book returned successfully.");
+		Messages.put(MessageTypes.BORROWED_SUCCESSFULLY, "Book borrowed successfully, please check email for pick up details.");
+		Messages.put(MessageTypes.PROLONGED_SUCCESSFULLY, "Book successfully prolonged for 1 month.");
+		Messages.put(MessageTypes.HANDOVER_SUCCESSFULLY, "Book handed over successfully.");
+		Messages.put(MessageTypes.PROLONG_NOT_AVAILABLE, "This rental cannot be prolonged yet.");
+		Messages.put(MessageTypes.RENTAL_OBSOLETE, "This rental is archived.");
+		Messages.put(MessageTypes.BOOK_ALREADY_RENTED, "This book is rented by another user");
+		Messages.put(MessageTypes.BOOK_ALREADY_HANDED_OVER, "This book has already been handed over");
+		Messages.put(MessageTypes.BOOK_ALREADY_RESERVED, "You already have reservation for this book.");
+
+		// reservations
+		Messages.put(MessageTypes.RESERVED_SUCCESSFULLY, "Book reserved successfully.");
+		Messages.put(MessageTypes.ACCEPTED_SUCCESSFULLY, " accepted successfully.");
+		Messages.put(MessageTypes.CANCELLED_SUCCESSFULLY, " cancelled successfully.");
+		Messages.put(MessageTypes.REJECTED_SUCCESSFULLY, " rejected successfully.");
+		Messages.put(MessageTypes.BOOK_RESERVED, "This book is reserved by another user");
+		Messages.put(MessageTypes.NOT_RENTED, "This book has not been rented by anyone. It's available for renting.");
+		Messages.put(MessageTypes.BOOK_ALREADY_IN_POSSESSION, "This book has already been rented by this user. It cannot be reserved.");
     }
 }

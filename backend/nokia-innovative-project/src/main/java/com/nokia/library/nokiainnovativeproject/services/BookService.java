@@ -143,17 +143,17 @@ public class BookService {
 
 	public Book lockBook(String signature) {
 		Book bookToLock = bookRepository.findBySignature(signature);
-		if (!bookToLock.getStatus().getId().equals(BookStatusEnum.AVAILABLE.getStatusId())) {
+		if (!bookToLock.getStatus().getId().equals(BookStatusEnum.AVAILABLE.getId())) {
 			throw new InvalidBookStateException(Constants.MessageTypes.BOOK_RESERVED);
 		}
-		return changeState(bookToLock, BookStatusEnum.UNAVAILABLE.getStatusId(), 0, null);
+		return changeState(bookToLock, BookStatusEnum.UNAVAILABLE.getId(), 0, null);
 	}
 
 	public Book unlockBook(String signature) {
 		Book bookToUnlock = bookRepository.findBySignature(signature);
-		if (!bookToUnlock.getStatus().getId().equals(BookStatusEnum.UNAVAILABLE.getStatusId())) {
+		if (!bookToUnlock.getStatus().getId().equals(BookStatusEnum.UNAVAILABLE.getId())) {
 			throw new InvalidBookStateException(Constants.MessageTypes.BOOK_RESERVED);
 		}
-		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getStatusId(), 0, null);
+		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getId(), 0, null);
 	}
 }

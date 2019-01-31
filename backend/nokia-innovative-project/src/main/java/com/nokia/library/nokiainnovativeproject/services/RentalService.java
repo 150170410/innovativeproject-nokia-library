@@ -1,5 +1,6 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
+import com.nokia.library.nokiainnovativeproject.DTOs.Email;
 import com.nokia.library.nokiainnovativeproject.DTOs.RentalDTO;
 import com.nokia.library.nokiainnovativeproject.entities.*;
 import com.nokia.library.nokiainnovativeproject.exceptions.AuthorizationException;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +40,7 @@ public class RentalService {
 	private final UserService userService;
 	private final ReservationService reservationService;
 	private final BookService bookService;
+	private final EmailService emailService;
 	private final UserRepository userRepository;
 
 	public List<Rental> getAllRentals() {
@@ -116,36 +119,41 @@ public class RentalService {
 		Book borrowedBook = bookService.getBookById(bookId);
 		rental.setBook(bookService.changeState(
 				borrowedBook,
-				BookStatusEnum.AWAITING.getStatusId(),
+				BookStatusEnum.AWAITING.getId(),
 				30,
 				null));
 		rental.setUser(user);
-		return rentalRepository.save(rental);
+		rental = rentalRepository.save(rental);
+		User admin = userService.getUserById(borrowedBook.getCurrentOwnerId());
+		Email email = new Email("Book rent", String.format("Your book can be picked up from: %s %s, %s",
+				admin.getFirstName(), admin.getLastName(), admin.getAddress().getBuilding()));
+		emailService.sendSimpleMessage(email, Arrays.asList(user.getEmail()));
+		return rental;
 	}
 
 
 	public Rental prolongRental(Long id) {
 		User user = userService.getLoggedInUser();
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("rental"));
-		if (rental.getUser().getId().equals(user.getId())) {
-			if (!rental.getIsCurrent()) {
-				throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
-			}
-			if (rental.getReturnDate().minusWeeks(1).compareTo(LocalDateTime.now()) > 0) {
-				throw new InvalidBookStateException(MessageTypes.PROLONG_NOT_AVAILABLE);
-			}
-			List<Reservation> reservations = reservationRepository.findByBookId(rental.getBook().getId());
-			if ((reservations == null || reservations.isEmpty() && !rental.getWasProlonged())) {
-				rental.setReturnDate(rental.getReturnDate().plusMonths(1));
-				rental.getBook().setAvailableDate(rental.getReturnDate());
-				rental.setWasProlonged(true);
-				return rentalRepository.save(rental);
-			} else {
-				throw new InvalidBookStateException(MessageTypes.PROLONG_NOT_AVAILABLE);
-			}
-		} else {
-			throw new AuthorizationException();
+
+		validateUser(user, rental);
+
+		if (!rental.getIsCurrent()) {
+			throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
 		}
+		if (rental.getReturnDate().minusWeeks(1).compareTo(LocalDateTime.now()) > 0) {
+			throw new InvalidBookStateException(MessageTypes.PROLONG_NOT_AVAILABLE);
+		}
+		List<Reservation> reservations = reservationRepository.findByBookId(rental.getBook().getId());
+		if ((reservations == null || reservations.isEmpty()) && !rental.getWasProlonged()) {
+			rental.setReturnDate(rental.getReturnDate().plusMonths(1));
+			rental.getBook().setAvailableDate(rental.getReturnDate());
+			rental.setWasProlonged(true);
+			return rentalRepository.save(rental);
+		} else {
+			throw new InvalidBookStateException(MessageTypes.PROLONG_NOT_AVAILABLE);
+		}
+
 	}
 
 	public Rental returnRental(Long id) {
@@ -154,22 +162,24 @@ public class RentalService {
 		if (!rental.getIsCurrent()) {
 			throw new InvalidBookStateException(MessageTypes.RENTAL_OBSOLETE);
 		}
-		List<Reservation> queue = reservationRepository.findByBookId(rental.getId());
+		List<Reservation> queue = reservationRepository.findByBookId(rental.getBook().getId());
+		Book borrowedBook = rental.getBook();
 		if (queue.isEmpty()) {
-			bookService.changeState(
-					rental.getBook(),
-					BookStatusEnum.AVAILABLE.getStatusId(),
+			borrowedBook = bookService.changeState(
+					borrowedBook,
+					BookStatusEnum.AVAILABLE.getId(),
 					DaysDeltaEnum.RESET.getDays(),
 					user);
 		} else {
 			Integer daysDelta = (int) (long) LocalDateTime.from(rental.getReturnDate()).until(LocalDateTime.now(), ChronoUnit.DAYS);
-			bookService.changeState(
-					rental.getBook(),
-					BookStatusEnum.RESERVED.getStatusId(),
+			borrowedBook = bookService.changeState(
+					borrowedBook,
+					BookStatusEnum.RESERVED.getId(),
 					daysDelta,
 					user);
 			reservationService.updateReservationsQueue(queue, daysDelta);
 		}
+		bookRepository.save(borrowedBook);
 		rental.setReturnDate(LocalDateTime.now());
 		rental.setIsCurrent(false);
 
@@ -179,29 +189,28 @@ public class RentalService {
 	public void cancelRental(Long id) {
 		User user = userService.getLoggedInUser();
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("rental"));
-		if (rental.getUser().getId().equals(user.getId())) {
-			Long bookId = rental.getBook().getId();
-			Book borrowedBook = bookService.getBookById(bookId);
-			List<Reservation> queue = reservationRepository.findByBookId(bookId);
-			if (queue.isEmpty()) {
-				borrowedBook = bookService.changeState(
-						borrowedBook,
-						BookStatusEnum.AVAILABLE.getStatusId(),
-						DaysDeltaEnum.MINUSMONTH.getDays(),
-						null);
-			} else {
-				borrowedBook = bookService.changeState(
-						borrowedBook,
-						BookStatusEnum.RESERVED.getStatusId(),
-						DaysDeltaEnum.MINUSMONTH.getDays(),
-						null);
-				reservationService.updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
-			}
-			bookRepository.save(borrowedBook);
-			rentalRepository.delete(rental);
+
+		validateUser(user, rental);
+
+		Long bookId = rental.getBook().getId();
+		Book borrowedBook = bookService.getBookById(bookId);
+		List<Reservation> queue = reservationRepository.findByBookId(bookId);
+		if (queue.isEmpty()) {
+			borrowedBook = bookService.changeState(
+					borrowedBook,
+					BookStatusEnum.AVAILABLE.getId(),
+					DaysDeltaEnum.MINUSMONTH.getDays(),
+					null);
 		} else {
-			throw new AuthorizationException();
+			borrowedBook = bookService.changeState(
+					borrowedBook,
+					BookStatusEnum.RESERVED.getId(),
+					DaysDeltaEnum.MINUSMONTH.getDays(),
+					null);
+			reservationService.updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
 		}
+		bookRepository.save(borrowedBook);
+		rentalRepository.delete(rental);
 	}
 
 	public Rental handOverRental(Long id) {
@@ -211,10 +220,17 @@ public class RentalService {
 		}
 		bookService.changeState(
 				rental.getBook(),
-				BookStatusEnum.BORROWED.getStatusId(),
+				BookStatusEnum.BORROWED.getId(),
 				Integer.MAX_VALUE,
 				rental.getUser());
 		rental.setHandOverDate(LocalDateTime.now());
 		return rentalRepository.save(rental);
 	}
+
+	void validateUser(User user, Rental rental) {
+		if (!rental.getUser().getId().equals(user.getId())) {
+			throw new AuthorizationException();
+		}
+	}
+
 }

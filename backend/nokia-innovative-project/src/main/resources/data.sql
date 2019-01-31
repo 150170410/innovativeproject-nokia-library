@@ -121,7 +121,7 @@ INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('mikolaj.mikolajowski@user.com', 'Mikołaj', 'Mikołajski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('janusz.pawlacz@user.com', 'Janusz', 'Pawlacz', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+VALUES ('janusz.kowalski@user.com', 'Janusz', 'Kowalski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('nokia.library@gmail.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
@@ -148,8 +148,3 @@ INSERT INTO book (signature, book_details_id, book_status_id, comments, current_
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('miu miau', 7, 1, 'missing cover', 7);
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('nubu', 7, 1, 'juj', 7);
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('pook', 7, 1, 'is fine', 7);
-
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0439708184', 'Harry Potter and the Sorcerer''s Stone', 1);
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('9780679745587', 'In Cold Blood', 2);
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES('9780679732761', 'Invisible Man', 3);
-INSERT INTO book_to_order (isbn, title, requested_user)  VALUES ('0061958271', 'Little House on the Prairie', 4);
