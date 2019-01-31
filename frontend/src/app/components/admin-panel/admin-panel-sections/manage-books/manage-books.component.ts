@@ -95,7 +95,7 @@ export class ManageBooksComponent implements OnInit {
 	}
 
 	async getBookCopies() {
-		const response: MessageInfo = await this.http.getAll('books/getAll');
+		const response: MessageInfo = await this.http.getAll('books/getAllFill');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginatorCopies;
 		this.dataSource.filterPredicate = (data, filter: string) => {

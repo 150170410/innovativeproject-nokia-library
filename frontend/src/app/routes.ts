@@ -6,7 +6,7 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { LoginComponent } from './components/login/login.component';
-import { RegistrationComponent } from "./components/registration/registration.component";
+import { RegistrationComponent } from './components/registration/registration.component';
 import { TableViewComponent } from './components/views/table-view/table-view.component';
 
 export const routes: Routes = [

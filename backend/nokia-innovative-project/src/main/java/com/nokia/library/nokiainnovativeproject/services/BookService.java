@@ -3,12 +3,14 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
+import com.nokia.library.nokiainnovativeproject.entities.BookWithOwner;
 import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import com.nokia.library.nokiainnovativeproject.utils.Constants;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +33,7 @@ public class BookService {
 	private final BookStatusRepository bookStatusRepository;
 	private final BookStatusService bookStatusService;
 	private final UserService userService;
+	private final UserRepository userRepository;
 
 	public List<Book> getAllBooks() {
 		List<Book> books = bookRepository.findAll();
@@ -38,6 +42,28 @@ public class BookService {
 			Hibernate.initialize(book.getStatus());
 		}
 		return books;
+	}
+
+	public List<BookWithOwner> getAllBookWithOwner() {
+		List<Book> books = getAllBooks();
+		List<BookWithOwner> booksWithOwner = new ArrayList<>();
+		for(Book book : books) {
+			booksWithOwner.add(getBookWithOwner(book));
+		}
+		return booksWithOwner;
+	}
+
+	public BookWithOwner getBookWithOwnerById(Long id) {
+		Book book = getBookById(id);
+		return getBookWithOwner(book);
+	}
+
+	private BookWithOwner getBookWithOwner(Book book) {
+		ModelMapper modelMapper = new ModelMapper();
+		BookWithOwner bookWithOwner = modelMapper.map(book, BookWithOwner.class);
+		bookWithOwner.setActualOwner(userRepository.findById(book.getCurrentOwnerId()).orElseThrow(
+				() -> new ResourceNotFoundException("user")));
+		return bookWithOwner;
 	}
 
 	public Book getBookById(Long id) {
