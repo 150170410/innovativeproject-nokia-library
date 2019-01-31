@@ -39,10 +39,14 @@ table {
 	width: 100%;
 }
 
-.list-container{
+.list-container {
 	min-height: 90%;
 }
 
-.search-field{
+.search-field {
 	width: 300px;
+}
+
+.chips-filter-field {
+	width: 500px;
 }
