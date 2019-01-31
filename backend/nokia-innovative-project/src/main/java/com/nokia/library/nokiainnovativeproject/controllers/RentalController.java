@@ -58,6 +58,12 @@ public class RentalController {
 				Arrays.asList("Rentals" + Messages.get(REQUESTED)));
 	}
 
+	@GetMapping(RENTALS + HISTORY + GET_ALL)
+	public ResponseEntity getAllRentalHistory() {
+		return MessageInfo.success(rentalService.getAllRentalHistory(),
+				Arrays.asList("Rentals history."));
+	}
+
 	@PostMapping(RENTALS + CREATE)
 	public ResponseEntity createRental(@RequestBody @Valid RentalDTO rentalDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);

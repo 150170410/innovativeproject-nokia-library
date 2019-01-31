@@ -46,6 +46,8 @@ import { SnackbarService } from './services/snackbar/snackbar.service';
 import { TableViewComponent } from './components/views/table-view/table-view.component';
 import { AccessDeniedComponent } from './utils/components/access-denied/access-denied.component';
 import { RolesPipe } from './pipes/roles/roles.pipe';
+import { ManageHistoryComponent } from './components/admin-panel/admin-panel-sections/manage-history/manage-history.component';
+
 
 
 @NgModule({
@@ -81,7 +83,9 @@ import { RolesPipe } from './pipes/roles/roles.pipe';
 		RegistrationComponent,
 		TableViewComponent,
 		RolesPipe,
-		AccessDeniedComponent
+		AccessDeniedComponent,
+		ManageHistoryComponent
+
 	],
 	imports: [
 		BrowserModule,

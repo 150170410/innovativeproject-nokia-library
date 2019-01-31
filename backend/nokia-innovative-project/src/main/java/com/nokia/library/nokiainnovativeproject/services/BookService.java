@@ -3,7 +3,11 @@ package com.nokia.library.nokiainnovativeproject.services;
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
+
 import com.nokia.library.nokiainnovativeproject.entities.BookWithOwner;
+
+import com.nokia.library.nokiainnovativeproject.entities.BookToOrder;
+
 import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
@@ -32,11 +36,12 @@ public class BookService {
 	private final BookDetailsRepository bookDetailsRepository;
 	private final BookStatusRepository bookStatusRepository;
 	private final BookStatusService bookStatusService;
+	private final BookToOrderService bookToOrderService;
 	private final UserService userService;
 	private final UserRepository userRepository;
 
 	public List<Book> getAllBooks() {
-		List<Book> books = bookRepository.findAll();
+		List<Book> books = bookRepository.findAllByAdminOwnerId(userService.getLoggedInUser().getId());
 		for (Book book : books) {
 			Hibernate.initialize(book.getBookDetails());
 			Hibernate.initialize(book.getStatus());
@@ -73,15 +78,17 @@ public class BookService {
 		return book;
 	}
 
-	public List<Book> getAllBooksByBookDetailsId(Long id) {
-		return bookRepository.getBooksByBookDetailsId(id);
+	public List<Book> getAllBooksByBookDetailsId(Long bookDetailsId) {
+		return bookRepository.findByBookDetailsId(bookDetailsId);
 	}
 
 	public Book createBook(BookDTO bookDTO) {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
 		book.setAvailableDate(LocalDateTime.now());
-		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
+		User loggedIn = userService.getLoggedInUser();
+		book.setCurrentOwnerId(loggedIn.getId());
+		book.setAdminOwnerId(loggedIn.getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
 
@@ -102,6 +109,9 @@ public class BookService {
 		book.setStatus(bookStatusRepository.findById(bookDTO.getBookStatusId()).orElseThrow(
 				() -> new ResourceNotFoundException("status")));
 		book.getBookDetails().setIsRemovable(false);
+		BookToOrder bookToOrder = bookToOrderService.getBookToOrderByIsbn(book.getBookDetails().getIsbn());
+		if(bookToOrder != null)
+			bookToOrderService.acceptBookToOrder(bookToOrder.getId());
 		return book;
 	}
 

@@ -47,4 +47,6 @@ public class Book implements Serializable {
 	protected LocalDateTime availableDate;
 
 	private Long currentOwnerId;
+
+	private Long adminOwnerId;
 }

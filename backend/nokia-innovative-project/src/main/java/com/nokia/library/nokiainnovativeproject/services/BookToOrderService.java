@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -117,6 +118,10 @@ public class BookToOrderService {
                 " Title: " + bookToOrder.getTitle() + ", Isbn: " + bookToOrder.getIsbn() + ".");
         email.setSubject("New book request: " + bookToOrder.getTitle() + ".");
         return email;
+    }
+
+    public BookToOrder getBookToOrderByIsbn(String isbn){
+        return bookToOrderRepository.getBookToOrdersByIsbn(isbn).orElse(null);
     }
 
     @Scheduled(cron = "0 0 22 * * ?")
