@@ -44,7 +44,7 @@ public class RentalService {
 	private final UserRepository userRepository;
 
 	public List<Rental> getAllRentals() {
-		List<Rental> rentals = rentalRepository.findAll();
+		List<Rental> rentals = rentalRepository.findAllByAdminOwnerId(userService.getLoggedInUser().getId());
 		for (Rental rental : rentals) {
 			Hibernate.initialize(rental.getBook());
 			Hibernate.initialize(rental.getUser());

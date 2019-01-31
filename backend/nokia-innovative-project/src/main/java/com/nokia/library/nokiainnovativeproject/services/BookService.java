@@ -34,7 +34,7 @@ public class BookService {
 	private final UserService userService;
 
 	public List<Book> getAllBooks() {
-		List<Book> books = bookRepository.findAll();
+		List<Book> books = bookRepository.findAllByAdminOwnerId(userService.getLoggedInUser().getId());
 		for (Book book : books) {
 			Hibernate.initialize(book.getBookDetails());
 			Hibernate.initialize(book.getStatus());
@@ -49,15 +49,17 @@ public class BookService {
 		return book;
 	}
 
-	public List<Book> getAllBooksByBookDetailsId(Long id) {
-		return bookRepository.getBooksByBookDetailsId(id);
+	public List<Book> getAllBooksByBookDetailsId(Long bookDetailsId) {
+		return bookRepository.findByBookDetailsId(bookDetailsId);
 	}
 
 	public Book createBook(BookDTO bookDTO) {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
 		book.setAvailableDate(LocalDateTime.now());
-		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
+		User loggedIn = userService.getLoggedInUser();
+		book.setCurrentOwnerId(loggedIn.getId());
+		book.setAdminOwnerId(loggedIn.getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
 
