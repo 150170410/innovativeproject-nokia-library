@@ -28,9 +28,19 @@ public class BookController {
 		return MessageInfo.success(bookService.getAllBooks(), Arrays.asList(Messages.get(LIST_OF) + "books."));
 	}
 
+	@GetMapping(GET_ALL_FILL)
+	public ResponseEntity getAllBooksWithOwner() {
+		return MessageInfo.success(bookService.getAllBookWithOwner(), Arrays.asList(Messages.get(LIST_OF) + "books with owner."));
+	}
+
 	@GetMapping(GET_ONE)
 	public ResponseEntity getBookById(@PathVariable Long id) {
 		return MessageInfo.success(bookService.getBookById(id), Arrays.asList("Book" + Messages.get(REQUESTED)));
+	}
+
+	@GetMapping(GET_ONE_FILL)
+	public ResponseEntity getBookWithOwnerById(@PathVariable Long id) {
+		return MessageInfo.success(bookService.getBookWithOwnerById(id), Arrays.asList("Book with owner" + Messages.get(REQUESTED)));
 	}
 
 	@PostMapping(CREATE)

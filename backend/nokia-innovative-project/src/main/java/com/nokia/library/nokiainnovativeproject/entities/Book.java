@@ -25,26 +25,26 @@ public class Book implements Serializable {
 
 	@Size(max = 100, message = "Signature can't exceed 100 characters")
 	@NotBlank(message = "Signature is required")
-	private String signature;
+	protected String signature;
 
 	@Size(max = 5000, message = "Comments can't exceed 5000 characters")
-	private String comments;
+	protected String comments;
 
 	@ManyToOne(cascade = {CascadeType.MERGE,
 			CascadeType.PERSIST},
 			fetch = FetchType.LAZY)
 	@JoinColumn(name = "book_status_id")
-	private BookStatus status;
+	protected BookStatus status;
 
 	@ManyToOne(cascade = {
 			CascadeType.MERGE,
 			CascadeType.PERSIST},
 			fetch = FetchType.EAGER)
 	@JoinColumn(name = "book_details_id")
-	private BookDetails bookDetails;
+	protected BookDetails bookDetails;
 
 	@CreationTimestamp
-	private LocalDateTime availableDate;
+	protected LocalDateTime availableDate;
 
 	private Long currentOwnerId;
 }

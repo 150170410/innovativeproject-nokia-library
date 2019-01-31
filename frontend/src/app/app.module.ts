@@ -45,6 +45,7 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { SnackbarService } from './services/snackbar/snackbar.service';
 import { TableViewComponent } from './components/views/table-view/table-view.component';
 import { RolesPipe } from './pipes/roles.pipe';
+import { AccessDeniedComponent } from './utils/components/access-denied/access-denied.component';
 
 
 @NgModule({
@@ -79,7 +80,8 @@ import { RolesPipe } from './pipes/roles.pipe';
 		LoginComponent,
 		RegistrationComponent,
 		TableViewComponent,
-		RolesPipe
+		RolesPipe,
+		AccessDeniedComponent
 	],
 	imports: [
 		BrowserModule,
