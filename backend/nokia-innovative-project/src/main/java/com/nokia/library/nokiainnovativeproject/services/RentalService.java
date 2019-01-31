@@ -227,6 +227,10 @@ public class RentalService {
 		return rentalRepository.save(rental);
 	}
 
+	public List<Rental> getAllRentalHistory(){
+		return rentalRepository.getAllRentalHistory(userService.getLoggedInUser().getId());
+	}
+
 	void validateUser(User user, Rental rental) {
 		if (!rental.getUser().getId().equals(user.getId())) {
 			throw new AuthorizationException();

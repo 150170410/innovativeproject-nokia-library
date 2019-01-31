@@ -38,6 +38,11 @@
 				<app-manage-users></app-manage-users>
 			</ng-template>
 		</mat-tab>
+		<mat-tab label="Rentals history">
+			<ng-template matTabContent>
+				<app-manage-history></app-manage-history>
+			</ng-template>
+		</mat-tab>
 	</mat-tab-group>
 </div>
 <div *ngIf="!role_admin">
