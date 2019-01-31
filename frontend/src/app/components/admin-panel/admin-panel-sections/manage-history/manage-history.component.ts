@@ -7,7 +7,7 @@ import { MessageInfo } from '../../../../models/MessageInfo';
 @Component({
   selector: 'app-manage-history',
   templateUrl: './manage-history.component.html',
-  styleUrls: ['./manage-history.component.css']
+  styleUrls: ['./manage-history.component.scss', '../../admin-panel.component.scss']
 })
 export class ManageHistoryComponent implements OnInit {
 
