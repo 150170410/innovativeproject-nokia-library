@@ -13,5 +13,5 @@ public interface BookToOrderRepository extends JpaRepository<BookToOrder, Long> 
     @Query(value = "DELETE FROM BOOK_TO_ORDER " +
             "WHERE CREATION_DATE <= now() - interval '2 week';",
     nativeQuery = true)
-   void removeOverdueBooks();
+    void removeOverdueBooks();
 }

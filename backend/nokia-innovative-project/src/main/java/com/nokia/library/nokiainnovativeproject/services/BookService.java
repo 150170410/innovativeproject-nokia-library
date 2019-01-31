@@ -1,18 +1,13 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
-import com.nokia.library.nokiainnovativeproject.entities.Book;
-import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
-import com.nokia.library.nokiainnovativeproject.entities.BookWithOwner;
-import com.nokia.library.nokiainnovativeproject.entities.User;
+import com.nokia.library.nokiainnovativeproject.entities.*;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
-import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.*;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import com.nokia.library.nokiainnovativeproject.utils.Constants;
+import edu.emory.mathcs.backport.java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
@@ -34,6 +29,7 @@ public class BookService {
 	private final BookStatusService bookStatusService;
 	private final UserService userService;
 	private final UserRepository userRepository;
+	private final BookOwnerIdRepository bookOwnerIdRepository;
 
 	public List<Book> getAllBooks() {
 		List<Book> books = bookRepository.findAll();
@@ -82,9 +78,9 @@ public class BookService {
 		Book book = mapper.map(bookDTO, Book.class);
 		book.setAvailableDate(LocalDateTime.now());
 		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
+		book = assignOwnerToBook(book);
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
-
 	public Book updateBook(Long id, BookDTO bookDTO) {
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 		book.setComments(bookDTO.getComments());
@@ -92,6 +88,15 @@ public class BookService {
 		book.getBookDetails().setIsRemovable(true);
 		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
+	}
+
+	private Book assignOwnerToBook(Book book) {
+		ArrayList<BookOwnerId> ownersList = new ArrayList<>();
+		BookOwnerId bookOwnerId = new BookOwnerId();
+		bookOwnerId.setOwnerId(userService.getLoggedInUser().getId());
+		ownersList.add(bookOwnerId);
+		book.setOwnersId(ownersList);
+		return book;
 	}
 
 	private Book persistRequiredEntities(Book book, BookDTO bookDTO) {

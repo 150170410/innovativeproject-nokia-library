@@ -105,26 +105,26 @@ INSERT INTO book_details_categories VALUES (7, 7);
 
 INSERT INTO address (building, city) VALUES ('West Link', 'Wrocław');
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('user@user.com', 'User', 'User', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
+VALUES ('user@user.com', 'User', 'User', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1, true);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('wojtek.wojciechowski@user.com', 'Wojtek', 'Wojciechowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
+VALUES ('wojtek.wojciechowski@user.com', 'Wojtek', 'Wojciechowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1, true);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('jacek.jackowski@user.com', 'Jacek', 'Jackowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
+VALUES ('jacek.jackowski@user.com', 'Jacek', 'Jackowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1, true);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('alex.alexowski@user.com', 'Alex', 'Alexowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
+VALUES ('alex.alexowski@user.com', 'Alex', 'Alexowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1, true);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('mikolaj.mikolajowski@user.com', 'Mikołaj', 'Mikołajski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
+VALUES ('mikolaj.mikolajowski@user.com', 'Mikołaj', 'Mikołajski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1, true);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('janusz.kowalski@user.com', 'Janusz', 'Kowalski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
+VALUES ('janusz.kowalski@user.com', 'Janusz', 'Kowalski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1, true);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('nokia.library@gmail.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
+INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
+VALUES ('nokia.library@gmail.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1, true);
 
 INSERT INTO role (role) VALUES ('ROLE_EMPLOYEE');
 INSERT INTO role (role) VALUES ('ROLE_ADMIN');
@@ -134,6 +134,7 @@ INSERT INTO user_roles (user_id, roles_id) VALUES (3, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (4, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (5, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (6, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (6, 2);
 INSERT INTO user_roles (user_id, roles_id) VALUES (7, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (7, 2);
 
@@ -148,3 +149,16 @@ INSERT INTO book (signature, book_details_id, book_status_id, comments, current_
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('miu miau', 7, 1, 'missing cover', 7);
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('nubu', 7, 1, 'juj', 7);
 INSERT INTO book (signature, book_details_id, book_status_id, comments, current_owner_id) VALUES ('pook', 7, 1, 'is fine', 7);
+
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,1);
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,2);
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,3);
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,4);
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,5);
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,6);
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,7);
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,8);
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,9);
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,10);
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,11);
+INSERT INTO book_owner_id (owner_id, book_id) VALUES (6 ,11);

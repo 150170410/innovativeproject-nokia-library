@@ -53,7 +53,8 @@
 
 		<ng-container matColumnDef="goTo">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Go to</th>
-			<td mat-cell *matCellDef="let borrowing"><b>Janusz Pawlacz</b> at East Link</td>
+			<td mat-cell *matCellDef="let borrowing"><b>{{borrowing.owners[0].firstName}} {{borrowing.owners[0].lastName}}</b>
+        at {{borrowing.owners[0].address.city}} {{borrowing.owners[0].address.building}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="actions">

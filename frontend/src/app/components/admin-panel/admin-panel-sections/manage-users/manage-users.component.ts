@@ -146,9 +146,9 @@ export class ManageUsersComponent implements OnInit {
 		this.http.save('user/assignAdmin/' + user.id, null).subscribe((response) => {
 			if (response.success) {
 				this.getUsers();
-				this.snackbar.snackSuccess('User promoted successfully!', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 			} else {
-				this.snackbar.snackError('Error', 'OK');
+				this.snackbar.snackError(response.message, 'OK');
 			}
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
@@ -159,14 +159,41 @@ export class ManageUsersComponent implements OnInit {
 		this.http.save('user/takeAdmin/' + user.id, null).subscribe((response) => {
 			if (response.success) {
 				this.getUsers();
-				this.snackbar.snackSuccess('User demoted successfully!', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 			} else {
-				this.snackbar.snackError('Error', 'OK');
+				this.snackbar.snackError(response.message, 'OK');
 			}
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
 	}
+
+  unlockAccount(user: User) {
+    this.http.save('user/unlockAccount/' + user.id, null).subscribe((response) => {
+      if (response.success) {
+        this.getUsers();
+        this.snackbar.snackSuccess(response.message, 'OK');
+      } else {
+        this.snackbar.snackError(response.message, 'OK');
+      }
+    }, (error) => {
+      this.snackbar.snackError(error.error.message, 'OK');
+    });
+  }
+
+
+  lockAccount(user: User) {
+    this.http.save('user/lockAccount/' + user.id, null).subscribe((response) => {
+      if (response.success) {
+        this.getUsers();
+        this.snackbar.snackSuccess(response.message, 'OK');
+      } else {
+        this.snackbar.snackError(response.message, 'OK');
+      }
+    }, (error) => {
+      this.snackbar.snackError(error.error.message, 'OK');
+    });
+  }
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();

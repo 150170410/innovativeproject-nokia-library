@@ -33,7 +33,7 @@ public class Rental implements Serializable {
 
 	@CreationTimestamp
 	@Setter(AccessLevel.NONE)
-	protected Date rentalDate;
+	private Date rentalDate;
 
 	protected Boolean isCurrent = true;
 	protected Boolean wasProlonged = false;

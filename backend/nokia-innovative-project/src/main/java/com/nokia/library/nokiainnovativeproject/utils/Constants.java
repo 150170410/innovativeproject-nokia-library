@@ -52,6 +52,8 @@ public class Constants {
         USER_NOT_LOGGED_IN,
         ADMIN_ROLE_ADDED,
         ADMIN_ROLE_REMOVED,
+        USER_ACCOUNT_LOCKED,
+        USER_ACCOUNT_UNLOCKED,
         ACCESS_DENIED,
         CANT_FIND,
         INVALID_TYPE,
@@ -81,6 +83,8 @@ public class Constants {
 
         Messages.put(MessageTypes.ADMIN_ROLE_ADDED, "The admin role has been successfully added.");
         Messages.put(MessageTypes.ADMIN_ROLE_REMOVED, "The admin role has been successfully removed.");
+        Messages.put(MessageTypes.USER_ACCOUNT_LOCKED, "The user account has been successfully locked");
+        Messages.put(MessageTypes.USER_ACCOUNT_UNLOCKED, "The user account has been successfully unlocked");
         Messages.put(MessageTypes.USER_LOGGED_IN, "You are logged in.");
         Messages.put(MessageTypes.USER_NOT_LOGGED_IN, "Please, log in!");
         Messages.put(MessageTypes.ACCESS_DENIED, "Access denied!");

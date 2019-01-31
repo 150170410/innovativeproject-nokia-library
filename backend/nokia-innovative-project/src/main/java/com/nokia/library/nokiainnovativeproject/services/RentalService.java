@@ -80,14 +80,29 @@ public class RentalService {
 		return rentalWithActualOwner;
 	}
 
-	public List<Rental> getRentalsByUser() {
+	public List<RentalWithActualOwner> getRentalsByUser() {
 		User user = userService.getLoggedInUser();
 		List<Rental> rentals = rentalRepository.findByUserId(user.getId());
+		ModelMapper modelMapper = new ModelMapper();
+		List<RentalWithActualOwner> rentalWithActualOwners = new ArrayList<>();
 		for (Rental rental : rentals) {
 			Hibernate.initialize(rental.getBook());
+			List<BookOwnerId> bookOwnerIds = rental.getBook().getOwnersId();
+			List<User> owners = new ArrayList<>();
+			for(BookOwnerId bookOwnerId : bookOwnerIds) {
+				owners.add(userRepository.findById(bookOwnerId.getOwnerId()).orElseThrow(
+						() -> new ResourceNotFoundException("user")));
+			}
+			User actualOwner = userRepository.findById(rental.getBook().getCurrentOwnerId()).orElseThrow(
+					() -> new ResourceNotFoundException("user"));
 			Hibernate.initialize(rental.getUser());
+			RentalWithActualOwner rentalWithActualOwner = modelMapper.map(rental, RentalWithActualOwner.class);
+			rentalWithActualOwner.setOwners(owners);
+			rentalWithActualOwner.setActualOwner(actualOwner);
+			rentalWithActualOwner.setRentalDate(rental.getRentalDate());
+			rentalWithActualOwners.add(rentalWithActualOwner);
 		}
-		return rentals;
+		return rentalWithActualOwners;
 	}
 
 	public List<Rental> getRentalsByBookId(Long bookId) {
@@ -232,5 +247,4 @@ public class RentalService {
 			throw new AuthorizationException();
 		}
 	}
-
 }

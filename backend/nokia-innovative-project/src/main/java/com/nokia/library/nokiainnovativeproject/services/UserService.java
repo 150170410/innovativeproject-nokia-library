@@ -101,6 +101,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         user.setRoles(Arrays.asList(roleRepository.findByRole(ROLE_EMPLOYEE)));
         user = userRepository.save(persistingRequiredEntities(user, userDTO));
+        user.setIsAccountActive(true);
         return user;
     }
 
@@ -128,6 +129,18 @@ public class UserService implements UserDetailsService {
         userRoles.add(role);
         user.setRoles(userRoles);
         user = userRepository.save(user);
+        return user;
+    }
+
+    public User lockUserAccount(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("user"));
+        user.setIsAccountActive(false);
+        return user;
+    }
+
+    public User unlockUserAccount(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("user"));
+        user.setIsAccountActive(true);
         return user;
     }
 
