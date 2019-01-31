@@ -1,0 +1,118 @@
+.filter-paginator-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+mat-spinner {
+  display: inline-block;
+}
+
+table {
+  width: 100%;
+  border: 1px solid black;
+}
+
+th {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: #f5f5f5;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.book-cover {
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  max-height: 200px;
+  max-width: 120px;
+}
+
+.book-description {
+  padding: 16px;
+}
+
+.book-read-more {
+  opacity: 0.5;
+}
+
+img {
+  max-height: 200px;
+  max-width: 120px;
+}
+
+.example-radio-group {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.example-radio-button {
+  margin: 5px;
+}
+
+.example-selected-value {
+  margin: 15px 0;
+}
+
+.viewtype-button {
+  margin-right: 5px;
+}
+
+.search-field {
+  width: 300px;
+  margin-right: 10px;
+}
+
+.chips-filter-field {
+  min-width: 400px;
+  margin-right: 10px;
+}
+
+.example-container {
+  position: relative;
+  min-height: 50px;
+}
+
+.loading-shade {
+  //position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rate-limit-reached {
+  color: #980000;
+  max-width: 360px;
+  text-align: center;
+}
+
+.nothing-found{
+  margin-top: 10px;
+  text-align: center;
+  font-size: 25px;
+}

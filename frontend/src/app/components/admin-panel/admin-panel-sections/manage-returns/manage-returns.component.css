@@ -15,15 +15,6 @@
 	margin-top: 10px;
 }
 
-.filter-paginator-wrapper {
-	display: flex;
-	justify-content: space-between;
-}
-
-.paginator {
-
-}
-
 .filter mat-form-field {
 	width: 150px;
 }

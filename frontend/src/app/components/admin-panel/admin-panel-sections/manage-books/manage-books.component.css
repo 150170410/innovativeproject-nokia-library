@@ -6,13 +6,6 @@ mat-form-field {
 	width: 500px;
 }
 
-.isbn-field {
-	width: 400px;
-}
-
-.cover-picture-field {
-	width: 280px;
-}
 
 .form-wrapper {
 	width: 500px;
@@ -32,9 +25,6 @@ mat-form-field {
 	justify-content: space-between;
 }
 
-.paginator {
-
-}
 
 .filter mat-form-field {
 	width: 150px;
@@ -42,11 +32,6 @@ mat-form-field {
 
 .thumbnail {
 	max-height: 80px;
-}
-
-.upload-button {
-	display: inline-block;
-	width: 200px;
 }
 
 mat-spinner {
