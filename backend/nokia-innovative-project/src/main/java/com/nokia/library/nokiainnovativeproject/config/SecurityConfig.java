@@ -32,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().httpBasic().authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and().cors().and()
                 .authorizeRequests()
-                .antMatchers("/error**", "/", "/login**").permitAll()
+                .antMatchers("/error**", "/", "/login**",
+						API_VERSION + BOOK_CATEGORY + GET_ALL).permitAll()
                 .antMatchers(API_VERSION + BOOKS + GET_ONE,
                         API_VERSION + BOOKS + GET_ALL,
                         API_VERSION + BOOK_DETAILS + GET_ONE,
@@ -69,7 +70,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         API_VERSION + USER + UPDATE).hasAnyRole(EMPLOYEE, ADMIN)
                 .antMatchers(API_VERSION + BOOK_AUTHOR + "/**",
                         API_VERSION + AUTOCOMPLETION + "/**",
-                        API_VERSION + BOOK_CATEGORY + "/**",
+                        API_VERSION + BOOK_CATEGORY + CREATE,
+                        API_VERSION + BOOK_CATEGORY + UPDATE,
+                        API_VERSION + BOOK_CATEGORY + REMOVE,
                         API_VERSION + BOOKS + CREATE,
                         API_VERSION + BOOKS + UPDATE,
                         API_VERSION + BOOKS + REMOVE,

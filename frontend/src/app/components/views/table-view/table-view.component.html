@@ -1,10 +1,7 @@
 <div class="filter-paginator-wrapper">
 	<div>
 		<mat-form-field class="search-field">
-			<input #search matInput (keyup)="searchBooks($event.target.value)" type="text" placeholder="Search for a book" [(ngModel)]="value">
-			<button mat-button matSuffix (click)="searchBooks(search.value)">
-
-			</button>
+			<input #search matInput (keyup)="searchBooks($event.target.value)" type="text" placeholder="Search for a book" [(ngModel)]="searchValue">
 		</mat-form-field>
 		<!--<mat-form-field>-->
 		<!--<mat-select placeholder="Address" >-->
@@ -38,7 +35,7 @@
 					[formControl]="categoriesFormControl"
 					[matAutocomplete]="autoCat"
 					[matChipInputFor]="chipListCategories"
-					(matChipInputTokenEnd)="addCat($event)">
+				>
 			</mat-chip-list>
 			<mat-autocomplete #autoCat="matAutocomplete" [autoActiveFirstOption]="true" (optionSelected)="selectedCat($event)">
 				<mat-option *ngFor="let cat of filteredCategories | async" [value]="cat">

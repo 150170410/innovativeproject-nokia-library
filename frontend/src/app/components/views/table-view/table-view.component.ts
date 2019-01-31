@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/index';
 import { map, startWith } from 'rxjs/operators';
 import { BookCategory } from '../../../models/database/entites/BookCategory';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
 	selector: 'app-table-view',
@@ -28,7 +29,7 @@ export class TableViewComponent implements OnInit {
 	books: BookDetails[] = [];
 	listIsLoading = false;
 	hideUnavailable = false;
-	value = '';
+	searchValue = '';
 	addresses = ['West Link', 'East Link'];
 	expandedElement = null;
 
@@ -63,11 +64,18 @@ export class TableViewComponent implements OnInit {
 		this.getCategories();
 	}
 
-	searchBooks(val) {
-		// this.books = this.booksAll.filter((b) => {
-		// 	return b.title.toLowerCase().includes(val.toLowerCase())
-		// });
+	searchBooks(val: string) {
 		this.dataSource.filter = val.trim().toLowerCase();
+	}
+
+	filterByCategory(row): boolean {
+		let contains = true;
+		this.selectedCategories.forEach((category) => {
+			if (!row.includes(category.toLowerCase())) {
+				contains = false;
+			}
+		});
+		return contains;
 	}
 
 	async getBooksDetails() {
@@ -76,9 +84,12 @@ export class TableViewComponent implements OnInit {
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
-			return data.title.toLowerCase().includes(filter.toLowerCase())
-				|| JSON.stringify(data.authors).toLowerCase().includes(filter.toLowerCase())
-				|| JSON.stringify(data.categories).toLowerCase().includes(filter.toLowerCase());
+			console.log(filter);
+			console.log(JSON.stringify(data));
+			return (data.title.toLowerCase().includes(filter.toLowerCase())
+				|| JSON.stringify(data.authors).toLowerCase().includes(filter.toLowerCase()))
+				&& this.filterByCategory(JSON.stringify(data.categories).toLowerCase())
+				&& JSON.stringify(data).toLowerCase().includes(filter.toLowerCase())
 		};
 		this.dataSource.sort = this.sort;
 		this.listIsLoading = false;
@@ -86,39 +97,21 @@ export class TableViewComponent implements OnInit {
 
 	async getCategories() {
 		const response: MessageInfo = await this.http.getAll('bookCategory/getAll');
-		this.availableCategories = this.categoriesToString(response.object);
-		console.log(this.availableCategories);
+		this.availableCategories = this.categoriesToString(response.object).sort();
+		this.categoriesFormControl.patchValue('');
 	}
-
-	// categories chips
-	addCat(event: MatChipInputEvent): void {
-		if (!this.autoCategory.isOpen) {
-			const input = event.input;
-			const value = event.value;
-
-			if ((value || '').trim()) {
-				if (!this.selectedCategories.includes(value)) {
-					this.selectedCategories.push(value.trim());
-					this.allCategories.push(new BookCategory(null, value));
-					this.availableCategories.push(value);
-				}
-			}
-
-			if (input) {
-				input.value = '';
-			}
-
-			this.categoriesFormControl.setValue(null);
-		}
-	}
-
+	
 	removeCat(category: string): void {
 		const index = this.selectedCategories.indexOf(category);
 		if (index >= 0) {
 			if (!this.availableCategories.includes(this.selectedCategories[index])) {
 				this.availableCategories.push(this.selectedCategories[index]);
+				this.availableCategories.sort();
 			}
-			this.selectedCategories.splice(index, 1);
+			this.selectedCategories.splice(index, 1).sort();
+			if (this.searchValue === '' && this.selectedCategories.length === 0) {
+				this.dataSource.filter = '{';
+			}
 		}
 	}
 
@@ -127,6 +120,9 @@ export class TableViewComponent implements OnInit {
 		this.categoryInput.nativeElement.value = '';
 		this.availableCategories = this.availableCategories.filter(e => e !== event.option.viewValue);
 		this.categoriesFormControl.setValue(null);
+		if (this.searchValue === '') {
+			this.dataSource.filter = '{';
+		}
 	}
 
 	categoriesToString(categories: BookCategory[]): string[] {
