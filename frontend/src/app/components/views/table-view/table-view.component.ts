@@ -108,9 +108,7 @@ export class TableViewComponent implements OnInit {
 				this.availableCategories.sort();
 			}
 			this.selectedCategories.splice(index, 1).sort();
-			if (this.searchValue === '' && this.selectedCategories.length === 0) {
-				this.dataSource.filter = '{';
-			}
+			this.searchBooks(this.searchValue);
 		}
 	}
 
@@ -119,9 +117,7 @@ export class TableViewComponent implements OnInit {
 		this.categoryInput.nativeElement.value = '';
 		this.availableCategories = this.availableCategories.filter(e => e !== event.option.viewValue);
 		this.categoriesFormControl.setValue(null);
-		if (this.searchValue === '') {
-			this.dataSource.filter = '{';
-		}
+		this.searchBooks(this.searchValue);
 	}
 
 	categoriesToString(categories: BookCategory[]): string[] {
