@@ -93,3 +93,8 @@ th, tr, td {
   color: white;
   background-color: rgba(108, 117, 125, 0.7);
 }
+
+.filter-paginator-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
