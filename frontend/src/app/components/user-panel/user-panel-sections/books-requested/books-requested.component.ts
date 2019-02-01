@@ -79,9 +79,9 @@ export class BooksRequestedComponent implements OnInit {
 		let result: Boolean;
 		let sum = 0;
 		if(isbn.length == 10){
-			for(var i = 0; i < 10; i++)
+			for(var i = 0; i < 9; i++)
 			 sum+= isbn[i];
-			 result = sum % 11 == 0;
+			 result = sum % 11 == isbn[9];
 		} else {
 			for(var i = 0; i < 13; i++){
 			 if(i % 2 == 1)

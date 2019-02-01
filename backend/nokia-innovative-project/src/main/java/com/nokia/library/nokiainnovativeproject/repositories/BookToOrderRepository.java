@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookToOrderRepository extends JpaRepository<BookToOrder, Long> {
@@ -14,4 +15,6 @@ public interface BookToOrderRepository extends JpaRepository<BookToOrder, Long> 
             "WHERE CREATION_DATE <= now() - interval '2 week';",
     nativeQuery = true)
     void removeOverdueBooks();
+
+    Optional<BookToOrder> getBookToOrdersByIsbn(String isbn);
 }
