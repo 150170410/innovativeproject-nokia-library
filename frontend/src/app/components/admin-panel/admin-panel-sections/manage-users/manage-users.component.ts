@@ -10,6 +10,7 @@ import { Address } from '../../../../models/database/entites/Address';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { UserDTO } from '../../../../models/database/DTOs/UserDTO';
+import {AuthService} from '../../../../services/auth/auth.service';
 
 @Component({
 	selector: 'app-manage-users',
@@ -35,6 +36,8 @@ export class ManageUsersComponent implements OnInit {
 	updatedBuilding: string;
 	updatedCity: string;
 
+	loggedUserName: string;
+
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<User>();
@@ -43,14 +46,22 @@ export class ManageUsersComponent implements OnInit {
 
 	constructor(private http: RestService,
 				private snackbar: SnackbarService,
-				private formBuilder: FormBuilder) {
+				private formBuilder: FormBuilder,
+              private authService: AuthService) {
 	}
 
 	ngOnInit() {
 		this.getUsers();
 		this.initFormGroup();
 		this.getAddresses();
+    this.initData();
 	}
+
+  initData() {
+    this.authService.getUserData().then( () => {
+      this.loggedUserName = this.authService.getUsername();
+    });
+  }
 
 	getAddresses() {
 		this.initAddresses().then(() => {
@@ -253,4 +264,21 @@ export class ManageUsersComponent implements OnInit {
 			});
 		}
 	}
+
+  shareBooks(user: any) {
+
+	  console.log(this.loggedUserName);
+	  console.log(user.email);
+
+    this.http.save('books/assignOwnerToAll/' + user.id, null).subscribe((response) => {
+      if (response.success) {
+        this.getUsers();
+        this.snackbar.snackSuccess(response.message, 'OK');
+      } else {
+        this.snackbar.snackError(response.message, 'OK');
+      }
+    }, (error) => {
+      this.snackbar.snackError(error.error.message, 'OK');
+    });
+  }
 }

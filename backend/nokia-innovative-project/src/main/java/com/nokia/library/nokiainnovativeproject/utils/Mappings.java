@@ -57,6 +57,7 @@ public class Mappings {
 	public static final String UNLOCK_ACCOUNT = "/unlockAccount/{id}";
 
 	public static final String SUBSCRIPTION = "/subscribe/{id}";
+	public static final String ASSIGN_ADMIN_TO_BOOKS = "assignOwnerToAll/{newOwnerId}";
 
 
 }

@@ -11,6 +11,7 @@ import com.nokia.library.nokiainnovativeproject.entities.BookToOrder;
 import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
+import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.*;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import com.nokia.library.nokiainnovativeproject.utils.Constants;
@@ -22,7 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 
 @Service
 @Transactional
@@ -170,5 +175,44 @@ public class BookService {
 			throw new InvalidBookStateException(Constants.MessageTypes.BOOK_RESERVED);
 		}
 		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getId(), 0, null);
+	}
+
+	@Transactional
+	public List<Book> addNewOwnerToBooks(Long newOwnerId) {
+		User loggedUser = userService.getLoggedInUser();
+		User newOwner = userRepository.findById(newOwnerId).orElseThrow(()-> new ResourceNotFoundException("user"));
+		if(loggedUser.getId() == newOwner.getId()) {
+			throw new ValidationException(Messages.get(Constants.MessageTypes.CANT_ASSIGN_TO_YOURSELF));
+		}
+		// new books user need to be admin
+		List <Role> roles = newOwner.getRoles();
+		boolean isAdmin = false;
+		for(Role role : roles) {
+			if(role.getRole().equals("ROLE_ADMIN")) {
+				isAdmin = true;
+			}
+		}
+		if(!isAdmin) {
+			throw new ValidationException(Messages.get(Constants.MessageTypes.USER_IS_NO_ADMIN));
+		}
+		List<Book> loggedUserBooks = bookRepository.findAllByOwnersId(loggedUser.getId());
+		List<Long> iterable = new LinkedList<>();
+		List<BookOwnerId> newOwnersId = new ArrayList<>();
+		for(Book book : loggedUserBooks) {
+			boolean isOwner = false;
+			for(BookOwnerId owner : book.getOwnersId()) {
+				if(owner.getOwnerId() == newOwnerId)
+					isOwner = true;
+			}
+			if(!isOwner) {
+				BookOwnerId bookOwnerId = new BookOwnerId();
+				bookOwnerId.setOwnerId(newOwnerId);
+				bookOwnerId.setBook(book);
+				newOwnersId.add(bookOwnerId);
+				iterable.add(book.getId());
+			}
+		}
+		bookOwnerIdRepository.saveAll(newOwnersId);
+		return bookRepository.findAllByOwnersId(loggedUser.getId());
 	}
 }

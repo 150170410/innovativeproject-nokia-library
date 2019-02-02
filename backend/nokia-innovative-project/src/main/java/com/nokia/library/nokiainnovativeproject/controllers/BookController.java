@@ -35,39 +35,53 @@ public class BookController {
 
 	@GetMapping(GET_ONE)
 	public ResponseEntity getBookById(@PathVariable Long id) {
-		return MessageInfo.success(bookService.getBookById(id), Arrays.asList("Book" + Messages.get(REQUESTED)));
+		return MessageInfo.success(bookService.getBookById(id),
+				Arrays.asList("Book" + Messages.get(REQUESTED)));
 	}
 
 	@GetMapping(GET_ONE_FILL)
 	public ResponseEntity getBookWithOwnerById(@PathVariable Long id) {
-		return MessageInfo.success(bookService.getBookWithOwnerById(id), Arrays.asList("Book with owner" + Messages.get(REQUESTED)));
+		return MessageInfo.success(bookService.getBookWithOwnerById(id),
+				Arrays.asList("Book with owner" + Messages.get(REQUESTED)));
 	}
 
 	@PostMapping(CREATE)
 	public ResponseEntity createBook(@RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
-		return MessageInfo.success(bookService.createBook(bookDTO), Arrays.asList("Book" + Messages.get(CREATED_SUCCESSFULLY)));
+		return MessageInfo.success(bookService.createBook(bookDTO),
+				Arrays.asList("Book" + Messages.get(CREATED_SUCCESSFULLY)));
 	}
 
 	@PostMapping(UPDATE)
-	public ResponseEntity updateBook(@PathVariable Long id, @RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult) {
+	public ResponseEntity updateBook(@PathVariable Long id,
+									 @RequestBody @Valid BookDTO bookDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
-		return MessageInfo.success(bookService.updateBook(id, bookDTO), Arrays.asList("Book" + Messages.get(UPDATED_SUCCESSFULLY)));
+		return MessageInfo.success(bookService.updateBook(id, bookDTO),
+				Arrays.asList("Book" + Messages.get(UPDATED_SUCCESSFULLY)));
 	}
 
 	@DeleteMapping(REMOVE)
 	public ResponseEntity deleteBook(@PathVariable Long id) throws ResourceNotFoundException {
 		bookService.deleteBook(id);
-		return MessageInfo.success(null, Arrays.asList("Book" + Messages.get(UPDATED_SUCCESSFULLY)));
+		return MessageInfo.success(null,
+				Arrays.asList("Book" + Messages.get(UPDATED_SUCCESSFULLY)));
 	}
 
 	@PostMapping("/lock/{signature}")
 	public ResponseEntity lockBook(@PathVariable String signature) {
-		return MessageInfo.success(bookService.lockBook(signature), Arrays.asList("Book" + Messages.get(LOCKED_SUCCESSFULLY)));
+		return MessageInfo.success(bookService.lockBook(signature),
+				Arrays.asList("Book" + Messages.get(LOCKED_SUCCESSFULLY)));
 	}
 
 	@PostMapping("/unlock/{signature}")
 	public ResponseEntity unlockBook(@PathVariable String signature) {
-		return MessageInfo.success(bookService.unlockBook(signature), Arrays.asList("Book" + Messages.get(UNLOCKED_SUCCESSFULLY)));
+		return MessageInfo.success(bookService.unlockBook(signature),
+				Arrays.asList("Book" + Messages.get(UNLOCKED_SUCCESSFULLY)));
+	}
+
+	@PostMapping(ASSIGN_ADMIN_TO_BOOKS)
+	public ResponseEntity addNewOwnerToAllAdminBooks(@PathVariable Long newOwnerId) {
+		return MessageInfo.success(bookService.addNewOwnerToBooks(newOwnerId),
+				Arrays.asList("Books have been assigned to the new admin"));
 	}
 }

@@ -63,7 +63,9 @@ public class Constants {
         USER_WITH_EMAIL_EXIST,
         CANT_DELETE_LAST_ADMIN,
         SPECIFY_ADDRESS,
-        CANT_FIND_USER_BY_EMAIL
+        CANT_FIND_USER_BY_EMAIL,
+        CANT_ASSIGN_TO_YOURSELF,
+        USER_IS_NO_ADMIN
     }
 
     public static Map<MessageTypes, String> Messages = new HashMap<>();
@@ -97,6 +99,8 @@ public class Constants {
         Messages.put(MessageTypes.CANT_DELETE_LAST_ADMIN, "You can't delete the last admin from the database!");
         Messages.put(MessageTypes.SPECIFY_ADDRESS, "Please. Specify address!");
         Messages.put(MessageTypes.CANT_FIND_USER_BY_EMAIL, "Sorry we can't find this user by email!");
+        Messages.put(MessageTypes.CANT_ASSIGN_TO_YOURSELF, "You are trying to assign your books to yourself. Choose a different admin!");
+        Messages.put(MessageTypes.USER_IS_NO_ADMIN, "New books owner need to have admin role!");
 
         // rentals
 		Messages.put(MessageTypes.RETURNED_SUCCESSFULLY, "Book returned successfully.");

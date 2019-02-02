@@ -20,4 +20,10 @@ public class BookOwnerId implements Serializable {
     private Long id;
 
     private Long ownerId;
+
+    @Getter(AccessLevel.NONE)
+    @ManyToOne(cascade = {CascadeType.MERGE,
+            CascadeType.PERSIST},
+            fetch = FetchType.LAZY)
+    private Book book;
 }
