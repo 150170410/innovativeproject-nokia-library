@@ -65,7 +65,10 @@ public class Constants {
         SPECIFY_ADDRESS,
         CANT_FIND_USER_BY_EMAIL,
         CANT_ASSIGN_TO_YOURSELF,
-        USER_IS_NO_ADMIN
+        USER_IS_NO_ADMIN,
+        STILL_HAS_BOOKS_CANT_DEMOTE,
+        HAS_BEEN_ASSIGNED_TO_ADMIN,
+        HAS_BEEN_TRANSFERRED_TO_ADMIN
     }
 
     public static Map<MessageTypes, String> Messages = new HashMap<>();
@@ -101,6 +104,9 @@ public class Constants {
         Messages.put(MessageTypes.CANT_FIND_USER_BY_EMAIL, "Sorry we can't find this user by email!");
         Messages.put(MessageTypes.CANT_ASSIGN_TO_YOURSELF, "You are trying to assign your books to yourself. Choose a different admin!");
         Messages.put(MessageTypes.USER_IS_NO_ADMIN, "New books owner need to have admin role!");
+        Messages.put(MessageTypes.STILL_HAS_BOOKS_CANT_DEMOTE, "This admin still has books. Transport his books to another admin.");
+        Messages.put(MessageTypes.HAS_BEEN_ASSIGNED_TO_ADMIN, " have been assigned to the new admin");
+        Messages.put(MessageTypes.HAS_BEEN_TRANSFERRED_TO_ADMIN, " have been transferred to the new admin");
 
         // rentals
 		Messages.put(MessageTypes.RETURNED_SUCCESSFULLY, "Book returned successfully.");

@@ -266,11 +266,20 @@ export class ManageUsersComponent implements OnInit {
 	}
 
   shareBooks(user: any) {
-
-	  console.log(this.loggedUserName);
-	  console.log(user.email);
-
     this.http.save('books/assignOwnerToAll/' + user.id, null).subscribe((response) => {
+      if (response.success) {
+        this.getUsers();
+        this.snackbar.snackSuccess(response.message, 'OK');
+      } else {
+        this.snackbar.snackError(response.message, 'OK');
+      }
+    }, (error) => {
+      this.snackbar.snackError(error.error.message, 'OK');
+    });
+  }
+
+  transferBooks(user: any) {
+    this.http.save('books/transferToAdmin/' + user.id, null).subscribe((response) => {
       if (response.success) {
         this.getUsers();
         this.snackbar.snackSuccess(response.message, 'OK');

@@ -123,6 +123,9 @@
           <button [disabled]="user.roles[0].role != 'ROLE_ADMIN' || user.email == loggedUserName" color="primary" mat-button (click)="shareBooks(user)">
             Share books
           </button>
+          <button [disabled]="user.roles[0].role != 'ROLE_ADMIN' || user.email == loggedUserName" color="primary" mat-button (click)="transferBooks(user)">
+            Transfer books
+          </button>
 				</p>
 
 			</td>

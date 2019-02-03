@@ -127,7 +127,7 @@ INSERT INTO "user" (email, first_name, last_name, password, address_id, is_accou
 VALUES ('nokia.library@gmail.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1, true);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('admin2@gmail.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
+VALUES ('admin2@gmail.com', 'Admin2', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
 
 
 INSERT INTO role (role) VALUES ('ROLE_EMPLOYEE');

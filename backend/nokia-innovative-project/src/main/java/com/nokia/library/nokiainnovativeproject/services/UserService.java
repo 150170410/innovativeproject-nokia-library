@@ -8,6 +8,7 @@ import com.nokia.library.nokiainnovativeproject.exceptions.AuthorizationExceptio
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.AddressRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.RoleRepository;
 import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class UserService implements UserDetailsService {
     private final AddressRepository addressRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
+    private final BookRepository bookRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -147,6 +149,9 @@ public class UserService implements UserDetailsService {
     public User takeAdminRoleFromUser(Long id) {
         if(userRepository.countUserByRole(ROLE_ADMIN) <= 1) {
             throw new ValidationException(Messages.get(CANT_DELETE_LAST_ADMIN));
+        }
+        if(bookRepository.findAllByOwnersId(id).size() > 0) {
+            throw new ValidationException(Messages.get(STILL_HAS_BOOKS_CANT_DEMOTE));
         }
         User user = userRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("user"));
