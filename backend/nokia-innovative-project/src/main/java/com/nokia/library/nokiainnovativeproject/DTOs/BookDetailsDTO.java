@@ -22,7 +22,7 @@ public class BookDetailsDTO {
 			message = "ISBN is not valid")
 	private String isbn;
 
-	@Size(max = 100, message = "Title can't exceed 100 characters")
+	@Size(max = 1000, message = "Title can't exceed 1000 characters")
 	@NotBlank(message = "Title is required")
 	private String title;
 

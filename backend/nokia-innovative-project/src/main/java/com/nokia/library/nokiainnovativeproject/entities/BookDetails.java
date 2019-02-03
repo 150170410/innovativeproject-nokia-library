@@ -30,7 +30,7 @@ public class BookDetails implements Serializable {
 			message = "ISBN is not valid")
 	protected String isbn;
 
-	@Size(max = 100, message = "Title can't exceed 100 characters")
+	@Size(max = 1000, message = "Title can't exceed 1000 characters")
 	@NotBlank(message = "Title is required")
 	protected String title;
 
