@@ -1,9 +1,4 @@
-.half-div {
-  float: left;
-  width: 48%;
-  display: inline-block;
-  margin: 10px;
-}
+
 
 .full-card {
   width: 100%;
@@ -11,7 +6,7 @@
   box-sizing: border-box;
 }
 
-.forms-container {
+.form-container {
   margin: 10px auto;
   position: relative;
   text-align: center;
@@ -20,23 +15,12 @@
 table {
   width: 100%;
   border: 1px solid black;
-  border-collapse: collapse;
 }
 
 th {
   font-size: 18px;
   font-weight: bold;
 }
-
-th, tr, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-
-.form-title {
-  text-align: center;
-}
-
 .mat-cell {
   text-align: center;
 }
@@ -44,11 +28,6 @@ th, tr, td {
 .mat-header-cell {
   text-align: center;
 }
-
-::ng-deep .mat-tab-label {
-
-}
-
 ::ng-deep .mat-tab-label-active {
   font-weight: bold;
   background-color: #124191;
@@ -93,16 +72,31 @@ th, tr, td {
   width: 150px;
 }
 
+  position: relative;
+  min-height: 50px;
+}
 
 .loading-shade {
-  position: absolute;
+  //position: absolute;
   top: 0;
   left: 0;
-  bottom: 56px;
+  bottom: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.15);
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.rate-limit-reached {
+  color: #980000;
+  max-width: 360px;
+  text-align: center;
+}
+
+.nothing-found {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 25px;
 }

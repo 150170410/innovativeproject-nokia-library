@@ -16,6 +16,7 @@ export class BooksHistoryComponent implements OnInit {
 	rentals: Rental[] = [];
 	rentalsAll: Rental[] = [];
 
+	isLoadingResults = true;
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
@@ -33,6 +34,7 @@ export class BooksHistoryComponent implements OnInit {
 	}
 
 	async getRentals() {
+		this.isLoadingResults = true;
 		const response = await this.http.getAll('rentals/user');
 		this.rentalsAll = response.object;
 		this.rentals = this.rentalsAll.filter(r => r.isCurrent === false).map(r => Object.assign({}, r));
@@ -42,6 +44,7 @@ export class BooksHistoryComponent implements OnInit {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
+		this.isLoadingResults = false;
 	}
 
 	bookInfo(borrowing) {

@@ -19,6 +19,7 @@ export class BooksRequestedComponent implements OnInit {
 	requestedBooks: BookToOrder[] = [];
 	requestParams: FormGroup;
 
+	isLoadingResults = true;
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookToOrder>();
@@ -45,6 +46,7 @@ export class BooksRequestedComponent implements OnInit {
 	}
 
 	async getRequestedBooks() {
+		this.isLoadingResults = true;
 		const response = await this.http.getAll('bookToOrder/getAll');
 		this.requestedBooks = response.object;
 		this.dataSource = new MatTableDataSource(response.object.reverse());
@@ -53,6 +55,7 @@ export class BooksRequestedComponent implements OnInit {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
+		this.isLoadingResults = false;
 	}
 
 	async cancelRequest(request: BookToOrder) {
