@@ -12,10 +12,12 @@ import com.nokia.library.nokiainnovativeproject.repositories.ReservationReposito
 import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import com.nokia.library.nokiainnovativeproject.utils.DaysDeltaEnum;
+import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.ReservationByDateComparator;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +44,9 @@ public class RentalService {
 	private final BookService bookService;
 	private final EmailService emailService;
 	private final UserRepository userRepository;
+
+	@Value("${fe_url}")
+	private String feUrl;
 
 	public List<Rental> getAllRentals() {
 		List<Rental> rentals = rentalRepository.findAllByAdminOwnerId(userService.getLoggedInUser().getId());
@@ -80,14 +85,29 @@ public class RentalService {
 		return rentalWithActualOwner;
 	}
 
-	public List<Rental> getRentalsByUser() {
+	public List<RentalWithActualOwner> getRentalsByUser() {
 		User user = userService.getLoggedInUser();
 		List<Rental> rentals = rentalRepository.findByUserId(user.getId());
+		ModelMapper modelMapper = new ModelMapper();
+		List<RentalWithActualOwner> rentalWithActualOwners = new ArrayList<>();
 		for (Rental rental : rentals) {
 			Hibernate.initialize(rental.getBook());
+			List<BookOwnerId> bookOwnerIds = rental.getBook().getOwnersId();
+			List<User> owners = new ArrayList<>();
+			for(BookOwnerId bookOwnerId : bookOwnerIds) {
+				owners.add(userRepository.findById(bookOwnerId.getOwnerId()).orElseThrow(
+						() -> new ResourceNotFoundException("user")));
+			}
+			User actualOwner = userRepository.findById(rental.getBook().getCurrentOwnerId()).orElseThrow(
+					() -> new ResourceNotFoundException("user"));
 			Hibernate.initialize(rental.getUser());
+			RentalWithActualOwner rentalWithActualOwner = modelMapper.map(rental, RentalWithActualOwner.class);
+			rentalWithActualOwner.setOwners(owners);
+			rentalWithActualOwner.setActualOwner(actualOwner);
+			rentalWithActualOwner.setRentalDate(rental.getRentalDate());
+			rentalWithActualOwners.add(rentalWithActualOwner);
 		}
-		return rentals;
+		return rentalWithActualOwners;
 	}
 
 	public List<Rental> getRentalsByBookId(Long bookId) {
@@ -125,8 +145,8 @@ public class RentalService {
 		rental.setUser(user);
 		rental = rentalRepository.save(rental);
 		User admin = userService.getUserById(borrowedBook.getCurrentOwnerId());
-		Email email = new Email("Book rent", String.format("Your book can be picked up from: %s %s, %s",
-				admin.getFirstName(), admin.getLastName(), admin.getAddress().getBuilding()));
+		Email email = new Email("Book rent", String.format("Your book(%s) can be picked up from: %s %s, %s",
+			feUrl + "/book/" + borrowedBook.getBookDetails().getId(),admin.getFirstName(), admin.getLastName(), admin.getAddress().getBuilding()));
 		emailService.sendSimpleMessage(email, Arrays.asList(user.getEmail()));
 		return rental;
 	}
@@ -236,5 +256,4 @@ public class RentalService {
 			throw new AuthorizationException();
 		}
 	}
-
 }

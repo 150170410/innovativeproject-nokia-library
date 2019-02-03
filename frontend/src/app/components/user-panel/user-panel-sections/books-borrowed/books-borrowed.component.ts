@@ -53,7 +53,7 @@ export class BooksBorrowedComponent implements OnInit {
 					this.snackbar.snackError(error.error.message, 'OK');
 				});
 			}
-		})
+		});
 	}
 
 	prolong(rental: Rental) {

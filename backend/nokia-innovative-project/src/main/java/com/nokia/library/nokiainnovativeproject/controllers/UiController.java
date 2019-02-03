@@ -78,4 +78,18 @@ public class UiController {
         return MessageInfo.success(userService.takeAdminRoleFromUser(id),
                 Arrays.asList(Messages.get(ADMIN_ROLE_REMOVED)));
     }
+
+    @Secured(ROLE_ADMIN)
+    @PostMapping(Mappings.USER + Mappings.LOCK_ACCOUNT)
+    public ResponseEntity lockUserAccount(@PathVariable Long id) {
+        return MessageInfo.success(userService.lockUserAccount(id),
+                Arrays.asList(Messages.get(USER_ACCOUNT_LOCKED)));
+    }
+
+    @Secured(ROLE_ADMIN)
+    @PostMapping(Mappings.USER + Mappings.UNLOCK_ACCOUNT)
+    public ResponseEntity unlockUserAccount(@PathVariable Long id) {
+        return MessageInfo.success(userService.unlockUserAccount(id),
+                Arrays.asList(Messages.get(USER_ACCOUNT_UNLOCKED)));
+    }
 }

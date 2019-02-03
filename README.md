@@ -61,7 +61,7 @@ For every action taken by user or admin, estimated availability date can be chan
 Students:
 * Mikołaj Banaszkiewicz
 * Alex Kostiukov [Github](https://github.com/KostiukovAleksey)
-* Wojciech Spoton [Github] (https://github.com/SpokoSpartan)
+* Wojciech Spoton [Github](https://github.com/SpokoSpartan)
 * Jacek Zalewski [Github](https://github.com/tubidubidam)
 
 Nokia supervisors:

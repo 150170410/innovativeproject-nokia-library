@@ -52,6 +52,8 @@ public class Constants {
         USER_NOT_LOGGED_IN,
         ADMIN_ROLE_ADDED,
         ADMIN_ROLE_REMOVED,
+        USER_ACCOUNT_LOCKED,
+        USER_ACCOUNT_UNLOCKED,
         ACCESS_DENIED,
         CANT_FIND,
         INVALID_TYPE,
@@ -61,7 +63,12 @@ public class Constants {
         USER_WITH_EMAIL_EXIST,
         CANT_DELETE_LAST_ADMIN,
         SPECIFY_ADDRESS,
-        CANT_FIND_USER_BY_EMAIL
+        CANT_FIND_USER_BY_EMAIL,
+        CANT_ASSIGN_TO_YOURSELF,
+        USER_IS_NO_ADMIN,
+        STILL_HAS_BOOKS_CANT_DEMOTE,
+        HAS_BEEN_ASSIGNED_TO_ADMIN,
+        HAS_BEEN_TRANSFERRED_TO_ADMIN
     }
 
     public static Map<MessageTypes, String> Messages = new HashMap<>();
@@ -81,6 +88,8 @@ public class Constants {
 
         Messages.put(MessageTypes.ADMIN_ROLE_ADDED, "The admin role has been successfully added.");
         Messages.put(MessageTypes.ADMIN_ROLE_REMOVED, "The admin role has been successfully removed.");
+        Messages.put(MessageTypes.USER_ACCOUNT_LOCKED, "The user account has been successfully locked");
+        Messages.put(MessageTypes.USER_ACCOUNT_UNLOCKED, "The user account has been successfully unlocked");
         Messages.put(MessageTypes.USER_LOGGED_IN, "You are logged in.");
         Messages.put(MessageTypes.USER_NOT_LOGGED_IN, "Please, log in!");
         Messages.put(MessageTypes.ACCESS_DENIED, "Access denied!");
@@ -93,6 +102,11 @@ public class Constants {
         Messages.put(MessageTypes.CANT_DELETE_LAST_ADMIN, "You can't delete the last admin from the database!");
         Messages.put(MessageTypes.SPECIFY_ADDRESS, "Please. Specify address!");
         Messages.put(MessageTypes.CANT_FIND_USER_BY_EMAIL, "Sorry we can't find this user by email!");
+        Messages.put(MessageTypes.CANT_ASSIGN_TO_YOURSELF, "You are trying to assign your books to yourself. Choose a different admin!");
+        Messages.put(MessageTypes.USER_IS_NO_ADMIN, "New books owner need to have admin role!");
+        Messages.put(MessageTypes.STILL_HAS_BOOKS_CANT_DEMOTE, "This admin still has books. Transport his books to another admin.");
+        Messages.put(MessageTypes.HAS_BEEN_ASSIGNED_TO_ADMIN, " have been assigned to the new admin");
+        Messages.put(MessageTypes.HAS_BEEN_TRANSFERRED_TO_ADMIN, " have been transferred to the new admin");
 
         // rentals
 		Messages.put(MessageTypes.RETURNED_SUCCESSFULLY, "Book returned successfully.");

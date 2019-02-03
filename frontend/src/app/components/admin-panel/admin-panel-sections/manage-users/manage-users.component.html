@@ -114,6 +114,18 @@
 						<mat-icon>arrow_downward</mat-icon>
 						Demote to user
 					</button>
+          <button [disabled]="user.roles[0].role != 'ROLE_ADMIN'" *ngIf="user.isAccountActive" color="warn" mat-button (click)="lockAccount(user)">
+            Lock account
+          </button>
+          <button [disabled]="user.roles[0].role != 'ROLE_ADMIN'" *ngIf="!user.isAccountActive" color="primary" mat-button (click)="unlockAccount(user)">
+            Unlock account
+          </button>
+          <button [disabled]="user.roles[0].role != 'ROLE_ADMIN' || user.email == loggedUserName" color="primary" mat-button (click)="shareBooks(user)">
+            Share books
+          </button>
+          <button [disabled]="user.roles[0].role != 'ROLE_ADMIN' || user.email == loggedUserName" color="primary" mat-button (click)="transferBooks(user)">
+            Transfer books
+          </button>
 				</p>
 
 			</td>

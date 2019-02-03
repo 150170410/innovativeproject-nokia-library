@@ -15,18 +15,16 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findByBookId(Long bookId);
 
     @Query(value =
-            "SELECT * FROM RENTAL R " +
-            "LEFT JOIN BOOK B ON B.ID = R.book_catalog_number " +
-            "WHERE B.ADMIN_OWNER_ID = :adminId AND R.IS_CURRENT = true;",
+            "SELECT * FROM rental r WHERE r.is_current = true AND r.book_catalog_number IN " +
+                    "(SELECT boi.book_id FROM book_owner_id boi where boi.owner_id = ?1);",
             nativeQuery = true)
-    List<Rental> findAllByAdminOwnerId(@Param("adminId") Long adminId);
+    List<Rental> findAllByAdminOwnerId(Long adminId);
 
     @Query(value =
-            "SELECT * FROM RENTAL R " +
-             "LEFT JOIN BOOK B ON B.ID = R.book_catalog_number " +
-              "WHERE B.ADMIN_OWNER_ID = :adminId AND R.IS_CURRENT = false;",
+            "SELECT * FROM rental r WHERE r.is_current = false AND r.book_catalog_number IN " +
+                    "(SELECT boi.book_id FROM book_owner_id boi where boi.owner_id = ?1);",
             nativeQuery = true)
-    List<Rental> getAllRentalHistory(@Param("adminId") Long adminId);
+    List<Rental> getAllRentalHistory(Long adminId);
 
     @Query(value = "SELECT * FROM RENTAL WHERE RETURN_DATE >= now() - interval '3 days';",
             nativeQuery = true)

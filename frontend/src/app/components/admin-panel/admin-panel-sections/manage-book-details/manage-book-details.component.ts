@@ -14,6 +14,7 @@ import { map, startWith } from 'rxjs/operators';
 import { API_URL } from '../../../../config';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 import { ConfirmationDialogService } from '../../../../services/confirmation-dialog/confirmation-dialog.service';
+import { IsbnValidationService } from 'src/app/services/isbn-validation/isbn-validation.service';
 
 @Component({
 	selector: 'app-manage-book-details',
@@ -75,7 +76,8 @@ export class ManageBookDetailsComponent implements OnInit {
 				private httpClient: HttpClient,
 				public snackbar: SnackbarService,
 				private cd: ChangeDetectorRef,
-				public confirmService: ConfirmationDialogService) {
+				public confirmService: ConfirmationDialogService,
+				private isbnValidation: IsbnValidationService) {
 		this.filteredAuthors = this.authorsFormControl.valueChanges.pipe(
 			startWith(null),
 			map((author: string | null) => author ? this.filterAth(author) : this.availableAuthors.slice()));
@@ -106,38 +108,8 @@ export class ManageBookDetailsComponent implements OnInit {
 		});
 	}
 
-	validateISBN(): Boolean {
-		let isbn = this.normalizeISBN(this.bookDetailsParams.value.isbn);
-		let result: Boolean;
-		let sum = 0;
-		if(isbn.length == 10){
-			for(var i = 0; i < 9; i++)
-			 sum+= isbn[i];
-			 result = sum % 11 == isbn[9];
-		} else {
-			for(var i = 0; i < 13; i++){
-			 if(i % 2 == 1)
-			     isbn[i]*=3;
-			 sum+= isbn[i];
-			}
-			 result = sum % 10 == 0;
-		}
-		return result;
-	}
-
-	normalizeISBN(isbn: string){
-		let arr: Array<number> = [];
-		let isbnArr = isbn.replace("-", "").replace(" ","").toLocaleLowerCase().split("");
-		for(var i = 0; i < isbnArr.length; i++){
-			if(isbnArr[i] == "x")
-			  isbnArr[i] = "10";
-			arr.push(+isbnArr[i]);
-		}
-		return arr;
-	}
-
 	createBookDetails(params: any) {
-		if(this.validateISBN()) {
+		if(this.isbnValidation.validateISBN(this.bookDetailsParams.value.isbn)) {
 			const body = new BookDetailsDTO(params.value.isbn,
 				params.value.title,
 				this.authorsToAuthor(this.selectedAuthors),
@@ -146,7 +118,6 @@ export class ManageBookDetailsComponent implements OnInit {
 				params.value.description,
 				params.value.coverPictureUrl
 			);
-			console.log(body);
 			if (!this.toUpdate) {
 				this.http.save('bookDetails/create', body).subscribe((response) => {
 					if (response.success) {

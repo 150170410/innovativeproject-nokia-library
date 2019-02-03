@@ -7,6 +7,7 @@ import { RestService } from '../../../../services/rest/rest.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookToOrderDTO } from '../../../../models/database/DTOs/BookToOrderDTO';
 import { MessageInfo } from '../../../../models/MessageInfo';
+import { IsbnValidationService } from 'src/app/services/isbn-validation/isbn-validation.service';
 
 @Component({
 	selector: 'app-books-requested',
@@ -27,7 +28,8 @@ export class BooksRequestedComponent implements OnInit {
 	constructor(private formBuilder: FormBuilder,
 				private http: RestService,
 				private confirmService: ConfirmationDialogService,
-				private snackbar: SnackbarService) {
+				private snackbar: SnackbarService,
+				private isbnValidation: IsbnValidationService) {
 	}
 
 	ngOnInit() {
@@ -74,38 +76,8 @@ export class BooksRequestedComponent implements OnInit {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	validateISBN(): Boolean {
-		let isbn = this.normalizeISBN(this.requestParams.value.isbn);
-		let result: Boolean;
-		let sum = 0;
-		if(isbn.length == 10){
-			for(var i = 0; i < 9; i++)
-			 sum+= isbn[i];
-			 result = sum % 11 == isbn[9];
-		} else {
-			for(var i = 0; i < 13; i++){
-			 if(i % 2 == 1)
-			     isbn[i]*=3;
-			 sum+= isbn[i];
-			}
-			 result = sum % 10 == 0;
-		}
-		return result;
-	}
-
-	normalizeISBN(isbn: string){
-		let arr: Array<number> = [];
-		let isbnArr = isbn.replace("-", "").replace(" ","").toLocaleLowerCase().split("");
-		for(var i = 0; i < isbnArr.length; i++){
-			if(isbnArr[i] == "x")
-			  isbnArr[i] = "10";
-			arr.push(+isbnArr[i]);
-		}
-		return arr;
-	}
-
 	requestBook(requestParams: FormGroup) {
-		if(this.validateISBN()){
+		if(this.isbnValidation.validateISBN(this.requestParams.value.isbn)){
 			const body = new BookToOrderDTO(requestParams.value.isbn, requestParams.value.title);
 			this.http.save('bookToOrder/create', body).subscribe((response: MessageInfo) => {
 				if (response.success) {

@@ -1,20 +1,18 @@
 package com.nokia.library.nokiainnovativeproject.services;
 
 import com.nokia.library.nokiainnovativeproject.DTOs.BookDTO;
+import com.nokia.library.nokiainnovativeproject.entities.*;
 import com.nokia.library.nokiainnovativeproject.entities.Book;
 import com.nokia.library.nokiainnovativeproject.entities.BookStatus;
 
 import com.nokia.library.nokiainnovativeproject.entities.BookWithOwner;
-
 import com.nokia.library.nokiainnovativeproject.entities.BookToOrder;
 
 import com.nokia.library.nokiainnovativeproject.entities.User;
 import com.nokia.library.nokiainnovativeproject.exceptions.InvalidBookStateException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
-import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.BookStatusRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
+import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
+import com.nokia.library.nokiainnovativeproject.repositories.*;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import com.nokia.library.nokiainnovativeproject.utils.Constants;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 
 @Service
 @Transactional
@@ -39,9 +40,10 @@ public class BookService {
 	private final BookToOrderService bookToOrderService;
 	private final UserService userService;
 	private final UserRepository userRepository;
+	private final BookOwnerIdRepository bookOwnerIdRepository;
 
 	public List<Book> getAllBooks() {
-		List<Book> books = bookRepository.findAllByAdminOwnerId(userService.getLoggedInUser().getId());
+		List<Book> books = bookRepository.findAllByOwnersId(userService.getLoggedInUser().getId());
 		for (Book book : books) {
 			Hibernate.initialize(book.getBookDetails());
 			Hibernate.initialize(book.getStatus());
@@ -86,12 +88,10 @@ public class BookService {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
 		book.setAvailableDate(LocalDateTime.now());
-		User loggedIn = userService.getLoggedInUser();
-		book.setCurrentOwnerId(loggedIn.getId());
-		book.setAdminOwnerId(loggedIn.getId());
+		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
+		book = assignOwnerToBook(book);
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
-
 	public Book updateBook(Long id, BookDTO bookDTO) {
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 		book.setComments(bookDTO.getComments());
@@ -99,6 +99,15 @@ public class BookService {
 		book.getBookDetails().setIsRemovable(true);
 		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
+	}
+
+	private Book assignOwnerToBook(Book book) {
+		ArrayList<BookOwnerId> ownersList = new ArrayList<>();
+		BookOwnerId bookOwnerId = new BookOwnerId();
+		bookOwnerId.setOwnerId(userService.getLoggedInUser().getId());
+		ownersList.add(bookOwnerId);
+		book.setOwnersId(ownersList);
+		return book;
 	}
 
 	private Book persistRequiredEntities(Book book, BookDTO bookDTO) {
@@ -165,5 +174,100 @@ public class BookService {
 			throw new InvalidBookStateException(Constants.MessageTypes.BOOK_RESERVED);
 		}
 		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getId(), 0, null);
+	}
+
+	private void validateNewOwner(Long newOwnerId, User loggedUser) {
+        User newOwner = userRepository.findById(newOwnerId).orElseThrow(() -> new ResourceNotFoundException("user"));
+        if (loggedUser.getId() == newOwner.getId()) {
+            throw new ValidationException(Messages.get(Constants.MessageTypes.CANT_ASSIGN_TO_YOURSELF));
+        }
+        // new books user need to be admin
+        if (!isAdmin(newOwner)) {
+            throw new ValidationException(Messages.get(Constants.MessageTypes.USER_IS_NO_ADMIN));
+        }
+    }
+
+    @Transactional
+	public List<Book> addNewOwnerToBooks(Long newOwnerId) {
+        User loggedUser = userService.getLoggedInUser();
+        validateNewOwner(newOwnerId, loggedUser);
+
+        List<Book> loggedUserBooks = bookRepository.findAllByOwnersId(loggedUser.getId());
+        List<Long> iterable = new LinkedList<>();
+        List<BookOwnerId> newOwnersId = new ArrayList<>();
+        for (Book book : loggedUserBooks) {
+            boolean isOwner = false;
+            for (BookOwnerId owner : book.getOwnersId()) {
+                if (owner.getOwnerId() == newOwnerId)
+                    isOwner = true;
+            }
+            if (!isOwner) {
+                BookOwnerId bookOwnerId = new BookOwnerId();
+                bookOwnerId.setOwnerId(newOwnerId);
+                bookOwnerId.setBook(book);
+                newOwnersId.add(bookOwnerId);
+                iterable.add(book.getId());
+            }
+        }
+        bookOwnerIdRepository.saveAll(newOwnersId);
+        return bookRepository.findAllByOwnersId(loggedUser.getId());
+    }
+
+    @Transactional
+	public List<Book> transferAllBookToNewOwner(Long newOwnerId) {
+        User loggedUser = userService.getLoggedInUser();
+        validateNewOwner(newOwnerId, loggedUser);
+
+        List<Book> loggedUserBooks = bookRepository.findAllByOwnersId(loggedUser.getId());
+        List<Book> booksToSave = new LinkedList<>();
+        List<BookOwnerId> booksOwnersIdToDelete = new LinkedList<>();
+
+        for (Book book : loggedUserBooks) {
+            boolean isOwner = false;
+            BookOwnerId ownerToDelete = null;
+            Book bookToSave = book;
+            for (BookOwnerId owner : book.getOwnersId()) {
+                if (owner.getOwnerId() == newOwnerId)
+                    isOwner = true;
+
+                if(owner.getOwnerId() == loggedUser.getId()) {
+                    ownerToDelete = owner;
+                }
+            }
+            if (!isOwner) {
+                BookOwnerId bookOwnerId = new BookOwnerId();
+                bookOwnerId.setOwnerId(newOwnerId);
+                bookOwnerId.setBook(book);
+                List<BookOwnerId> listWithOwner = bookToSave.getOwnersId();
+                listWithOwner.add(bookOwnerId);
+                if(ownerToDelete != null) {
+                    listWithOwner.remove(ownerToDelete);
+                    booksOwnersIdToDelete.add(ownerToDelete);
+                }
+                bookToSave.setOwnersId(listWithOwner);
+                bookToSave.setCurrentOwnerId(newOwnerId);
+            } else if(ownerToDelete != null) {
+                List<BookOwnerId> listWithOwner = bookToSave.getOwnersId();
+                listWithOwner.remove(ownerToDelete);
+                bookToSave.setOwnersId(listWithOwner);
+                bookToSave.setCurrentOwnerId(newOwnerId);
+            }
+            booksToSave.add(bookToSave);
+        }
+        bookRepository.saveAll(booksToSave);
+        bookOwnerIdRepository.deleteAll(booksOwnersIdToDelete);
+
+        return bookRepository.findAllByOwnersId(userService.getLoggedInUser().getId());
+	}
+
+	private boolean isAdmin(User user) {
+		List <Role> roles = user.getRoles();
+		boolean isAdmin = false;
+		for(Role role : roles) {
+			if(role.getRole().equals("ROLE_ADMIN")) {
+				isAdmin = true;
+			}
+		}
+		return isAdmin;
 	}
 }
