@@ -124,10 +124,11 @@ INSERT INTO "user" (email, first_name, last_name, password, address_id, is_accou
 VALUES ('janusz.kowalski@user.com', 'Janusz', 'Kowalski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1, true);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
-VALUES ('nokia.library@gmail.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1, true);
+VALUES ('admin@admin.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1, true);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('admin2@gmail.com', 'Admin2', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
+INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
+VALUES ('nokia.library@gmail.com', 'Nokia', 'Library', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1, true);
+
 
 
 INSERT INTO role (role) VALUES ('ROLE_EMPLOYEE');
