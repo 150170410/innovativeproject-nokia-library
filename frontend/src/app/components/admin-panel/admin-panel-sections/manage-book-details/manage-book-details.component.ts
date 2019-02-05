@@ -19,7 +19,7 @@ import { IsbnValidationService } from 'src/app/services/isbn-validation/isbn-val
 @Component({
 	selector: 'app-manage-book-details',
 	templateUrl: './manage-book-details.component.html',
-	styleUrls: ['./manage-book-details.component.css', '../../admin-panel.component.scss']
+	styleUrls: ['./manage-book-details.component.scss', '../../admin-panel.component.scss']
 })
 export class ManageBookDetailsComponent implements OnInit {
 

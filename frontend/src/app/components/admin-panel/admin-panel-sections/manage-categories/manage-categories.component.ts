@@ -11,7 +11,7 @@ import { ConfirmationDialogService } from '../../../../services/confirmation-dia
 @Component({
 	selector: 'app-manage-categories',
 	templateUrl: './manage-categories.component.html',
-	styleUrls: ['./manage-categories.component.css', '../../admin-panel.component.scss']
+	styleUrls: ['./manage-categories.component.scss', '../../admin-panel.component.scss']
 })
 export class ManageCategoriesComponent implements OnInit {
 

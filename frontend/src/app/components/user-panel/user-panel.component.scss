@@ -1,5 +1,4 @@
 
-
 .full-card {
   width: 100%;
   height: calc(100vh - 64spx);
@@ -15,12 +14,14 @@
 table {
   width: 100%;
   border: 1px solid black;
+
 }
 
 th {
   font-size: 18px;
   font-weight: bold;
 }
+
 .mat-cell {
   text-align: center;
 }
@@ -28,6 +29,7 @@ th {
 .mat-header-cell {
   text-align: center;
 }
+
 ::ng-deep .mat-tab-label-active {
   font-weight: bold;
   background-color: #124191;

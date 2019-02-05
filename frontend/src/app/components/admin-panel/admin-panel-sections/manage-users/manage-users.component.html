@@ -76,7 +76,7 @@
 			<mat-paginator #paginatorCopies [pageSizeOptions]="[10, 20, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
 		</div>
 	</div>
-	<table mat-table [dataSource]="dataSource" matSort>
+	<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
 		<ng-container matColumnDef="email">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
@@ -114,18 +114,18 @@
 						<mat-icon>arrow_downward</mat-icon>
 						Demote to user
 					</button>
-          <button [disabled]="user.roles[0].role != 'ROLE_ADMIN'" *ngIf="user.isAccountActive" color="warn" mat-button (click)="lockAccount(user)">
-            Lock account
-          </button>
-          <button [disabled]="user.roles[0].role != 'ROLE_ADMIN'" *ngIf="!user.isAccountActive" color="primary" mat-button (click)="unlockAccount(user)">
-            Unlock account
-          </button>
-          <button [disabled]="user.roles[0].role != 'ROLE_ADMIN' || user.email == loggedUserName" color="primary" mat-button (click)="shareBooks(user)">
-            Share books
-          </button>
-          <button [disabled]="user.roles[0].role != 'ROLE_ADMIN' || user.email == loggedUserName" color="primary" mat-button (click)="transferBooks(user)">
-            Transfer books
-          </button>
+					<button [disabled]="user.roles[0].role != 'ROLE_ADMIN'" *ngIf="user.isAccountActive" color="warn" mat-button (click)="lockAccount(user)">
+						Lock account
+					</button>
+					<button [disabled]="user.roles[0].role != 'ROLE_ADMIN'" *ngIf="!user.isAccountActive" color="primary" mat-button (click)="unlockAccount(user)">
+						Unlock account
+					</button>
+					<button [disabled]="user.roles[0].role != 'ROLE_ADMIN' || user.email == loggedUserName" color="primary" mat-button (click)="shareBooks(user)">
+						Share books
+					</button>
+					<button [disabled]="user.roles[0].role != 'ROLE_ADMIN' || user.email == loggedUserName" color="primary" mat-button (click)="transferBooks(user)">
+						Transfer books
+					</button>
 				</p>
 
 			</td>

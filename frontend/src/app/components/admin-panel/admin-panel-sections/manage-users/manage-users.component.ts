@@ -15,7 +15,7 @@ import {AuthService} from '../../../../services/auth/auth.service';
 @Component({
 	selector: 'app-manage-users',
 	templateUrl: './manage-users.component.html',
-	styleUrls: ['./manage-users.component.css', '../../admin-panel.component.scss']
+	styleUrls: ['./manage-users.component.scss', '../../admin-panel.component.scss']
 })
 export class ManageUsersComponent implements OnInit {
 

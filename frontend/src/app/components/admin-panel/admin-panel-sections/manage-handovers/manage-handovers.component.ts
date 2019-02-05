@@ -10,7 +10,7 @@ import { BookStatusEnum } from '../../../../utils/BookStatusEnum';
 @Component({
 	selector: 'app-manage-handovers',
 	templateUrl: './manage-handovers.component.html',
-	styleUrls: ['./manage-handovers.component.css', '../../admin-panel.component.scss']
+	styleUrls: ['./manage-handovers.component.scss', '../../admin-panel.component.scss']
 })
 export class ManageHandoversComponent implements OnInit {
 

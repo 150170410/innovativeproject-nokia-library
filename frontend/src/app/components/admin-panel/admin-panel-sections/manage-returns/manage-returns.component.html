@@ -10,7 +10,7 @@
 			<mat-paginator #paginatorCopies [pageSizeOptions]="[10, 20, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
 		</div>
 	</div>
-	<table mat-table [dataSource]="dataSource" matSort>
+	<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
 		<ng-container matColumnDef="signature">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Signature</th>
