@@ -184,4 +184,8 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
+
+    public List<User> getAllAdmins() {
+        return userRepository.getAllAdmins();
+    }
 }
