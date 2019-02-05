@@ -44,7 +44,7 @@
 			<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 		</div>
 	</div>
-	<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
+	<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
 		<ng-container matColumnDef="authorFullName">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Author name</th>
@@ -74,3 +74,5 @@
 
 </div>
 
+
+<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1"></app-nothing-found>

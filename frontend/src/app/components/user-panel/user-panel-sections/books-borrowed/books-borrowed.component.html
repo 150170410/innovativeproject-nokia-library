@@ -81,38 +81,7 @@
 
 			</table>
 		</div>
-		<div class="loading-shade"
-			 *ngIf="isLoadingResults">
-			<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-		</div>
+		<app-loading-results [isLoadingResults]="isLoadingResults"></app-loading-results>
 	</div>
-	<div class="nothing-found" *ngIf="dataSource.filteredData.length < 1">
-		<div>Nothing found.</div>
-	</div>
+	<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1"></app-nothing-found>
 </div>
-<!--<div>-->
-	<!--<div class="mat-elevation-z1" style="margin-bottom: 10px;" >Example </div>-->
-	<!--<div class="mat-elevation-z2" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z3" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z4" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z5" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z6" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z7" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z8" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z9" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z10" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z11" style="margin-bottom: 10px;" >Example </div>-->
-	<!--<div class="mat-elevation-z12" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z13" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z14" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z15" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z16" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z17" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z18" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z19" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z20" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z21" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z22" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z23" style="margin-bottom: 10px;">Example </div>-->
-	<!--<div class="mat-elevation-z24" style="margin-bottom: 10px;">Example </div>-->
-<!--</div>-->

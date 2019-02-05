@@ -106,11 +106,6 @@
 
 		</table>
 	</div>
-	<div class="loading-shade"
-		 *ngIf="isLoadingResults">
-		<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-	</div>
+	<app-loading-results [isLoadingResults]="isLoadingResults"></app-loading-results>
 </div>
-<div class="nothing-found" *ngIf="dataSource.filteredData.length < 1 && (!!searchValue || selectedCategories.length > 0)">
-	<div>Nothing found.</div>
-</div>
+<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1 && (!!searchValue || selectedCategories.length > 0)"></app-nothing-found>

@@ -47,6 +47,8 @@ import { TableViewComponent } from './components/views/table-view/table-view.com
 import { AccessDeniedComponent } from './utils/components/access-denied/access-denied.component';
 import { RolesPipe } from './pipes/roles/roles.pipe';
 import { ManageHistoryComponent } from './components/admin-panel/admin-panel-sections/manage-history/manage-history.component';
+import { NothingFoundComponent } from './utils/components/nothing-found/nothing-found.component';
+import { LoadingResultsComponent } from './utils/components/loading-results/loading-results.component';
 
 
 
@@ -84,7 +86,9 @@ import { ManageHistoryComponent } from './components/admin-panel/admin-panel-sec
 		TableViewComponent,
 		RolesPipe,
 		AccessDeniedComponent,
-		ManageHistoryComponent
+		ManageHistoryComponent,
+		NothingFoundComponent,
+		LoadingResultsComponent
 
 	],
 	imports: [
