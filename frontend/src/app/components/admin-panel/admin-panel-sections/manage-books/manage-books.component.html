@@ -1,5 +1,5 @@
 <p>Here you can add, edit or remove book copies. You can't remove book copy that is currently borrowed or reserved. You can hide available books from users.</p>
-<mat-card class="form-wrapper">
+<mat-card class="form-wrapper mat-elevation-z4">
 	<div>
 		<h3>Find and select book:</h3>
 		<mat-form-field>
@@ -14,7 +14,7 @@
 					<mat-paginator #paginatorDetails [pageSizeOptions]="[5, 10, 15]" [pageSize]="5" showFirstLastButtons></mat-paginator>
 				</div>
 			</div>
-			<table mat-table [dataSource]="dataSourceBookDetails">
+			<table mat-table [dataSource]="dataSourceBookDetails" class="mat-elevation-z8">
 
 				<ng-container matColumnDef="isbn">
 					<th mat-header-cell *matHeaderCellDef>ISBN</th>
@@ -163,6 +163,6 @@
 		<tr mat-row *matRowDef="let row; columns: displayedBookCopiesColumns"></tr>
 
 	</table>
-
+	<app-loading-results [isLoadingResults]="isLoadingResults"></app-loading-results>
 </div>
-<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1"></app-nothing-found>
+<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1 && !isLoadingResults"></app-nothing-found>

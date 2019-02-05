@@ -12,51 +12,49 @@
 		</div>
 	</div>
 	<div class="table-containertable-container">
-		<div>
-			<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" multiTemplateDataRows>
+		<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" multiTemplateDataRows>
 
-		<ng-container matColumnDef="signature">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Signature</th>
-			<td mat-cell *matCellDef="let rental">{{rental.book.signature}}</td>
-		</ng-container>
+			<ng-container matColumnDef="signature">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Signature</th>
+				<td mat-cell *matCellDef="let rental">{{rental.book.signature}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="rentalDate">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Rental date</th>
-			<td mat-cell *matCellDef="let rental">{{rental.rentalDate | date : "dd.MM.yy hh:mm"}}</td>
-		</ng-container>
+			<ng-container matColumnDef="rentalDate">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Rental date</th>
+				<td mat-cell *matCellDef="let rental">{{rental.rentalDate | date : "dd.MM.yy hh:mm"}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="handOverDate">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Handover date</th>
-			<td mat-cell *matCellDef="let rental">{{rental.handOverDate | date : "dd.MM.yy hh:mm"}}</td>
-		</ng-container>
+			<ng-container matColumnDef="handOverDate">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Handover date</th>
+				<td mat-cell *matCellDef="let rental">{{rental.handOverDate | date : "dd.MM.yy hh:mm"}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="returnDate">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Return date</th>
-			<td mat-cell *matCellDef="let rental">{{rental.returnDate | date : "dd.MM.yy hh:mm"}}</td>
-		</ng-container>
+			<ng-container matColumnDef="returnDate">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Return date</th>
+				<td mat-cell *matCellDef="let rental">{{rental.returnDate | date : "dd.MM.yy hh:mm"}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="user">
-			<th mat-header-cell *matHeaderCellDef>User</th>
-			<td mat-cell *matCellDef="let rental">{{rental.user.firstName}} {{rental.user.lastName}}</td>
-		</ng-container>
+			<ng-container matColumnDef="user">
+				<th mat-header-cell *matHeaderCellDef>User</th>
+				<td mat-cell *matCellDef="let rental">{{rental.user.firstName}} {{rental.user.lastName}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="bookDetails">
-			<th mat-header-cell *matHeaderCellDef>Book details</th>
-			<td mat-cell *matCellDef="let rental"><b>{{rental.book.bookDetails.title}}</b> by <i>{{rental.book.bookDetails.authors | arrToStr:'author'}}</i></td>
-		</ng-container>
+			<ng-container matColumnDef="bookDetails">
+				<th mat-header-cell *matHeaderCellDef>Book details</th>
+				<td mat-cell *matCellDef="let rental"><b>{{rental.book.bookDetails.title}}</b> by <i>{{rental.book.bookDetails.authors | arrToStr:'author'}}</i></td>
+			</ng-container>
 
-		<ng-container matColumnDef="comments">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Comment</th>
-			<td mat-cell *matCellDef="let rental">{{rental.book.comments}}</td>
-		</ng-container>
+			<ng-container matColumnDef="comments">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Comment</th>
+				<td mat-cell *matCellDef="let rental">{{rental.book.comments}}</td>
+			</ng-container>
 
-		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-		<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
+		</table>
 
-			</table>
-		</div>
 		<app-loading-results [isLoadingResults]="isLoadingResults"></app-loading-results>
 	</div>
-	<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1"></app-nothing-found>
+	<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1 && !isLoadingResults"></app-nothing-found>
 </div>

@@ -27,8 +27,7 @@ export class BooksBorrowedComponent implements OnInit {
 
 	constructor(private http: RestService,
 				private confirmService: ConfirmationDialogService,
-				private snackbar: SnackbarService,
-				private router: Router) {
+				private snackbar: SnackbarService) {
 	}
 
 	ngOnInit() {
@@ -84,11 +83,6 @@ export class BooksBorrowedComponent implements OnInit {
 			this.rentals[i].returnDate = new Date(this.rentals[i].returnDate);
 		}
 		this.isLoadingResults = false;
-	}
-
-	bookInfo(borrowing) {
-		const id = borrowing.book.bookDetails.id;
-		this.router.navigateByUrl('/single-book-view/' + id);
 	}
 
 	applyFilter(filterValue: string) {

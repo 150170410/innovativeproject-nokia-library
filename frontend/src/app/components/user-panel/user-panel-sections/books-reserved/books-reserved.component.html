@@ -52,12 +52,8 @@
 							<mat-icon>clear</mat-icon>
 							Cancel
 						</button>
-						<button color="primary" mat-button (click)="bookInfo(reservation)">
-							<mat-icon>info</mat-icon>
-							Book info
-						</button>
+						<app-book-info [item]="reservation"></app-book-info>
 					</p>
-
 				</td>
 			</ng-container>
 
@@ -65,8 +61,7 @@
 			<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
 		</table>
-
 		<app-loading-results [isLoadingResults]="isLoadingResults"></app-loading-results>
 	</div>
-	<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1"></app-nothing-found>
+	<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1 && !isLoadingResults"></app-nothing-found>
 </div>

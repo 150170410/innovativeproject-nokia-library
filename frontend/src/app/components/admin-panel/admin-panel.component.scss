@@ -59,8 +59,9 @@ th, tr, td {
   text-align: left;
 }
 
-::ng-deep .mat-tab-label {
-
+.table-container {
+  position: relative;
+  min-height: 50px;
 }
 
 ::ng-deep .mat-tab-label-active {
@@ -104,7 +105,3 @@ th, tr, td {
   justify-content: space-between;
 }
 
-.table-container {
-  position: relative;
-  min-height: 50px;
-}

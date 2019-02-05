@@ -20,7 +20,7 @@ export class ManageReturnsComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
-	displayedColumns: string[] = ['signature', 'current_user', 'owner', 'bookDetails', 'comments', 'actions'];
+	displayedColumns: string[] = ['signature', 'current_user', 'bookDetails', 'comments', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService,

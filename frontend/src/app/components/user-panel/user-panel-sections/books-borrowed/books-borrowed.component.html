@@ -67,10 +67,7 @@
 							<mat-icon>forward_30</mat-icon>
 							Prolong
 						</button>
-						<button color="primary" mat-button (click)="bookInfo(rental)">
-							<mat-icon>info</mat-icon>
-							Book info
-						</button>
+						<app-book-info [item]="rental"></app-book-info>
 					</p>
 				</td>
 			</ng-container>
@@ -81,5 +78,5 @@
 		</table>
 		<app-loading-results [isLoadingResults]="isLoadingResults"></app-loading-results>
 	</div>
-	<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1"></app-nothing-found>
+	<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1 && !isLoadingResults"></app-nothing-found>
 </div>
