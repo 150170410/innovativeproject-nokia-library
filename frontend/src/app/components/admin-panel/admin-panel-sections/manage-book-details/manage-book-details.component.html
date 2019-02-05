@@ -179,70 +179,73 @@
 			<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 		</div>
 	</div>
-	<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+	<div class="table-container">
+		<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" multiTemplateDataRows>
 
-		<ng-container matColumnDef="isbn">
-			<th mat-header-cell *matHeaderCellDef>ISBN</th>
-			<td mat-cell *matCellDef="let bookDetails">{{bookDetails.isbn}}</td>
-		</ng-container>
+			<ng-container matColumnDef="isbn">
+				<th mat-header-cell *matHeaderCellDef>ISBN</th>
+				<td mat-cell *matCellDef="let bookDetails">{{bookDetails.isbn}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="title">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header> Title</th>
-			<td mat-cell *matCellDef="let bookDetails">{{bookDetails.title}}</td>
-		</ng-container>
+			<ng-container matColumnDef="title">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Title</th>
+				<td mat-cell *matCellDef="let bookDetails">{{bookDetails.title}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="authors">
-			<th mat-header-cell *matHeaderCellDef>Authors</th>
-			<td mat-cell *matCellDef="let bookDetails">{{bookDetails.authors | arrToStr:'author'}}</td>
-		</ng-container>
+			<ng-container matColumnDef="authors">
+				<th mat-header-cell *matHeaderCellDef>Authors</th>
+				<td mat-cell *matCellDef="let bookDetails">{{bookDetails.authors | arrToStr:'author'}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="categories">
-			<th mat-header-cell *matHeaderCellDef>Categories</th>
-			<td mat-cell *matCellDef="let bookDetails">{{bookDetails.categories | arrToStr:'category'}}</td>
-		</ng-container>
+			<ng-container matColumnDef="categories">
+				<th mat-header-cell *matHeaderCellDef>Categories</th>
+				<td mat-cell *matCellDef="let bookDetails">{{bookDetails.categories | arrToStr:'category'}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="description">
-			<th mat-header-cell *matHeaderCellDef>Description</th>
-			<td mat-cell *matCellDef="let bookDetails">{{bookDetails.description | limitTo: 200}}</td>
-		</ng-container>
+			<ng-container matColumnDef="description">
+				<th mat-header-cell *matHeaderCellDef>Description</th>
+				<td mat-cell *matCellDef="let bookDetails">{{bookDetails.description | limitTo: 200}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="coverURL">
-			<th mat-header-cell *matHeaderCellDef>Cover picture</th>
-			<td mat-cell *matCellDef="let bookDetails">
-				<div *ngIf="bookDetails.coverPictureUrl">
-					<img class="thumbnail" src="{{bookDetails.coverPictureUrl}}">
-				</div>
-				<div *ngIf="!bookDetails.coverPictureUrl">
-					<img class="thumbnail" src="../../../../../assets/images/default-cover.png">
-				</div>
-			</td>
-		</ng-container>
+			<ng-container matColumnDef="coverURL">
+				<th mat-header-cell *matHeaderCellDef>Cover picture</th>
+				<td mat-cell *matCellDef="let bookDetails">
+					<div *ngIf="bookDetails.coverPictureUrl">
+						<img class="thumbnail" src="{{bookDetails.coverPictureUrl}}">
+					</div>
+					<div *ngIf="!bookDetails.coverPictureUrl">
+						<img class="thumbnail" src="../../../../../assets/images/default-cover.png">
+					</div>
+				</td>
+			</ng-container>
 
-		<ng-container matColumnDef="publicationDate">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Publication date</th>
-			<td mat-cell *matCellDef="let bookDetails">{{bookDetails.publicationDate | date: 'dd/MM/yyyy'}}</td>
-		</ng-container>
+			<ng-container matColumnDef="publicationDate">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Publication date</th>
+				<td mat-cell *matCellDef="let bookDetails">{{bookDetails.publicationDate | date: 'dd/MM/yyyy'}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="actions">
-			<th mat-header-cell *matHeaderCellDef>Actions</th>
-			<td mat-cell *matCellDef="let bookDetails">
-				<p>
-					<button color="primary" mat-button (click)="editBookDetails(bookDetails)">
-						<mat-icon>edit</mat-icon>
-						Edit
-					</button>
-					<button color="warn" mat-button (click)="removeBookDetails(bookDetails.id)" [disabled]="!bookDetails.isRemovable">
-						<mat-icon>cancel</mat-icon>
-						Remove
-					</button>
-				</p>
-			</td>
-		</ng-container>
+			<ng-container matColumnDef="actions">
+				<th mat-header-cell *matHeaderCellDef>Actions</th>
+				<td mat-cell *matCellDef="let bookDetails">
+					<p>
+						<button color="primary" mat-button (click)="editBookDetails(bookDetails)">
+							<mat-icon>edit</mat-icon>
+							Edit
+						</button>
+						<button color="warn" mat-button (click)="removeBookDetails(bookDetails.id)" [disabled]="!bookDetails.isRemovable">
+							<mat-icon>cancel</mat-icon>
+							Remove
+						</button>
+					</p>
+				</td>
+			</ng-container>
 
-		<tr mat-header-row *matHeaderRowDef="displayedBookDetailColumns"></tr>
-		<tr mat-row *matRowDef="let row; columns: displayedBookDetailColumns"></tr>
+			<tr mat-header-row *matHeaderRowDef="displayedBookDetailColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedBookDetailColumns"></tr>
 
-	</table>
 
+		</table>
+		<app-loading-results [isLoadingResults]="isLoadingResults"></app-loading-results>
+	</div>
+	<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1"></app-nothing-found>
 </div>
-<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1"></app-nothing-found>

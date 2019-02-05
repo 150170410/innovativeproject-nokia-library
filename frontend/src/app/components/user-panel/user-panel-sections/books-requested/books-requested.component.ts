@@ -12,7 +12,7 @@ import { IsbnValidationService } from 'src/app/services/isbn-validation/isbn-val
 @Component({
 	selector: 'app-books-requested',
 	templateUrl: './books-requested.component.html',
-	styleUrls: ['./books-requested.component.css', '../../user-panel.component.scss']
+	styleUrls: ['./books-requested.component.scss', '../../user-panel.component.scss']
 })
 export class BooksRequestedComponent implements OnInit {
 
@@ -58,22 +58,6 @@ export class BooksRequestedComponent implements OnInit {
 		this.isLoadingResults = false;
 	}
 
-	async cancelRequest(request: BookToOrder) {
-		await this.confirmService.openDialog('Are you sure you want to cancel this request?').subscribe((result) => {
-			if (result) {
-				this.http.remove('bookToOrder/remove/', request.id).subscribe((response) => {
-					if (response.success) {
-						this.snackbar.snackSuccess(response.message, 'OK');
-						this.getRequestedBooks();
-					} else {
-						this.snackbar.snackError('Error', 'OK');
-					}
-				}, (error) => {
-					this.snackbar.snackError(error.error.message, 'OK');
-				});
-			}
-		})
-	}
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();

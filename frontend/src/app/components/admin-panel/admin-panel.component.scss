@@ -98,3 +98,8 @@ th, tr, td {
   display: flex;
   justify-content: space-between;
 }
+
+.table-container {
+  position: relative;
+  min-height: 50px;
+}

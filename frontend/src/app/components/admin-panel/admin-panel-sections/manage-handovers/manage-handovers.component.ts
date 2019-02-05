@@ -20,7 +20,7 @@ export class ManageHandoversComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
-	displayedColumns: string[] = ['signature', 'current_user', 'owner', 'status', 'bookDetails', 'comments', 'actions'];
+	displayedColumns: string[] = ['signature', 'current_user', 'status', 'bookDetails', 'comments', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService,
@@ -44,8 +44,6 @@ export class ManageHandoversComponent implements OnInit {
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
 	}
-
-
 
 	async getRentals() {
 		const response: MessageInfo = await this.http.getAll('rentals/getAllFill');

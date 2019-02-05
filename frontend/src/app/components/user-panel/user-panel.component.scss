@@ -1,3 +1,35 @@
+.filter-paginator-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+table {
+  width: 100%;
+  border: 1px solid black;
+}
+
+th {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.loading-shade {
+  //position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-container {
+  position: relative;
+  min-height: 50px;
+}
 
 .full-card {
   width: 100%;
@@ -11,15 +43,8 @@
   text-align: center;
 }
 
-table {
-  width: 100%;
-  border: 1px solid black;
-
-}
-
-th {
-  font-size: 18px;
-  font-weight: bold;
+.filter mat-form-field {
+  width: 150px;
 }
 
 .mat-cell {
@@ -63,43 +88,4 @@ th {
 .st-unavailable {
   color: white;
   background-color: rgba(108, 117, 125, 0.7);
-}
-
-.filter-paginator-wrapper {
-  display: flex;
-  justify-content: space-between;
-}
-
-.filter mat-form-field {
-  width: 150px;
-}
-
-.example-container {
-  position: relative;
-  min-height: 50px;
-}
-
-.loading-shade {
-  //position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.rate-limit-reached {
-  color: #980000;
-  max-width: 360px;
-  text-align: center;
-}
-
-.nothing-found {
-  margin-top: 10px;
-  text-align: center;
-  font-size: 25px;
 }
