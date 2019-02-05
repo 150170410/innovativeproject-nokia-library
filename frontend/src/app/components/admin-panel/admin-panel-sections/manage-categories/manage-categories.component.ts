@@ -18,6 +18,7 @@ export class ManageCategoriesComponent implements OnInit {
 	categoryParams: FormGroup;
 	formMode: string = 'Add';
 	toUpdate: BookCategory = null;
+	isLoadingResults = true;
 
 	//table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -32,6 +33,7 @@ export class ManageCategoriesComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.getCategories();
 		this.initCategoriesForm();
 	}
 
@@ -39,7 +41,7 @@ export class ManageCategoriesComponent implements OnInit {
 		this.categoryParams = this.formBuilder.group({
 			categoryName: ['', [Validators.required, Validators.maxLength(50)]]
 		});
-		this.getCategories();
+
 	}
 
 	createCategory(params: any) {
@@ -74,10 +76,12 @@ export class ManageCategoriesComponent implements OnInit {
 	}
 
 	async getCategories() {
+		this.isLoadingResults = true;
 		const response: MessageInfo = await this.http.getAll('bookCategory/getAll');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.sort = this.sort;
+		this.isLoadingResults = false;
 	}
 
 	editCategory(category: BookCategory) {

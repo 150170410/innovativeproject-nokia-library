@@ -16,6 +16,7 @@ export class ManageHandoversComponent implements OnInit {
 
 	rentalsAll: Rental[] = [];
 	rentals: Rental[] = [];
+	isLoadingResults = true;
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
@@ -46,6 +47,7 @@ export class ManageHandoversComponent implements OnInit {
 	}
 
 	async getRentals() {
+		this.isLoadingResults = true;
 		const response: MessageInfo = await this.http.getAll('rentals/getAllFill');
 		this.rentalsAll = response.object;
 		this.rentals = [];
@@ -60,6 +62,7 @@ export class ManageHandoversComponent implements OnInit {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
+		this.isLoadingResults = false;
 	}
 
 	applyFilter(filterValue: string) {

@@ -7,7 +7,7 @@ import { MessageInfo } from '../../../models/MessageInfo';
 @Component({
 	selector: 'app-listview',
 	templateUrl: './listview.component.html',
-	styleUrls: ['./listview.component.css']
+	styleUrls: ['./listview.component.scss']
 })
 export class ListviewComponent implements OnInit {
 

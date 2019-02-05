@@ -18,6 +18,7 @@ export class ManageAuthorsComponent implements OnInit {
 	authorParams: FormGroup;
 	formMode: string = 'Add';
 	toUpdate: Author = null;
+	isLoadingResults = true;
 
 	//table
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -75,10 +76,12 @@ export class ManageAuthorsComponent implements OnInit {
 	}
 
 	async getAuthors() {
+		this.isLoadingResults = true;
 		const response: MessageInfo = await this.http.getAll('author/getAll');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.sort = this.sort;
+		this.isLoadingResults = false;
 	}
 
 	editAuthor(author: Author) {

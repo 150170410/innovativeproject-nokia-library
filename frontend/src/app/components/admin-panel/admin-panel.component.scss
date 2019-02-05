@@ -42,6 +42,11 @@ th, tr, td {
   text-align: center;
 }
 
+.filter-paginator-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
 .mat-cell {
   text-align: center;
 }

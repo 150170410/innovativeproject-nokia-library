@@ -13,6 +13,7 @@ import { SnackbarService } from '../../../../services/snackbar/snackbar.service'
 export class ManageRequestsComponent implements OnInit {
 
 	requestedBooks: BookToOrder[] = [];
+	isLoadingResults = true;
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
@@ -42,6 +43,7 @@ export class ManageRequestsComponent implements OnInit {
 	}
 
 	async getRequestedBooks() {
+		this.isLoadingResults = true;
 		const response = await this.http.getAll('bookToOrder/getAll');
 		this.requestedBooks = response.object;
 		this.dataSource = new MatTableDataSource(response.object);
@@ -49,6 +51,7 @@ export class ManageRequestsComponent implements OnInit {
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
+		this.isLoadingResults = false;
 	}
 
 	applyFilter(filterValue: string) {

@@ -21,6 +21,7 @@ export class ManageBooksComponent implements OnInit {
 	selectedBookDetails: BookDetails = null;
 
 	toUpdate: Book = null;
+	isLoadingResults = true;
 
 	// tables
 	@ViewChild('paginatorDetails') paginatorDetails: MatPaginator;
@@ -95,6 +96,7 @@ export class ManageBooksComponent implements OnInit {
 	}
 
 	async getBookCopies() {
+		this.isLoadingResults = true;
 		const response: MessageInfo = await this.http.getAll('books/getAllFill');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginatorCopies;
@@ -102,6 +104,7 @@ export class ManageBooksComponent implements OnInit {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
+		this.isLoadingResults = false;
 	}
 
 	editBookCopy(bookCopy: Book) {
