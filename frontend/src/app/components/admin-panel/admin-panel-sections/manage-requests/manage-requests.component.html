@@ -1,5 +1,6 @@
-<p>Here you can manage book requests sent by users. When the request gets fulfilled, requesting user will get an email notification about book being available.</p>
-<p>If a book with same isbn is added, then the request will be auto-fullfilled.</p>
+<p>Here you can manage book requests sent by users.</p>
+<p>If a book with the same ISBN is added, then the request will be auto-fulfilled and all subscribed users will get an email notification about the book.</p>
+<p>If for any reason, the book will never be bought for any library, you can reject the request. In this case, all subscribed users will also get appropriate email.</p>
 <div>
 	<div class="filter-paginator-wrapper">
 		<div class="filter">
@@ -12,7 +13,7 @@
 		</div>
 	</div>
 	<div class="table-container">
-		<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" multiTemplateDataRows>
+		<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
 			<ng-container matColumnDef="isbn">
 				<th mat-header-cell *matHeaderCellDef>Isbn</th>

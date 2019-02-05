@@ -1,8 +1,7 @@
 <p class="info-text">Here you can add, edit or remove categories. You can't remove category that is attached to any book.</p>
-<mat-card class="form-wrapper">
-
+<mat-card class="form-wrapper mat-elevation-z4">
 	<form name="categoriesParams" (ngSubmit)="createCategory(categoryParams)" [formGroup]="categoryParams">
-		<div class="form-container mat-elevation-z4">
+		<div class="form-container">
 			<mat-form-field>
 
 				<input formControlName="categoryName"
@@ -30,9 +29,7 @@
 				Clear
 			</button>
 		</div>
-
 	</form>
-
 </mat-card>
 
 <div>
@@ -47,7 +44,7 @@
 		</div>
 	</div>
 
-	<div class="table-containertable-containertable-container">
+	<div class="table-container">
 		<div>
 			<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" multiTemplateDataRows>
 
