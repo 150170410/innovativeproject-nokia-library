@@ -4,56 +4,68 @@ INSERT INTO book_status (status_name) VALUES ('BORROWED');
 INSERT INTO book_status (status_name) VALUES ('RESERVED');
 INSERT INTO book_status (status_name) VALUES ('UNAVAILABLE');
 
-INSERT INTO book_category (book_category_name, is_removable) VALUES ('Guide', false);
-INSERT INTO book_category (book_category_name) VALUES ('Programming');
-INSERT INTO book_category (book_category_name, is_removable) VALUES ('Novel', false);
-INSERT INTO book_category (book_category_name, is_removable) VALUES ('Cooking', false);
-INSERT INTO book_category (book_category_name, is_removable) VALUES ('Autobiography', false);
-INSERT INTO book_category (book_category_name) VALUES ('Politics');
-INSERT INTO book_category (book_category_name, is_removable) VALUES ('Sci-fi', false);
-INSERT INTO book_category (book_category_name) VALUES ('Religion');
-INSERT INTO book_category (book_category_name) VALUES ('Education');
-INSERT INTO book_category (book_category_name) VALUES ('Astronomy');
-INSERT INTO book_category (book_category_name) VALUES ('Science');
-INSERT INTO book_category (book_category_name) VALUES ('Java');INSERT INTO address (building, city) VALUES ('West Link', 'Wrocław');
+INSERT INTO book_category (book_category_name) VALUES ('guide');
+INSERT INTO book_category (book_category_name) VALUES ('programming');
+INSERT INTO book_category (book_category_name) VALUES ('education');
+INSERT INTO book_category (book_category_name) VALUES ('astronomy');
+INSERT INTO book_category (book_category_name) VALUES ('science');
+INSERT INTO book_category (book_category_name) VALUES ('java');
+INSERT INTO book_category (book_category_name) VALUES ('c++');
+INSERT INTO book_category (book_category_name) VALUES ('cpp');
+INSERT INTO book_category (book_category_name) VALUES ('javascript');
+INSERT INTO book_category (book_category_name) VALUES ('react');
+INSERT INTO book_category (book_category_name) VALUES ('frontend');
+INSERT INTO book_category (book_category_name) VALUES ('testing');
+INSERT INTO book_category (book_category_name) VALUES ('design');
+INSERT INTO book_category (book_category_name) VALUES ('lte');
+INSERT INTO book_category (book_category_name) VALUES ('managment');
+
+INSERT INTO address (building, city) VALUES ('West Link', 'Wrocław');
+INSERT INTO address (building, city) VALUES ('Eest Link', 'Wrocław');
+INSERT INTO address (building, city) VALUES ('Blue Tower', 'Wrocław');
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('user@user.com', 'User', 'User', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('wojtek.wojciechowski@user.com', 'Wojtek', 'Wojciechowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+VALUES ('wojtek@admin.com', 'Wojtek', 'Wojciechowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('jacek.jackowski@user.com', 'Jacek', 'Jackowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+VALUES ('jacek@admin.com', 'Jacek', 'Jackowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('alex.alexowski@user.com', 'Alex', 'Alexowski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+VALUES ('alex@admin.com', 'Alex', 'Alexowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('mikolaj.mikolajowski@user.com', 'Mikołaj', 'Mikołajski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+VALUES ('mikolaj@admin.com', 'Mikołaj', 'Mikołajski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
 
 INSERT INTO "user" (email, first_name, last_name, password, address_id)
 VALUES ('janusz.kowalski@user.com', 'Janusz', 'Kowalski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('nokia.library@gmail.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
+INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
+VALUES ('admin@admin.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1, true);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('admin2@gmail.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
-
+INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
+VALUES ('nokia.library@gmail.com', 'Nokia', 'Library', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1, true);
 
 INSERT INTO role (role) VALUES ('ROLE_EMPLOYEE');
 INSERT INTO role (role) VALUES ('ROLE_ADMIN');
 INSERT INTO user_roles (user_id, roles_id) VALUES (1, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (2, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (2, 2);
 INSERT INTO user_roles (user_id, roles_id) VALUES (3, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (3, 2);
 INSERT INTO user_roles (user_id, roles_id) VALUES (4, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (4, 2);
 INSERT INTO user_roles (user_id, roles_id) VALUES (5, 1);
+INSERT INTO user_roles (user_id, roles_id) VALUES (5, 2);
 INSERT INTO user_roles (user_id, roles_id) VALUES (6, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (7, 1);
 INSERT INTO user_roles (user_id, roles_id) VALUES (7, 2);
 INSERT INTO user_roles (user_id, roles_id) VALUES (8, 1);
-INSERT INTO user_roles (user_id, roles_id) VALUES (8, 2);INSERT INTO author (author_full_name, is_removable) VALUES ('Philip Romanik', false);
+INSERT INTO user_roles (user_id, roles_id) VALUES (8, 2);
+
+INSERT INTO author (author_full_name, is_removable) VALUES ('Philip Romanik', false);
 INSERT INTO author (author_full_name, is_removable) VALUES ('Amy Muntz', false);
 INSERT INTO author (author_full_name, is_removable) VALUES ('Etienne Wenger', false);
 INSERT INTO author (author_full_name, is_removable) VALUES ('Patrick Lencioni', false);
@@ -6055,7 +6067,7 @@ INSERT INTO book_owner_id (owner_id, book_id) VALUES (8 ,1781);
 INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('hgtxlbxvht', 713, 1, 8); 
 INSERT INTO book_owner_id (owner_id, book_id) VALUES (8 ,1782);
 INSERT INTO book_details_authors VALUES (713, 615); 
-INSERT INTO book_details (isbn, title, description, cover_picture_url, publication_date, is_removable) VALUES ('HARVARD:32044010578342', 'testEwa', 'null', 'http://books.google.com/books/content?id=4ZEWAAAAYAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '1833', false); 
+INSERT INTO book_details (isbn, title, description, cover_picture_url, publication_date, is_removable) VALUES ('2044010578342', 'testEwa', 'null', 'http://books.google.com/books/content?id=4ZEWAAAAYAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '1833', false);
 INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('ooitwfstiv', 714, 1, 7); 
 INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,1783);
 INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('skjenjvxdv', 714, 1, 7); 
