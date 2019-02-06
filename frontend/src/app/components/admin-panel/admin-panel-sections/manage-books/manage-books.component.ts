@@ -106,7 +106,7 @@ export class ManageBooksComponent implements OnInit {
 	async getAdmins() {
 		const response: MessageInfo = await this.http.getAll('user/admin/getAll');
 		this.allOwners = response.object;
-		this.availableOwners = this.ownersToString(this.allOwners).sort();
+		//this.availableOwners = this.ownersToString(this.allOwners).sort();
 		this.bookCopyParams.patchValue({ 'owner': '' });
 	}
 
@@ -174,7 +174,8 @@ export class ManageBooksComponent implements OnInit {
 		this.bookCopyParams.reset();
 		this.bookCopyParams.markAsPristine();
 		this.bookCopyParams.markAsUntouched();
-		this.availableOwners = this.ownersToString(this.allOwners);
+		//this.availableOwners = this.ownersToString(this.allOwners);
+		this.availableOwners = [];
 		this.selectedOwners = [];
 		this.selectedBookDetails = null;
 		this.cd.markForCheck();
@@ -226,12 +227,12 @@ export class ManageBooksComponent implements OnInit {
 	}
 	removeOwner(owner: string): void {
 		const index = this.selectedOwners.indexOf(owner);
-		if (index >= 0) {
+	/*	if (index >= 0) {
 			if (!this.availableOwners.includes(this.selectedOwners[index])) {
 				this.availableOwners.push(this.selectedOwners[index]);
-			}
+			}*/
 			this.selectedOwners.splice(index, 1);
-		}
+		//}
 	}
 
 	selectedOwner(event: MatAutocompleteSelectedEvent): void {

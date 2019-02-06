@@ -33,4 +33,11 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     @Query(value = "SELECT * FROM RENTAL WHERE RETURN_DATE > now();",
             nativeQuery = true)
     List<Rental> findOverdueRentals();
+
+    @Query(value = "SELECT * FROM RENTAL R " +
+            "LEFT JOIN BOOK B ON R.book_catalog_number = B.ID " +
+            "LEFT JOIN BOOK_STATUS BS ON B.book_status_id = BS.ID " +
+            "WHERE R.RENTAL_DATE >= now() - interval '3 days' AND BS.STATUS_NAME = 'AWAITING'" ,
+    nativeQuery = true)
+    List<Rental> findUnacceptedRentals();
 }

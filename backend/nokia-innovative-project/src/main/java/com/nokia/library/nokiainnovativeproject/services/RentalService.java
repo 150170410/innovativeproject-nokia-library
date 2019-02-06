@@ -18,10 +18,14 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -206,11 +210,14 @@ public class RentalService {
 		return rentalRepository.save(rental);
 	}
 
-	public void cancelRental(Long id) {
-		User user = userService.getLoggedInUser();
+	public void cancelRental(Long id, boolean controllerRequest) {
+
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("rental"));
 
-		validateUser(user, rental);
+		if(controllerRequest) {
+			User user = userService.getLoggedInUser();
+			validateUser(user, rental);
+		}
 
 		Long bookId = rental.getBook().getId();
 		Book borrowedBook = bookService.getBookById(bookId);
@@ -255,5 +262,21 @@ public class RentalService {
 		if (!rental.getUser().getId().equals(user.getId())) {
 			throw new AuthorizationException();
 		}
+	}
+
+	@Scheduled(cron = " 0 0/15 0 ? * * *")
+	private void removeUnacceptedRentals(){
+       List<Rental> rentals = rentalRepository.findUnacceptedRentals();
+       for(Rental rental : rentals){
+       	int days = 3;
+       	LocalDate localDate = rental.getRentalDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+       	for(int i = 0; i < days; i++){
+       		if(localDate.getDayOfWeek().equals(DayOfWeek.SATURDAY) || localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY))
+       			i--;
+       		localDate = localDate.plusDays(1);
+		}
+		if(localDate.minusDays(days).isBefore(LocalDate.now()))
+			cancelRental(rental.getId(), false);
+	   }
 	}
 }
