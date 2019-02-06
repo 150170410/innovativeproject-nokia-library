@@ -1,6 +1,14 @@
 <div *ngIf="role_admin">
 	<h1>Admin panel</h1>
 	<mat-tab-group id="admin-panel-tabs" mat-stretch-tabs class="full-card">
+		<mat-tab label="Awaiting books">
+			<app-manage-handovers></app-manage-handovers>
+		</mat-tab>
+		<mat-tab label="Return a book">
+			<ng-template matTabContent>
+				<app-manage-returns></app-manage-returns>
+			</ng-template>
+		</mat-tab>
 		<mat-tab label="Book details">
 			<app-manage-book-details></app-manage-book-details>
 		</mat-tab>
@@ -22,14 +30,7 @@
 				</div>
 			</ng-template>
 		</mat-tab>
-		<mat-tab label="Awaiting books">
-			<app-manage-handovers></app-manage-handovers>
-		</mat-tab>
-		<mat-tab label="Return a book">
-			<ng-template matTabContent>
-				<app-manage-returns></app-manage-returns>
-			</ng-template>
-		</mat-tab>
+
 		<mat-tab label="New books requests">
 			<app-manage-requests></app-manage-requests>
 		</mat-tab>

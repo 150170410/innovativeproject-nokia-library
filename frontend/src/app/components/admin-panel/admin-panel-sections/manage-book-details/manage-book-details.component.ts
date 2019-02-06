@@ -110,7 +110,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	createBookDetails(params: any) {
-		if(this.isbnValidation.validateISBN(this.bookDetailsParams.value.isbn)) {
+		if (this.isbnValidation.validateISBN(this.bookDetailsParams.value.isbn)) {
 			const body = new BookDetailsDTO(params.value.isbn,
 				params.value.title,
 				this.authorsToAuthor(this.selectedAuthors),
@@ -124,7 +124,7 @@ export class ManageBookDetailsComponent implements OnInit {
 					if (response.success) {
 						this.clearForm();
 						this.getBookDetails();
-						this.snackbar.snackSuccess('Book details added successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message[0], 'OK');
 						this.foundFromAPI = [];
 					} else {
 						this.snackbar.snackError('Error', 'OK');
@@ -139,7 +139,7 @@ export class ManageBookDetailsComponent implements OnInit {
 						this.clearForm();
 						this.getBookDetails();
 						this.formMode = 'Add';
-						this.snackbar.snackSuccess('Book details edited successfully!', 'OK');
+						this.snackbar.snackSuccess(response.message[0], 'OK');
 						this.foundFromAPI = [];
 					} else {
 						this.snackbar.snackError('Error', 'OK');
@@ -239,7 +239,7 @@ export class ManageBookDetailsComponent implements OnInit {
 
 	getInfoFromAPI() {
 		this.fetchingDetails = true;
-		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value.replace("-", "").replace(" ","").toLocaleLowerCase(), {withCredentials: true})
+		this.httpClient.get(API_URL + '/api/v1/autocompletion/getAll/?isbn=' + this.bookDetailsParams.get('isbn').value.replace("-", "").replace(" ", "").toLocaleLowerCase(), { withCredentials: true })
 		.subscribe((response: MessageInfo) => {
 			if (response.success) {
 				this.availableTitles = [];

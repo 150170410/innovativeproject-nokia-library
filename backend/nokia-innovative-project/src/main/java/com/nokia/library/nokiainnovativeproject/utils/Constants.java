@@ -76,7 +76,7 @@ public class Constants {
 
         Messages.put(MessageTypes.CREATED_SUCCESSFULLY, " created successfully.");
         Messages.put(MessageTypes.UPDATED_SUCCESSFULLY, " updated successfully.");
-        Messages.put(MessageTypes.REMOVED_SUCCESSFULLY, " you have selected has been removed successfully.");
+        Messages.put(MessageTypes.REMOVED_SUCCESSFULLY, " removed successfully.");
         Messages.put(MessageTypes.LIST_OF, "List of ");
         Messages.put(MessageTypes.REQUESTED, " you are requesting.");
         Messages.put(MessageTypes.BOOK_WITH_ISBN_NOT_FOUND, "Book details with this isbn not found.");

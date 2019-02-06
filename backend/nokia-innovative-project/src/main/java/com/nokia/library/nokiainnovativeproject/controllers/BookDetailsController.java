@@ -26,39 +26,39 @@ public class BookDetailsController {
 	@GetMapping(GET_ALL)
 	public ResponseEntity getAllBookDetails() {
 		return MessageInfo.success(bookDetailsService.getAllBookDetails(),
-				Arrays.asList(Messages.get(LIST_OF) + "bookDetails."));
+				Arrays.asList(Messages.get(LIST_OF) + "book details."));
 	}
 
 	@GetMapping(GET_ALL + AVAILABLE)
 	public ResponseEntity getAvailableBookDetails() {
 		return MessageInfo.success(bookDetailsService.getAvailableBookDetails(),
-				Arrays.asList(Messages.get(LIST_OF) + "available bookDetails."));
+				Arrays.asList(Messages.get(LIST_OF) + "available book details."));
 	}
 
 	@GetMapping(GET_ONE)
 	public ResponseEntity getBookDetailsById(@PathVariable Long id) {
 		return MessageInfo.success(bookDetailsService.getBookDetailsById(id),
-				Arrays.asList("BookDetails" + Messages.get(REQUESTED)));
+				Arrays.asList("Book details" + Messages.get(REQUESTED)));
 	}
 
 	@PostMapping(CREATE)
 	public ResponseEntity createBookDetails(@RequestBody @Valid BookDetailsDTO bookDetailsDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
 		return MessageInfo.success(bookDetailsService.createBookDetails(bookDetailsDTO),
-				Arrays.asList("BookDetails" + Messages.get(CREATED_SUCCESSFULLY)));
+				Arrays.asList("Book details" + Messages.get(CREATED_SUCCESSFULLY)));
 	}
 
 	@PostMapping(UPDATE)
 	public ResponseEntity updateBookDetails(@PathVariable Long id, @RequestBody @Valid
-			BookDetailsDTO bookDetailsDTO, BindingResult bindingResult){
+			BookDetailsDTO bookDetailsDTO, BindingResult bindingResult) {
 		MessageInfo.validateBindingResults(bindingResult);
 		return MessageInfo.success(bookDetailsService.updateBookDetails(id, bookDetailsDTO),
-				Arrays.asList("BookDetails" + Messages.get(UPDATED_SUCCESSFULLY)));
+				Arrays.asList("Book details" + Messages.get(UPDATED_SUCCESSFULLY)));
 	}
 
 	@DeleteMapping(REMOVE)
 	public ResponseEntity deleteBookDetails(@PathVariable Long id) throws ResourceNotFoundException {
 		bookDetailsService.deleteBookDetails(id);
-		return MessageInfo.success(null, Arrays.asList("BookDetails" + Messages.get(REMOVED_SUCCESSFULLY)));
+		return MessageInfo.success(null, Arrays.asList("Book details" + Messages.get(REMOVED_SUCCESSFULLY)));
 	}
 }

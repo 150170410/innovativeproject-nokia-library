@@ -34,7 +34,7 @@ export class BooksRequestedComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.getRequestedBooks()
+		this.getRequestedBooks();
 		this.initRequestParams();
 	}
 
@@ -70,7 +70,7 @@ export class BooksRequestedComponent implements OnInit {
 				if (response.success) {
 					this.clearForm();
 					this.getRequestedBooks();
-					this.snackbar.snackSuccess('Book requested successfully!', 'OK');
+					this.snackbar.snackSuccess(response.message[0], 'OK');
 				} else {
 					this.snackbar.snackError('Error', 'OK');
 				}
@@ -97,9 +97,8 @@ export class BooksRequestedComponent implements OnInit {
 							element.subscribed = !element.subscribed;
 							element.subscribed ? element.totalSubs++ : element.totalSubs--;
 						}
-
 					});
-					this.snackbar.snackSuccess('Success', 'OK');
+					this.snackbar.snackSuccess(response.message[0], 'OK');
 				}
 			}, (error) => {
 				this.snackbar.snackError(error.error.message, 'OK');

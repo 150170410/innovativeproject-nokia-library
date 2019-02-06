@@ -40,7 +40,7 @@ public class BookToOrderController {
     public ResponseEntity createBookToOrder(@RequestBody @Valid BookToOrderDTO bookToOrderDTO, BindingResult bindingResult) {
         MessageInfo.validateBindingResults(bindingResult);
         return MessageInfo.success(bookToOrderService.createBookToOrder(bookToOrderDTO),
-                Arrays.asList("Book to order" + Messages.get(CREATED_SUCCESSFULLY)));
+                Arrays.asList("Book requested successfully."));
     }
 
     @PostMapping(UPDATE)
@@ -54,7 +54,7 @@ public class BookToOrderController {
     @DeleteMapping(REMOVE)
     public ResponseEntity deleteBookToOrder(@PathVariable Long id) {
         bookToOrderService.deleteBookToOrder(id);
-        return MessageInfo.success(null, Arrays.asList("BookToOrder" + Messages.get(REMOVED_SUCCESSFULLY)));
+        return MessageInfo.success(null, Arrays.asList("Book request rejected successfully."));
     }
 
     @PostMapping(ACCEPT)

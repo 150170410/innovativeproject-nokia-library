@@ -59,9 +59,9 @@ export class ManageRequestsComponent implements OnInit {
 	}
 
 	async rejectRequest(request: BookToOrder) {
-		await this.http.remove('bookToOrder', request.id).subscribe((response) => {
+		await this.http.remove('bookToOrder/remove/', request.id).subscribe((response) => {
 			if (response.success) {
-				this.snackbar.snackSuccess('The request was rejected.', 'OK');
+				this.snackbar.snackSuccess(response.message, 'OK');
 				this.getRequestedBooks();
 			} else {
 				this.snackbar.snackError('Error', 'OK');

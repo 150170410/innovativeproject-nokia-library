@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Arrays;
 
-import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
-import static com.nokia.library.nokiainnovativeproject.utils.Constants.*;
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
+import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
+import static com.nokia.library.nokiainnovativeproject.utils.Mappings.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -64,7 +64,7 @@ public class BookController {
 	public ResponseEntity deleteBook(@PathVariable Long id) throws ResourceNotFoundException {
 		bookService.deleteBook(id);
 		return MessageInfo.success(null,
-				Arrays.asList("Book" + Messages.get(UPDATED_SUCCESSFULLY)));
+				Arrays.asList("Book" + Messages.get(REMOVED_SUCCESSFULLY)));
 	}
 
 	@PostMapping("/lock/{signature}")
