@@ -264,8 +264,8 @@ public class RentalService {
 		}
 	}
 
-	@Scheduled(cron = " 0 0/15 0 ? * * *")
-	private void removeUnacceptedRentals(){
+	@Scheduled(cron = "0 */15 * ? * *")
+	public void removeUnacceptedRentals(){
        List<Rental> rentals = rentalRepository.findUnacceptedRentals();
        for(Rental rental : rentals){
        	int days = 3;
