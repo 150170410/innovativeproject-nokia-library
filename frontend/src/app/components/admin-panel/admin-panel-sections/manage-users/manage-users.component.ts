@@ -10,12 +10,12 @@ import { Address } from '../../../../models/database/entites/Address';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { UserDTO } from '../../../../models/database/DTOs/UserDTO';
-import {AuthService} from '../../../../services/auth/auth.service';
+import { AuthService } from '../../../../services/auth/auth.service';
 
 @Component({
 	selector: 'app-manage-users',
 	templateUrl: './manage-users.component.html',
-	styleUrls: ['./manage-users.component.css', '../../admin-panel.component.scss']
+	styleUrls: ['./manage-users.component.scss', '../../admin-panel.component.scss']
 })
 export class ManageUsersComponent implements OnInit {
 
@@ -24,6 +24,7 @@ export class ManageUsersComponent implements OnInit {
 	userParams: FormGroup;
 	actualUser: User;
 
+	isLoadingResults = true;
 	addresses: Address[] = [];
 	availableCities: string[] = [];
 	availableBuildings: string[] = [];
@@ -47,21 +48,21 @@ export class ManageUsersComponent implements OnInit {
 	constructor(private http: RestService,
 				private snackbar: SnackbarService,
 				private formBuilder: FormBuilder,
-              private authService: AuthService) {
+				private authService: AuthService) {
 	}
 
 	ngOnInit() {
 		this.getUsers();
 		this.initFormGroup();
 		this.getAddresses();
-    this.initData();
+		this.initData();
 	}
 
-  initData() {
-    this.authService.getUserData().then( () => {
-      this.loggedUserName = this.authService.getUsername();
-    });
-  }
+	initData() {
+		this.authService.getUserData().then(() => {
+			this.loggedUserName = this.authService.getUsername();
+		});
+	}
 
 	getAddresses() {
 		this.initAddresses().then(() => {
@@ -113,12 +114,14 @@ export class ManageUsersComponent implements OnInit {
 	}
 
 	async getUsers() {
+		this.isLoadingResults = true;
 		const response: MessageInfo = await this.http.getAll('user/getAll');
 		if (response && response.object) {
 			this.users = response.object;
 			this.setAdminRoleFirst();
 		}
 		this.setDataToTable();
+		this.isLoadingResults = false;
 	}
 
 	setDataToTable() {
@@ -128,6 +131,7 @@ export class ManageUsersComponent implements OnInit {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
+
 	}
 
 	setAdminRoleFirst() {
@@ -179,32 +183,32 @@ export class ManageUsersComponent implements OnInit {
 		});
 	}
 
-  unlockAccount(user: User) {
-    this.http.save('user/unlockAccount/' + user.id, null).subscribe((response) => {
-      if (response.success) {
-        this.getUsers();
-        this.snackbar.snackSuccess(response.message, 'OK');
-      } else {
-        this.snackbar.snackError(response.message, 'OK');
-      }
-    }, (error) => {
-      this.snackbar.snackError(error.error.message, 'OK');
-    });
-  }
+	unlockAccount(user: User) {
+		this.http.save('user/unlockAccount/' + user.id, null).subscribe((response) => {
+			if (response.success) {
+				this.getUsers();
+				this.snackbar.snackSuccess(response.message, 'OK');
+			} else {
+				this.snackbar.snackError(response.message, 'OK');
+			}
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
+	}
 
 
-  lockAccount(user: User) {
-    this.http.save('user/lockAccount/' + user.id, null).subscribe((response) => {
-      if (response.success) {
-        this.getUsers();
-        this.snackbar.snackSuccess(response.message, 'OK');
-      } else {
-        this.snackbar.snackError(response.message, 'OK');
-      }
-    }, (error) => {
-      this.snackbar.snackError(error.error.message, 'OK');
-    });
-  }
+	lockAccount(user: User) {
+		this.http.save('user/lockAccount/' + user.id, null).subscribe((response) => {
+			if (response.success) {
+				this.getUsers();
+				this.snackbar.snackSuccess(response.message, 'OK');
+			} else {
+				this.snackbar.snackError(response.message, 'OK');
+			}
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
+	}
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -265,29 +269,29 @@ export class ManageUsersComponent implements OnInit {
 		}
 	}
 
-  shareBooks(user: any) {
-    this.http.save('books/assignOwnerToAll/' + user.id, null).subscribe((response) => {
-      if (response.success) {
-        this.getUsers();
-        this.snackbar.snackSuccess(response.message, 'OK');
-      } else {
-        this.snackbar.snackError(response.message, 'OK');
-      }
-    }, (error) => {
-      this.snackbar.snackError(error.error.message, 'OK');
-    });
-  }
+	shareBooks(user: any) {
+		this.http.save('books/assignOwnerToAll/' + user.id, null).subscribe((response) => {
+			if (response.success) {
+				this.getUsers();
+				this.snackbar.snackSuccess(response.message, 'OK');
+			} else {
+				this.snackbar.snackError(response.message, 'OK');
+			}
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
+	}
 
-  transferBooks(user: any) {
-    this.http.save('books/transferToAdmin/' + user.id, null).subscribe((response) => {
-      if (response.success) {
-        this.getUsers();
-        this.snackbar.snackSuccess(response.message, 'OK');
-      } else {
-        this.snackbar.snackError(response.message, 'OK');
-      }
-    }, (error) => {
-      this.snackbar.snackError(error.error.message, 'OK');
-    });
-  }
+	transferBooks(user: any) {
+		this.http.save('books/transferToAdmin/' + user.id, null).subscribe((response) => {
+			if (response.success) {
+				this.getUsers();
+				this.snackbar.snackSuccess(response.message, 'OK');
+			} else {
+				this.snackbar.snackError(response.message, 'OK');
+			}
+		}, (error) => {
+			this.snackbar.snackError(error.error.message, 'OK');
+		});
+	}
 }

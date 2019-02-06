@@ -3,10 +3,6 @@
   justify-content: space-between;
 }
 
-mat-spinner {
-  display: inline-block;
-}
-
 table {
   width: 100%;
   border: 1px solid black;
@@ -17,16 +13,40 @@ th {
   font-weight: bold;
 }
 
+.loading-shade {
+  //position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-container {
+  position: relative;
+  min-height: 50px;
+}
+
 tr.example-detail-row {
   height: 0;
 }
 
 tr.example-element-row:not(.example-expanded-row):hover {
   background: #f5f5f5;
+  .mat-cell {
+	color: black;
+  }
 }
 
 tr.example-element-row:not(.example-expanded-row):active {
   background: #efefef;
+  .mat-cell {
+	color: black;
+  }
 }
 
 .example-element-row td {
@@ -52,29 +72,12 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 .book-read-more {
-  opacity: 0.5;
+  color: gray;
 }
 
 img {
   max-height: 200px;
   max-width: 120px;
-}
-
-.example-radio-group {
-  display: inline-flex;
-  flex-direction: column;
-}
-
-.example-radio-button {
-  margin: 5px;
-}
-
-.example-selected-value {
-  margin: 15px 0;
-}
-
-.viewtype-button {
-  margin-right: 5px;
 }
 
 .search-field {
@@ -85,34 +88,4 @@ img {
 .chips-filter-field {
   min-width: 400px;
   margin-right: 10px;
-}
-
-.example-container {
-  position: relative;
-  min-height: 50px;
-}
-
-.loading-shade {
-  //position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.rate-limit-reached {
-  color: #980000;
-  max-width: 360px;
-  text-align: center;
-}
-
-.nothing-found{
-  margin-top: 10px;
-  text-align: center;
-  font-size: 25px;
 }

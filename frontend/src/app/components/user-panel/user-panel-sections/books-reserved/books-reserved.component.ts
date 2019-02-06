@@ -14,6 +14,7 @@ import { Reservation } from '../../../../models/database/entites/Reservation';
 export class BooksReservedComponent implements OnInit {
 	reservations: Reservation[] = [];
 
+	isLoadingResults = true;
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Reservation>();
@@ -30,6 +31,7 @@ export class BooksReservedComponent implements OnInit {
 	}
 
 	async getReservations() {
+		this.isLoadingResults = true;
 		const response = await this.http.getAll('reservations/user');
 		this.reservations = response.object;
 		this.dataSource = new MatTableDataSource(response.object);
@@ -37,6 +39,7 @@ export class BooksReservedComponent implements OnInit {
 		this.dataSource.filterPredicate = (data, filter: string) => {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
+		this.isLoadingResults = false;
 	}
 
 	bookInfo(reservation) {

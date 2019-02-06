@@ -12,13 +12,14 @@ import { IsbnValidationService } from 'src/app/services/isbn-validation/isbn-val
 @Component({
 	selector: 'app-books-requested',
 	templateUrl: './books-requested.component.html',
-	styleUrls: ['./books-requested.component.css', '../../user-panel.component.scss']
+	styleUrls: ['./books-requested.component.scss', '../../user-panel.component.scss']
 })
 export class BooksRequestedComponent implements OnInit {
 
 	requestedBooks: BookToOrder[] = [];
 	requestParams: FormGroup;
 
+	isLoadingResults = true;
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<BookToOrder>();
@@ -45,6 +46,7 @@ export class BooksRequestedComponent implements OnInit {
 	}
 
 	async getRequestedBooks() {
+		this.isLoadingResults = true;
 		const response = await this.http.getAll('bookToOrder/getAll');
 		this.requestedBooks = response.object;
 		this.dataSource = new MatTableDataSource(response.object.reverse());
@@ -53,24 +55,9 @@ export class BooksRequestedComponent implements OnInit {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
+		this.isLoadingResults = false;
 	}
 
-	async cancelRequest(request: BookToOrder) {
-		await this.confirmService.openDialog('Are you sure you want to cancel this request?').subscribe((result) => {
-			if (result) {
-				this.http.remove('bookToOrder/remove/', request.id).subscribe((response) => {
-					if (response.success) {
-						this.snackbar.snackSuccess(response.message, 'OK');
-						this.getRequestedBooks();
-					} else {
-						this.snackbar.snackError('Error', 'OK');
-					}
-				}, (error) => {
-					this.snackbar.snackError(error.error.message, 'OK');
-				});
-			}
-		})
-	}
 
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();

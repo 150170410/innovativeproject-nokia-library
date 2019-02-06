@@ -20,17 +20,14 @@ export class BooksBorrowedComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
-	displayedColumns: string[] = ['signature', 'bookTitle', 'status', 'rentalDate', 'returnDate', 'goTo', 'actions'];
+	displayedColumns: string[] = ['signature', 'bookTitle', 'status', 'rentalDate', 'returnDate', 'location', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
-	resultsLength = 0;
 	isLoadingResults = true;
-	isRateLimitReached = false;
 
 	constructor(private http: RestService,
 				private confirmService: ConfirmationDialogService,
-				private snackbar: SnackbarService,
-				private router: Router) {
+				private snackbar: SnackbarService) {
 	}
 
 	ngOnInit() {
@@ -71,6 +68,7 @@ export class BooksBorrowedComponent implements OnInit {
 	}
 
 	async getRentals() {
+		this.isLoadingResults = true;
 		const response = await this.http.getAll('rentals/user');
 		this.rentalsAll = response.object;
 		this.rentals = this.rentalsAll.filter(r => r.isCurrent).map(r => Object.assign({}, r));
@@ -84,12 +82,7 @@ export class BooksBorrowedComponent implements OnInit {
 		for (let i = 0; i < this.rentals.length; i++) {
 			this.rentals[i].returnDate = new Date(this.rentals[i].returnDate);
 		}
-
-	}
-
-	bookInfo(borrowing) {
-		const id = borrowing.book.bookDetails.id;
-		this.router.navigateByUrl('/single-book-view/' + id);
+		this.isLoadingResults = false;
 	}
 
 	applyFilter(filterValue: string) {

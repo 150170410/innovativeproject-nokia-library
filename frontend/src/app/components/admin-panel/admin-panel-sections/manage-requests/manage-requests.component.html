@@ -1,5 +1,6 @@
-<p>Here you can manage book requests sent by users. When the request gets fulfilled, requesting user will get an email notification about book being available.</p>
-<p>If a book with same isbn is added, then the request will be auto-fullfilled.</p>
+<p>Here you can manage book requests sent by users.</p>
+<p>If a book with the same ISBN is added, then the request will be auto-fulfilled and all subscribed users will get an email notification about the book.</p>
+<p>If for any reason, the book will never be bought for any library, you can reject the request. In this case, all subscribed users will also get appropriate email.</p>
 <div>
 	<div class="filter-paginator-wrapper">
 		<div class="filter">
@@ -11,42 +12,45 @@
 			<mat-paginator #paginatorCopies [pageSizeOptions]="[10, 20, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
 		</div>
 	</div>
-	<table mat-table [dataSource]="dataSource">
+	<div class="table-container">
+		<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-		<ng-container matColumnDef="isbn">
-			<th mat-header-cell *matHeaderCellDef>Isbn</th>
-			<td mat-cell *matCellDef="let request">{{request.isbn}}</td>
-		</ng-container>
+			<ng-container matColumnDef="isbn">
+				<th mat-header-cell *matHeaderCellDef>Isbn</th>
+				<td mat-cell *matCellDef="let request">{{request.isbn}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="title">
-			<th mat-header-cell *matHeaderCellDef>Title</th>
-			<td mat-cell *matCellDef="let request">{{request.title}}</td>
-		</ng-container>
+			<ng-container matColumnDef="title">
+				<th mat-header-cell *matHeaderCellDef>Title</th>
+				<td mat-cell *matCellDef="let request">{{request.title}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="totalSubs">
-			<th mat-header-cell *matHeaderCellDef>Total subscriptions</th>
-			<td mat-cell *matCellDef="let request">{{request.totalSubs}}</td>
-		</ng-container>
+			<ng-container matColumnDef="totalSubs">
+				<th mat-header-cell *matHeaderCellDef>Total subscriptions</th>
+				<td mat-cell *matCellDef="let request">{{request.totalSubs}}</td>
+			</ng-container>
 
-		<ng-container matColumnDef="actions">
-			<th mat-header-cell *matHeaderCellDef>Actions</th>
-			<td mat-cell *matCellDef="let request">
-				<p>
-					<!-- <button color="primary" mat-button (click)="fulfillRequest(request)">
-						<mat-icon>done</mat-icon>
-						Fulfill
-					</button> -->
-					<button color="warn" mat-button (click)="rejectRequest(request)">
-						<mat-icon>block</mat-icon>
-						Reject
-					</button>
-				</p>
-			</td>
-		</ng-container>
+			<ng-container matColumnDef="actions">
+				<th mat-header-cell *matHeaderCellDef>Actions</th>
+				<td mat-cell *matCellDef="let request">
+					<p>
+						<!-- <button color="primary" mat-button (click)="fulfillRequest(request)">
+							<mat-icon>done</mat-icon>
+							Fulfill
+						</button> -->
+						<button color="warn" mat-button (click)="rejectRequest(request)">
+							<mat-icon>block</mat-icon>
+							Reject
+						</button>
+					</p>
+				</td>
+			</ng-container>
 
-		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-		<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-	</table>
-
+		</table>
+		<app-loading-results [isLoadingResults]="isLoadingResults"></app-loading-results>
+	</div>
+	<app-nothing-found [nothingFound]="dataSource.filteredData.length < 1 && !isLoadingResults"></app-nothing-found>
 </div>

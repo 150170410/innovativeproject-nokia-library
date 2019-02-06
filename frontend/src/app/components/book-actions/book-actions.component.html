@@ -1,19 +1,21 @@
-<ol>
-	<li *ngFor="let bookCopy of booksUnlocked;" class="book-item">
-		<div class="signature">{{bookCopy.signature}}</div>
+<div>
+	<ol>
+		<li *ngFor="let bookCopy of booksUnlocked;" class="book-item">
+			<div class="signature">{{bookCopy.signature}}</div>
 
-		<button *ngIf="bookCopy.status.id === 1 && isAuth" mat-raised-button color="accent" class="action-item" (click)="borrowBook(bookCopy)">
-			<mat-icon *ngIf="!(bookCopy.id === isLoadingId && isLoadingActionBorrow === true)">done</mat-icon>
-			<mat-spinner *ngIf="bookCopy.id === isLoadingId && isLoadingActionBorrow === true" [diameter]="20"></mat-spinner>
-			Borrow book
-		</button>
+			<button *ngIf="bookCopy.status.id === 1 && isAuth" mat-raised-button color="accent" class="action-item" (click)="borrowBook(bookCopy)">
+				<mat-icon *ngIf="!(bookCopy.id === isLoadingId && isLoadingActionBorrow === true)">done</mat-icon>
+				<mat-spinner *ngIf="bookCopy.id === isLoadingId && isLoadingActionBorrow === true" [diameter]="20"></mat-spinner>
+				Borrow book
+			</button>
 
-		<button *ngIf="bookCopy.status.id !== 1 && isAuth" mat-raised-button class="action-item" (click)="reserveBook(bookCopy)">
-			<mat-icon *ngIf="!(bookCopy.id === isLoadingId && isLoadingActionReserve === true)">star</mat-icon>
-			<mat-spinner *ngIf="bookCopy.id === isLoadingId && isLoadingActionReserve === true" [diameter]="20"></mat-spinner>
-			Reserve book
-		</button>
+			<button *ngIf="bookCopy.status.id !== 1 && isAuth" mat-raised-button class="action-item" (click)="reserveBook(bookCopy)">
+				<mat-icon *ngIf="!(bookCopy.id === isLoadingId && isLoadingActionReserve === true)">star</mat-icon>
+				<mat-spinner *ngIf="bookCopy.id === isLoadingId && isLoadingActionReserve === true" [diameter]="20"></mat-spinner>
+				Reserve book
+			</button>
 
-		<div *ngIf="bookCopy.status.id !== 1" class="action-item"> available on: {{bookCopy.availableDate | date:'dd.MM.yyyy'}}</div>
-	</li>
-</ol>
+			<div *ngIf="bookCopy.status.id !== 1" class="action-item"> available on: {{bookCopy.availableDate | date:'dd.MM.yyyy'}}</div>
+		</li>
+	</ol>
+</div>

@@ -9,17 +9,18 @@ import { BookStatusEnum } from '../../../../utils/BookStatusEnum';
 @Component({
 	selector: 'app-manage-returns',
 	templateUrl: './manage-returns.component.html',
-	styleUrls: ['./manage-returns.component.css', '../../admin-panel.component.scss']
+	styleUrls: ['./manage-returns.component.scss', '../../admin-panel.component.scss']
 })
 export class ManageReturnsComponent implements OnInit {
 
 	rentalsAll: Rental[] = [];
 	rentals: Rental[] = [];
+	isLoadingResults = true;
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
-	displayedColumns: string[] = ['signature', 'current_user', 'owner', 'bookDetails', 'comments', 'actions'];
+	displayedColumns: string[] = ['signature', 'current_user', 'bookDetails', 'comments', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService,
@@ -46,6 +47,7 @@ export class ManageReturnsComponent implements OnInit {
 	}
 
 	async getRentals() {
+		this.isLoadingResults = true;
 		const response: MessageInfo = await this.http.getAll('rentals/getAllFill');
 		this.rentalsAll = response.object;
 		this.rentals = [];
@@ -60,6 +62,7 @@ export class ManageReturnsComponent implements OnInit {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
+		this.isLoadingResults = false;
 	}
 
 	applyFilter(filterValue: string) {

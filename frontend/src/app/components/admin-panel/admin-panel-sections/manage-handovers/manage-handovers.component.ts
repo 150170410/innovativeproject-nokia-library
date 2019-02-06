@@ -10,17 +10,18 @@ import { BookStatusEnum } from '../../../../utils/BookStatusEnum';
 @Component({
 	selector: 'app-manage-handovers',
 	templateUrl: './manage-handovers.component.html',
-	styleUrls: ['./manage-handovers.component.css', '../../admin-panel.component.scss']
+	styleUrls: ['./manage-handovers.component.scss', '../../admin-panel.component.scss']
 })
 export class ManageHandoversComponent implements OnInit {
 
 	rentalsAll: Rental[] = [];
 	rentals: Rental[] = [];
+	isLoadingResults = true;
 
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
-	displayedColumns: string[] = ['signature', 'current_user', 'owner', 'status', 'bookDetails', 'comments', 'actions'];
+	displayedColumns: string[] = ['signature', 'current_user', 'status', 'bookDetails', 'comments', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService,
@@ -45,9 +46,8 @@ export class ManageHandoversComponent implements OnInit {
 		});
 	}
 
-
-
 	async getRentals() {
+		this.isLoadingResults = true;
 		const response: MessageInfo = await this.http.getAll('rentals/getAllFill');
 		this.rentalsAll = response.object;
 		this.rentals = [];
@@ -62,6 +62,7 @@ export class ManageHandoversComponent implements OnInit {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
+		this.isLoadingResults = false;
 	}
 
 	applyFilter(filterValue: string) {

@@ -19,7 +19,7 @@ import { IsbnValidationService } from 'src/app/services/isbn-validation/isbn-val
 @Component({
 	selector: 'app-manage-book-details',
 	templateUrl: './manage-book-details.component.html',
-	styleUrls: ['./manage-book-details.component.css', '../../admin-panel.component.scss']
+	styleUrls: ['./manage-book-details.component.scss', '../../admin-panel.component.scss']
 })
 export class ManageBookDetailsComponent implements OnInit {
 
@@ -27,6 +27,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	formMode: string = 'Add';
 	authorsFormControl = new FormControl('');
 	categoriesFormControl = new FormControl('');
+	isLoadingResults = true;
 
 	toUpdate: BookDetails = null;
 	uploadingFile = false;
@@ -167,6 +168,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	}
 
 	async getBookDetails() {
+		this.isLoadingResults = true;
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
 		this.dataSource = new MatTableDataSource(response.object.reverse());
 		this.dataSource.paginator = this.paginator;
@@ -174,6 +176,7 @@ export class ManageBookDetailsComponent implements OnInit {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
+		this.isLoadingResults = false;
 	}
 
 	uploadFile(event) {

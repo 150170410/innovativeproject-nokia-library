@@ -1,20 +1,6 @@
-.half-div {
-  float: left;
-  width: 48%;
-  display: inline-block;
-  margin: 10px;
-}
-
-.full-card {
-  width: 100%;
-  height: calc(100vh - 64spx);
-  box-sizing: border-box;
-}
-
-.forms-container {
-  margin: 10px auto;
-  position: relative;
-  text-align: center;
+.filter-paginator-wrapper {
+  display: flex;
+  justify-content: space-between;
 }
 
 table {
@@ -33,8 +19,25 @@ th, tr, td {
   border-collapse: collapse;
 }
 
-.form-title {
+.table-container {
+  position: relative;
+  min-height: 50px;
+}
+
+.full-card {
+  width: 100%;
+  height: calc(100vh - 64spx);
+  box-sizing: border-box;
+}
+
+.form-container {
+  margin: 10px auto;
+  position: relative;
   text-align: center;
+}
+
+.filter mat-form-field {
+  width: 150px;
 }
 
 .mat-cell {
@@ -43,10 +46,6 @@ th, tr, td {
 
 .mat-header-cell {
   text-align: center;
-}
-
-::ng-deep .mat-tab-label {
-
 }
 
 ::ng-deep .mat-tab-label-active {
@@ -82,27 +81,4 @@ th, tr, td {
 .st-unavailable {
   color: white;
   background-color: rgba(108, 117, 125, 0.7);
-}
-
-.filter-paginator-wrapper {
-  display: flex;
-  justify-content: space-between;
-}
-
-.filter mat-form-field {
-  width: 150px;
-}
-
-
-.loading-shade {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 56px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }

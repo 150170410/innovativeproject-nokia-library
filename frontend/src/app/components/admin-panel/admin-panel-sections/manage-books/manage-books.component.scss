@@ -1,5 +1,5 @@
-.input-button {
-	width: 60%;
+mat-form-field {
+	width: 500px;
 }
 
 .form-wrapper {
@@ -19,7 +19,14 @@
 	width: 150px;
 }
 
+.thumbnail {
+	max-height: 80px;
+}
+
 mat-spinner {
 	display: inline-block;
 }
 
+.selected-book-wrapper {
+	margin-bottom: 10px;
+}
