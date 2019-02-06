@@ -4,10 +4,7 @@ import com.nokia.library.nokiainnovativeproject.DTOs.BookDetailsDTO;
 import com.nokia.library.nokiainnovativeproject.entities.*;
 import com.nokia.library.nokiainnovativeproject.exceptions.ResourceNotFoundException;
 import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
-import com.nokia.library.nokiainnovativeproject.repositories.AuthorRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.BookCategoryRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.BookDetailsRepository;
-import com.nokia.library.nokiainnovativeproject.repositories.BookRepository;
+import com.nokia.library.nokiainnovativeproject.repositories.*;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
@@ -32,6 +29,7 @@ public class BookDetailsService {
 	private final BookCategoryRepository bookCategoryRepository;
 	private final BookService bookService;
 	private final BookRepository bookRepository;
+	private final UserRepository userRepository;
 
 	public List<BookDetailsWithBooks> getAllBookDetails() {
 
@@ -44,13 +42,16 @@ public class BookDetailsService {
 			ModelMapper mapper = new ModelMapper();
 
 			List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
-			List<BookWithoutBookDetails> bookWithoutBookDetails = new ArrayList<>();
+			List<BookWithoutBookDetails> booksWithoutBookDetails = new ArrayList<>();
 			for (Book book : books) {
-				bookWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
+				BookWithoutBookDetails bookWithoutBookDetails = mapper.map(book, BookWithoutBookDetails.class);
+				Address bookAddress = userRepository.findById(book.getOwnersId().get(0).getOwnerId()).orElseThrow(
+						()-> new ResourceNotFoundException("user")).getAddress();
+				bookWithoutBookDetails.setAddress(bookAddress.getCity() + " " + bookAddress.getBuilding());
+				booksWithoutBookDetails.add(bookWithoutBookDetails);
 			}
-
 			BookDetailsWithBooks withBooks = mapper.map(bookDetails, BookDetailsWithBooks.class);
-			withBooks.setBooks(bookWithoutBookDetails);
+			withBooks.setBooks(booksWithoutBookDetails);
 			bookDetailsWithBooks.add(withBooks);
 		}
 		return bookDetailsWithBooks;
