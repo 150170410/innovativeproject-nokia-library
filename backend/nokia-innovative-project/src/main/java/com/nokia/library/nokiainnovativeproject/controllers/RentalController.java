@@ -94,6 +94,7 @@ public class RentalController {
 	public ResponseEntity cancelRental(@PathVariable Long id) {
 		rentalService.cancelRental(id, true);
 		return MessageInfo.success(null,
-				Arrays.asList("Rental" + Messages.get(REMOVED_SUCCESSFULLY)));
+
+				Arrays.asList("Borrowing cancelled successfully."));
 	}
 }
