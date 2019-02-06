@@ -20,4 +20,6 @@ public class BookWithoutBookDetails {
     private BookStatus status;
 
 	private LocalDateTime availableDate;
+
+    private String address;
 }
