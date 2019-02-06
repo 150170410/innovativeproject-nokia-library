@@ -1139,7 +1139,7 @@ INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) 
 INSERT INTO book_owner_id (owner_id, book_id) VALUES (8 ,99);
 INSERT INTO book_details_authors VALUES (39, 58);
 INSERT INTO book_details_authors VALUES (39, 59);
-INSERT INTO book_details (isbn, title, description, cover_picture_url, publication_date, is_removable) VALUES ('UOM:39015032155163', 'ATM Networks, concepts, protocols, applications', 'This new edition of a popular book offers a strengthened focus on one of the hottest networking strategies: ATM (Asynchronous Transfer Mode). ATM is one of the industry''s current fast-moving topics, with multi-million-dollar investments being made at a time when the technology is still being debated.', 'http://books.google.com/books/content?id=tgBTAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '1994-01-01', false);
+INSERT INTO book_details (isbn, title, description, cover_picture_url, publication_date, is_removable) VALUES ('9015032155163', 'ATM Networks, concepts, protocols, applications', 'This new edition of a popular book offers a strengthened focus on one of the hottest networking strategies: ATM (Asynchronous Transfer Mode). ATM is one of the industry''s current fast-moving topics, with multi-million-dollar investments being made at a time when the technology is still being debated.', 'http://books.google.com/books/content?id=tgBTAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '1994-01-01', false);
 INSERT INTO book_details_categories (category_id, book_details_id) VALUES (7, 40);
 INSERT INTO book_details_categories (category_id, book_details_id) VALUES (15, 40);
 INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('nhkhnbkqrq', 40, 1, 7);

@@ -26,7 +26,7 @@ public class BookDetails implements Serializable {
 
 	@Size(min = 10, max = 13, message = "ISBN must be 10 or 13 numbers long")
 	@NotBlank(message = "ISBN is required")
-//	@Pattern(regexp = "(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})", message = "ISBN is not valid")
+	@Pattern(regexp = "(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})", message = "ISBN is not valid")
 	protected String isbn;
 
 	@Size(max = 1000, message = "Title can't exceed 1000 characters")
