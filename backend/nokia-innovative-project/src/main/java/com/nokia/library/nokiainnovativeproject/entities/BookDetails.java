@@ -24,17 +24,16 @@ public class BookDetails implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(min = 10, max = 17, message = "ISBN must be 10-17 numbers long")
+	@Size(min = 10, max = 13, message = "ISBN must be 10 or 13 numbers long")
 	@NotBlank(message = "ISBN is required")
-	@Pattern(regexp = "(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})",
-			message = "ISBN is not valid")
+	@Pattern(regexp = "(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})", message = "ISBN is not valid")
 	protected String isbn;
 
-	@Size(max = 100, message = "Title can't exceed 100 characters")
+	@Size(max = 1000, message = "Title can't exceed 1000 characters")
 	@NotBlank(message = "Title is required")
 	protected String title;
 
-	@Size(max = 2000, message = "Description can't exceed 2000 characters")
+	@Size(max = 20000, message = "Description can't exceed 20000 characters")
 	protected String description;
 
 	@Size(max = 1000, message = "Cover picture URL can't exceed 1000 characters")
