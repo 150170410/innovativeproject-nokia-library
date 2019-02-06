@@ -21,7 +21,9 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes;
@@ -137,7 +139,12 @@ public class ReservationService {
 		Long bookId = reservation.getBook().getId();
 		Book borrowedBook = bookService.getBookById(bookId);
 		List<Reservation> queue = reservationRepository.findByBookId(bookId);
-
+		List<Reservation> elementsToMinusDate = new LinkedList<>();
+		for(Reservation res : queue) {
+			if(res.getAvailableDate().compareTo(reservation.getAvailableDate()) > 0) {
+				elementsToMinusDate.add(res);
+			}
+		}
 		validateUser(user, reservation);
 
 		validateBookStatus(borrowedBook, RESERVED);
@@ -156,7 +163,7 @@ public class ReservationService {
 					null);
 		}
 		saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
-		updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
+		updateReservationsQueue(elementsToMinusDate, DaysDeltaEnum.MINUSMONTH.getDays());
 	}
 
 	public void cancelReservation(Long id) {
@@ -173,7 +180,13 @@ public class ReservationService {
 				null);
 		saveBorrowedBookAndDeleteReservation(borrowedBook, reservation);
 		List<Reservation> queue = reservationRepository.findByBookId(borrowedBook.getId());
-		updateReservationsQueue(queue, DaysDeltaEnum.MINUSMONTH.getDays());
+		List<Reservation> elementsToMinusDate = new LinkedList<>();
+		for(Reservation res : queue) {
+			if(res.getAvailableDate().compareTo(reservation.getAvailableDate()) > 0) {
+				elementsToMinusDate.add(res);
+			}
+		}
+		updateReservationsQueue(elementsToMinusDate, DaysDeltaEnum.MINUSMONTH.getDays());
 	}
 
 	@Transactional
