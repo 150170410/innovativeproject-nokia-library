@@ -92,4 +92,11 @@ public class UiController {
         return MessageInfo.success(userService.unlockUserAccount(id),
                 Arrays.asList(Messages.get(USER_ACCOUNT_UNLOCKED)));
     }
+
+    @Secured(ROLE_ADMIN)
+    @RequestMapping(Mappings.USER + Mappings.ADMINS + Mappings.GET_ALL)
+    public ResponseEntity getAdmins() {
+        return MessageInfo.success(userService.getAllAdmins(),
+                Arrays.asList(Messages.get(LIST_OF) + "admins."));
+    }
 }

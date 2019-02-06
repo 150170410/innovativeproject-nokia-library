@@ -16,6 +16,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
             nativeQuery = true)
     List<String> getAdminsEmail();
 
+    @Query(value = "SELECT * FROM \"user\" u INNER JOIN user_roles ur ON u.id = ur.user_id " +
+            "INNER JOIN role r ON ur.roles_id = r.id WHERE r.role = 'ROLE_ADMIN'",
+            nativeQuery = true)
+    List<User> getAllAdmins();
+
     @Query(value = "SELECT password FROM \"user\" u where u.id = ?1",
     nativeQuery = true)
     String getPasswordByUserId(Long id);

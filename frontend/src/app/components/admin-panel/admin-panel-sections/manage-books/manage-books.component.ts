@@ -1,14 +1,17 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MessageInfo } from '../../../../models/MessageInfo';
 import { RestService } from '../../../../services/rest/rest.service';
 import { BookDetails } from '../../../../models/database/entites/BookDetails';
 import { HttpClient } from '@angular/common/http';
 import { BookDTO } from '../../../../models/database/DTOs/BookDTO';
 import { Book } from '../../../../models/database/entites/Book';
+import { User } from '../../../../models/database/entites/User';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 import { ConfirmationDialogService } from '../../../../services/confirmation-dialog/confirmation-dialog.service';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-manage-books',
@@ -19,6 +22,7 @@ export class ManageBooksComponent implements OnInit {
 	bookCopyParams: FormGroup;
 	formMode: string = 'Add';
 	selectedBookDetails: BookDetails = null;
+	ownersFormControl = new FormControl('');
 
 	toUpdate: Book = null;
 	isLoadingResults = true;
@@ -26,8 +30,16 @@ export class ManageBooksComponent implements OnInit {
 	// tables
 	@ViewChild('paginatorDetails') paginatorDetails: MatPaginator;
 	@ViewChild('paginatorCopies') paginatorCopies: MatPaginator;
+	@ViewChild('ownerInput') ownerInput: ElementRef<HTMLInputElement>;
+	@ViewChild('autoOwner') autoOwner: MatAutocomplete;
 	dataSource = new MatTableDataSource<Book>();
 	dataSourceBookDetails = new MatTableDataSource<BookDetails>();
+
+	allOwners: User[] = [];
+	availableOwners: string[] = [];
+	selectedOwners: string[] = [];
+	filteredOwners: Observable<string[]>;
+	listOfBookOwners: User[] = [];
 
 	displayedBookCopiesColumns: string[] = ['signature', 'status', 'current_user', 'bookDetails', 'comments', 'actions'];
 	displayedBookDetailsColumns: string[] = ['isbn', 'title', 'authors', 'actions'];
@@ -39,23 +51,29 @@ export class ManageBooksComponent implements OnInit {
 				private snackbar: SnackbarService,
 				private cd: ChangeDetectorRef,
 				public confirmService: ConfirmationDialogService) {
+					this.filteredOwners = this.ownersFormControl.valueChanges.pipe(
+						startWith(null),
+						map((owner: string | null) => owner ? this.filterOwner(owner) : this.availableOwners.slice()));
 	}
 
 	ngOnInit() {
 		this.initBookCopyForm();
 		this.getBookCopies();
 		this.getBookDetails();
+		this.getAdmins();
 	}
 
 	initBookCopyForm() {
 		this.bookCopyParams = this.formBuilder.group({
 			signature: ['', [Validators.required, Validators.maxLength(100)]],
-			comments: ''
+			comments: '',
+			owner: this.ownersFormControl
 		});
 	}
 
 	createBookCopy(params: any) {
-		const body = new BookDTO(params.value.signature, this.selectedBookDetails.id, params.value.comments, 1);
+		const body = new BookDTO(params.value.signature, this.selectedBookDetails.id, params.value.comments, 1,
+			this.ownersToBook());
 		console.log(body);
 		if (!this.toUpdate) {
 			this.http.save('books/create', body).subscribe((response) => {
@@ -86,6 +104,13 @@ export class ManageBooksComponent implements OnInit {
 		}
 	}
 
+	async getAdmins() {
+		const response: MessageInfo = await this.http.getAll('user/admin/getAll');
+		this.allOwners = response.object;
+		//this.availableOwners = this.ownersToString(this.allOwners).sort();
+		this.bookCopyParams.patchValue({ 'owner': '' });
+	}
+
 	async getBookDetails() {
 		const response: MessageInfo = await this.http.getAll('bookDetails/getAll');
 		this.dataSourceBookDetails = new MatTableDataSource(response.object.reverse());
@@ -112,6 +137,19 @@ export class ManageBooksComponent implements OnInit {
 			'signature': bookCopy.signature,
 			'comments': bookCopy.comments
 		});
+		let takenOwners: User[] = [];
+		let freeOwners: User[] = [];
+		bookCopy.ownersId.forEach((owner) => {
+			this.allOwners.forEach((admin) => {
+               if(admin.id == owner.ownerId){
+				takenOwners.push(admin);
+			   } else {
+                freeOwners.push(admin);
+			   }
+			});
+		});
+		this.selectedOwners = this.ownersToString(takenOwners);
+		this.availableOwners = this.ownersToString(freeOwners);
 		this.selectedBookDetails = bookCopy.bookDetails;
 		this.toUpdate = bookCopy;
 		this.formMode = 'Update';
@@ -139,7 +177,9 @@ export class ManageBooksComponent implements OnInit {
 		this.bookCopyParams.reset();
 		this.bookCopyParams.markAsPristine();
 		this.bookCopyParams.markAsUntouched();
-
+		//this.availableOwners = this.ownersToString(this.allOwners);
+		this.availableOwners = [];
+		this.selectedOwners = [];
 		this.selectedBookDetails = null;
 		this.cd.markForCheck();
 	}
@@ -163,7 +203,6 @@ export class ManageBooksComponent implements OnInit {
 
 	lockBook(bookCopy: Book) {
 		const body = {};
-		console.log(body);
 		this.http.save('books/lock/' + bookCopy.signature, body).subscribe((response) => {
 			if (response.success) {
 				this.getBookCopies();
@@ -178,7 +217,6 @@ export class ManageBooksComponent implements OnInit {
 
 	unlockBook(bookCopy) {
 		const body = {};
-		console.log(body);
 		this.http.save('books/unlock/' + bookCopy.signature, body).subscribe((response) => {
 			if (response.success) {
 				this.getBookCopies();
@@ -189,5 +227,44 @@ export class ManageBooksComponent implements OnInit {
 		}, (error) => {
 			this.snackbar.snackError(error.error.message, 'OK');
 		});
+	}
+	removeOwner(owner: string): void {
+		const index = this.selectedOwners.indexOf(owner);
+	/*	if (index >= 0) {
+			if (!this.availableOwners.includes(this.selectedOwners[index])) {
+				this.availableOwners.push(this.selectedOwners[index]);
+			}*/
+			this.selectedOwners.splice(index, 1);
+		//}
+	}
+
+	selectedOwner(event: MatAutocompleteSelectedEvent): void {
+		this.selectedOwners.push(event.option.viewValue);
+		this.ownerInput.nativeElement.value = '';
+		this.availableOwners = this.availableOwners.filter(e => e !== event.option.viewValue);
+		this.ownersFormControl.setValue(null);
+	}
+
+	private filterOwner(value: string): string[] {
+		return this.availableOwners.filter(owner => owner.toLowerCase().indexOf(value.toLowerCase()) === 0).sort();
+	}
+
+	ownersToString(owners: User[]): string[] {
+		const arr = [];
+		owners.forEach((val) => {
+			arr.push(val.firstName + " " + val.lastName);
+		});
+		return arr;
+	}
+
+	ownersToBook() {
+		const arr: number[] = [];
+		this.selectedOwners.forEach((owner) => {
+			this.allOwners.forEach((admin) => {
+			  if(admin.firstName == owner.split(" ")[0] && admin.lastName == owner.split(" ")[1])
+				arr.push(admin.id);
+			});
+		});
+		return arr;
 	}
 }

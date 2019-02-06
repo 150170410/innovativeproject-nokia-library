@@ -1,5 +1,6 @@
 import { BookDetails } from './BookDetails';
 import { BookStatus } from './BookStatus';
+import { BookOwnerId } from './BookOwnerId';
 
 export class Book {
 	id: number;
@@ -9,4 +10,5 @@ export class Book {
 	status: BookStatus;
 	availableDate: Date;
 	currentOwnerId: number;
+	ownersId: BookOwnerId[];
 }

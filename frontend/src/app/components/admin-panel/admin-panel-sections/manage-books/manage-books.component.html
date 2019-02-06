@@ -78,6 +78,34 @@
 					<div *ngIf="bookCopyParams.controls['comments'].errors?.maxlength">The maximum length is 1000 characters</div>
 				</mat-error>
 			</mat-form-field>
+			
+			<mat-form-field class="chip-list" *ngIf = "toUpdate">
+				<mat-chip-list #chipListOwners minlength="1">
+					<mat-chip
+						*ngFor="let owner of selectedOwners"
+						[selectable]="selectable"
+						removable
+						(removed)="removeOwner(owner)"
+						>
+						{{owner}}
+						<mat-icon matChipRemove>cancel</mat-icon>
+					</mat-chip>
+					<input
+						matInput
+						placeholder="Owner *"
+						#ownerInput
+						[formControl]="ownersFormControl"
+						[matAutocomplete]="autoOwner"
+						[matChipInputFor]="chipListOwners"
+						[matChipInputAddOnBlur]="addOnBlur">
+				</mat-chip-list>
+				<mat-hint>At least 1 owner is required</mat-hint>
+				<mat-autocomplete #autoOwner="matAutocomplete" [autoActiveFirstOption]="true" (optionSelected)="selectedOwner($event)">
+					<mat-option *ngFor="let owner of filteredOwners | async" [value]="owner">
+						{{owner}}
+					</mat-option>
+				</mat-autocomplete>
+			</mat-form-field>
 		</div>
 
 		<div class="buttons-row form-title">

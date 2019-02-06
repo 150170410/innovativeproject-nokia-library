@@ -96,6 +96,14 @@ public class BookService {
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 		book.setComments(bookDTO.getComments());
 		book.setSignature(bookDTO.getSignature());
+		List<BookOwnerId> list = new ArrayList<>();
+		for(Long ownerId : bookDTO.getOwners()){
+			BookOwnerId bookOwnerId = new BookOwnerId();
+			bookOwnerId.setOwnerId(ownerId);
+			bookOwnerId.setBook(book);
+			list.add(bookOwnerId);
+		}
+		book.setOwnersId(list);
 		book.getBookDetails().setIsRemovable(true);
 		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
