@@ -1,20 +1,28 @@
 <div *ngIf="role_employee">
-  <h1>User panel</h1>
-  <mat-tab-group mat-stretch-tabs class="full-card">
-    <mat-tab label="Borrowed books">
-      <app-books-borrowed></app-books-borrowed>
-    </mat-tab>
-    <mat-tab label="Reserved books">
-      <app-books-reserved></app-books-reserved>
-    </mat-tab>
-    <mat-tab label="New books requests">
-      <app-books-requested></app-books-requested>
-    </mat-tab>
-    <mat-tab label="History of borrowings">
-      <app-books-history></app-books-history>
-    </mat-tab>
-  </mat-tab-group>
+	<h1>User panel</h1>
+	<mat-tab-group mat-stretch-tabs class="full-card">
+		<mat-tab label="Borrowed books">
+			<ng-template matTabContent>
+				<app-books-borrowed></app-books-borrowed>
+			</ng-template>
+		</mat-tab>
+		<mat-tab label="Reserved books">
+			<ng-template matTabContent>
+				<app-books-reserved></app-books-reserved>
+			</ng-template>
+		</mat-tab>
+		<mat-tab label="New books requests">
+			<ng-template matTabContent>
+				<app-books-requested></app-books-requested>
+			</ng-template>
+		</mat-tab>
+		<mat-tab label="History of borrowings">
+			<ng-template matTabContent>
+				<app-books-history></app-books-history>
+			</ng-template>
+		</mat-tab>
+	</mat-tab-group>
 </div>
 <div *ngIf="!role_employee">
-  <app-access-denied></app-access-denied>
+	<app-access-denied></app-access-denied>
 </div>

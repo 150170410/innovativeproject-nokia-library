@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { MessageInfo } from '../../../../models/MessageInfo';
-import { Book } from '../../../../models/database/entites/Book';
 import { RestService } from '../../../../services/rest/rest.service';
 import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 import { Rental } from '../../../../models/database/entites/Rental';
@@ -21,7 +20,7 @@ export class ManageHandoversComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
-	displayedColumns: string[] = ['signature', 'current_user', 'status', 'bookDetails', 'comments', 'actions'];
+	displayedColumns: string[] = ['signature', 'current_user', 'status', 'rentalDate', 'returnDate', 'bookDetails', 'actions'];
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService,

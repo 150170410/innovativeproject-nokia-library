@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Rental } from '../../../../models/database/entites/Rental';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { RestService } from '../../../../services/rest/rest.service';
-import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 import { MessageInfo } from '../../../../models/MessageInfo';
 
 @Component({
@@ -18,7 +17,7 @@ export class ManageHistoryComponent implements OnInit {
 	// table
 	@ViewChild('paginator') paginator: MatPaginator;
 	dataSource = new MatTableDataSource<Rental>();
-	displayedColumns: string[] = ['signature', 'user', 'rentalDate', 'handOverDate', 'returnDate', 'bookDetails', 'comments'];
+	displayedColumns: string[] = ['signature', 'user', 'rentalDate', 'handOverDate', 'returnDate', 'bookDetails'];
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private http: RestService) {

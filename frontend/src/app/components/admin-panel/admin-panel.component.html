@@ -10,7 +10,9 @@
 			</ng-template>
 		</mat-tab>
 		<mat-tab label="Book details">
-			<app-manage-book-details></app-manage-book-details>
+			<ng-template matTabContent>
+				<app-manage-book-details></app-manage-book-details>
+			</ng-template>
 		</mat-tab>
 
 		<mat-tab label="Book copies">
@@ -32,16 +34,19 @@
 		</mat-tab>
 
 		<mat-tab label="New books requests">
-			<app-manage-requests></app-manage-requests>
+			<ng-template matTabContent>
+				<app-manage-requests></app-manage-requests>
+			</ng-template>
+		</mat-tab>
+
+		<mat-tab label="Rentals history">
+			<ng-template matTabContent>
+				<app-manage-history></app-manage-history>
+			</ng-template>
 		</mat-tab>
 		<mat-tab label="Admins and users">
 			<ng-template matTabContent>
 				<app-manage-users></app-manage-users>
-			</ng-template>
-		</mat-tab>
-		<mat-tab label="Rentals history">
-			<ng-template matTabContent>
-				<app-manage-history></app-manage-history>
 			</ng-template>
 		</mat-tab>
 	</mat-tab-group>
