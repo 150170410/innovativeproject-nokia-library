@@ -12,7 +12,6 @@ import com.nokia.library.nokiainnovativeproject.repositories.ReservationReposito
 import com.nokia.library.nokiainnovativeproject.repositories.UserRepository;
 import com.nokia.library.nokiainnovativeproject.utils.BookStatusEnum;
 import com.nokia.library.nokiainnovativeproject.utils.DaysDeltaEnum;
-import com.nokia.library.nokiainnovativeproject.utils.Mappings;
 import com.nokia.library.nokiainnovativeproject.utils.ReservationByDateComparator;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
@@ -98,7 +97,7 @@ public class RentalService {
 			Hibernate.initialize(rental.getBook());
 			List<BookOwnerId> bookOwnerIds = rental.getBook().getOwnersId();
 			List<User> owners = new ArrayList<>();
-			for(BookOwnerId bookOwnerId : bookOwnerIds) {
+			for (BookOwnerId bookOwnerId : bookOwnerIds) {
 				owners.add(userRepository.findById(bookOwnerId.getOwnerId()).orElseThrow(
 						() -> new ResourceNotFoundException("user")));
 			}
@@ -144,17 +143,18 @@ public class RentalService {
 		rental.setBook(bookService.changeState(
 				borrowedBook,
 				BookStatusEnum.AWAITING.getId(),
-				30,
+				DaysDeltaEnum.PLUSMONTH.getDays(),
 				null));
 		rental.setUser(user);
 		rental = rentalRepository.save(rental);
 		User admin = userService.getUserById(borrowedBook.getCurrentOwnerId());
-		Email email = new Email("Book rent", String.format("Your book(%s) can be picked up from: %s %s, %s",
-			feUrl + "/book/" + borrowedBook.getBookDetails().getId(),admin.getFirstName(), admin.getLastName(), admin.getAddress().getBuilding()));
+		Email email = new Email("Book rent", String.format("Your book %s can be picked up from: %s %s, %s", borrowedBook.getBookDetails().getTitle(),
+				admin.getFirstName(),
+				admin.getLastName(),
+				admin.getAddress().getBuilding()));
 		emailService.sendSimpleMessage(email, Arrays.asList(user.getEmail()));
 		return rental;
 	}
-
 
 	public Rental prolongRental(Long id) {
 		User user = userService.getLoggedInUser();
@@ -214,7 +214,7 @@ public class RentalService {
 
 		Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("rental"));
 
-		if(controllerRequest) {
+		if (controllerRequest) {
 			User user = userService.getLoggedInUser();
 			validateUser(user, rental);
 		}
@@ -254,7 +254,7 @@ public class RentalService {
 		return rentalRepository.save(rental);
 	}
 
-	public List<Rental> getAllRentalHistory(){
+	public List<Rental> getAllRentalHistory() {
 		return rentalRepository.getAllRentalHistory(userService.getLoggedInUser().getId());
 	}
 
@@ -265,18 +265,18 @@ public class RentalService {
 	}
 
 	@Scheduled(cron = "0 */15 * ? * *")
-	public void removeUnacceptedRentals(){
-       List<Rental> rentals = rentalRepository.findUnacceptedRentals();
-       for(Rental rental : rentals){
-       	int days = 3;
-       	LocalDate localDate = rental.getRentalDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-       	for(int i = 0; i < days; i++){
-       		if(localDate.getDayOfWeek().equals(DayOfWeek.SATURDAY) || localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY))
-       			i--;
-       		localDate = localDate.plusDays(1);
+	public void removeUnacceptedRentals() {
+		List<Rental> rentals = rentalRepository.findUnacceptedRentals();
+		for (Rental rental : rentals) {
+			int days = 3;
+			LocalDate localDate = rental.getRentalDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			for (int i = 0; i < days; i++) {
+				if (localDate.getDayOfWeek().equals(DayOfWeek.SATURDAY) || localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY))
+					i--;
+				localDate = localDate.plusDays(1);
+			}
+			if (localDate.minusDays(days).isBefore(LocalDate.now()))
+				cancelRental(rental.getId(), false);
 		}
-		if(localDate.minusDays(days).isBefore(LocalDate.now()))
-			cancelRental(rental.getId(), false);
-	   }
 	}
 }

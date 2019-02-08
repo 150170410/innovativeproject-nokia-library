@@ -128,7 +128,7 @@ public class BookService {
 		book.getBookDetails().setIsRemovable(false);
 		BookToOrder bookToOrder = bookToOrderService.getBookToOrderByIsbn(book.getBookDetails().getIsbn());
 		if(bookToOrder != null)
-			bookToOrderService.acceptBookToOrder(bookToOrder.getId());
+			bookToOrderService.acceptBookToOrder(bookToOrder.getId(), book);
 		return book;
 	}
 
