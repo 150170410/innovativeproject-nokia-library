@@ -27,6 +27,7 @@ export class TableViewComponent implements OnInit {
 
 	searchValue = '';
 	expandedElement = null;
+	darkTheme: boolean;
 
 	// table
 	@ViewChild(MatPaginator) paginator: MatPaginator;

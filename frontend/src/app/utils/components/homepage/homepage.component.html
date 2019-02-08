@@ -3,14 +3,14 @@
 </div>
 <div class="header-wrapper">
 	<div class="info-wrapper"><h2>List of books</h2></div>
-	<div class="viewtypes-wrapper">
-		<mat-radio-group [(ngModel)]="selectedView">
-			<mat-radio-button *ngFor="let viewType of viewTypes" [value]="viewType">
-				<div>{{viewType}}</div>
-			</mat-radio-button>
-		</mat-radio-group>
-	</div>
+	<!--<div class="viewtypes-wrapper">-->
+		<!--<mat-radio-group [(ngModel)]="selectedView">-->
+			<!--<mat-radio-button *ngFor="let viewType of viewTypes" [value]="viewType">-->
+				<!--<div>{{viewType}}</div>-->
+			<!--</mat-radio-button>-->
+		<!--</mat-radio-group>-->
+	<!--</div>-->
 </div>
 
 <app-table-view *ngIf="selectedView === 'Table'"></app-table-view>
-<app-listview *ngIf="selectedView === 'List'"></app-listview>
+<!--<app-listview *ngIf="selectedView === 'List'"></app-listview>-->

@@ -18,7 +18,7 @@ INSERT INTO book_category (book_category_name, is_removable) VALUES ('frontend',
 INSERT INTO book_category (book_category_name, is_removable) VALUES ('testing',false);
 INSERT INTO book_category (book_category_name, is_removable) VALUES ('design',false);
 INSERT INTO book_category (book_category_name, is_removable) VALUES ('lte',false);
-INSERT INTO book_category (book_category_name, is_removable) VALUES ('managment',false);
+INSERT INTO book_category (book_category_name, is_removable) VALUES ('management',false);
 
 INSERT INTO address (building, city) VALUES ('West Link', 'Wrocław');
 INSERT INTO address (building, city) VALUES ('Eest Link', 'Wrocław');

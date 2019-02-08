@@ -59,7 +59,7 @@ public class BookToOrderController {
 
     @PostMapping(ACCEPT)
     public ResponseEntity acceptBookToOrder(@PathVariable Long id) {
-//        bookToOrderService.acceptBookToOrder(id, null);
+//        bookToOrderService.acceptBookToOrder(id, null);	public void removeUnacceptedRentals() {	public void removeUnacceptedRentals() {	public void removeUnacceptedRentals() {
         return MessageInfo.success(null, Arrays.asList("BookToOrder with ID = "+  id.toString() + " has been accepted"));
     }
 

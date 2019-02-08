@@ -182,7 +182,7 @@ export class ManageBookDetailsComponent implements OnInit {
 	uploadFile(event) {
 		this.uploadingFile = true;
 		this.fileToUpload = <File>event.target.files[0];
-		if (this.fileToUpload.size <= 5000000) {
+		if (this.fileToUpload.size <= 1000000) {
 			const fd = new FormData();
 			fd.append('picture', this.fileToUpload);
 			this.httpClient.post(API_URL + '/api/v1/pictures/upload', fd).subscribe((response: MessageInfo) => {
@@ -198,7 +198,7 @@ export class ManageBookDetailsComponent implements OnInit {
 				this.uploadingFile = false;
 			})
 		} else {
-			this.snackbar.snackError('File is too big! Max size: 5MB', 'OK');
+			this.snackbar.snackError('File is too big! Max size: 1 MB', 'OK');
 			this.uploadingFile = false;
 		}
 	}

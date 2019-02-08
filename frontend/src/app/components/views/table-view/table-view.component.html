@@ -31,7 +31,7 @@
 	</div>
 
 	<div>
-		<mat-paginator [pageSizeOptions]="[12, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+		<mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
 	</div>
 </div>
 
@@ -61,7 +61,7 @@
 		<ng-container matColumnDef="expandedDetail">
 			<td mat-cell *matCellDef="let bookDetails" [attr.colspan]="displayedBookDetailColumns.length">
 				<div class="example-element-detail" [@detailExpand]="bookDetails == expandedElement ? 'expanded' : 'collapsed'">
-					<div >
+					<div>
 						<img class="book-cover-light" *ngIf="bookDetails.coverPictureUrl" src="{{bookDetails.coverPictureUrl}}">
 						<img class="book-cover-light" *ngIf="!bookDetails.coverPictureUrl" src="../../../../assets/images/default-cover.png">
 					</div>
