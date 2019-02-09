@@ -7,18 +7,19 @@ import com.nokia.library.nokiainnovativeproject.exceptions.ValidationException;
 import com.nokia.library.nokiainnovativeproject.repositories.*;
 import com.nokia.library.nokiainnovativeproject.utils.MessageInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.MessageTypes.*;
 import static com.nokia.library.nokiainnovativeproject.utils.Constants.Messages;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -31,56 +32,52 @@ public class BookDetailsService {
 	private final BookRepository bookRepository;
 	private final UserRepository userRepository;
 
-	public List<BookDetailsWithBooks> getAllBookDetails() {
 
-		List<BookDetails> list = bookDetailsRepository.findAll();
-		List<BookDetailsWithBooks> bookDetailsWithBooks = new ArrayList<>();
-		for (BookDetails bookDetails : list) {
+	public List<BookDetails> getAllBookDetails() {
+		List<BookDetails> booksDetails = bookDetailsRepository.findAll();
+		for(BookDetails bookDetails : booksDetails) {
 			Hibernate.initialize(bookDetails.getAuthors());
 			Hibernate.initialize(bookDetails.getCategories());
-
-			ModelMapper mapper = new ModelMapper();
-
-			List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
-			List<BookWithoutBookDetails> booksWithoutBookDetails = new ArrayList<>();
-			for (Book book : books) {
-				BookWithoutBookDetails bookWithoutBookDetails = mapper.map(book, BookWithoutBookDetails.class);
-				Address bookAddress = userRepository.findById(book.getOwnersId().get(0).getOwnerId()).orElseThrow(
-						()-> new ResourceNotFoundException("user")).getAddress();
-				bookWithoutBookDetails.setAddress(bookAddress.getCity() + " " + bookAddress.getBuilding());
-				booksWithoutBookDetails.add(bookWithoutBookDetails);
-			}
-			BookDetailsWithBooks withBooks = mapper.map(bookDetails, BookDetailsWithBooks.class);
-			withBooks.setBooks(booksWithoutBookDetails);
-			bookDetailsWithBooks.add(withBooks);
 		}
-		return bookDetailsWithBooks;
+		return booksDetails;
 	}
 
 	public List<BookDetailsWithBooks> getAvailableBookDetails() {
-		List<BookDetails> list = bookDetailsRepository.findAll();
-		List<BookDetails> availableBooks = new ArrayList<>();
-		for (BookDetails bookDetails : list) {
-			if(!bookService.getAllBooksByBookDetailsId(bookDetails.getId()).isEmpty()){
-				availableBooks.add(bookDetails);
-			}
+
+		List<BookDetails> booksDetails = bookDetailsRepository.findAll();
+		//it's impossible to create book without bookDetails (NotNull annotation)
+		List<Book> books = bookRepository.findAll();
+
+		ModelMapper mapper = new ModelMapper();
+		HashMap<Long, BookDetailsWithBooks> booksDetailsWithBooks = new HashMap<>();
+		for(BookDetails bookDetails : booksDetails) {
+			booksDetailsWithBooks.put(bookDetails.getId(), mapper.map(bookDetails, BookDetailsWithBooks.class));
 		}
-		List<BookDetailsWithBooks> bookDetailsWithBooks = new ArrayList<>();
-		for (BookDetails bookDetails : availableBooks) {
-			Hibernate.initialize(bookDetails.getAuthors());
-			Hibernate.initialize(bookDetails.getCategories());
 
-			ModelMapper mapper = new ModelMapper();
-
-			List<Book> books = bookService.getAllBooksByBookDetailsId(bookDetails.getId());
-			List<BookWithoutBookDetails> bookWithoutBookDetails = new ArrayList<>();
-			for (Book book : books) {
-				bookWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
+		List<BookOwnerId> booksOwnerIds = new LinkedList<>();
+		for(Book book : books) {
+			Long bookDetailsId = book.getBookDetails().getId();
+			BookDetailsWithBooks bookDetailsWithBooks = booksDetailsWithBooks.get(bookDetailsId);
+			booksOwnerIds.addAll(book.getOwnersId());
+			List<BookWithoutBookDetails> booksWithoutBookDetails = bookDetailsWithBooks.getBooks();
+			if(booksWithoutBookDetails == null) {
+				booksWithoutBookDetails = new LinkedList<>();
 			}
+			booksWithoutBookDetails.add(mapper.map(book, BookWithoutBookDetails.class));
+			bookDetailsWithBooks.setBooks(booksWithoutBookDetails);
+			booksDetailsWithBooks.replace(bookDetailsId, bookDetailsWithBooks);
+		}
 
-			BookDetailsWithBooks withBooks = mapper.map(bookDetails, BookDetailsWithBooks.class);
-			withBooks.setBooks(bookWithoutBookDetails);
-			bookDetailsWithBooks.add(withBooks);
+		List<BookDetailsWithBooks> bookDetailsWithBooks = new LinkedList<>();
+		for(Map.Entry<Long, BookDetailsWithBooks> entry : booksDetailsWithBooks.entrySet()) {
+			BookDetailsWithBooks withBooks = entry.getValue();
+			String description = withBooks.getDescription();
+			if(description != null && description.length() > 400) {
+				description = description.substring(0, 400);
+			}
+			withBooks.setDescription(description);
+			if(withBooks.getBooks() != null)
+				bookDetailsWithBooks.add(withBooks);
 		}
 		return bookDetailsWithBooks;
 	}

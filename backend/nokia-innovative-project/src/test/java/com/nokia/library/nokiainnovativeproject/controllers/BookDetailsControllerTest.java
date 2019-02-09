@@ -70,6 +70,7 @@ public class BookDetailsControllerTest {
 		bookDetailsDTO = new BookDetailsDTO("9781449396985", "test title", "test description", "test cover picture url", date, new ArrayList<>(), new ArrayList<>());
 	}
 
+	/*
 	@Test
 	public void getBookDetailsListTest() throws Exception {
 		ModelMapper modelMapper = new ModelMapper();
@@ -82,7 +83,7 @@ public class BookDetailsControllerTest {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.object[0].title", Matchers.is("test title")))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.object.*", Matchers.hasSize(1)));
 	}
-
+*/
 	@Test
 	public void getBookDetailsByIdTest() throws Exception {
 		ModelMapper modelMapper = new ModelMapper();
