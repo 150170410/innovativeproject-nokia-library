@@ -32,7 +32,4 @@ public class UserDTO {
 	@NotNull(message = "Password can't be null")
 	@Size(min = 7, max = 255, message = "Password must be 7-255 characters long")
 	private String password;
-
-	@Valid
-	private Address address;
 }

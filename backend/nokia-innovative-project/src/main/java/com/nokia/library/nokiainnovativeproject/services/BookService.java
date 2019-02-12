@@ -41,7 +41,6 @@ public class BookService {
 	private final BookToOrderService bookToOrderService;
 	private final UserService userService;
 	private final UserRepository userRepository;
-	private final BookOwnerIdRepository bookOwnerIdRepository;
 
 	public List<Book> getAllBooks() {
 		List<Book> books = bookRepository.findAllByOwnersId(userService.getLoggedInUser().getId());
@@ -90,33 +89,16 @@ public class BookService {
 		Book book = mapper.map(bookDTO, Book.class);
 		book.setAvailableDate(LocalDateTime.now());
 		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
-		book = assignOwnerToBook(book);
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
 	}
+
 	public Book updateBook(Long id, BookDTO bookDTO) {
 		Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book"));
 		book.setComments(bookDTO.getComments());
 		book.setSignature(bookDTO.getSignature());
-		List<BookOwnerId> list = new ArrayList<>();
-		for(Long ownerId : bookDTO.getOwners()){
-			BookOwnerId bookOwnerId = new BookOwnerId();
-			bookOwnerId.setOwnerId(ownerId);
-			bookOwnerId.setBook(book);
-			list.add(bookOwnerId);
-		}
-		book.setOwnersId(list);
 		book.getBookDetails().setIsRemovable(true);
 		book.setCurrentOwnerId(userService.getLoggedInUser().getId());
 		return bookRepository.save(persistRequiredEntities(book, bookDTO));
-	}
-
-	private Book assignOwnerToBook(Book book) {
-		ArrayList<BookOwnerId> ownersList = new ArrayList<>();
-		BookOwnerId bookOwnerId = new BookOwnerId();
-		bookOwnerId.setOwnerId(userService.getLoggedInUser().getId());
-		ownersList.add(bookOwnerId);
-		book.setOwnersId(ownersList);
-		return book;
 	}
 
 	private Book persistRequiredEntities(Book book, BookDTO bookDTO) {
@@ -185,6 +167,7 @@ public class BookService {
 		return changeState(bookToUnlock, BookStatusEnum.AVAILABLE.getId(), 0, null);
 	}
 
+	/*
 	private void validateNewOwner(Long newOwnerId, User loggedUser) {
         User newOwner = userRepository.findById(newOwnerId).orElseThrow(() -> new ResourceNotFoundException("user"));
         if (loggedUser.getId() == newOwner.getId()) {
@@ -279,4 +262,5 @@ public class BookService {
 		}
 		return isAdmin;
 	}
+	*/
 }

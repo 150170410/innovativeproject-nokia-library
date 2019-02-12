@@ -78,16 +78,4 @@ public class BookController {
 		return MessageInfo.success(bookService.unlockBook(signature),
 				Arrays.asList("Book" + Messages.get(UNLOCKED_SUCCESSFULLY)));
 	}
-
-	@PostMapping(ASSIGN_ADMIN_TO_BOOKS)
-	public ResponseEntity addNewOwnerToAllAdminBooks(@PathVariable Long newOwnerId) {
-		return MessageInfo.success(bookService.addNewOwnerToBooks(newOwnerId),
-				Arrays.asList("Books" + Messages.get(HAS_BEEN_ASSIGNED_TO_ADMIN)));
-	}
-
-	@PostMapping(TRANSFER_BOOKS_TO_ADMIN)
-	public ResponseEntity transferAllBooksToNewAdmin(@PathVariable Long newOwnerId) {
-		return MessageInfo.success(bookService.transferAllBookToNewOwner(newOwnerId),
-				Arrays.asList("Books" + Messages.get(HAS_BEEN_TRANSFERRED_TO_ADMIN)));
-	}
 }

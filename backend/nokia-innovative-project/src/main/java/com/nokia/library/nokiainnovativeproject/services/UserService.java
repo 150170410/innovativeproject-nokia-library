@@ -79,7 +79,6 @@ public class UserService implements UserDetailsService {
         List<User> users = userRepository.findAll();
         for(User user : users) {
             Hibernate.initialize(user.getBooks());
-            Hibernate.initialize(user.getAddress());
             Hibernate.initialize(user.getRoles());
         }
         return users;
@@ -89,7 +88,6 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("user"));
         Hibernate.initialize(user.getBooks());
-        Hibernate.initialize(user.getAddress());
         Hibernate.initialize(user.getRoles());
         return user;
     }
@@ -119,9 +117,6 @@ public class UserService implements UserDetailsService {
     public User assignAdminRoleToUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFoundException("user"));
-        if(user.getAddress() == null) {
-            throw new ValidationException(Messages.get(USER_HAS_NO_ADDRESS));
-        }
         List<Role> userRoles = user.getRoles();
         for(Role role : userRoles) {
             if(role.getRole().equals(ROLE_ADMIN))
@@ -157,7 +152,6 @@ public class UserService implements UserDetailsService {
                 ()-> new ResourceNotFoundException("user"));
         Hibernate.initialize(user.getBooks());
         Hibernate.initialize(user.getRoles());
-        Hibernate.initialize(user.getAddress());
         Role role = roleRepository.findByRole(ROLE_ADMIN);
         user.getRoles().remove(role);
         return userRepository.save(user);
@@ -171,17 +165,6 @@ public class UserService implements UserDetailsService {
     }
 
     private User persistingRequiredEntities(User user, UserDTO userDTO) {
-        Address address = userDTO.getAddress();
-        if(address == null) {
-            throw new ValidationException(Messages.get(SPECIFY_ADDRESS));
-        }
-        if(address.getId() != null) {
-            address = addressRepository.findById(address.getId()).orElseThrow(()-> new ResourceNotFoundException("address"));
-            user.setAddress(address);
-            return user;
-        } else {
-            user.setAddress(userDTO.getAddress());
-        }
         return user;
     }
 

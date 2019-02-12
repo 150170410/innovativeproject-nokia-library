@@ -64,4 +64,13 @@ public class BookDetails implements Serializable {
 
 	@ColumnDefault("true")
 	protected  Boolean isRemovable;
+
+	/*
+	@OneToMany(cascade = {
+			CascadeType.MERGE,
+			CascadeType.PERSIST},
+			fetch = FetchType.EAGER)
+	@JoinColumn(name = "book_details_id")
+	private List<Book> books;
+	*/
 }

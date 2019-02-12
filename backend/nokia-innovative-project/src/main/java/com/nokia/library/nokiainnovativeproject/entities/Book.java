@@ -49,11 +49,4 @@ public class Book implements Serializable {
 	protected LocalDateTime availableDate;
 
 	private Long currentOwnerId;
-
-	@NotNull
-	@OneToMany(cascade = {CascadeType.MERGE,
-			CascadeType.PERSIST},
-			fetch = FetchType.LAZY)
-	@JoinColumn(name = "book_id")
-	private List<BookOwnerId> ownersId;
 }

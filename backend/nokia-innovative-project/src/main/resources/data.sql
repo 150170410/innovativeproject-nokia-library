@@ -24,29 +24,34 @@ INSERT INTO address (building, city) VALUES ('West Link', 'Wrocław');
 INSERT INTO address (building, city) VALUES ('Eest Link', 'Wrocław');
 INSERT INTO address (building, city) VALUES ('Blue Tower', 'Wrocław');
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
+INSERT INTO library (additional_information, library_address) VALUES ('first_floor', 1);
+INSERT INTO library (additional_information, library_address) VALUES ('second_floor', 2);
+INSERT INTO library (additional_information, library_address) VALUES ('second_floor', 3);
+
+
+INSERT INTO "user" (email, first_name, last_name, password, user_library)
 VALUES ('user@user.com', 'User', 'User', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('wojtek@admin.com', 'Wojtek', 'Wojciechowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
+INSERT INTO "user" (email, first_name, last_name, password, user_library)
+VALUES ('wojtek@admin.com', 'Wojtek', 'Wojciechowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 2);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('jacek@admin.com', 'Jacek', 'Jackowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
+INSERT INTO "user" (email, first_name, last_name, password, user_library)
+VALUES ('jacek@admin.com', 'Jacek', 'Jackowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 3);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
+INSERT INTO "user" (email, first_name, last_name, password, user_library)
 VALUES ('alex@admin.com', 'Alex', 'Alexowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('mikolaj@admin.com', 'Mikołaj', 'Mikołajski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1);
+INSERT INTO "user" (email, first_name, last_name, password, user_library)
+VALUES ('mikolaj@admin.com', 'Mikołaj', 'Mikołajski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 2);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id)
-VALUES ('janusz.kowalski@user.com', 'Janusz', 'Kowalski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 1);
+INSERT INTO "user" (email, first_name, last_name, password, user_library)
+VALUES ('janusz.kowalski@user.com', 'Janusz', 'Kowalski', '$2a$10$q42WZU7b.2emX8QlMwWV/.WWY.hSAB5by6mI1Tkq58XMi7ij0KbBy', 3);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
-VALUES ('admin@admin.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1, true);
+INSERT INTO "user" (email, first_name, last_name, password, is_account_active, user_library)
+VALUES ('admin@admin.com', 'Admin', 'Adminowski', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', true, 3);
 
-INSERT INTO "user" (email, first_name, last_name, password, address_id, is_account_active)
-VALUES ('nokia.library@gmail.com', 'Nokia', 'Library', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', 1, true);
+INSERT INTO "user" (email, first_name, last_name, password, is_account_active, user_library)
+VALUES ('nokia.library@gmail.com', 'Nokia', 'Library', '$2a$10$Ro6ctBdfMovhKqJdYFgnrO58tTf3uQ7hrY9tm93Uclb0fiP3fQMKS', true, 1);
 
 INSERT INTO role (role) VALUES ('ROLE_EMPLOYEE');
 INSERT INTO role (role) VALUES ('ROLE_ADMIN');
@@ -762,26 +767,22 @@ INSERT INTO author (author_full_name, is_removable) VALUES ('E. Douglas Jensen',
 INSERT INTO book_details (isbn, title, description, cover_picture_url, publication_date, is_removable) VALUES ('9780321227256', 'Applied C++ : Practical Techniques for Building Better Software', 'At long last, this much-awaited book delivers practical metaprogramming into the hands of the everyday C++ programmer.', 'http://books.google.com/books/content?id=wbNQAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '2015-01-01', false);
 INSERT INTO book_details_categories (category_id, book_details_id) VALUES (15, 1);
 INSERT INTO book_details_categories (category_id, book_details_id) VALUES (6, 1);
-INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('riwqnlurdz', 1, 1, 8);
-INSERT INTO book_owner_id (owner_id, book_id) VALUES (8 ,1);
-INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('yiipbhqvrx', 1, 1, 8);
-INSERT INTO book_owner_id (owner_id, book_id) VALUES (8 ,2);
+INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id, book_library) VALUES ('riwqnlurdz', 1, 1, 8, 1);
+INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id, book_library) VALUES ('yiipbhqvrx', 1, 1, 8, 2);
 INSERT INTO book_details_authors VALUES (1, 1);
 INSERT INTO book_details_authors VALUES (1, 2);
 INSERT INTO book_details (isbn, title, description, cover_picture_url, publication_date, is_removable) VALUES ('9780521663632', 'Communities of Practice', 'Learning is becoming an urgent topic. Nations worry about the learning of their citizens, companies about the learning of their workers, schools about the learning of their students. But it is not always easy to think about how to foster learning in innovative ways. This book presents a framework for doing that, with a social theory of learning that is ground-breaking yet accessible, with profound implications not only for research, but also for all those who have to foster learning as part of their responsibilites at work, at home, at school.', 'http://books.google.com/books/content?id=heBZpgYUKdAC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '1999-09-28', false);
 INSERT INTO book_details_categories (category_id, book_details_id) VALUES (4, 2);
 INSERT INTO book_details_categories (category_id, book_details_id) VALUES (4, 2);
-INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('mbexnjxgov', 2, 1, 7);
-INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,3);
-INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('nnirgdacgc', 2, 1, 7);
-INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,4);
-INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('mnhlnqyygh', 2, 1, 7);
-INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,5);
+INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id, book_library) VALUES ('mbexnjxgov', 2, 1, 7, 3);
+INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id, book_library) VALUES ('nnirgdacgc', 2, 1, 7, 1);
+INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id, book_library) VALUES ('mnhlnqyygh', 2, 1, 7, 2);
 INSERT INTO book_details_authors VALUES (2, 3);
 INSERT INTO book_details (isbn, title, publication_date, is_removable) VALUES ('9788380874015', 'The Five Dysfunctions of a Team', '2015-01-01', false);
 INSERT INTO book_details_categories (category_id, book_details_id) VALUES (7, 3);
 INSERT INTO book_details_categories (category_id, book_details_id) VALUES (13, 3);
-INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('qykykizmxz', 3, 1, 8);
+INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id, book_library) VALUES ('qykykizmxz', 3, 1, 8, 3);
+/*
 INSERT INTO book_owner_id (owner_id, book_id) VALUES (8 ,6);
 INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('syqzwutlof', 3, 1, 8);
 INSERT INTO book_owner_id (owner_id, book_id) VALUES (8 ,7);
@@ -7503,3 +7504,4 @@ INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,1784);
 INSERT INTO book (signature, book_details_id, book_status_id, current_owner_id) VALUES ('skqnwwityh', 714, 1, 7);
 INSERT INTO book_owner_id (owner_id, book_id) VALUES (7 ,1785);
 INSERT INTO book_details_authors VALUES (714, 57);
+*/

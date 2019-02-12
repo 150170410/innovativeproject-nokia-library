@@ -95,17 +95,10 @@ public class RentalService {
 		List<RentalWithActualOwner> rentalWithActualOwners = new ArrayList<>();
 		for (Rental rental : rentals) {
 			Hibernate.initialize(rental.getBook());
-			List<BookOwnerId> bookOwnerIds = rental.getBook().getOwnersId();
-			List<User> owners = new ArrayList<>();
-			for (BookOwnerId bookOwnerId : bookOwnerIds) {
-				owners.add(userRepository.findById(bookOwnerId.getOwnerId()).orElseThrow(
-						() -> new ResourceNotFoundException("user")));
-			}
 			User actualOwner = userRepository.findById(rental.getBook().getCurrentOwnerId()).orElseThrow(
 					() -> new ResourceNotFoundException("user"));
 			Hibernate.initialize(rental.getUser());
 			RentalWithActualOwner rentalWithActualOwner = modelMapper.map(rental, RentalWithActualOwner.class);
-			rentalWithActualOwner.setOwners(owners);
 			rentalWithActualOwner.setActualOwner(actualOwner);
 			rentalWithActualOwner.setRentalDate(rental.getRentalDate());
 			rentalWithActualOwners.add(rentalWithActualOwner);
@@ -148,10 +141,9 @@ public class RentalService {
 		rental.setUser(user);
 		rental = rentalRepository.save(rental);
 		User admin = userService.getUserById(borrowedBook.getCurrentOwnerId());
-		Email email = new Email("Book rent", String.format("Your book %s can be picked up from: %s %s, %s", borrowedBook.getBookDetails().getTitle(),
+		Email email = new Email("Book rent", String.format("Your book %s can be picked up from: %s %s", borrowedBook.getBookDetails().getTitle(),
 				admin.getFirstName(),
-				admin.getLastName(),
-				admin.getAddress().getBuilding()));
+				admin.getLastName()));
 		emailService.sendSimpleMessage(email, Arrays.asList(user.getEmail()));
 		return rental;
 	}

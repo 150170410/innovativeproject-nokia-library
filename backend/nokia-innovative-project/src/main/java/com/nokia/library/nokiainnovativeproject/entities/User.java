@@ -44,13 +44,6 @@ public class User implements Serializable {
 	@Size(min = 7, max = 255, message = "Password must be 7-255 characters long")
 	private String password;
 
-	@OneToOne(cascade = {
-			CascadeType.MERGE,
-			CascadeType.PERSIST},
-			fetch = FetchType.LAZY)
-	@JoinColumn(name = "address_id")
-	private Address address;
-
 	@OneToMany(cascade = {
 			CascadeType.MERGE,
 			CascadeType.PERSIST,},

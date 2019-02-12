@@ -54,11 +54,9 @@ public class BookDetailsService {
 			booksDetailsWithBooks.put(bookDetails.getId(), mapper.map(bookDetails, BookDetailsWithBooks.class));
 		}
 
-		List<BookOwnerId> booksOwnerIds = new LinkedList<>();
 		for(Book book : books) {
 			Long bookDetailsId = book.getBookDetails().getId();
 			BookDetailsWithBooks bookDetailsWithBooks = booksDetailsWithBooks.get(bookDetailsId);
-			booksOwnerIds.addAll(book.getOwnersId());
 			List<BookWithoutBookDetails> booksWithoutBookDetails = bookDetailsWithBooks.getBooks();
 			if(booksWithoutBookDetails == null) {
 				booksWithoutBookDetails = new LinkedList<>();
